@@ -314,7 +314,8 @@ footer{text-align:center; color:var(--gray); font-size:11px; margin-top:30px;}
   </header>
 
   <div class="tabs" id="tabsBar">
-    <div class="tab active" data-tab="accounts" draggable="true">Accounts (<span id="acctCount"></span>)</div>
+    <div class="tab active" data-tab="snapshot" draggable="true">Customer Snapshot</div>
+    <div class="tab" data-tab="accounts" draggable="true">Accounts (<span id="acctCount"></span>)</div>
     <div class="tab" data-tab="usage" draggable="true">Usage</div>
     <div class="tab" data-tab="contacts" draggable="true">Contacts</div>
     <div class="tab" data-tab="qualityleads" draggable="true">Quality Leads</div>
@@ -322,10 +323,10 @@ footer{text-align:center; color:var(--gray); font-size:11px; margin-top:30px;}
     <div class="tab" data-tab="followups" draggable="true">Follow-ups</div>
     <div class="tab" data-tab="expansion" draggable="true">Expansion Plan</div>
     <div class="tab" data-tab="selfserve" draggable="true">Self-Serve Renewals</div>
-    <div class="tab" data-tab="snapshot" draggable="true">Customer Snapshot</div>
   </div>
 
-  <div class="panel active" id="panel-accounts"></div>
+  <div class="panel active" id="panel-snapshot"></div>
+  <div class="panel" id="panel-accounts"></div>
   <div class="panel" id="panel-usage"></div>
   <div class="panel" id="panel-contacts"></div>
   <div class="panel" id="panel-qualityleads"></div>
@@ -333,7 +334,6 @@ footer{text-align:center; color:var(--gray); font-size:11px; margin-top:30px;}
   <div class="panel" id="panel-followups"></div>
   <div class="panel" id="panel-expansion"></div>
   <div class="panel" id="panel-selfserve"></div>
-  <div class="panel" id="panel-snapshot"></div>
 
   <footer>Territory data from FY27 plan (xlsx) + live pulls from Aircover, Gmail, Calendar, Slack, Google Drive, ZoomInfo. Long-tail accounts (no meetings/emails) show plan data only - that's expected, not missing data.</footer>
 </div>
