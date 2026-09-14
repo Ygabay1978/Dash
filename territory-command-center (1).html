@@ -1,0 +1,2683 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<script>
+  // window.storage only exists inside Claude.ai's own sandbox — it would
+  // silently fail on a real host and nothing (follow-up notes, quality-lead
+  // marks, column widths, etc.) would survive a page reload. This shim
+  // gives every existing window.storage.get/set call in this file the exact
+  // same interface, backed by the browser's real localStorage instead — so
+  // saved state actually persists once this is hosted for real.
+  window.storage = {
+    async get(key, shared){
+      try{
+        const raw = localStorage.getItem('tcc_' + key);
+        if(raw === null) return null;
+        return { key, value: raw, shared: !!shared };
+      }catch(e){ return null; }
+    },
+    async set(key, value, shared){
+      try{
+        localStorage.setItem('tcc_' + key, value);
+        return { key, value, shared: !!shared };
+      }catch(e){ return null; }
+    }
+  };
+</script>
+<meta charset="UTF-8">
+<title>Yaniv - Territory Command Center</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@500;600;700;800&display=swap" rel="stylesheet">
+<style>:root{
+  --orange:#FF6C37; --orange-dark:#E55A2B; --cream:#FFF6EE; --ink:#1A1A2E;
+  --gray:#5E6470; --line:#E8E2D8; --card:#FFFFFF; --green:#2E9E6C; --red:#D64545; --amber:#D69A1F;
+}
+*{box-sizing:border-box; margin:0; padding:0;}
+body{font-family:'Inter',Arial,Calibri,sans-serif; background:var(--cream); color:var(--ink); font-size:14px; line-height:1.5;}
+.wrap{max-width:1400px; margin:0 auto; padding:20px 24px 60px;}
+
+/* Header */
+header{display:flex; align-items:center; justify-content:space-between; padding:16px 0 20px; border-bottom:2px solid var(--orange); margin-bottom:20px;}
+.brand{display:flex; align-items:center; gap:12px;}
+.pm-wordmark{color:var(--orange); font-weight:800; font-size:12px; letter-spacing:.08em; text-transform:uppercase; margin-left:-4px;}
+@keyframes pm-logo-pulse { 0%, 100% { transform: scale(1); } 50% { transform: scale(1.06); } }
+.logo{height:34px; width:auto; flex-shrink:0; animation: pm-logo-pulse 1.8s ease-in-out infinite;}
+.brand h1{font-size:19px; font-weight:700;}
+.brand p{font-size:12px; color:var(--gray);}
+.hdr-actions{display:flex; gap:10px; align-items:center;}
+.btn{border:none; border-radius:8px; padding:9px 16px; font-size:13px; font-weight:600; cursor:pointer; display:inline-flex; align-items:center; gap:6px; transition:opacity .15s;}
+.btn:hover{opacity:.85}
+.btn-primary{background:var(--orange); color:#fff;}
+.btn-secondary{background:#fff; color:var(--ink); border:1px solid var(--line);}
+.btn:disabled{opacity:.5; cursor:default;}
+.spin{animation:spin 1s linear infinite; display:inline-block;}
+@keyframes spin{to{transform:rotate(360deg);}}
+#refreshStatus{font-size:11px; color:var(--gray); margin-top:4px; text-align:right;}
+
+/* Tabs */
+.tabs{display:flex; gap:6px; margin-bottom:20px; border-bottom:2px solid var(--line); flex-wrap:wrap; background:#fff; border-radius:10px 10px 0 0; padding:6px 6px 0;}
+.tab{padding:12px 18px; font-size:14.5px; font-weight:800; color:var(--gray); cursor:grab; border-bottom:3px solid transparent; white-space:nowrap; border-radius:8px 8px 0 0; transition:background .15s;}
+.tab:hover{background:#FFF6EE; color:var(--orange-dark);}
+.tab.active{color:var(--orange-dark); border-bottom-color:var(--orange); background:#FFF6EE;}
+.tab.dragging{opacity:.4;}
+.tab.drag-over{border-left:3px solid var(--orange);}
+.panel{display:none;}
+.panel.active{display:block;}
+
+/* KPI */
+.kpi-grid{display:grid; grid-template-columns:repeat(6,1fr); gap:12px; margin-bottom:24px;}
+.kpi{background:var(--card); border:1px solid var(--line); border-radius:10px; padding:14px 16px;}
+.kpi-sm{background:var(--card); border:1px solid var(--line); border-radius:8px; padding:8px 6px; text-align:center;}
+.kpi-sm .val{font-size:17px; font-weight:800; color:var(--orange);}
+.kpi-sm .lbl{font-size:9px; color:var(--gray); text-transform:uppercase; letter-spacing:.03em; margin-top:2px;}
+.kpi .val{font-size:22px; font-weight:800; color:var(--orange-dark);}
+.kpi .lbl{font-size:11px; color:var(--gray); text-transform:uppercase; letter-spacing:.03em; margin-top:2px;}
+
+.card{background:var(--card); border:1px solid var(--line); border-radius:10px; padding:18px; margin-bottom:16px;}
+.card h3{font-size:14px; font-weight:700; margin-bottom:12px;}
+.two-col{display:grid; grid-template-columns:1.3fr 1fr; gap:16px;}
+.three-col{display:grid; grid-template-columns:1fr 1fr 1fr; gap:16px;}
+.chart-grid{display:grid; grid-template-columns:1fr 1fr; gap:16px;}
+.chart-card{background:var(--card); border:1px solid var(--line); border-radius:10px; padding:18px; margin-bottom:16px;}
+.chart-card h3{font-size:14px; font-weight:700; margin-bottom:4px;}
+.chart-card .sub{font-size:11.5px; color:var(--gray); margin-bottom:12px;}
+.chart-card canvas{max-height:320px;}
+@media (max-width:900px){.chart-grid{grid-template-columns:1fr;}}
+
+/* Overview: map + spotlight split */
+.ov-split{display:grid; grid-template-columns:1fr 320px; gap:16px; align-items:start; margin-bottom:16px;}
+@media (max-width:1100px){.ov-split{grid-template-columns:1fr;}}
+.map-card{background:var(--card); border:1px solid var(--line); border-radius:10px; padding:18px;}
+.map-card h3{font-size:14px; font-weight:700; margin-bottom:4px;}
+.map-card .sub{font-size:11.5px; color:var(--gray); margin-bottom:14px;}
+.tmap-region{cursor:pointer; transition:filter .15s ease, transform .15s ease; transform-box:fill-box; transform-origin:center;}
+.tmap-region:hover{filter:brightness(1.14); transform:translateY(-3px);}
+.tmap-region.pinned{filter:brightness(1.1) saturate(1.2);}
+.tmap-label{font-size:13px; font-weight:800; fill:#fff; pointer-events:none; letter-spacing:.02em;}
+.tmap-sub{font-size:9.5px; fill:rgba(255,255,255,.88); pointer-events:none;}
+.tmap-sea-label{font-size:10px; fill:#B8CBD9; font-style:italic; pointer-events:none;}
+
+.spotlight{background:var(--card); border:1px solid var(--line); border-radius:10px; padding:16px; position:sticky; top:12px; height:400px; display:flex; flex-direction:column;}
+.spotlight-empty{color:var(--gray); font-size:12px; text-align:center; padding:70px 8px; line-height:1.7; margin:auto;}
+.spotlight-head{display:flex; justify-content:space-between; align-items:flex-start; margin-bottom:10px; padding-bottom:10px; border-bottom:2px solid var(--orange);}
+.spotlight-head h4{font-size:13.5px; font-weight:800; line-height:1.3;}
+.spotlight-head .pin-note{font-size:10px; color:var(--gray); margin-top:3px; text-transform:uppercase; letter-spacing:.03em;}
+.spotlight-close{cursor:pointer; color:var(--gray); font-size:19px; background:none; border:none; line-height:1; padding:0 0 0 8px;}
+.spotlight-close:hover{color:var(--orange-dark);}
+.spotlight-list{overflow-y:auto; flex:1;}
+.spotlight-item{padding:8px 0; border-bottom:1px solid #F3EEE4; font-size:12.5px;}
+.spotlight-item:last-child{border-bottom:none;}
+.spotlight-item .sp-name{font-weight:700; cursor:pointer; color:var(--ink); display:block;}
+.spotlight-item .sp-name:hover{color:var(--orange-dark); text-decoration:underline;}
+.spotlight-item .sp-meta{color:var(--gray); font-size:11px; margin-top:2px; display:flex; gap:8px; flex-wrap:wrap;}
+@media (max-width:1100px){.spotlight{position:static;}}
+
+/* Customer Snapshot */
+.snap-search-wrap{position:relative; max-width:480px; margin-bottom:20px;}
+.snap-search{width:100%; padding:12px 14px; font-size:14px; border:2px solid var(--line); border-radius:8px; font-family:inherit; box-sizing:border-box;}
+.snap-search:focus{outline:none; border-color:var(--orange);}
+.snap-suggestions{position:absolute; top:100%; left:0; right:0; background:var(--card); border:1px solid var(--line); border-radius:8px; margin-top:4px; max-height:280px; overflow-y:auto; box-shadow:0 8px 24px rgba(0,0,0,.12); z-index:50; display:none;}
+.snap-suggestions.open{display:block;}
+.snap-sugg-item{padding:10px 14px; cursor:pointer; font-size:13px; border-bottom:1px solid #F3EEE4;}
+.snap-sugg-item:last-child{border-bottom:none;}
+.snap-sugg-item:hover, .snap-sugg-item.active{background:#FFF6EE;}
+.snap-sugg-item .src{float:right; font-size:10px; color:var(--gray); text-transform:uppercase;}
+.snap-empty{color:var(--gray); font-size:13px; padding:40px 0; text-align:center;}
+.snap-header{display:flex; justify-content:space-between; align-items:flex-start; margin-bottom:16px; flex-wrap:wrap; gap:12px;}
+.snap-header h2{font-size:20px; font-weight:800;}
+.snap-header .sub{font-size:12px; color:var(--gray); margin-top:2px;}
+.snap-actions{display:flex; gap:8px;}
+.snap-btn{padding:9px 16px; border-radius:7px; font-size:12.5px; font-weight:700; cursor:pointer; border:1px solid var(--line); background:var(--card); color:var(--ink);}
+.snap-btn:hover{border-color:var(--orange); color:var(--orange-dark);}
+.snap-btn.primary{background:var(--orange); border-color:var(--orange); color:#fff;}
+.snap-btn.primary:hover{background:var(--orange-dark); color:#fff;}
+.snap-plan-legend{display:flex; flex-direction:column; gap:6px; justify-content:center; padding-left:10px;}
+.snap-plan-row{display:flex; align-items:center; gap:8px; font-size:12px;}
+.snap-plan-dot{width:11px; height:11px; border-radius:3px; flex-shrink:0;}
+.snap-plan-row b{margin-left:auto;}
+.snap-table{width:100%; border-collapse:collapse; font-size:12px;}
+.snap-table th{text-align:left; padding:8px 10px; background:#FAF6EF; border-bottom:2px solid var(--line); font-weight:700; white-space:nowrap;}
+.snap-table td{padding:7px 10px; border-bottom:1px solid #F3EEE4;}
+.snap-table tr:hover td{background:#FFF9F3;}
+
+.plan-features-cat{margin-bottom:14px;}
+.plan-features-cat:last-child{margin-bottom:0;}
+.plan-features-cat h4{font-size:11px; text-transform:uppercase; letter-spacing:.03em; color:var(--orange-dark); margin:0 0 6px 0; border-bottom:1px solid #FFE0CC; padding-bottom:4px;}
+.plan-features{display:grid; grid-template-columns:repeat(2,1fr); gap:4px 18px; margin:0; padding:0;}
+.plan-features li{list-style:none; padding:4px 0; font-size:12.5px; border-bottom:1px solid #F6F1E8; display:flex; justify-content:space-between; gap:10px;}
+.plan-features li .f-name{color:var(--ink); font-weight:700;}
+.plan-features li .f-name .f-sub{display:block; font-weight:400; color:var(--gray); font-size:11px; margin-top:1px;}
+.plan-features li .f-val{color:var(--gray); font-size:11px; text-align:right; white-space:nowrap;}
+.plan-features li .check{color:var(--orange); font-weight:800;}
+@media (max-width:640px){.plan-features{grid-template-columns:1fr;}}
+
+.more-addons-grid{display:grid; grid-template-columns:1fr 1fr; gap:16px;}
+.more-addon-card{background:#fff; border:1px solid var(--line); border-radius:14px; padding:18px; border-left:3px solid var(--orange);}
+.more-addon-head{display:flex; justify-content:space-between; align-items:flex-start; gap:10px; margin-bottom:8px;}
+.more-addon-name{color:var(--orange-dark); font-weight:800; font-size:15px; letter-spacing:-0.01em;}
+.more-addon-price{color:var(--ink); font-weight:800; font-family:'JetBrains Mono',monospace; font-size:12.5px; text-align:right; white-space:nowrap; line-height:1.4;}
+.more-addon-desc{font-size:13px; color:var(--gray); line-height:1.5; margin:0;}
+@media (max-width:860px){ .more-addons-grid{grid-template-columns:1fr;} }
+@media print{
+  .more-addons-grid{grid-template-columns:1fr 1fr !important;}
+  .more-addon-card{break-inside:avoid; padding:12px !important;}
+  .more-addon-name{font-size:12.5px !important;}
+  .more-addon-price{font-size:10.5px !important;}
+  .more-addon-desc{font-size:10.5px !important;}
+}
+@media print{
+  body *{visibility:hidden;}
+  #snapshotPrintArea, #snapshotPrintArea *{visibility:visible;}
+  #snapshotPrintArea{position:absolute; left:0; top:0; width:100%;}
+  .snap-actions, .snap-search-wrap, .snap-editctl{display:none !important;}
+}
+
+/* Chart bars */
+.bar-row{display:flex; align-items:center; gap:10px; margin-bottom:6px; font-size:12px;}
+.bar-row .name{width:150px; flex-shrink:0; color:var(--ink); white-space:nowrap; overflow:hidden; text-overflow:ellipsis; cursor:pointer;}
+.bar-row .name:hover{color:var(--orange-dark); text-decoration:underline;}
+.bar-track{flex:1; background:#F3EEE4; border-radius:4px; height:16px; overflow:hidden;}
+.bar-fill{height:100%; background:var(--orange); border-radius:4px;}
+.bar-val{width:110px; text-align:right; color:var(--gray); flex-shrink:0; white-space:nowrap;}
+.scroll-list{max-height:260px; overflow-y:auto; padding-right:4px;}
+.scroll-list::-webkit-scrollbar{width:6px;}
+.scroll-list::-webkit-scrollbar-thumb{background:var(--line); border-radius:4px;}
+
+/* Modal */
+.modal-overlay{display:none; position:fixed; inset:0; background:rgba(26,26,46,.5); z-index:100; align-items:center; justify-content:center;}
+.modal-overlay.open{display:flex;}
+.modal-box{background:#fff; border-radius:12px; max-width:900px; width:92%; max-height:88vh; overflow-y:auto; padding:22px 26px; position:relative;}
+.modal-close{position:absolute; top:14px; right:16px; cursor:pointer; font-size:20px; color:var(--gray); background:none; border:none;}
+.modal-box h2{font-size:18px; margin-bottom:4px;}
+.modal-section{margin-top:14px; padding-top:12px; border-top:1px solid var(--line);}
+.modal-section h4{font-size:11px; text-transform:uppercase; color:var(--gray); letter-spacing:.03em; margin-bottom:8px;}
+.modal-field{display:flex; justify-content:space-between; gap:12px; font-size:13px; padding:6px 0; border-bottom:1px solid #F3EEE4;}
+.modal-field:last-child{border-bottom:none;}
+.modal-field span:first-child{color:var(--gray);}
+.modal-field span:last-child{font-weight:600; text-align:right; max-width:60%;}
+
+/* Filters */
+.filters{display:flex; gap:8px; margin-bottom:14px; flex-wrap:wrap; align-items:center;}
+.filters input[type=text]{padding:8px 12px; border:1px solid var(--line); border-radius:8px; font-size:13px; width:220px;}
+.chip{padding:6px 12px; border-radius:16px; font-size:12px; font-weight:600; border:1px solid var(--line); background:#fff; cursor:pointer; color:var(--gray);}
+.chip.active{background:var(--orange); color:#fff; border-color:var(--orange);}
+
+/* Table */
+.table-scroll{max-height:70vh; overflow:scroll; scrollbar-width:auto; border:1px solid var(--line); border-radius:0 0 10px 10px;}
+.table-scroll::-webkit-scrollbar{width:14px; height:14px;}
+.table-scroll::-webkit-scrollbar-track{background:#F3EEE4;}
+.table-scroll::-webkit-scrollbar-thumb{background:#C9B99A; border-radius:7px; border:3px solid #F3EEE4;}
+.table-scroll::-webkit-scrollbar-thumb:hover{background:var(--orange);}
+.table-scroll::-webkit-scrollbar-corner{background:#F3EEE4;}
+table{width:100%; border-collapse:collapse; font-size:12.5px;}
+table.resizable-table{table-layout:fixed; width:auto;}
+th{text-align:left; padding:8px 10px; background:#FBF6EE; color:var(--ink); font-weight:800; text-transform:uppercase; font-size:10.5px; letter-spacing:.03em; border-bottom:2px solid var(--line); cursor:pointer; white-space:nowrap; position:sticky; top:0; z-index:2; overflow:hidden; line-height:1.3;}
+.col-resizer{position:absolute; right:-6px; top:0; width:16px; height:100%; cursor:col-resize; z-index:3; user-select:none; touch-action:none;}
+.col-resizer:hover, .col-resizer.active{background:var(--orange);}
+table.resizable-table td{overflow:hidden;}
+table.resizable-table td > span.cell-clip{display:block; overflow:hidden; text-overflow:ellipsis;}
+td{padding:8px 10px; border-bottom:1px solid var(--line); vertical-align:top;}
+tr:hover td{background:#FFFBF5;}
+.pri{display:inline-block; padding:2px 8px; border-radius:10px; font-size:10.5px; font-weight:700;}
+.pri-P1{background:#FDE8DE; color:var(--orange-dark);}
+.pri-P2{background:#FFF3D6; color:var(--amber);}
+.pri-P3{background:#EFEFEF; color:var(--gray);}
+.status-dot{display:inline-block; width:8px; height:8px; border-radius:50%; margin-right:6px;}
+.dot-active{background:var(--green);} .dot-free{background:var(--amber);} .dot-none{background:var(--gray);} .dot-delinq{background:var(--red);}
+.muted{color:var(--gray); font-size:11.5px;}
+
+/* Deal / meeting cards */
+.deal-card{border:1px solid var(--line); border-radius:10px; padding:14px 16px; margin-bottom:10px; background:#fff;}
+.deal-card.stale{border-color:var(--red); background:#FFF6F6;}
+.deal-card.discovered{border-color:var(--amber); background:#FFFBEF;}
+.deal-head{display:flex; justify-content:space-between; align-items:center; margin-bottom:6px;}
+.deal-head b{font-size:14px;}
+.tag{font-size:10.5px; font-weight:700; padding:2px 8px; border-radius:10px;}
+.not-relevant-row{opacity:.6; background:#FDF3F2;}
+.not-relevant-row td{color:var(--red) !important;}
+.not-relevant-row .contact-email-link, .not-relevant-row b{color:var(--red) !important;}
+.tag-not-relevant{background:#FBE4E2; color:var(--red); font-size:9px; padding:2px 6px; border-radius:4px; font-weight:800; vertical-align:middle;}
+.nr-checkbox{width:16px; height:16px; accent-color:var(--red); cursor:pointer;}
+.champion-checkbox{width:16px; height:16px; accent-color:var(--amber); cursor:pointer;}
+.relevant-checkbox{width:16px; height:16px; accent-color:var(--green); cursor:pointer;}
+.champion-row{background:#FFFAEB;}
+.champion-row td{border-left:3px solid var(--amber);}
+.relevant-marked-row{background:#F2FBF6;}
+.tag-champion{background:#FFF1CC; color:#8A6512; font-size:9px; padding:2px 6px; border-radius:4px; font-weight:800; vertical-align:middle;}
+.tag-relevant-marked{background:#DFF5E8; color:var(--green); font-size:9px; padding:2px 6px; border-radius:4px; font-weight:800; vertical-align:middle;}
+.patterns-box{background:#FFF9F3; border:1px solid var(--line); border-radius:8px; padding:12px 14px; margin-bottom:14px; font-size:12px;}
+.patterns-box h4{font-size:11px; text-transform:uppercase; letter-spacing:.03em; color:var(--orange-dark); margin-bottom:6px;}
+.patterns-box .pattern-row{display:flex; gap:10px; flex-wrap:wrap; margin-bottom:4px;}
+.pattern-chip{display:inline-block; padding:2px 8px; border-radius:10px; font-size:11px;}
+.pattern-chip.bad{background:#FBE4E2; color:var(--red);}
+.pattern-chip.good{background:#E4F3EC; color:var(--green);}
+.tag-stale{background:var(--red); color:#fff;}
+.tag-new{background:var(--amber); color:#fff;}
+.tag-ok{background:var(--green); color:#fff;}
+.meeting-row{display:flex; justify-content:space-between; padding:8px 0; border-bottom:1px solid var(--line); font-size:12.5px;}
+.meeting-row:last-child{border-bottom:none;}
+
+/* Follow ups */
+.followup{display:flex; align-items:flex-start; gap:10px; padding:10px 0; border-bottom:1px solid var(--line);}
+.followup input[type=checkbox]{margin-top:3px; width:16px; height:16px; accent-color:var(--orange);}
+.followup.done label{text-decoration:line-through; color:var(--gray);}
+.followup-bullet.done .fu-text{text-decoration:line-through; color:var(--gray);}
+.fu-week{font-size:10.5px; font-weight:700; color:var(--orange-dark); text-transform:uppercase; background:#FDE8DE; padding:2px 8px; border-radius:8px; margin-right:8px;}
+
+/* Expansion plan */
+.motion-group{margin-bottom:22px;}
+.motion-title{font-size:13px; font-weight:800; color:var(--orange-dark); text-transform:uppercase; letter-spacing:.03em; margin-bottom:10px; padding-bottom:6px; border-bottom:2px solid var(--orange);}
+.abm-card{border:1px solid var(--line); border-radius:10px; margin-bottom:8px; background:#fff; overflow:hidden;}
+.abm-head{padding:14px 18px; display:flex; justify-content:space-between; align-items:center; cursor:pointer; background:#fff;}
+.abm-head:hover{background:#FFFBF5;}
+.abm-head b{font-size:15px;}
+.abm-body{display:none; padding:4px 22px 20px; font-size:13px; border-top:1px solid var(--line); background:#FDFBF8;}
+.abm-card.open .abm-body{display:block;}
+.abm-field{margin-bottom:16px; padding-top:14px;}
+.abm-field:first-child{padding-top:16px;}
+.abm-field b{display:block; font-size:11px; font-weight:800; text-transform:uppercase; color:var(--orange-dark); margin-bottom:6px; letter-spacing:.05em; border-bottom:1px solid var(--line); padding-bottom:5px;}
+.abm-field div, .abm-field p{color:var(--ink); line-height:1.65;}
+.abm-list{margin:0; padding-left:20px;}
+.abm-list li{margin-bottom:4px; line-height:1.5;}
+
+.gov-decision{font-size:10.5px; font-weight:700; padding:3px 8px; border-radius:8px;}
+.gov-pending{background:#FFF3D6; color:var(--amber);}
+.gov-transfer{background:#DCEEFF; color:#2266AA;}
+
+footer{text-align:center; color:var(--gray); font-size:11px; margin-top:30px;}
+@media(max-width:900px){.kpi-grid{grid-template-columns:repeat(3,1fr);} .two-col{grid-template-columns:1fr;} .three-col{grid-template-columns:1fr;}}
+</style>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.0/chart.umd.min.js"></script>
+</head>
+<body>
+
+
+<div class="wrap">
+  <header>
+    <div class="brand">
+      <img class="logo" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAApMAAADICAMAAACDHprSAAAAY1BMVEUAAAD/bDf/bDf/bDf/bDf/bDf/bDf/bDf/bDf/bDf/bDf/bDf/bDf/bDf/bDf/bDf/bDf/kWn/o4L/tpv/flD/mnb/0cH/////49r/7eb/v6j/dUT/iF3/9vP/2s3/yLT/rI+dBxseAAAAEHRSTlMAEEBggI+/3yBwn89Qr+8wUeHeTwAAAAlwSFlzAAAXEQAAFxEByibzPwAAAAd0SU1FB+UFCgk7A4dqyogAABHvSURBVHja7Z3pYqssEIYrKm5xiWmbtNl6/1d5kjQquMAgAp5m3l/f0mCij8PMMAxvbybkET8IKY0qThGlYeCT+A2FsimSpLSSiKYB8fBWocwr9tOsAitKfbSYKIPyNmFUKevGJdpLlBEg/byarSxBc4laEZCIJWr5kCatFlHu471ELWEik6haTEWIxhKlG2anRbWscoJ3FeV+0u5lLpFK1FwiaWVI0QbvLmrGrG2MSLSVqFmRTVoZFsVoB6WioKjMK8TlHRTYkYwqKyowX4mCTdt5ZU04gaMA2hSVTQV4x1HrMZLPdXA0lSihJ1lU1oVeJUqgsHKiHANw1LjirHKkrMS7j1rJvI3zN0qgpHKqEJ8Aqqe0cix0KlF8CohWzpUhlCgGyaxagSKMdFCNyqJahQqEErUuJBFK1OqQRChRq0MSoUStDkmEErU6JBHKl1e8OiQRyhfXOvKSgzwlJs9fWKtEEld0XllptVKl+GxeVEG1WuEundfUxh1y23q3223fBX+BzVswC2RRH5/7pw67dwy+Uc5D7o+vPavvI8Y5KKfxzfFz39PXCeMclENn8njoI7k/n9ClRN3lZv1mAsnthEuJzQheSm62OlxGkbzuJ0wlxef0QnKzR/FnAsn9YeIDCT4pnLnNztznCST3+x3O3jhzu9BuEsn9ucLZG2NuB/qaRHK/rzH2fml5bhZwTgIk959YtvbSctQ8bTeF5OE8PXljMcZrBDiOlrmvE0h+Pyzo1BJjhWEOBjh2kpPMxH2LuT/3++1kGyF8Yn9epFoBk6wveXhM65NMVni4E5pJC0xy4c1ZwiTmg9BMWvAnWSTvIfdV4E+ioUQzaSPu5pi8/ct5Ou5GQ4lm0uB+h4m5+7EO/in6JBpKNJOGdB6H8vtbsI6DhhLNpK2kOWcp98Kp+ybcm/OH5XRDN1cXxEO5w+3eryo3Szin7fY0XF1kofw6SobAxZw/KwdNBrbXh3X82t2xO0xAucUWBC8r6wVB2y5R/rXtV/W2UNbScSJ8dn9Uvu1Jm1m6uX7cDeXpawTKGjAU1lH+Udk9BvnIuI+Hpt/FcVCJ8f0BGQwrMTDCWcBIMibxcLw7lpfPu0X8OYM2d/eFtb1/UlY3K7Ix9g3JZ/+LO5zHnzbUOV/foePhFsY/KYsNgrgp+o5kg+Hl8b/fP3Y3/ZwURszw+eHUrTVvnyeQ3O9Pc8eEpSiDaIxnGmzU534SpPSuPNjMSY+WSUh/v0wBGMKPALegEJzdS/KCpvLCAJLffpDSz/Fvn6Chyke8IKuKnEz/b1ploWd56q73k0jKVmw0J29BZiEnak+CpzpRwzIevhuRiBjohvvJPG0JW/D63YpVKLygz5U/ldaLz49Mncj+fFHtTt1XAZLzmQQVYggXBTIwlWPWNoVTGaeqXwBqLyJZSiWE0KLgnMcz6mCoMH/XlFw8TKYtV/IgQnL/M3tgT5dJ6BHhm4l5NISZF09QVBDO+96dZBwI6/o26stiyYzER/Ndxs0xy6SlhPlJjOT5OHtkX59JyGnMAqRAZzmX0YzcP/ThZFImBSte3b5+OJOZ0u3vfZdAxqSdkiAuuhkiCVqz0SgOktobeQciUYUpwKuSdOQOZLjM9CcpgJ1AvXwgnrNq0X6XUUPJMhnZQJKLbkaspAaSoDXvYL6l4aKA9pqUcm64NDrodeQubjFrBIGqhHj7gribym8Twz2YSX/OqgUVXodh0kom6EeC5HT/04WyQcGo21UmEbTEiLCx9tMqkrQAR1rMS5EFpL1+rrpurwoPlf/AYEaZVT6n5IAKX2GGSRvu5FWM5OG+un2dP7w/l8n7zy9gaLfmKiLjPqY4du9sESW9pFykFL1qMDlhy+MZpX/erMJq8fvBMJm6R/J4/xOzDuUkk8ykGkDMZP/UCR9mKBPBRTY5MO7XZHLiQ+kMJjlDVizzfjBMGncn+YqfIZKfv//haNShnGaygzICzFXDe+krmdlQd9FNh8lRQxnPKZHmDRlZ5P3omDSenezF1wMkb3P2+0GyZ1Y/QylgslnqEO44E7gJFJBvbh68fodCHSZHP5XOYfLpiURqL5r4/eiYJI6R/HmmibY6FyFaTLaPJZBO3ZGANwpISusXMWkxOWIoy2oGk8+fU/hqxf7i96Nj0vBOnJMEyZsX+XFuy4LmKtBjMpZm2gIRU1SylMJ8vnTL5IjnTecw+cyLpZ7azxK/Hx2TZkMcPlM+QPKeA6phm8E0gxwhk423l0n9p1Lk8MdzL2+PycF3JNUcJqPGkaFKHxPz3zFJHSJ5P73um6menC2qyWQoQ4ZCzCx5m/d5G0wWE28vncNk2brxiVINKxWunHVMOkTyNwf00LvmlTSZ9IFMZkJO1swkpaOGsuGAKg0btpagVKphpcLZrWUydofkZ/fvO91LxXpMEhkyYnssf6DUtT9JySgILalKw2adcx2pxG6UfwEm3g+TYbcEyWsXkx+0r0WWYdIzxWTgOu6mb2OG0m9BVRk2ZkYKVeowGu+Tjr4fLZPmVhZrMZI/DLQn7Yv5QCYLR3YyUCgXMcRkOfIbopYulWET5rdsVOowGibjUUPZPgRjqSC+EGiAZF1V2/N+oZkbcC8DIVTGmSTqBYpLM9nmDsjATIZqw1I2U14oFFG2UXo6ZijbhxA6QfK8Zf7issDl0pUz2TW/8Z0xOcztR12mUGFYj2M7V5i8WyZHDWX7EKgTJE/MNm+NAnOFZJCYSd84k2m1kKWcz+TAUCbMWArD+pwb5CvUYXTZzDFDaZhJMZJMDkg7W74Mk4HsxmozyeQ3aOyIyZ6hbMrnHgsqCsPmHE6eQhFlx+SYoWyZjOwjeTmypUI/i1wx0mMyk5GtzSS3XhZ6TpjsGcqAHUph2B6EGbyIkln1CYeGsmXSPpJXri7jutA1tZiMpYVk+kx63Nufblww2VjGaPAvCsP2I+0EnlFgmGxrnEsrTL4LkdxxictDtQYmU+n8o89kf49YFJbWmWxNo9/7Z5Vh015QU8KXA9jV8WBwS+3ZyR6SbA7o17N0z2QpL8NcgMnhxsXM9ywzydhG3kwqDFv0s//wIkqWydZQEvNM1jUHJY8klwNSaehnksm2zjx/M8rkyG7aIoytMskYx97cAB52uMIdgidvropoYCiNMVk/TGE9geSJa/W3IJIaTHb7cYhhJt+8kd6zaWyTydY69pOV4GHDQTXKBlyHwTE5MJSmmKyf83M9hiSfA9rvPxa8MJnLJIkg+aRlmGSv1tnKxCKT3SJn776Bhx2ZqcFr+Xy1ZdK7qYaYrFunsR4ieWkboGp3vliKSc9n8rOlBSbvPfUG3z337DHZS/5R1WHHIpocWkTZqwDuvRdmmKwZ3Oo+ktdqsOJtn8mCsirAZRzLMTnW7i/z7DHJF92UqsMmI6sLPnTy7jHp83fVCJM1B1zNI/ndO9thV7lgcm5l0ZJMvj12dM+FUpdJzlCmysOOZchj6FJ+f6cEbyhNMFkPWlIxSNa9esrrskhCY5wpFZs3m0zevIaE6wOU22PSHy2FBg4bj2ZyM+CP6DPJG0oDTDJIfl1/O5K3K4jnjx6ySyOpyaS0afLiTN6fAVtrkFhjkjGUqfKwyWgmNwAWUQ52lHGGcnkmn8idL7ttmwhvLOM96fNjFEktJimBkrAok7cpvHNowV2b9ZncjF0TOOx4ZVoJrMMYMNlgmBlh8o7k4VozGcfjRwPl/Vymq1kk5zOZgdLWZphkGwAG1ph8G9sQBhvWm7DqEawOY7jzljKu6OJMXne9mrObL/n0IQ+9HJAJJMFMBpx84imRsDSTTLlQZI9JMmKaYcNORdgprIhyyCTbX8RsrVoT3jyg7OeAjCCZQZnUq8ZZnsk31QaUCzD5/G+B+rDpxN3ewH7DSIcCxlCarjN/UniD8r1/vqcJJME1vetjsq1hC+0xSYYeLGzYYuqrwn7DCJOMoTTM5BPJw/ex6u+pNYLkf8xkOx9m9pi8H2BBS/VhN5MrXjnIARnr5NIZSsN7xA77r8/WwazNIyk3MutlsnWfLDI5c9hpt9EHFVGOMdl2QTS9l3bb9FrZ7vjMpCEkwXtp18hkCK6rcc1kpPkcRjteNVGeb6HnwKn+PvBVQuaQBPccWCOTPnB51DmTpW6sOcpkayjN9mZ5/9hdznu+IMPAGrfCcveamST/C5MQPy9WZrLbV9s8ouVbR/9c+KYsHZS1MSTlrUGQSf1hISf1JOpMxoNU89J0XPdD1U39uTG9GWaSQpgkf5tJUAs+qs5k3/4u3hN1DMlfKE0iSS0xWSwA1eTHy5UzmWjPWBNM9s7vW7p39DiSZm1kpd87GrwEGIse1sz+FmpfzR2T4gbbKSDanOo0HfSYTGwgqd+IV8OLWYLJRHShTL7aSyjdSJ51sXImPfGfbACVoFNM8oZy2bNIJpFccofirLBbl0nRWSRE7kAQgQUhYP/DLZOytHglf7UmO/IHvdjAApIHs1YSQpruwQvF9NSUyY11JJjWKNjWu2VStnyYy+swJpnkDCUwwtdD8vNoGMnMPJONuzQ8qDuUp+ZKga8VVGreqDMmZa67L/ftp08uSXgmQ9NI/lSmFZpnsnVx+lCGFXDqfjwvbxJJ6MG0rpiUlqPF8slbcJpOxDHpm0XyvDWOpNZZyYrP9nbPAwYskkF82m5hIuJbBDFbcvyVM5lKb2AmzWkJmPQ5JmOjSF6O5pGcf6a8gpjF3iL1fzc1sXsPc8jM//vh59eN2YYHps/v1maykP7MQDpriU4di7jgIDKI5M4CkaBtA/qHy4krqMQHznq9exxRKj5Ta3VMErk5L6WPQ8SkzzEZGkPya2sDSVCF9gIHHopWFwrJIsywpRoveItUR0xCCuoi2d8IT2eMWCY3ppD8PFpBEvRAlziEc/rlzaRmzhOlNwqFwyAcMRkBMhypLKslZJJwiT0zSJ4/KkvyLDHJRjQcUoEm0Sodex0xCbnsRvZH4lNsM/YR5SaQtGUkgX1NEsVQYioJN9KrD9pBkkyUuwRK3XqpUoa9NV4yhiOJu0ghdSKFJAORC79749/04/ClkLRnJIFZFO9hpqj+GZyblHMNs0SBqDjV79Rb0vFE5+QPf0ApPWniMazA4P8OI6l1eYAUTbtSnvi7/34Hv5c+WwpJe0YSOHXffyUh8dsiKpPw0SowDTbKDclJwHQYjGYd/xAT4in+fQy6P+IXNvaDDeBSpc53Kbufli+LpE0jqdKSbDW63Xoie3qvLn9RJL9tGkn9AwxRq5S3IJKHU2VXHj6/P6l0KSTPP5aJBJ2phvoPRRZC8nq0jWS1waf3RxUtgeTlZJ1IcIs81H+nRB/Jr7pyoACf3Z+NcgpNJM+7yokwwsEoZwLJ76MbJDHC+cOKdZC8vleOFOOTQ0M5guRl64pI7ZIK1KpVzkTSIZGzu6Gg/hPROUg6JRLN5F8XUUfyyymRaCbRo2xUW2oChGYSBQq9j2x/crdIVljshYayak4Hq1dhJzE3+QKSL+Y0p4PVVrpKilVgbvIVFECQZKD8dskkrnS/hiIIkh2UB4dIRrjSjfkg9iTPBsqjOyaxbhLDHP5w2SeUH86QzPFZYZjDn3f8hHLnLMDBmft1NNk86HvkeJHzxRWTCT6pF9LkXu/jdrv92e12l8ulOUdx+44zN2oNScpfvTtc68aZG2PvtQlj7ldTsHYkQ3xGLye6biQzfELoUq5LuM79kirXzCQW8r6m/PUiiZnJV1W6ViSxaPJ1la8TSdzu8MpxTrbKkBuT5QjluoQ1k68efK8uI1TgpjCEEpFEIZSIJOr/gRKRRK0MSkQS1UAZrSTiRiRR60oJYV4SxUK5gso1ikiiODlf+8Y1blRfiVsk8UBF1FDEYfhdYL0kakxxhtENam0KcTsYam3aFDhvo9aWFLJe5pvjvI2Sxd9WTWWBnQVQ6zKVaCRRQK/S0vp3hJ4kCmwqbXRuKbBXOUpFsfG1xhSnbZSiiNGyDIq9V1CropKiI4laFZUpEolak19ZpDhro7Rj8AUzQ1GCkQ1qCW1ynLRRqzOWvnYdW+6jiUQt7FkmOQKJWp213KQzfMso3SCQKJPm0k8VpvEs9THMRtmwlyRJpZlLmiYY0qAsW0ziByGlvdk8ojQMfIKzNUqof9L21lpxAGshAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAAABJRU5ErkJggg==" alt="Postman">
+      <div>
+        <h1>Territory Command Center</h1>
+        <p>Yaniv Gabay &middot; Israel / Greece / Cyprus &middot; FY27</p>
+      </div>
+    </div>
+    <div>
+      <div class="hdr-actions">
+        <button class="btn btn-secondary" id="exportMarksBtn" onclick="exportMyMarks()" title="Save Champion / Relevant / Not Relevant / Reached Out marks to a file">&#8681; Export marks</button>
+        <button class="btn btn-secondary" id="importMarksBtn" onclick="document.getElementById('importMarksFile').click()" title="Restore marks saved earlier - use this after opening a new version of this file">&#8679; Import marks</button>
+        <input type="file" id="importMarksFile" accept="application/json" style="display:none;" onchange="importMyMarks(event)">
+        <button class="btn btn-secondary" id="quickRefreshBtn" onclick="quickRefresh()">&#x21bb; Quick refresh</button>
+        <button class="btn btn-primary" id="fullRefreshBtn" onclick="fullRefresh()">Full refresh in chat</button>
+      </div>
+      <div id="refreshStatus">Not yet refreshed live this session</div>
+    </div>
+  </header>
+
+  <div class="tabs" id="tabsBar">
+    <div class="tab active" data-tab="accounts" draggable="true">Accounts (<span id="acctCount"></span>)</div>
+    <div class="tab" data-tab="usage" draggable="true">Usage</div>
+    <div class="tab" data-tab="contacts" draggable="true">Contacts</div>
+    <div class="tab" data-tab="qualityleads" draggable="true">Quality Leads</div>
+    <div class="tab" data-tab="live" draggable="true">Live Deals &amp; Meetings</div>
+    <div class="tab" data-tab="followups" draggable="true">Follow-ups</div>
+    <div class="tab" data-tab="expansion" draggable="true">Expansion Plan</div>
+    <div class="tab" data-tab="selfserve" draggable="true">Self-Serve Renewals</div>
+    <div class="tab" data-tab="snapshot" draggable="true">Customer Snapshot</div>
+  </div>
+
+  <div class="panel active" id="panel-accounts"></div>
+  <div class="panel" id="panel-usage"></div>
+  <div class="panel" id="panel-contacts"></div>
+  <div class="panel" id="panel-qualityleads"></div>
+  <div class="panel" id="panel-live"></div>
+  <div class="panel" id="panel-followups"></div>
+  <div class="panel" id="panel-expansion"></div>
+  <div class="panel" id="panel-selfserve"></div>
+  <div class="panel" id="panel-snapshot"></div>
+
+  <footer>Territory data from FY27 plan (xlsx) + live pulls from Aircover, Gmail, Calendar, Slack, Google Drive, ZoomInfo. Long-tail accounts (no meetings/emails) show plan data only - that's expected, not missing data.</footer>
+</div>
+
+<div class="modal-overlay" id="acctModal" onclick="if(event.target===this) closeAccountModal()">
+  <div class="modal-box">
+    <button class="modal-close" onclick="closeAccountModal()">&times;</button>
+    <div id="modalContent"></div>
+  </div>
+</div>
+
+<div class="modal-overlay" id="emailModal" onclick="if(event.target===this) closeEmailModal()">
+  <div class="modal-box" style="max-width:640px;">
+    <button class="modal-close" onclick="closeEmailModal()">&times;</button>
+    <div id="emailModalContent"></div>
+  </div>
+</div>
+
+<script>
+// Data now lives in a separate file (dashboard-data.json) instead of being
+// inlined into this HTML — that means it's no longer sitting in plain text
+// inside View Source. It's fetched once, right before the initial render.
+let DATA = null;
+let FOLLOWUP_STATE = {};
+let FOLLOWUP_DELETED = new Set();
+let FOLLOWUP_ORDER = [];
+
+function fmtMoney(n){ if(n===null||n===undefined) return '-'; return '$'+Number(n).toLocaleString(); }
+function fmtNum(n){ if(n===null||n===undefined||n==='') return '-'; return Number(n).toLocaleString(); }
+
+function buildTacticalPlan(name){
+  const acct = DATA.accounts.find(a=>a.name===name);
+  const usage = (DATA.usage_export||[]).find(u=>u.name===name);
+  const teams = (DATA.teams_by_account||{})[name] || [];
+  if(!acct && !usage) return null;
+
+  const sector = (acct&&acct.sector)||'';
+  const regulatory = (acct&&acct.regulatory)||'';
+  const dau = (acct&&acct.dau) || (usage&&usage.dau_90) || 0;
+  const hasASA = usage && usage.product_categories && usage.product_categories.some(c=>c.includes('ASA'));
+  const regulated = /bank|insurance|financ|government|gov|defense|aerospace|health/i.test(sector+' '+regulatory+' '+name);
+
+  const paidTeams = teams.filter(t=>t.arr>0 && t.purchased_licenses>0);
+  const freeTeams = teams.filter(t=>!(t.arr>0));
+  const delinquent = teams.filter(t=>t.plan_state==='Delinquent');
+
+  // group paid teams by plan tier, get effective $/seat per tier from their OWN contracted rate
+  const tierRates = {};
+  paidTeams.forEach(t=>{
+    const rate = t.arr / t.purchased_licenses;
+    if(!tierRates[t.active_plan]) tierRates[t.active_plan] = [];
+    tierRates[t.active_plan].push(rate);
+  });
+  const avgRate = {};
+  Object.entries(tierRates).forEach(([tier, rates])=>{
+    avgRate[tier] = rates.reduce((a,b)=>a+b,0)/rates.length;
+  });
+
+  const plays = [];
+
+  // Play 1: renewal risk must be resolved before any expansion pitch
+  if(delinquent.length){
+    const totalAtRisk = delinquent.reduce((s,t)=>s+(t.arr||0),0);
+    plays.push({
+      tag:'RESOLVE FIRST', title:`Fix ${delinquent.length} delinquent team(s) before pitching anything else`,
+      detail:`${delinquent.map(t=>`"${t.team_name}" (${t.purchased_licenses} seats${t.arr?', '+fmtMoney(t.arr):''})`).join(', ')} ${delinquent.length>1?'are':'is'} payment-lapsed. Leading with expansion while ${delinquent.length>1?'these are':'this is'} unpaid undermines your credibility - resolve or explicitly address in the same conversation.`
+    });
+  }
+
+  // Play 2: seat expansion on an existing paid tier, priced at their own contracted rate
+  // (skip 1-2 seat gaps - noise, not a real play worth bringing to the client)
+  paidTeams.forEach(t=>{
+    const used = t.used_licenses || 0;
+    const gap = used - t.purchased_licenses;
+    if(gap >= 3){
+      const rate = t.arr / t.purchased_licenses;
+      const upside = Math.round(gap * rate);
+      plays.push({
+        tag:'EXPAND', title:`"${t.team_name}" - add ${gap} seats on ${t.active_plan}`,
+        detail:`Using ${t.purchased_licenses}, ${used} in active use today. At this team's own contracted rate (${fmtMoney(Math.round(rate))}/seat/yr), closing the gap adds ${fmtMoney(upside)} ARR. This is usage they already have - the ask is formalizing seats they're already occupying, not a cold upsell.`
+      });
+    }
+  });
+
+  // Play 3: account-level DAU vs total paid seats, if no single team fully explains it
+  const totalPurchased = paidTeams.reduce((s,t)=>s+t.purchased_licenses,0);
+  if(dau - totalPurchased > 30 && Object.keys(avgRate).length){
+    const bestTier = Object.entries(avgRate).sort((a,b)=>b[1]-a[1])[0];
+    const gap = dau - totalPurchased;
+    plays.push({
+      tag:'EXPAND', title:`Account-wide gap: ${dau} DAU vs ${totalPurchased} total paid seats across all teams`,
+      detail:`Gap of ${gap} seats. At the ${bestTier[0]} rate this account already pays (${fmtMoney(Math.round(bestTier[1]))}/seat/yr), that's roughly ${fmtMoney(Math.round(gap*bestTier[1]))} in unformalized usage. Use this as the anchor number in the room - it's their own usage data, not your estimate.`
+    });
+  }
+
+  // Play 4: consolidation / governance motion if usage is fragmented across many free teams
+  if(freeTeams.length >= 5){
+    plays.push({
+      tag:'NEW ATTACH', title:`API Governance / Spec Hub - consolidate ${freeTeams.length} ungoverned free teams`,
+      detail:`${freeTeams.length} free teams outside any paid governance is a real control gap, not just lost revenue. Position this as risk reduction (shadow APIs, no audit trail) rather than a feature pitch.`
+    });
+  }
+
+  // Play 5: security/compliance attach for regulated accounts
+  if(regulated && !hasASA){
+    plays.push({
+      tag:'NEW ATTACH', title:'Advanced Security Administration (ASA)',
+      detail:`${sector||'This account'}${regulatory?' ('+regulatory+')':''} - ASA covers SSO enforcement, SCIM deprovisioning, and IP allowlisting. Frame as closing an audit gap they likely already have a compliance deadline for, not a nice-to-have.`
+    });
+  }
+  if(regulated){
+    plays.push({
+      tag:'NEW ATTACH', title:'Private API Network / BYOK',
+      detail:'Data residency and key-ownership control - relevant if procurement/security review is already a known blocker on this account.'
+    });
+  }
+
+  if(!plays.length){
+    return { plays: [{tag:'DISCOVERY NEEDED', title:'Not enough signal for a tactical play', detail:'Low usage, no paid teams, no regulatory driver on file. Next step is discovery, not a pitch - find out what they'+String.fromCharCode(39)+'re actually doing with the free tier first.'}], negotiation: null };
+  }
+
+  const negotiation = paidTeams.length
+    ? `You have real pricing precedent on this account already (${Object.entries(avgRate).map(([t,r])=>`${t}: ${fmtMoney(Math.round(r))}/seat`).join(', ')}). Anchor any new ask at those existing rates - don't open with a discount on expansion seats, since they're already paying that rate elsewhere in the same account. Reserve discount room for a multi-year commit or if you're bundling in a new product attach (ASA, Spec Hub) alongside the seat expansion. Confirm your actual discount floor with DealOps/the rate card before quoting - this isn't something to improvise in the room.`
+    : `No existing paid rate on this account to anchor to - get list pricing from the rate card before this call rather than guessing a number. Don't lead with a discount on a first paid deal; lead with the usage data.`;
+
+  return { plays, negotiation };
+}
+
+function buildCompanyBreakdown(accountName){
+  const teams = (DATA.teams_by_account||{})[accountName];
+  if(!teams || !teams.length) return null;
+  const groups = {};
+  teams.forEach(t=>{
+    const key = t.is_child_team ? t.child_company : accountName;
+    if(!groups[key]) groups[key] = {company:key, arr:0, teamCount:0, isParent: !t.is_child_team};
+    groups[key].arr += (t.arr||0);
+    groups[key].teamCount += 1;
+  });
+  const rows = Object.values(groups).sort((a,b)=> b.isParent-a.isParent || b.arr-a.arr);
+  const notes = DATA.child_company_notes || {};
+  rows.forEach(r=>{ if(notes[r.company]) r.note = notes[r.company]; });
+  const total = rows.reduce((s,r)=>s+r.arr, 0);
+  return { rows, total };
+}
+
+function renderCompanyBreakdownHTML(accountName){
+  const bd = buildCompanyBreakdown(accountName);
+  if(!bd) return '';
+  return `<div style="margin-top:10px;">
+    <table style="width:100%; font-size:12px;">
+      <thead><tr><th style="text-align:left; padding:4px 0;">Company</th><th style="text-align:left;">Teams</th><th style="text-align:right;">ARR</th></tr></thead>
+      <tbody>${bd.rows.map(r=>`
+        <tr>
+          <td>${r.isParent?'<b>'+r.company+'</b> (parent)':r.company+' <span class="muted">(child)</span>'}${r.note&&r.note.urgent?' <span class="tag tag-stale">URGENT</span>':''}</td>
+          <td>${r.teamCount}</td>
+          <td style="text-align:right;"><b>${fmtMoney(r.arr)}</b></td>
+        </tr>
+        ${r.note?`<tr><td colspan="3" class="muted" style="padding-top:0; padding-bottom:8px;">${r.note.note}</td></tr>`:''}
+      `).join('')}
+      <tr style="border-top:2px solid var(--line);"><td><b>Total</b></td><td></td><td style="text-align:right;"><b>${fmtMoney(bd.total)}</b></td></tr>
+      </tbody>
+    </table>
+  </div>`;
+}
+function fmtDate(iso){ if(!iso) return '-'; const d=new Date(iso); return d.toLocaleDateString('en-GB',{day:'2-digit',month:'short',year:'2-digit'}); }
+function escAttr(s){ return String(s||'').replace(/"/g,'&quot;'); }
+function contactRelevanceScore(c, acctData){
+  let score = 0;
+  const title = (c.title||'').toLowerCase();
+  const seniorKeywords = ['ciso','cio','chief','cto','coo','ceo','svp','evp',' vp ','vice president','president','head of','director'];
+  const midKeywords = ['manager','lead ','architect','principal'];
+  if(seniorKeywords.some(k=>(' '+title+' ').includes(k))) score += 30;
+  else if(midKeywords.some(k=>title.includes(k))) score += 15;
+  if(c.quality_lead) score += 25;
+  if(c.research_backed) score += 20;
+  if(c.already_sent_real) score += 15;
+  if(c.api_relevant) score += 10;
+  if(acctData){
+    if(acctData.priority==='P1') score += 15;
+    else if(acctData.priority==='P2') score += 8;
+    if((acctData.arr||0) > 0) score += 10;
+    if((acctData.dau||0) > 50) score += 8;
+  }
+  return score;
+}
+
+/* ---------- RESIZABLE COLUMNS (Excel-style) ---------- */
+function makeResizable(tableId, storageKey){
+  const table = document.getElementById(tableId);
+  if(!table) return;
+  table.classList.add('resizable-table');
+  const ths = table.querySelectorAll('thead th');
+
+  // white-space:nowrap directly on <td> makes Chromium ignore dynamic column-width changes
+  // in table-layout:fixed tables. Move the nowrap/ellipsis truncation onto an inner <span>
+  // instead, so the <td> itself stays free of nowrap and column resizing keeps working.
+  table.querySelectorAll('tbody td').forEach(td=>{
+    if(td.querySelector(':scope > span.cell-clip')) return;
+    const span = document.createElement('span');
+    span.className = 'cell-clip';
+    while(td.firstChild) span.appendChild(td.firstChild);
+    td.appendChild(span);
+  });
+
+  // table-layout:fixed only reliably responds to <col> width changes, not th.style.width
+  // set after initial paint - so control widths via a <colgroup> instead.
+  let colgroup = table.querySelector('colgroup');
+  if(!colgroup){
+    colgroup = document.createElement('colgroup');
+    ths.forEach(()=>{ colgroup.appendChild(document.createElement('col')); });
+    table.insertBefore(colgroup, table.firstChild);
+  }
+  const cols = colgroup.querySelectorAll('col');
+
+  const applyWidths = (widths)=>{
+    cols.forEach((col,i)=>{ if(widths[i]) col.style.width = widths[i]+'px'; });
+  };
+
+  // restore saved widths if the user previously resized columns - otherwise leave CSS defaults
+  // (which give each column enough min-width that the table naturally overflows and scrolls)
+  (async ()=>{
+    let saved = null;
+    try{ const r = await window.storage.get(storageKey, false); if(r) saved = JSON.parse(r.value); }catch(e){}
+    if(saved && saved.length === ths.length){
+      applyWidths(saved);
+    }
+  })();
+
+  ths.forEach((th, colIndex)=>{
+    if(th.querySelector('.col-resizer')) return;
+    const handle = document.createElement('span');
+    handle.className = 'col-resizer';
+    th.appendChild(handle);
+    let startX=0, startWidth=0, dragging=false;
+    const col = cols[colIndex];
+
+    const getX = (e)=> (e.touches && e.touches.length) ? e.touches[0].pageX : e.pageX;
+
+    const startDrag = (e)=>{
+      e.stopPropagation(); e.preventDefault();
+      dragging = true; handle.classList.add('active');
+      startX = getX(e); startWidth = th.getBoundingClientRect().width;
+      document.addEventListener('mousemove', onMove);
+      document.addEventListener('mouseup', onUp);
+      document.addEventListener('touchmove', onMove, {passive:false});
+      document.addEventListener('touchend', onUp);
+    };
+    const onMove = (e2)=>{
+      if(!dragging) return;
+      if(e2.cancelable) e2.preventDefault();
+      const newWidth = Math.max(50, startWidth + (getX(e2) - startX));
+      col.style.width = newWidth + 'px';
+    };
+    const onUp = async ()=>{
+      dragging = false; handle.classList.remove('active');
+      document.removeEventListener('mousemove', onMove);
+      document.removeEventListener('mouseup', onUp);
+      document.removeEventListener('touchmove', onMove);
+      document.removeEventListener('touchend', onUp);
+      const realWidths = Array.from(ths).map(t=>t.getBoundingClientRect().width);
+      try{ await window.storage.set(storageKey, JSON.stringify(realWidths), false); }catch(e){}
+    };
+    handle.addEventListener('mousedown', startDrag);
+    handle.addEventListener('touchstart', startDrag, {passive:false});
+    // prevent the sort-on-click handler from firing when releasing a drag
+    th.addEventListener('click', (e)=>{ if(e.target.classList.contains('col-resizer')) e.stopPropagation(); });
+  });
+}
+function statusDot(status){
+  if(!status) return 'dot-none';
+  if(status.includes('Active')) return 'dot-active';
+  if(status.includes('Delinq')) return 'dot-delinq';
+  if(status.includes('Free')) return 'dot-free';
+  return 'dot-none';
+}
+
+/* ---------- OVERVIEW ---------- */
+function renderOverview(){
+  const m = DATA.meta;
+  const accts = DATA.accounts;
+  const totalARR = accts.reduce((s,a)=>s+(Number(a.arr)||0),0);
+  const p1count = accts.filter(a=>a.priority==='P1').length;
+  const topDAU = [...accts].filter(a=>a.dau).sort((a,b)=>b.dau-a.dau);
+  const topARR = [...accts].filter(a=>a.arr).sort((a,b)=>b.arr-a.arr);
+  const maxDAU = Math.max(...topDAU.map(a=>a.dau));
+  const maxARR = Math.max(...topARR.map(a=>a.arr));
+  const topFree = (DATA.usage_export||[]).filter(u=>u.free_team_users>0).sort((a,b)=>b.free_team_users-a.free_team_users);
+  const maxFree = topFree.length ? Math.max(...topFree.map(u=>u.free_team_users)) : 1;
+
+  document.getElementById('panel-overview').innerHTML = `
+    <div class="kpi-grid">
+      <div class="kpi"><div class="val">${fmtMoney(m.booked_arr)}</div><div class="lbl">ARR</div></div>
+      <div class="kpi"><div class="val">${(DATA.generalized_alerts||[]).length}</div><div class="lbl">Open follow-up alerts</div></div>
+      <div class="kpi"><div class="val">${accts.length}</div><div class="lbl">All Accounts Tracked</div></div>
+      <div class="kpi"><div class="val">$${(m.tam/1000000).toFixed(1)}M</div><div class="lbl">Territory TAM</div></div>
+      <div class="kpi"><div class="val">${p1count}</div><div class="lbl">P1 Accounts</div></div>
+      <div class="kpi"><div class="val">${topFree.length?fmtNum(topFree[0].free_team_users):'-'}</div><div class="lbl">Top Free Users (${topFree.length?topFree[0].name:'-'})</div></div>
+    </div>
+    <div class="three-col">
+      <div class="card">
+        <h3>Top accounts by ARR</h3>
+        <div class="scroll-list">${topARR.map(a=>`<div class="bar-row"><div class="name acct-link" data-acct="${escAttr(a.name)}">${a.name}</div><div class="bar-track"><div class="bar-fill" style="width:${(a.arr/maxARR*100)}%"></div></div><div class="bar-val">${fmtMoney(a.arr)}</div></div>`).join('')}</div>
+      </div>
+      <div class="card">
+        <h3>Top accounts by DAU (90-day usage signal)</h3>
+        <p class="muted" style="margin-bottom:8px; font-size:11px;">Parenthetical = total registered team users (all-time members, active or not) - not a 90-day figure.</p>
+        <div class="scroll-list">${topDAU.map(a=>{
+          const u = (DATA.usage_export||[]).find(u=>u.name===a.name);
+          const teamUsers = u ? u.postman_team_users : null;
+          return `<div class="bar-row"><div class="name acct-link" data-acct="${escAttr(a.name)}">${a.name}</div><div class="bar-track"><div class="bar-fill" style="width:${(a.dau/maxDAU*100)}%; background:#2E9E6C"></div></div><div class="bar-val">${fmtNum(a.dau)}${teamUsers?` (${teamUsers.toLocaleString()})`:''}</div></div>`;
+        }).join('')}</div>
+      </div>
+      <div class="card">
+        <h3>Top Free DAU</h3>
+        <p class="muted" style="margin-bottom:8px; font-size:11px;">Accounts ranked by free (unpaid) team users, largest to smallest.</p>
+        <div class="scroll-list">${topFree.map(u=>`<div class="bar-row"><div class="name acct-link" data-acct="${escAttr(u.name)}">${u.name}</div><div class="bar-track"><div class="bar-fill" style="width:${(u.free_team_users/maxFree*100)}%; background:#7A5AC9"></div></div><div class="bar-val">${Math.round(u.free_team_users).toLocaleString()}</div></div>`).join('')}</div>
+      </div>
+    </div>
+    <div class="chart-grid">
+      <div class="chart-card"><h3>ARR by sector</h3><div class="sub">Top sectors, booked ARR &middot; click a bar to see accounts</div><canvas id="chartSector"></canvas></div>
+      <div class="chart-card"><h3>Expansion opportunity — DAU vs licensed seats</h3><div class="sub">Top 8 accounts by usage gap &middot; click a bar</div><canvas id="chartGap"></canvas></div>
+    </div>
+    <div class="ov-split">
+      <div class="chart-card">
+        <h3>Priority mix &amp; ARR by country</h3>
+        <div class="sub">${accts.length} tracked accounts &middot; click a slice to see accounts</div>
+        <div style="display:grid; grid-template-columns:1fr 1fr; gap:14px;">
+          <div><div class="sub" style="text-align:center; margin-bottom:6px;">Priority mix</div><canvas id="chartPriority"></canvas></div>
+          <div><div class="sub" style="text-align:center; margin-bottom:6px;">ARR by country</div><canvas id="chartCountry"></canvas></div>
+        </div>
+      </div>
+      <div class="spotlight" id="ovSpotlight">
+        <div class="spotlight-empty">Hover a chart above to preview accounts here.<br><br>Click to pin the list open.</div>
+      </div>
+    </div>
+    <div id="overviewOpportunities"></div>
+  `;
+  document.getElementById('overviewOpportunities').innerHTML = buildOpportunitiesHTML();
+  renderCharts();
+}
+
+/* ---------- SPOTLIGHT (linked accounts panel for map + charts) ---------- */
+window._spotlightPinned = false;
+function spotlightItemsHTML(list){
+  if(!list.length) return '<div class="spotlight-empty">No matching accounts.</div>';
+  return '<div class="spotlight-list">' + list.map(a=>`
+    <div class="spotlight-item">
+      <span class="sp-name acct-link" data-acct="${escAttr(a.name)}">${a.name}</span>
+      <div class="sp-meta"><span>${a.priority||'-'}</span><span>${fmtMoney(a.arr||0)}</span>${a.dau?`<span>${a.dau} DAU</span>`:''}</div>
+    </div>`).join('') + '</div>';
+}
+function paintSpotlight(title, sub, list, pinned){
+  const el = document.getElementById('ovSpotlight');
+  if(!el) return;
+  el.innerHTML = `
+    <div class="spotlight-head">
+      <div><h4>${title}</h4><div class="pin-note">${pinned?'Pinned &middot; click × to release':'Hover preview &middot; click to pin'}</div></div>
+      ${pinned?`<button class="spotlight-close" onclick="closeSpotlight()">&times;</button>`:''}
+    </div>
+    ${spotlightItemsHTML(list)}
+  `;
+}
+function hoverSpotlight(title, sub, list){
+  if(window._spotlightPinned) return;
+  paintSpotlight(title, sub, list, false);
+}
+function clearHoverSpotlight(){
+  if(window._spotlightPinned) return;
+  const el = document.getElementById('ovSpotlight');
+  if(el) el.innerHTML = '<div class="spotlight-empty">Hover a chart above to preview accounts here.<br><br>Click to pin the list open.</div>';
+}
+function pinSpotlight(title, sub, list){
+  window._spotlightPinned = true;
+  document.querySelectorAll('.tmap-region').forEach(r=>r.classList.remove('pinned'));
+  paintSpotlight(title, sub, list, true);
+}
+function closeSpotlight(){
+  window._spotlightPinned = false;
+  document.querySelectorAll('.tmap-region').forEach(r=>r.classList.remove('pinned'));
+  clearHoverSpotlight();
+}
+
+/* ---------- CHARTS (rendered inline in Overview, linked to the spotlight panel) ---------- */
+function renderCharts(){
+  const accts = DATA.accounts;
+  const orange = '#FF6C37', orangeDark = '#E55A2B', green = '#2E9E6C', amber = '#D69A1F', red = '#D64545', gray = '#5E6470', cyan = '#3B8FA3';
+  const gridColor = '#E8E2D8';
+  const fontColor = '#1A1A2E';
+  if (typeof Chart === 'undefined') return;
+  Chart.defaults.font.family = "'Inter',Arial,Calibri,sans-serif";
+  Chart.defaults.color = fontColor;
+
+  function clickOrHover(chart, evt, elements, onMatch){
+    if(!elements.length) return;
+    const idx = elements[0].index;
+    onMatch(idx, evt.type === 'click');
+  }
+
+  // ARR by sector
+  const sectorARR = {};
+  accts.forEach(a => { if(a.sector && a.arr){ sectorARR[a.sector] = (sectorARR[a.sector]||0) + Number(a.arr); } });
+  const sectorEntries = Object.entries(sectorARR).sort((a,b)=>b[1]-a[1]).slice(0,8);
+  new Chart(document.getElementById('chartSector'), {
+    type: 'bar',
+    data: {
+      labels: sectorEntries.map(e=>e[0]),
+      datasets: [{ label: 'ARR', data: sectorEntries.map(e=>e[1]), backgroundColor: orange, borderRadius: 4 }]
+    },
+    options: {
+      indexAxis: 'y',
+      onHover: (evt, els) => clickOrHover(null, {type:'hover'}, els, (idx)=>{
+        const sector = sectorEntries[idx][0];
+        hoverSpotlight('Sector: ' + sector, '', accts.filter(a=>a.sector===sector));
+      }),
+      onClick: (evt, els) => clickOrHover(null, {type:'click'}, els, (idx)=>{
+        const sector = sectorEntries[idx][0];
+        pinSpotlight('Sector: ' + sector, '', accts.filter(a=>a.sector===sector));
+      }),
+      plugins: { legend: { display: false }, tooltip: { callbacks: { label: c => '$' + c.parsed.x.toLocaleString() } } },
+      scales: {
+        x: { ticks: { callback: v => '$' + (v/1000) + 'K' }, grid: { color: gridColor } },
+        y: { grid: { display: false } }
+      }
+    }
+  });
+  document.getElementById('chartSector').addEventListener('mouseleave', clearHoverSpotlight);
+
+  // Priority mix
+  const byPriority = {P1:0,P2:0,P3:0};
+  accts.forEach(a=>{ if(byPriority[a.priority]!==undefined) byPriority[a.priority]++; });
+  const priorityLabels = ['P1','P2','P3'];
+  new Chart(document.getElementById('chartPriority'), {
+    type: 'doughnut',
+    data: {
+      labels: priorityLabels,
+      datasets: [{ data: [byPriority.P1, byPriority.P2, byPriority.P3], backgroundColor: [red, amber, gray], borderWidth: 0 }]
+    },
+    options: {
+      onHover: (evt, els) => clickOrHover(null, {type:'hover'}, els, (idx)=>{
+        const p = priorityLabels[idx];
+        hoverSpotlight('Priority: ' + p, '', accts.filter(a=>a.priority===p));
+      }),
+      onClick: (evt, els) => clickOrHover(null, {type:'click'}, els, (idx)=>{
+        const p = priorityLabels[idx];
+        pinSpotlight('Priority: ' + p, '', accts.filter(a=>a.priority===p));
+      }),
+      plugins: { legend: { position: 'bottom' } }, cutout: '60%'
+    }
+  });
+  document.getElementById('chartPriority').addEventListener('mouseleave', clearHoverSpotlight);
+
+  // Expansion gap - top 8
+  const gapList = (DATA.expansion_ranking || []).filter(g => typeof g.gap === 'number').sort((a,b)=>b.gap-a.gap).slice(0,8);
+  new Chart(document.getElementById('chartGap'), {
+    type: 'bar',
+    data: {
+      labels: gapList.map(g=>g.name),
+      datasets: [
+        { label: 'DAU (90-day)', data: gapList.map(g=>g.dau), backgroundColor: cyan, borderRadius: 4 },
+        { label: 'Licensed seats', data: gapList.map(g=>g.paid_licenses||0), backgroundColor: orange, borderRadius: 4 }
+      ]
+    },
+    options: {
+      onHover: (evt, els) => clickOrHover(null, {type:'hover'}, els, (idx)=>{
+        const name = gapList[idx].name;
+        hoverSpotlight('Expansion gap: ' + name, '', accts.filter(a=>a.name===name));
+      }),
+      onClick: (evt, els) => clickOrHover(null, {type:'click'}, els, (idx)=>{
+        const name = gapList[idx].name;
+        pinSpotlight('Expansion gap: ' + name, '', accts.filter(a=>a.name===name));
+      }),
+      plugins: { legend: { position: 'bottom' } },
+      scales: { x: { ticks: { autoSkip: false, maxRotation: 40, minRotation: 20 }, grid: { display: false } }, y: { grid: { color: gridColor } } }
+    }
+  });
+  document.getElementById('chartGap').addEventListener('mouseleave', clearHoverSpotlight);
+
+  // ARR by country
+  const countryARR = {};
+  accts.forEach(a=>{ const c = a.country || 'Other'; countryARR[c] = (countryARR[c]||0) + (Number(a.arr)||0); });
+  const countryEntries = Object.entries(countryARR).filter(e=>e[1]>0).sort((a,b)=>b[1]-a[1]);
+  const countryColorMap = { Israel: '#1E4B8F', Greece: '#FF6C37', Cyprus: '#B5652E', AMER: '#7A5AC9', Other: '#5E6470' };
+  new Chart(document.getElementById('chartCountry'), {
+    type: 'doughnut',
+    data: {
+      labels: countryEntries.map(e=>e[0]),
+      datasets: [{ data: countryEntries.map(e=>e[1]), backgroundColor: countryEntries.map(e=>countryColorMap[e[0]] || gray), borderWidth: 0 }]
+    },
+    options: {
+      onHover: (evt, els) => clickOrHover(null, {type:'hover'}, els, (idx)=>{
+        const c = countryEntries[idx][0];
+        hoverSpotlight('Country: ' + c, '', accts.filter(a=>a.country===c));
+      }),
+      onClick: (evt, els) => clickOrHover(null, {type:'click'}, els, (idx)=>{
+        const c = countryEntries[idx][0];
+        pinSpotlight('Country: ' + c, '', accts.filter(a=>a.country===c));
+      }),
+      plugins: { legend: { position: 'bottom' }, tooltip: { callbacks: { label: c => c.label + ': $' + c.parsed.toLocaleString() } } }, cutout: '60%'
+    }
+  });
+  document.getElementById('chartCountry').addEventListener('mouseleave', clearHoverSpotlight);
+}
+
+/* ---------- ACCOUNTS ---------- */
+let acctFilter = {priority:'all', q:'', country:'all'};
+function goToAccountsFiltered(type, value){
+  document.querySelectorAll('.tab').forEach(x=>x.classList.remove('active'));
+  document.querySelectorAll('.panel').forEach(x=>x.classList.remove('active'));
+  document.querySelector('.tab[data-tab="accounts"]').classList.add('active');
+  document.getElementById('panel-accounts').classList.add('active');
+  if(type === 'priority'){ acctFilter.priority = value; acctFilter.country = 'all'; }
+  else if(type === 'country'){ acctFilter.country = value; acctFilter.priority = 'all'; }
+  renderAccounts();
+}
+function renderAccounts(){
+  document.getElementById('acctCount').textContent = DATA.accounts.length;
+  const panel = document.getElementById('panel-accounts');
+  const countryActive = acctFilter.country !== 'all';
+  panel.innerHTML = `
+    <div class="filters">
+      <input type="text" id="acctSearch" placeholder="Search accounts..." value="${escAttr(acctFilter.q||'')}">
+      <div class="chip ${acctFilter.priority==='all' && !countryActive ? 'active':''}" data-p="all">All</div>
+      <div class="chip ${acctFilter.priority==='P1'?'active':''}" data-p="P1">P1</div>
+      <div class="chip ${acctFilter.priority==='P2'?'active':''}" data-p="P2">P2</div>
+      <div class="chip ${acctFilter.priority==='P3'?'active':''}" data-p="P3">P3</div>
+      ${countryActive ? `<div class="chip active" id="acctCountryChip">${acctFilter.country} &times;</div>` : ''}
+    </div>
+    <div class="card" style="padding:0;">
+      <div class="table-scroll">
+      <table id="acctTable">
+        <colgroup><col style="width:170px;"><col style="width:130px;"><col style="width:130px;"><col style="width:130px;"><col style="width:130px;"><col style="width:130px;"><col style="width:130px;"><col style="width:130px;"></colgroup>
+        <thead><tr>
+          <th data-k="name">Account</th><th data-k="country">Geo</th><th data-k="status">Status</th>
+          <th data-k="dau">DAU</th><th data-k="arr">ARR</th><th data-k="tam">TAM</th>
+          <th data-k="priority">Pri</th><th>Notes / Action</th>
+        </tr></thead>
+        <tbody id="acctBody"></tbody>
+      </table>
+      </div>
+    </div>
+  `;
+  panel.querySelectorAll('.chip[data-p]').forEach(c=>c.onclick=()=>{
+    acctFilter.priority=c.dataset.p; acctFilter.country='all';
+    renderAccounts();
+  });
+  const countryChip = panel.querySelector('#acctCountryChip');
+  if(countryChip) countryChip.onclick = ()=>{ acctFilter.country='all'; renderAccounts(); };
+  panel.querySelector('#acctSearch').oninput = (e)=>{ acctFilter.q=e.target.value.toLowerCase(); drawAcctBody(); };
+  panel.querySelectorAll('th[data-k]').forEach(th=>th.onclick=()=>sortAccts(th.dataset.k));
+  drawAcctBody();
+  makeResizable('acctTable', 'col-widths-accounts');
+}
+let acctSortKey='arr', acctSortDir=-1;
+function sortAccts(k){ if(acctSortKey===k) acctSortDir*=-1; else {acctSortKey=k; acctSortDir=-1;} drawAcctBody(); }
+function drawAcctBody(){
+  let rows = DATA.accounts.filter(a=>{
+    if(acctFilter.priority!=='all' && a.priority!==acctFilter.priority) return false;
+    if(acctFilter.country!=='all' && acctFilter.country) {
+      const c = (a.country||'').toLowerCase();
+      const target = acctFilter.country.toLowerCase();
+      if(target==='amer'){ if(!(c.includes('us')||c.includes('usa')||c.includes('canada')||c.includes('amer'))) return false; }
+      else if(!c.includes(target)) return false;
+    }
+    if(acctFilter.q && !(a.name||'').toLowerCase().includes(acctFilter.q)) return false;
+    return true;
+  });
+  rows.sort((a,b)=>{
+    let va=a[acctSortKey], vb=b[acctSortKey];
+    if(typeof va==='string'||va===null||va===undefined) va = va||'';
+    if(typeof vb==='string'||vb===null||vb===undefined) vb = vb||'';
+    if(va<vb) return -1*acctSortDir;
+    if(va>vb) return 1*acctSortDir;
+    // tie-break: when sorting by ARR and both tie (typically both free/$0), rank by 90-day DAU instead
+    if(acctSortKey === 'arr'){
+      const da = a.dau || 0, db = b.dau || 0;
+      if(da !== db) return db - da;
+    }
+    return 0;
+  });
+  document.getElementById('acctBody').innerHTML = rows.map(a=>`
+    <tr>
+      <td><b class="acct-link" data-acct="${escAttr(a.name)}" title="${escAttr(a.name)}" style="cursor:pointer; color:var(--orange-dark);">${a.name}</b></td>
+      <td>${a.country||'-'}</td>
+      <td><span class="status-dot ${statusDot(a.status)}"></span>${a.status||'-'}</td>
+      <td>${fmtNum(a.dau)}</td>
+      <td>${a.arr?fmtMoney(a.arr):'-'}</td>
+      <td>${a.tam?fmtMoney(a.tam):'-'}</td>
+      <td><span class="pri pri-${a.priority}">${a.priority||'-'}</span></td>
+      <td class="muted" title="${escAttr(a.notes||'')}">${a.source?'<span class="tag tag-ok" style="margin-right:6px;">Verified Aug 16</span>':''}${(a.notes||'').slice(0,150)}</td>
+    </tr>
+  `).join('');
+}
+
+/* ---------- USAGE & LICENSES ---------- */
+let usageFilter = {q:'', prod:'all'};
+let usageSortKey='combined_arr', usageSortDir=-1;
+function renderUsage(){
+  const meta = DATA.usage_export_meta || {};
+  const teamsMeta = DATA.teams_export_meta || {};
+  const panel = document.getElementById('panel-usage');
+  panel.innerHTML = `
+    <div class="kpi-grid" style="grid-template-columns:repeat(6,1fr);">
+      <div class="kpi"><div class="val">${meta.total_accounts||0}</div><div class="lbl">Accounts in export</div></div>
+      <div class="kpi"><div class="val">${(meta.total_dau||0).toLocaleString()}</div><div class="lbl">Total 90-day DAU</div></div>
+      <div class="kpi"><div class="val">${fmtMoney(teamsMeta.grand_total_arr)}</div><div class="lbl">Total ARR - matches Teams export exactly</div></div>
+      <div class="kpi"><div class="val">${(meta.total_free_team_users||0).toLocaleString()}</div><div class="lbl">Free Users</div></div>
+      <div class="kpi"><div class="val">${(meta.total_enterprise_licenses||0).toLocaleString()}</div><div class="lbl">Enterprise Users</div></div>
+      <div class="kpi"><div class="val">${(meta.as_of||'').slice(0,10)}</div><div class="lbl">As of</div></div>
+    </div>
+    <p class="muted" style="margin-bottom:14px;">ARR reconciled to the Free Tier Teams export (Aug 19) at the team level - parent + child + team ARR all sum to exactly ${fmtMoney(teamsMeta.grand_total_arr)}, matching that report. Click any row to see the breakdown.</p>
+    <div class="filters">
+      <input type="text" id="usageSearch" placeholder="Search accounts...">
+      <div class="chip active" data-prod="all">All accounts</div>
+      <div class="chip" data-prod="asa">Has ASA (${(DATA.asa_accounts||[]).length})</div>
+    </div>
+    <div class="card" style="padding:0;">
+      <div class="table-scroll">
+      <table id="usageTable" style="width:100%;">
+        <colgroup><col style="width:100px;"><col style="width:65px;"><col style="width:48px;"><col style="width:45px;"><col style="width:45px;"><col style="width:45px;"><col style="width:45px;"><col style="width:48px;"><col style="width:48px;"><col style="width:48px;"><col style="width:45px;"><col style="width:45px;"><col style="width:45px;"><col style="width:65px;"><col style="width:45px;"><col style="width:55px;"><col style="width:75px;"></colgroup>
+        <thead><tr style="white-space:normal;">
+          <th data-k="name">Account</th><th data-k="domain">Domain</th>
+          <th data-k="paid_licenses" style="white-space:normal;">Paid Seats</th>
+          <th data-k="paid_users" style="white-space:normal;">Paid Users</th><th data-k="paid_teams" style="white-space:normal;">Paid Teams</th>
+          <th data-k="dau_90" style="white-space:normal;">90 DAU</th><th data-k="mau" style="white-space:normal;">MAU</th>
+          <th data-k="postman_teams" style="white-space:normal;">Total Teams</th>
+          <th data-k="free_team_users" style="white-space:normal;">Free<br>Users</th><th data-k="postman_team_users" style="white-space:normal;">Team Users</th>
+          <th data-k="free_teams" style="white-space:normal;">Free Teams</th>
+          <th data-k="enterprise_plans" style="white-space:normal;">Ent. Plans</th><th data-k="enterprise_licenses" style="white-space:normal;">Ent. Users</th>
+          <th data-k="combined_arr">Total ARR</th>
+          <th data-k="open_opportunities" style="white-space:normal;">Open Opps</th><th data-k="employees" style="white-space:normal;">Employees</th><th>Product Add-ons</th>
+        </tr></thead>
+        <tbody id="usageBody"></tbody>
+      </table>
+      </div>
+    </div>
+  `;
+  panel.querySelector('#usageSearch').oninput = (e)=>{ usageFilter.q = e.target.value.toLowerCase(); drawUsageBody(); };
+  panel.querySelectorAll('.chip').forEach(c=>c.onclick=()=>{ usageFilter.prod=c.dataset.prod; panel.querySelectorAll('.chip').forEach(x=>x.classList.remove('active')); c.classList.add('active'); drawUsageBody(); });
+  panel.querySelectorAll('th[data-k]').forEach(th=>th.onclick=()=>{ if(usageSortKey===th.dataset.k) usageSortDir*=-1; else {usageSortKey=th.dataset.k; usageSortDir=-1;} drawUsageBody(); });
+  drawUsageBody();
+  makeResizable('usageTable', 'col-widths-usage');
+}
+function drawUsageBody(){
+  let rows = (DATA.usage_export||[]).filter(r=>{
+    if(usageFilter.q && !(r.name||'').toLowerCase().includes(usageFilter.q)) return false;
+    if(usageFilter.prod==='asa' && !(DATA.asa_accounts||[]).includes(r.name)) return false;
+    return true;
+  });
+  rows.sort((a,b)=>{
+    let va=a[usageSortKey], vb=b[usageSortKey];
+    if(va===null||va===undefined) va = typeof vb==='number' ? -Infinity : '';
+    if(vb===null||vb===undefined) vb = typeof va==='number' ? -Infinity : '';
+    if(va<vb) return -1*usageSortDir; if(va>vb) return 1*usageSortDir; return 0;
+  });
+  document.getElementById('usageBody').innerHTML = rows.map((r,i)=>`
+    <tr class="usage-row" data-idx="${i}" style="cursor:pointer;" onclick="toggleUsageDetail(${i})">
+      <td><b title="${escAttr(r.name)}">${r.name}</b>${!r.matched_to_plan?' <span class="tag tag-new" style="font-size:9px;">new</span>':''} <span class="muted" style="font-size:10px;">&#9662;</span></td>
+      <td class="muted" title="${escAttr(r.domain||'')}">${r.domain||'-'}</td>
+      <td>${fmtNum(r.paid_licenses)}</td>
+      <td>${fmtNum(r.paid_users)}</td>
+      <td>${fmtNum(r.paid_teams)}</td>
+      <td>${fmtNum(r.dau_90)}</td>
+      <td>${fmtNum(r.mau)}</td>
+      <td>${fmtNum(r.postman_teams)}</td>
+      <td>${fmtNum(r.free_team_users)}</td>
+      <td>${fmtNum(r.postman_team_users)}</td>
+      <td>${fmtNum(r.free_teams)}</td>
+      <td>${fmtNum(r.enterprise_plans)}</td>
+      <td>${fmtNum(r.enterprise_licenses)}</td>
+      <td><b>${r.combined_arr?fmtMoney(r.combined_arr):'-'}</b></td>
+      <td>${fmtNum(r.open_opportunities)}</td>
+      <td>${fmtNum(r.employees)}</td>
+      <td><span class="muted" style="font-size:11px;" title="${escAttr((r.product_categories||[]).join(', '))}">${(r.product_categories||[]).join(', ') || '-'}</span></td>
+    </tr>
+    <tr class="usage-detail" id="usage-detail-${i}" style="display:none;">
+      <td colspan="16" style="background:#FBF6EE; padding:10px 16px;">
+        ${(function(){
+          const tb = (DATA.team_breakdown_by_account||{})[r.name];
+          if(!tb || !tb.child_groups) return '<span class="muted">No team-level breakdown on file for this account.</span>';
+          const occTag = (o) => o===null||o===undefined ? '<span class="muted">-</span>' : `${o}%`;
+          // real per-team ARR/renewal/self-serve, matched by team name against the separate teams export
+          const realTeams = (DATA.teams_by_account||{})[r.name] || [];
+          const realByName = {};
+          realTeams.forEach(rt => { realByName[rt.team_name] = rt; });
+          return `<div>
+            <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:10px;">
+              <span class="muted">Full team breakdown - parent total <b>${fmtMoney(tb.total_arr||0)}</b></span>
+              ${tb.account_url ? `<a href="${escAttr(tb.account_url)}" target="_blank" style="font-size:11px; color:var(--orange-dark);">Open account in SFDC &rarr;</a>` : ''}
+            </div>
+            ${tb.child_groups.map(cg => `
+              <div style="margin-bottom:16px;">
+                <div style="font-size:12px; margin-bottom:5px;">
+                  <b>${cg.child_name}</b>${cg.is_parent_itself ? ' <span class="muted">(parent)</span>' : ' <span class="tag tag-new" style="font-size:9px;">child/sub account</span>'}
+                  <span class="muted"> - ARR: <b>${fmtMoney(cg.own_arr||0)}</b>${cg.own_dau!==null && cg.own_dau!==undefined ? ` &middot; 90 DAU: ${cg.own_dau}` : ''}${cg.own_mau!==null && cg.own_mau!==undefined ? ` &middot; MAU: ${cg.own_mau}` : ''}</span>
+                </div>
+                <table class="resizable-table" style="font-size:11px; width:100%;">
+                  <thead><tr>
+                    <th style="width:32px;">#</th><th>Team</th><th>Child Co.</th><th>Pricing Plan</th><th>Status</th><th>Purchased</th><th>Used</th><th>Occupancy</th><th>ARR</th><th>Renewal</th><th>Self-Serve</th><th>Billing Method</th><th>SFDC</th>
+                  </tr></thead>
+                  <tbody>${cg.teams.slice().sort((a,b)=>{
+                    const rtA = realByName[a.team_name], rtB = realByName[b.team_name];
+                    return ((rtB&&rtB.arr)||0)-((rtA&&rtA.arr)||0) || (b.purchased_licenses||0)-(a.purchased_licenses||0);
+                  }).map((t,ti)=>{
+                    const rt = realByName[t.team_name];
+                    return `
+                    <tr>
+                      <td class="muted">${ti+1}</td>
+                      <td><b>${t.team_name||'-'}</b></td>
+                      <td class="muted">${cg.is_parent_itself ? '-' : cg.child_name}</td>
+                      <td class="muted">${rt && rt.active_plan ? rt.active_plan : (t.pricing_plan||'Free')}</td>
+                      <td><span class="tag ${t.plan_state==='Delinquent'?'tag-stale':'tag-ok'}">${t.plan_state||'-'}</span></td>
+                      <td>${t.purchased_licenses ?? '-'}</td>
+                      <td>${t.used_licenses ?? '-'}</td>
+                      <td>${occTag(t.occupancy_pct)}</td>
+                      <td>${rt && rt.arr ? `<b>${fmtMoney(rt.arr)}</b>` : (rt ? '<span class="muted">$0</span>' : '<span class="muted" title="No matching team found in the separate teams export">-</span>')}</td>
+                      <td class="muted">${rt && rt.renewal_date ? rt.renewal_date : '-'}</td>
+                      <td class="muted">${rt ? (rt.self_serve==='yes'?'Yes':'No') : '-'}</td>
+                      <td class="muted">${t.payment_method||'-'}</td>
+                      <td>${t.team_url ? `<a href="${escAttr(t.team_url)}" target="_blank" style="color:var(--orange-dark);">Open &rarr;</a>` : '-'}</td>
+                    </tr>
+                  `;}).join('')}</tbody>
+                </table>
+              </div>
+            `).join('')}
+          </div>`;
+        })()}
+      </td>
+    </tr>
+  `).join('');
+}
+function toggleUsageDetail(i){
+  const row = document.getElementById('usage-detail-'+i);
+  if(row) row.style.display = row.style.display==='none' ? 'table-row' : 'none';
+}
+
+/* ---------- LIVE ---------- */
+function renderLive(){
+  const live = DATA.live_signals || {};
+  const now = new Date();
+  let html = '<div class="card"><h3>Active deals with live meeting signal (Aircover + Calendar)</h3>';
+  Object.entries(live).forEach(([name, sig])=>{
+    const won = sig.stage === 'Closed Won';
+    html += `<div class="deal-card ${sig.stale?'stale':''}" ${won?'style="border-color:var(--green); background:#F3FBF6;"':''}>
+      <div class="deal-head"><b>${name}</b> ${won?'<span class="tag tag-ok">Closed Won</span>':sig.stale?'<span class="tag tag-stale">Needs re-engagement</span>':'<span class="tag tag-ok">Active</span>'}</div>
+      ${sig.last_meeting?`<div class="meeting-row"><span>Last meeting</span><span>${fmtDate(sig.last_meeting)}</span></div>`:''}
+      ${sig.next_meeting?`<div class="meeting-row"><span>Next meeting</span><span>${fmtDate(sig.next_meeting)}</span></div>`:''}
+      ${sig.sfdc_opp?`<div class="meeting-row"><span>SFDC opportunity</span><span>${sig.sfdc_opp}</span></div>`:''}
+      ${sig.amount?`<div class="meeting-row"><span>${won?'Closed amount':'Opp amount / close'}</span><span>${fmtMoney(sig.amount)}${sig.close_date?' &middot; '+sig.close_date:''}</span></div>`:''}
+      ${sig.seats?`<div class="meeting-row"><span>Seats</span><span>${sig.seats}${sig.previous_seats?' (down from '+sig.previous_seats+')':''}</span></div>`:''}
+      ${sig.stage?`<div class="meeting-row"><span>Stage</span><span>${sig.stage}</span></div>`:''}
+      ${sig.confirmed_by?`<div class="meeting-row"><span>Confirmed by</span><span>${sig.confirmed_by}</span></div>`:''}
+      ${sig.note?`<div class="muted" style="margin-top:6px;">${sig.note}</div>`:''}
+    </div>`;
+  });
+  html += '</div>';
+
+  html += '<div class="card"><h3>Upcoming customer-facing meetings (next 30 days, from Calendar)</h3>';
+  (DATA.upcoming_meetings||[]).forEach(mt=>{
+    html += `<div class="meeting-row"><span><b>${mt.account}</b> - ${mt.title}${mt.contact?' ('+mt.contact+')':''}</span><span>${fmtDate(mt.date)}</span></div>`;
+  });
+  html += '</div>';
+
+  html += '<div class="card"><h3>Newly discovered accounts (found live, not yet in territory plan)</h3>';
+  (DATA.discovered_accounts||[]).forEach(a=>{
+    html += `<div class="deal-card discovered"><div class="deal-head"><b>${a.name}</b><span class="tag tag-new">New / unmapped</span></div><div class="muted">${a.note}</div></div>`;
+  });
+  html += '</div>';
+
+  document.getElementById('panel-live').innerHTML = html;
+}
+
+/* ---------- FOLLOWUPS ---------- */
+async function renderFollowups(){
+  let stored = {};
+  try{ const r = await window.storage.get('followup-state', false); if(r) stored = JSON.parse(r.value); }catch(e){}
+  Object.keys(stored).forEach(k=>{
+    if(typeof stored[k] === 'boolean'){ stored[k] = {status: stored[k] ? 'completed' : null, note: ''}; }
+  });
+  FOLLOWUP_STATE = stored || {};
+  let deleted = [];
+  try{ const r = await window.storage.get('followup-deleted', false); if(r) deleted = JSON.parse(r.value); }catch(e){}
+  FOLLOWUP_DELETED = new Set(deleted);
+  let order = [];
+  try{ const r = await window.storage.get('followup-order', false); if(r) order = JSON.parse(r.value); }catch(e){}
+  FOLLOWUP_ORDER = order;
+  drawFollowupsList();
+}
+function drawFollowupsList(){
+  const panel = document.getElementById('panel-followups');
+
+  const pendingFU = (DATA.pending_your_action||[]).map((p,i)=>({id:'pending-'+i, week:'WAITING ON YOU', account:p.account, action:p.action}));
+  const delinquentFU = (DATA.delinquent_teams||[]).map((t,i)=>({id:'delinq-'+i, week:'PAYMENT RISK', account:t.account, action:`Team "${t.team_name}" (${fmtMoney(t.arr)}) is Delinquent - renewal on record: ${t.renewal_date||'unknown'}`}));
+  const staleFU = Object.entries(DATA.live_signals||{}).filter(([k,v])=>v.stale).map(([k,v])=>({id:'stale-'+k, week:'NEEDS RE-ENGAGEMENT', account:k, action:v.note}));
+  const alertFU = (DATA.generalized_alerts||[]).filter(a=>a.severity==='medium').map((a,i)=>({id:'alert-'+i, week:'NO LIVE SIGNAL', account:a.name, action:a.reason}));
+  const zeroReplyFU = [];
+  if(DATA.contacts_email_stats_meta && DATA.contacts_email_stats_meta.note && DATA.contacts_email_stats_meta.note.includes('Rafael')){
+    zeroReplyFU.push({id:'zeroreply-rafael', week:'RECONSIDER APPROACH', account:'Rafael Advanced Defense', action:'16-person multithread blast, ~53 emails sent, zero replies from anyone - message or channel likely needs rethinking'});
+    zeroReplyFU.push({id:'zeroreply-leumi', week:'RECONSIDER APPROACH', account:'Bank Leumi', action:'10-person blast, 2 emails each, zero replies'});
+    zeroReplyFU.push({id:'zeroreply-playtika', week:'RECONSIDER APPROACH', account:'Playtika', action:'5-person blast, 3 emails each, zero replies'});
+  }
+  const planFU = (DATA.actions_90day||[]).filter(a=>a.status==='TODO').map((a,i)=>({id:'plan-'+i, week:a.week, account:a.account, action:a.action}));
+
+  let all = [...pendingFU, ...delinquentFU, ...staleFU, ...alertFU, ...zeroReplyFU, ...planFU];
+  all = all.filter(f => !FOLLOWUP_DELETED.has(f.id));
+
+  // group by status: follow-up items float to top, completed sink to bottom, everything else stays in the middle;
+  // within each group, respect the user's manual drag order where set, else keep original relative order
+  const groupOf = (id) => {
+    const st = FOLLOWUP_STATE[id]?.status;
+    if(st === 'followup') return 0;
+    if(st === 'completed') return 2;
+    return 1;
+  };
+  const orderIndex = (id) => { const i = FOLLOWUP_ORDER.indexOf(id); return i === -1 ? 999999 : i; };
+  all.sort((a,b)=>{
+    const ga = groupOf(a.id), gb = groupOf(b.id);
+    if(ga !== gb) return ga - gb;
+    return orderIndex(a.id) - orderIndex(b.id);
+  });
+
+  panel.innerHTML = `<div class="card"><h3>Follow-ups (${all.length}) - saved as you go</h3><p class="muted" style="margin-bottom:10px;">Pulled live from pending actions, delinquent teams, stale deals, and open-opportunity alerts - not a fixed list. Follow-up items float to the top of their company's list, Completed items sink to the bottom. Use the arrows to reorder within a company, or the &times; to remove one entirely.</p><div id="fuList"></div></div>`;
+  const list = document.getElementById('fuList');
+
+  // group by account, preserving each account's first-appearance order from the sorted flat list
+  const byAccount = new Map();
+  all.forEach(f=>{
+    if(!byAccount.has(f.account)) byAccount.set(f.account, []);
+    byAccount.get(f.account).push(f);
+  });
+
+  list.innerHTML = Array.from(byAccount.entries()).map(([account, items])=>`
+    <div class="fu-company-group" style="padding:12px 0; border-bottom:1px solid var(--line);">
+      <b class="acct-link" data-acct="${escAttr(account)}" style="cursor:pointer; font-size:13.5px;">${account}</b>
+      <ul style="margin:6px 0 0; padding-left:18px;">
+        ${items.map(f=>{
+          const state = FOLLOWUP_STATE[f.id] || {status:null, note:''};
+          return `
+          <li class="followup-bullet ${state.status==='completed'?'done':''}" id="fu-${f.id}" style="margin-bottom:8px; list-style:disc;">
+            <span class="fu-text"><span class="fu-week">${f.week}</span> ${f.action}</span>
+            <div style="margin-top:4px; display:flex; gap:6px; align-items:center;">
+              <button class="btn btn-secondary" style="font-size:9px; padding:1px 6px;" title="Move up" onclick="moveFollowup('${f.id}', -1)">&#9650;</button>
+              <button class="btn btn-secondary" style="font-size:9px; padding:1px 6px;" title="Move down" onclick="moveFollowup('${f.id}', 1)">&#9660;</button>
+              <button class="btn ${state.status==='completed'?'btn-primary':'btn-secondary'}" style="font-size:10px; padding:3px 8px;" onclick="setFollowupStatus('${f.id}','completed')">Completed</button>
+              <button class="btn ${state.status==='followup'?'btn-primary':'btn-secondary'}" style="font-size:10px; padding:3px 8px;" onclick="setFollowupStatus('${f.id}','followup')">Follow up</button>
+              <input type="text" class="fu-note" data-id="${f.id}" placeholder="Add a note - what's next?" value="${escAttr(state.note||'')}" style="flex:1; font-size:11px; padding:3px 7px; border:1px solid var(--line); border-radius:5px;">
+              <button class="btn btn-secondary" style="font-size:12px; padding:1px 8px; color:#b23;" title="Remove this follow-up" onclick="deleteFollowup('${f.id}')">&times;</button>
+            </div>
+          </li>`;
+        }).join('')}
+      </ul>
+    </div>
+  `).join('') || '<p class="muted">Nothing outstanding right now.</p>';
+
+  list.querySelectorAll('.fu-note').forEach(input=>{
+    let saveTimer;
+    input.oninput = ()=>{
+      clearTimeout(saveTimer);
+      saveTimer = setTimeout(async ()=>{
+        const id = input.dataset.id;
+        if(!FOLLOWUP_STATE[id]) FOLLOWUP_STATE[id] = {status:null, note:''};
+        FOLLOWUP_STATE[id].note = input.value;
+        try{ await window.storage.set('followup-state', JSON.stringify(FOLLOWUP_STATE), false); }catch(e){}
+      }, 500);
+    };
+  });
+
+  // persist the freshly-computed order so manual moves have a stable baseline to work from
+  FOLLOWUP_ORDER = all.map(f=>f.id);
+}
+async function setFollowupStatus(id, status){
+  if(!FOLLOWUP_STATE[id]) FOLLOWUP_STATE[id] = {status:null, note:''};
+  FOLLOWUP_STATE[id].status = (FOLLOWUP_STATE[id].status === status) ? null : status;
+  drawFollowupsList();
+  try{ await window.storage.set('followup-state', JSON.stringify(FOLLOWUP_STATE), false); }catch(e){}
+  try{ await window.storage.set('followup-order', JSON.stringify(FOLLOWUP_ORDER), false); }catch(e){}
+}
+async function deleteFollowup(id){
+  FOLLOWUP_DELETED.add(id);
+  drawFollowupsList();
+  try{ await window.storage.set('followup-deleted', JSON.stringify(Array.from(FOLLOWUP_DELETED)), false); }catch(e){}
+}
+async function moveFollowup(id, dir){
+  const i = FOLLOWUP_ORDER.indexOf(id);
+  if(i === -1) return;
+  const j = i + dir;
+  // only allow the swap if it stays within the same status group
+  const groupOf = (fid) => {
+    const st = FOLLOWUP_STATE[fid]?.status;
+    if(st === 'followup') return 0;
+    if(st === 'completed') return 2;
+    return 1;
+  };
+  if(j < 0 || j >= FOLLOWUP_ORDER.length) return;
+  if(groupOf(FOLLOWUP_ORDER[i]) !== groupOf(FOLLOWUP_ORDER[j])) return;
+  [FOLLOWUP_ORDER[i], FOLLOWUP_ORDER[j]] = [FOLLOWUP_ORDER[j], FOLLOWUP_ORDER[i]];
+  drawFollowupsList();
+  try{ await window.storage.set('followup-order', JSON.stringify(FOLLOWUP_ORDER), false); }catch(e){}
+}
+
+/* ---------- EXPANSION PLAN ---------- */
+let ssFilter = {q:''};
+function renderSelfServe(){
+  const panel = document.getElementById('panel-selfserve');
+  const data = DATA.self_serve_renewals || {};
+  const totalArr = Object.values(data).reduce((s,a)=>s+(a.total_arr||0), 0);
+  const totalTeams = Object.values(data).reduce((s,a)=>s+(a.team_count||0), 0);
+  panel.innerHTML = `
+    <div class="kpi-grid" style="grid-template-columns:repeat(4,1fr);">
+      <div class="kpi"><div class="val">${Object.keys(data).length}</div><div class="lbl">Self-serve accounts</div></div>
+      <div class="kpi"><div class="val">${totalTeams}</div><div class="lbl">Postman teams</div></div>
+      <div class="kpi"><div class="val">${fmtMoney(totalArr)}</div><div class="lbl">Total self-serve ARR</div></div>
+      <div class="kpi"><div class="val">${Object.values(data).filter(a=>a.already_tracked).length}</div><div class="lbl">Already in your 98 tracked accounts</div></div>
+    </div>
+    <p class="muted" style="margin-bottom:14px;">Israel/Greece/Cyprus accounts on self-serve plans, with billing contact and renewal date per Postman team. Cross-referenced against your tracked accounts on Sep 2, 2026 - emails were added as contacts and renewal dates were checked where a match existed. Waiting on more account-level detail (DAU, usage, etc.) to be added, same as Usage.</p>
+    <div class="filters"><input type="text" id="ssSearch" placeholder="Search accounts or teams..."></div>
+    <div id="ssTableWrap"></div>
+  `;
+  panel.querySelector('#ssSearch').oninput = (e)=>{ ssFilter.q = e.target.value.toLowerCase(); drawSelfServeBody(); };
+  drawSelfServeBody();
+}
+function drawSelfServeBody(){
+  const data = DATA.self_serve_renewals || {};
+  const q = ssFilter.q;
+  let entries = Object.entries(data);
+  if(q){
+    entries = entries.filter(([name, a]) => name.toLowerCase().includes(q) ||
+      a.teams.some(t => (t.team_name||'').toLowerCase().includes(q) || (t.billing_email||'').toLowerCase().includes(q)));
+  }
+  entries.sort((a,b)=>(b[1].total_arr||0)-(a[1].total_arr||0));
+  document.getElementById('ssTableWrap').innerHTML = `
+    <div class="card" style="padding:0;">
+    <div class="table-scroll">
+    <table class="resizable-table" id="ssTable" style="width:100%;">
+      <colgroup><col style="width:170px;"><col style="width:55px;"><col style="width:60px;"><col style="width:50px;"><col style="width:50px;"><col style="width:65px;"><col style="width:80px;"><col style="width:65px;"><col style="width:75px;"></colgroup>
+      <thead><tr style="white-space:normal;"><th></th><th>Teams</th><th>Purchased</th><th>90 DAU</th><th>MAU</th><th style="white-space:normal;">Team Users</th><th>Total ARR</th><th>Tracked?</th><th style="white-space:normal;">Nearest renewal</th></tr></thead>
+      <tbody>${entries.map(([name,a],i)=>{
+        const nearest = a.teams.map(t=>t.renewal_date).filter(Boolean).sort((x,y)=>new Date(x)-new Date(y))[0];
+        return `<tr class="ss-row" style="cursor:pointer;" onclick="toggleSSDetail(${i})">
+          <td><span class="muted" style="font-size:10px;">&#9662;</span> <b>${name}</b>${a.account_url?` <a href="${escAttr(a.account_url)}" target="_blank" onclick="event.stopPropagation()" style="font-size:10px; color:var(--orange-dark);">SFDC&rarr;</a>`:''}</td>
+          <td>${a.team_count}</td>
+          <td>${a.total_purchased}</td>
+          <td>${a.dau_90??'-'}</td>
+          <td>${a.mau??'-'}</td>
+          <td>${a.team_users??'-'}</td>
+          <td><b>${fmtMoney(a.total_arr||0)}</b></td>
+          <td>${a.already_tracked ? '<span class="tag tag-ok">Yes</span>' : '<span class="muted">New</span>'}</td>
+          <td class="muted">${nearest||'-'}</td>
+        </tr>
+        <tr id="ss-detail-${i}" style="display:none;">
+          <td colspan="9" style="background:#FBF6EE; padding:10px 16px;">
+            <table class="resizable-table" style="font-size:11px; width:100%;">
+              <thead><tr><th>Team</th><th>Plan</th><th>Status</th><th>Purchased</th><th>ARR</th><th>Billing Email</th><th>Renewal</th><th>SFDC</th></tr></thead>
+              <tbody>${a.teams.map(t=>`
+                <tr>
+                  <td><b>${t.team_name||'-'}</b></td>
+                  <td class="muted">${t.active_plan||'-'}</td>
+                  <td><span class="tag ${t.plan_state==='Delinquent'?'tag-stale':'tag-ok'}">${t.plan_state||'-'}</span></td>
+                  <td>${t.purchased_licenses ?? '-'}</td>
+                  <td>${t.arr?fmtMoney(t.arr):'-'}</td>
+                  <td class="muted">${t.billing_email||'-'}</td>
+                  <td class="muted">${t.renewal_date||'-'}</td>
+                  <td>${t.team_url?`<a href="${escAttr(t.team_url)}" target="_blank" style="color:var(--orange-dark);">Open &rarr;</a>`:'-'}</td>
+                </tr>
+              `).join('')}</tbody>
+            </table>
+          </td>
+        </tr>`;
+      }).join('') || '<tr><td colspan="9" class="muted" style="padding:16px;">No accounts match that search.</td></tr>'}</tbody>
+    </table>
+    </div>
+    </div>
+  `;
+}
+function toggleSSDetail(i){
+  const row = document.getElementById('ss-detail-'+i);
+  if(row) row.style.display = row.style.display==='none' ? 'table-row' : 'none';
+}
+function renderExpansion(){
+  const ranked = DATA.expansion_ranking || [];
+  let html = `<div class="card"><h3>Expansion signal ranking - DAU vs paid licenses gap</h3>
+  <p class="muted" style="margin-bottom:10px;">Sorted by the biggest gap between active daily users and paid seats. Big gap + low ARR = your clearest upsell case.</p>
+  <div class="table-scroll" style="max-height:50vh;"><table>
+  <thead><tr><th>Account</th><th>DAU</th><th>Paid Seats</th><th>Gap</th><th>DAU:License Ratio</th><th>Current ARR</th></tr></thead>
+  <tbody>${ranked.slice(0,30).map(r=>`
+    <tr><td><b class="acct-link" data-acct="${escAttr(r.name)}" style="cursor:pointer; color:var(--orange-dark);">${r.name}</b></td>
+    <td>${r.dau}</td><td>${r.paid_licenses}</td><td><b>${r.gap}</b></td><td>${r.ratio?r.ratio+'x':'&#8734; (no paid seats)'}</td><td>${r.arr?fmtMoney(r.arr):'-'}</td></tr>
+  `).join('')}</tbody></table></div></div>`;
+
+  const groups = {};
+  (DATA.abm_playbook||[]).forEach(r=>{
+    const k = r.motion; if(!groups[k]) groups[k]=[]; groups[k].push(r);
+  });
+  Object.entries(groups).forEach(([motion, rows])=>{
+    html += `<div class="motion-group"><div class="motion-title">${motion}</div>`;
+    rows.forEach((r,i)=>{
+      const NL = String.fromCharCode(10);
+      const toList = (s)=> (s||'').split(NL).filter(x=>x.trim()).map(x=>`<li>${x.trim()}</li>`).join('');
+      html += `<div class="abm-card" id="abm-${motion}-${i}">
+        <div class="abm-head" onclick="document.getElementById('abm-${motion}-${i}').classList.toggle('open')">
+          <span><b>${r.account}</b> <span class="pri pri-${r.priority}">${r.priority||''}</span></span>
+          <span class="muted">${r.se_needed||''}</span>
+        </div>
+        <div class="abm-body">
+          <div class="abm-field"><b>Entry play</b><ul class="abm-list">${toList(r.entry_play)}</ul></div>
+          <div class="abm-field"><b>Value proposition</b><p>${r.value_prop||''}</p></div>
+          <div class="abm-field"><b>Use cases</b><ul class="abm-list">${toList(r.use_cases)}</ul></div>
+          <div class="abm-field"><b>Multi-thread targets</b><ul class="abm-list">${toList(r.multithread)}</ul></div>
+          <div class="abm-field"><b>Discovery questions</b><ul class="abm-list">${toList(r.discovery_qs)}</ul></div>
+          <div class="abm-field"><b>Sequence</b><ul class="abm-list">${toList(r.sequence)}</ul></div>
+          <div class="abm-field"><b>Success metric (6mo)</b><ul class="abm-list">${toList(r.success_metric)}</ul></div>
+        </div>
+      </div>`;
+    });
+    html += '</div>';
+  });
+  document.getElementById('panel-expansion').innerHTML = html;
+}
+
+/* ---------- ACCOUNT MODAL ---------- */
+function openAccountModal(name){
+  const acct = DATA.accounts.find(a=>a.name===name);
+  const usage = (DATA.usage_export||[]).find(u=>u.name===name);
+  const live = DATA.live_signals ? DATA.live_signals[name] : null;
+  const abm = (DATA.abm_playbook||[]).find(r=>r.account===name);
+  const actions = (DATA.actions_90day||[]).filter(a=>a.account===name);
+  const gov = (DATA.governance||[]).find(g=>g.account===name);
+  const contacts = (DATA.contacts_by_account||{})[name];
+  const teams = (DATA.teams_by_account||{})[name];
+  const stats = DATA.contacts_email_stats || {};
+
+  let html = `<div style="border-bottom:3px solid var(--orange); margin:-22px -26px 16px; padding:22px 26px 14px;">
+    <h2 style="font-size:20px;">${name} ${acct&&acct.priority?`<span class="pri pri-${acct.priority}" style="font-size:12px; vertical-align:middle;">${acct.priority}</span>`:''}</h2>
+    <p class="muted">${(acct&&acct.country)||(usage&&usage.region)||''}${(acct&&acct.sector)?' &middot; '+acct.sector:''}${acct&&acct.status?' &middot; '+acct.status:''}</p>
+  </div>`;
+
+  if(acct){
+    html += `<div class="kpi-grid" style="grid-template-columns:repeat(4,1fr); margin-bottom:16px;">
+      <div class="kpi"><div class="val">${acct.arr?fmtMoney(acct.arr):'-'}</div><div class="lbl">Total ARR</div></div>
+      <div class="kpi"><div class="val">${fmtNum(acct.dau)}</div><div class="lbl">90-day DAU</div></div>
+      <div class="kpi"><div class="val">${acct.tam?fmtMoney(acct.tam):'-'}</div><div class="lbl">TAM</div></div>
+      <div class="kpi"><div class="val">${fmtNum(acct.employees)}</div><div class="lbl">Employees</div></div>
+    </div>`;
+  }
+
+  if(usage || (DATA.teams_by_account||{})[name]){
+    const companyBreakdown = renderCompanyBreakdownHTML(name);
+    html += `<div class="card">
+      <h3>Usage &amp; licenses</h3>
+      ${usage?`<div class="kpi-grid" style="grid-template-columns:repeat(6,1fr); gap:6px; margin-bottom:0;">
+        <div class="kpi-sm"><div class="val">${fmtNum(usage.paid_licenses)}</div><div class="lbl">Paid Seats</div></div>
+        <div class="kpi-sm"><div class="val">${fmtNum(usage.paid_users)}</div><div class="lbl">Paid Users</div></div>
+        <div class="kpi-sm"><div class="val">${fmtNum(usage.paid_teams)}</div><div class="lbl">Paid Teams</div></div>
+        <div class="kpi-sm"><div class="val">${fmtNum(usage.dau_90)}</div><div class="lbl">90 DAU</div></div>
+        <div class="kpi-sm"><div class="val">${fmtNum(usage.mau)}</div><div class="lbl">MAU</div></div>
+        <div class="kpi-sm"><div class="val">${fmtNum(usage.postman_teams)}</div><div class="lbl">Total Teams</div></div>
+        <div class="kpi-sm"><div class="val">${fmtNum(usage.free_team_users)}</div><div class="lbl">Free Users</div></div>
+        <div class="kpi-sm"><div class="val">${fmtNum(usage.postman_team_users)}</div><div class="lbl">Team Users</div></div>
+        <div class="kpi-sm"><div class="val">${fmtNum(usage.free_teams)}</div><div class="lbl">Free Teams</div></div>
+        <div class="kpi-sm"><div class="val">${fmtNum(usage.enterprise_plans)}</div><div class="lbl">Ent. Plans</div></div>
+        <div class="kpi-sm"><div class="val">${fmtNum(usage.enterprise_licenses)}</div><div class="lbl">Ent. Users</div></div>
+      </div>
+      <div style="margin-top:10px; padding-top:10px; border-top:1px solid var(--line);">
+        <div class="modal-field"><span>Teams (total / paid / free)</span><span>${fmtNum(usage.postman_teams)} / ${fmtNum(usage.paid_teams)} / ${fmtNum(usage.free_teams)}</span></div>
+        <div class="modal-field"><span>Open opportunities</span><span>${fmtNum(usage.open_opportunities)}</span></div>
+        ${usage.product_categories&&usage.product_categories.length?`<div class="modal-field"><span>Products / add-ons</span><span>${usage.product_categories.join(', ')}</span></div>`:''}
+      </div>`:''}
+      ${companyBreakdown?`<div style="margin-top:10px; padding-top:10px; border-top:1px solid var(--line);"><span class="muted">ARR by company:</span>${companyBreakdown}</div>`:''}
+    </div>`;
+  }
+
+  const plan = buildTacticalPlan(name);
+  if(plan){
+    html += `<div class="card" style="border-color:var(--orange); background:#FFF6EE;">
+      <h3>Tactical plan <span class="muted" style="font-size:11px; font-weight:400;">(built from this account's own contracted rates and usage - not researched)</span></h3>
+      ${plan.plays.map(p=>`<div class="deal-card"><div class="deal-head"><b>${p.title}</b><span class="tag ${p.tag==='RESOLVE FIRST'?'tag-stale':p.tag==='NEW ATTACH'?'tag-new':'tag-ok'}">${p.tag}</span></div><div class="muted">${p.detail}</div></div>`).join('')}
+      ${plan.negotiation?`<div style="margin-top:10px; padding-top:10px; border-top:1px solid var(--line);"><b style="font-size:12px;">Discount / negotiation stance</b><p class="muted" style="margin-top:4px;">${plan.negotiation}</p></div>`:''}
+    </div>`;
+  }
+
+  if(acct && (acct.regulatory || acct.notes)){
+    html += `<div class="card">
+      <h3>Notes</h3>
+      <p class="muted" style="white-space:pre-line;">${acct.regulatory?`<b style="color:var(--ink);">Regulatory:</b> ${acct.regulatory}<br>`:''}${acct.notes||''}</p>
+    </div>`;
+  }
+
+  if(live){
+    const won = live.stage === 'Closed Won';
+    html += `<div class="card" ${won?'style="border-color:var(--green); background:#F3FBF6;"':(live.stale?'style="border-color:var(--red); background:#FFF6F6;"':'')}>
+      <h3>Live deal signal ${won?'<span class="tag tag-ok">Closed Won</span>':live.stale?'<span class="tag tag-stale">Needs re-engagement</span>':'<span class="tag tag-ok">Active</span>'}</h3>
+      ${live.last_meeting?`<div class="modal-field"><span>Last meeting</span><span>${fmtDate(live.last_meeting)}</span></div>`:''}
+      ${live.next_meeting?`<div class="modal-field"><span>Next meeting</span><span>${fmtDate(live.next_meeting)}</span></div>`:''}
+      ${live.stage?`<div class="modal-field"><span>Stage</span><span>${live.stage}</span></div>`:''}
+      ${live.sfdc_opp?`<div class="modal-field"><span>SFDC opportunity</span><span>${live.sfdc_opp}</span></div>`:''}
+      ${live.amount?`<div class="modal-field"><span>${won?'Closed amount':'Opp amount / close'}</span><span>${fmtMoney(live.amount)}${live.close_date?' &middot; '+live.close_date:''}</span></div>`:''}
+      ${live.seats?`<div class="modal-field"><span>Seats</span><span>${live.seats}${live.previous_seats?' (down from '+live.previous_seats+')':''}</span></div>`:''}
+      ${live.confirmed_by?`<div class="modal-field"><span>Confirmed by</span><span>${live.confirmed_by}</span></div>`:''}
+      ${live.note?`<div style="margin-top:8px; padding-top:8px; border-top:1px solid var(--line);"><span class="muted">${live.note}</span></div>`:''}
+    </div>`;
+  }
+
+  if(gov){
+    html += `<div class="card" style="border-color:var(--amber); background:#FFFBEF;">
+      <h3>Governance <span class="gov-decision ${gov.decision.includes('TRANSFER')?'gov-transfer':'gov-pending'}">${gov.decision}</span></h3>
+      <div class="modal-field"><span>Issue</span><span>${gov.issue}</span></div>
+      <div class="modal-field"><span>Recommendation</span><span>${gov.recommendation}</span></div>
+    </div>`;
+  }
+
+  if(teams && teams.length){
+    const paidTeams = teams.filter(t=>t.arr>0);
+    html += `<div class="card" style="padding:0;">
+      <h3 style="padding:16px 18px 0;">Postman teams (${teams.length}) - ${paidTeams.length} paid, ${teams.length-paidTeams.length} free</h3>
+      <div class="table-scroll" style="max-height:280px; margin-top:10px;"><table class="resizable-table" style="font-size:11.5px;">
+      <colgroup><col style="width:170px;"><col style="width:130px;"><col style="width:130px;"><col style="width:130px;"><col style="width:130px;"><col style="width:130px;"><col style="width:130px;"></colgroup>
+      <thead><tr><th>Team</th><th>Child co.</th><th>Plan</th><th>ARR</th><th>Renewal</th><th>Self-serve</th><th>Status</th></tr></thead>
+      <tbody>${teams.sort((a,b)=>(b.arr||0)-(a.arr||0)).map(t=>`
+        <tr>
+          <td><b>${t.team_name}</b></td>
+          <td class="muted">${t.is_child_team?t.child_company:'-'}</td>
+          <td>${t.active_plan||'-'}</td>
+          <td>${t.arr?fmtMoney(t.arr):'-'}</td>
+          <td>${t.renewal_date||'-'}</td>
+          <td>${t.self_serve==='yes'?'Yes':'No'}</td>
+          <td><span class="tag ${t.plan_state==='Delinquent'?'tag-stale':'tag-ok'}">${t.plan_state}</span></td>
+        </tr>
+      `).join('')}</tbody></table></div>
+    </div>`;
+  }
+
+  if(contacts && contacts.length){
+    html += `<div class="card" style="padding:0;">
+      <h3 style="padding:16px 18px 0;">Contacts (${contacts.length})</h3>
+      <div class="table-scroll" style="max-height:280px; margin-top:10px;"><table class="resizable-table" style="font-size:11.5px;">
+      <colgroup><col style="width:170px;"><col style="width:130px;"><col style="width:130px;"><col style="width:130px;"><col style="width:130px;"><col style="width:130px;"><col style="width:130px;"></colgroup>
+      <thead><tr><th>Name</th><th>Title</th><th>Email</th><th>Mobile</th><th>Office</th><th>LinkedIn</th><th>Outreach</th></tr></thead>
+      <tbody>${contacts.map(c=>{
+        const s = c.email ? stats[c.email.toLowerCase()] : null;
+        const legacyPhone = (!c.mobile_phone && !c.office_phone && !c.hq_phone && c.phone) ? (String(c.phone) + (c.phone_suspect?' &#9888;':'')) : '';
+        const outreach = s ? `${s.sent} sent / <span style="color:${s.received?'var(--green)':'var(--gray)'};">${s.received} replied</span>` : '<span class="muted">not checked</span>';
+        const dot = c.api_relevant ? `<span style="display:inline-block; width:8px; height:8px; border-radius:50%; background:var(--green); margin-right:6px;"></span>` : '';
+        return `<tr>
+          <td>${dot}<b>${c.name}</b></td>
+          <td class="muted">${c.title||'-'}</td>
+          <td>${c.email||'-'}</td>
+          <td>${c.mobile_phone||(legacyPhone?legacyPhone:'-')}</td>
+          <td>${c.office_phone||'-'}</td>
+          <td>${c.linkedin_url?`<a href="${escAttr(c.linkedin_url)}" target="_blank" style="color:var(--orange-dark);">Profile</a>`:'-'}</td>
+          <td>${outreach}</td>
+        </tr>`;
+      }).join('')}</tbody></table></div>
+    </div>`;
+  }
+
+  if(actions.length){
+    html += `<div class="card"><h3>90-day actions</h3>${actions.map(a=>`<div class="modal-field"><span>${a.week}</span><span>${a.action}</span></div>`).join('')}</div>`;
+  }
+
+  document.getElementById('modalContent').innerHTML = html;
+  document.getElementById('acctModal').classList.add('open');
+  document.querySelectorAll('#modalContent table.resizable-table').forEach((t,i)=>makeResizable(t.id || (t.id = 'modal-table-'+i), 'col-widths-modal-'+i));
+}
+function closeAccountModal(){ document.getElementById('acctModal').classList.remove('open'); }
+
+/* ---------- CONTACT EMAIL MODAL (shared by Contacts tab and Overview) ---------- */
+function findContact(account, name){
+  const list = (DATA.contacts_by_account||{})[account] || [];
+  return list.find(c=>c.name===name);
+}
+function openContactEmailModal(account, name){
+  const c = findContact(account, name);
+  if(!c){ return; }
+  const isHebrew = (DATA.accounts.find(a=>a.name===account)||{}).country !== 'Greece' && (DATA.accounts.find(a=>a.name===account)||{}).country !== 'Cyprus';
+  let subject = c.draft_email_subject;
+  let body = c.draft_email_body;
+  if(!body){
+    // simple fallback for contacts without a researched draft yet
+    const greeting = isHebrew ? `שלום ${c.name.split(' ')[0]},` : `Hi ${c.name.split(' ')[0]},`;
+    subject = isHebrew ? `Postman & ${account}` : `Postman & ${account}`;
+    body = isHebrew
+      ? `${greeting}\n\nאני מנהל את הפעילות של Postman.com בישראל. Postman נמצאת בשימוש של יותר מ־45 מיליון מפתחים ברחבי העולם, כולל צוותים מכלל חברות ה־Fortune 500.\n\nאשמח לשמוע איך ניהול API-ים וממשל מנוהלים היום ב-${account} ולקבוע שיחת היכרות קצרה.\n\nתודה מראש,\nיניב\n\n[הערה: אין עדיין מחקר אישי לאיש קשר זה - זה נוסח כללי]`
+      : `${greeting}\n\nI lead Postman's activity in Israel and Greece. Postman is used by more than 45 million developers worldwide, including teams across most Fortune 500 companies.\n\nI'd like to hear how API management and governance are handled today at ${account} - open to a short call?\n\nThanks,\nYaniv\n\n[Note: no personal research done for this contact yet - this is a generic draft]`;
+  }
+  const dir = /[\u0590-\u05FF]/.test(body) ? 'rtl' : 'ltr';
+  document.getElementById('emailModalContent').innerHTML = `
+    <h3 style="margin-bottom:4px;">${c.name}</h3>
+    <p class="muted" style="margin-bottom:10px;">${c.title||''} &middot; ${account}${c.email?' &middot; '+c.email:''}</p>
+    <div class="muted" style="font-size:11px; margin-bottom:6px;"><b>Subject:</b> ${subject||''}</div>
+    <textarea id="emailModalTextarea" dir="${dir}" style="width:100%; min-height:280px; font-size:12.5px; line-height:1.6; border:1px solid var(--line); border-radius:6px; padding:10px; box-sizing:border-box; font-family:inherit; resize:vertical;">${body}</textarea>
+    <div style="margin-top:10px; display:flex; gap:8px;">
+      <button class="btn btn-secondary" style="font-size:11px; padding:6px 10px;" onclick="copyEmailModalText('${escAttr(subject||'')}')">Copy email</button>
+    </div>
+  `;
+  document.getElementById('emailModal').classList.add('open');
+}
+function closeEmailModal(){ document.getElementById('emailModal').classList.remove('open'); }
+function copyEmailModalText(subject){
+  const ta = document.getElementById('emailModalTextarea');
+  if(!ta) return;
+  const text = (subject?('Subject: '+subject+'\n\n'):'') + ta.value;
+  if(navigator.clipboard) navigator.clipboard.writeText(text).catch(()=>{});
+}
+document.addEventListener('click', (e)=>{
+  const el = e.target.closest('.acct-link');
+  if(el){ openAccountModal(el.dataset.acct); }
+  const cel = e.target.closest('.contact-email-link');
+  if(cel){ openContactEmailModal(cel.dataset.account, cel.dataset.contact); }
+});
+
+/* ---------- OPPORTUNITIES & ALERTS (now shown inline on Overview) ---------- */
+function buildOpportunitiesHTML(){
+  let html = '';
+
+  // Renewals coming up in the next 60 days - across tracked accounts and self-serve
+  const upcomingRenewals60 = DATA.renewals_next_60_days || [];
+  if(upcomingRenewals60.length){
+    const totalArr60 = upcomingRenewals60.reduce((s,r)=>s+(r.arr||0), 0);
+    html += `<div class="card" style="border-color:#B23; background:#FFF0F0;">
+      <h3 style="cursor:pointer;" onclick="document.getElementById('renewalsList60').style.display = document.getElementById('renewalsList60').style.display==='none' ? 'block' : 'none';">
+        &#9200; Renewals due in the next 60 days (${upcomingRenewals60.length}) - ${fmtMoney(totalArr60)} total <span class="muted" style="font-size:11px;">(click to expand)</span>
+      </h3>
+      <div id="renewalsList60" style="display:none; max-height:340px; overflow-y:auto;">
+        ${upcomingRenewals60.map(r=>`<div class="deal-card"><div class="deal-head"><b class="acct-link" data-acct="${escAttr(r.account)}" style="cursor:pointer;">${r.account}</b><span class="tag ${r.source==='tracked'?'tag-new':'tag-stale'}" style="font-size:9px;">${r.source==='tracked'?'Tracked':'Self-serve'}</span><span class="muted" style="font-size:11px;">${r.renewal_date}</span></div><div class="muted">${r.team_name}${r.arr?' - '+fmtMoney(r.arr):''}</div></div>`).join('')}
+      </div>
+    </div>`;
+  }
+  // Delinquent paying teams - real payment risk, found in the teams export
+  const delinquent = DATA.delinquent_teams || [];
+  if(delinquent.length){
+    html += `<div class="card" style="border-color:var(--red); background:#FFF6F6;"><h3>Delinquent paying teams (${delinquent.length}) - payment risk, not just churn risk</h3>`;
+    delinquent.forEach(t=>{
+      html += `<div class="deal-card stale"><div class="deal-head"><b class="acct-link" data-acct="${escAttr(t.account)}" style="cursor:pointer;">${t.account}</b><span class="tag tag-stale">${fmtMoney(t.arr)} at risk</span></div><div class="muted">Team "${t.team_name}" is marked Delinquent - renewal on record: ${t.renewal_date||'unknown'}. This ARR may already be lapsing.</div></div>`;
+    });
+    html += '</div>';
+  }
+
+  // Generalized alerts
+  const alerts = DATA.generalized_alerts || [];
+  html += `<div class="card"><h3>Follow-up alerts (${alerts.length}) - every open opportunity, not just the ones I hand-checked</h3>`;
+  if(!alerts.length){ html += `<p class="muted">No open-opportunity accounts currently flagged.</p>`; }
+  alerts.forEach(a=>{
+    html += `<div class="deal-card ${a.severity==='high'?'stale':'discovered'}">
+      <div class="deal-head"><b class="acct-link" data-acct="${escAttr(a.name)}" style="cursor:pointer;">${a.name}</b>
+      <span class="tag ${a.severity==='high'?'tag-stale':'tag-new'}">${a.severity==='high'?'Needs re-engagement':'No live signal tracked'}</span></div>
+      <div class="muted">${a.reason}</div>
+    </div>`;
+  });
+  html += '</div>';
+
+  // Renewals calendar
+  const renewals = DATA.renewals_calendar || [];
+  html += `<div class="card"><h3>Renewals / close dates on record (${renewals.length})</h3>`;
+  if(!renewals.length){ html += `<p class="muted">No close dates tracked yet outside the deals I already have live signal on.</p>`; }
+  renewals.forEach(r=>{
+    html += `<div class="meeting-row"><span><b class="acct-link" data-acct="${escAttr(r.name)}" style="cursor:pointer;">${r.name}</b> - ${r.stage||''}${r.amount?' - '+fmtMoney(r.amount):''}</span><span>${fmtDate(r.close_date)}</span></div>`;
+  });
+  html += '</div>';
+
+  return html;
+}
+
+/* ---------- CONTACTS ---------- */
+let contactsFilter = {q:''};
+/* ---------- NOT RELEVANT MARKING (shared: Contacts + Quality Leads) ---------- */
+window._notRelevantState = window._notRelevantState || null;
+async function loadNotRelevantState(){
+  if(window._notRelevantState) return window._notRelevantState;
+  let saved = {};
+  try{ const r = await window.storage.get('not-relevant-marks', false); if(r) saved = JSON.parse(r.value); }catch(e){}
+  window._notRelevantState = saved;
+  return saved;
+}
+function isNotRelevant(acct, name, dataFloor){
+  const key = acct + '||' + name;
+  const saved = window._notRelevantState || {};
+  return (key in saved) ? !!saved[key] : !!dataFloor;
+}
+async function toggleNotRelevant(acct, name, checked, rerenderFnName){
+  const key = acct + '||' + name;
+  if(!window._notRelevantState) window._notRelevantState = {};
+  window._notRelevantState[key] = checked;
+  try{ await window.storage.set('not-relevant-marks', JSON.stringify(window._notRelevantState), false); }catch(e){}
+  const scrollY = window.scrollY;
+  if(rerenderFnName === 'contacts') drawContactsList();
+  else if(rerenderFnName === 'ql') drawQLTable();
+  window.scrollTo(0, scrollY);
+}
+function countNotRelevant(){
+  let n = 0;
+  Object.entries(DATA.contacts_by_account||{}).forEach(([acct, list])=>{
+    list.forEach(c=>{ if(isNotRelevant(acct, c.name, c.not_relevant)) n++; });
+  });
+  return n;
+}
+
+/* ---------- CHAMPION / RELEVANT MARKING (shared: Contacts) ---------- */
+window._championState = window._championState || null;
+window._relevantMarkState = window._relevantMarkState || null;
+async function loadChampionState(){
+  if(window._championState) return window._championState;
+  let saved = {};
+  try{ const r = await window.storage.get('champion-marks', false); if(r) saved = JSON.parse(r.value); }catch(e){}
+  window._championState = saved;
+  return saved;
+}
+async function loadRelevantMarkState(){
+  if(window._relevantMarkState) return window._relevantMarkState;
+  let saved = {};
+  try{ const r = await window.storage.get('relevant-marks', false); if(r) saved = JSON.parse(r.value); }catch(e){}
+  window._relevantMarkState = saved;
+  return saved;
+}
+function isChampion(acct, name, dataFloor){
+  const key = acct + '||' + name;
+  const saved = window._championState || {};
+  return (key in saved) ? !!saved[key] : !!dataFloor;
+}
+function isMarkedRelevant(acct, name, dataFloor){
+  const key = acct + '||' + name;
+  const saved = window._relevantMarkState || {};
+  return (key in saved) ? !!saved[key] : !!dataFloor;
+}
+async function toggleChampion(acct, name, checked, rerenderFnName){
+  const key = acct + '||' + name;
+  if(!window._championState) window._championState = {};
+  // only one champion per account - unchecking any other champion at this account when a new one is set
+  if(checked){
+    Object.entries(DATA.contacts_by_account||{}).forEach(([a, list])=>{
+      if(a !== acct) return;
+      list.forEach(c=>{ if(c.name !== name) window._championState[a+'||'+c.name] = false; });
+    });
+  }
+  window._championState[key] = checked;
+  try{ await window.storage.set('champion-marks', JSON.stringify(window._championState), false); }catch(e){}
+  const scrollY = window.scrollY;
+  if(rerenderFnName === 'contacts') drawContactsList();
+  else if(rerenderFnName === 'ql') drawQLTable();
+  window.scrollTo(0, scrollY);
+}
+async function toggleMarkedRelevant(acct, name, checked, rerenderFnName){
+  const key = acct + '||' + name;
+  if(!window._relevantMarkState) window._relevantMarkState = {};
+  window._relevantMarkState[key] = checked;
+  try{ await window.storage.set('relevant-marks', JSON.stringify(window._relevantMarkState), false); }catch(e){}
+  const scrollY = window.scrollY;
+  if(rerenderFnName === 'contacts') drawContactsList();
+  else if(rerenderFnName === 'ql') drawQLTable();
+  window.scrollTo(0, scrollY);
+}
+function contactPriority(acct, c){
+  if(isNotRelevant(acct, c.name, c.not_relevant)) return -1;
+  if(isChampion(acct, c.name, c.champion)) return 3;
+  if(isMarkedRelevant(acct, c.name, c.marked_relevant)) return 2;
+  return 1;
+}
+function computeRelevancePatterns(){
+  const STOP = new Set(['of','the','and','&','a','an','to','for','at','in','on','is','vp','director',
+    'head','team','lead','leader','manager','chief','officer','senior','deputy','global','group','president']);
+  function tokenize(title){
+    return (title||'').toLowerCase().replace(/[^a-z\s]/g,' ').split(/\s+/).filter(w=>w.length>2 && !STOP.has(w));
+  }
+  const badWords = {}, goodWords = {};
+  Object.entries(DATA.contacts_by_account||{}).forEach(([acct, list])=>{
+    list.forEach(c=>{
+      const nr = isNotRelevant(acct, c.name, c.not_relevant);
+      const words = tokenize(c.title);
+      if(nr){ words.forEach(w=>{ badWords[w] = (badWords[w]||0)+1; }); }
+      else if(c.quality_lead){ words.forEach(w=>{ goodWords[w] = (goodWords[w]||0)+1; }); }
+    });
+  });
+  const topN = (obj, n) => Object.entries(obj).sort((a,b)=>b[1]-a[1]).filter(([w,c])=>c>=2).slice(0,n);
+  return { bad: topN(badWords, 8), good: topN(goodWords, 8) };
+}
+function renderPatternsBox(){
+  const nrCount = countNotRelevant();
+  if(nrCount < 3) return ''; // not enough signal yet to show a meaningful pattern
+  const { bad, good } = computeRelevancePatterns();
+  if(!bad.length && !good.length) return '';
+  return `<div class="patterns-box">
+    <h4>Learned patterns from your marks (${nrCount} marked not relevant so far)</h4>
+    ${bad.length?`<div class="pattern-row"><span class="muted" style="font-size:11px;">Recurring in titles you marked <b style="color:var(--red);">not relevant</b>:</span>${bad.map(([w,c])=>`<span class="pattern-chip bad">${w} (${c})</span>`).join('')}</div>`:''}
+    ${good.length?`<div class="pattern-row"><span class="muted" style="font-size:11px;">Recurring in titles that stayed <b style="color:var(--green);">quality leads</b>:</span>${good.map(([w,c])=>`<span class="pattern-chip good">${w} (${c})</span>`).join('')}</div>`:''}
+    <p class="muted" style="font-size:10.5px; margin-top:6px;">Next time you hand me a contact file, I'll weigh these patterns when deciding who's worth adding.</p>
+  </div>`;
+}
+
+async function renderContacts(){
+  const panel = document.getElementById('panel-contacts');
+  const meta = DATA.contacts_meta || {};
+  const statsMeta = DATA.contacts_email_stats_meta || {};
+  await loadNotRelevantState();
+  await loadChampionState();
+  await loadRelevantMarkState();
+  panel.innerHTML = `
+    <div class="kpi-grid" style="grid-template-columns:repeat(3,1fr);">
+      <div class="kpi"><div class="val">${meta.total_contacts||0}</div><div class="lbl">Total contacts on file</div></div>
+      <div class="kpi"><div class="val">${meta.total_accounts_with_contacts||0}</div><div class="lbl">Accounts with a contact</div></div>
+      <div class="kpi"><div class="val">${DATA.accounts.length - (meta.total_accounts_with_contacts||0)}</div><div class="lbl">Accounts with zero contacts</div></div>
+    </div>
+    <p class="muted" style="margin-bottom:10px;">From your SFDC contacts export (${meta.as_of}). ${(meta.new_accounts_discovered||[]).length} of these accounts weren't in the territory plan at all until this export surfaced them. Click an account to expand its contacts. <span style="display:inline-block; width:8px; height:8px; border-radius:50%; background:var(--green); margin:0 4px 0 8px;"></span>= my read on who's likely relevant for Postman based on their role (technical/engineering/IT leadership) - a judgment call, not a confirmed fact.</p>
+    <div id="contactsPatterns"></div>
+    <div class="filters"><input type="text" id="contactsSearch" placeholder="Search contacts, accounts, or titles..."></div>
+    <div id="contactsList"></div>
+  `;
+  document.getElementById('contactsPatterns').innerHTML = renderPatternsBox();
+  panel.querySelector('#contactsSearch').oninput = (e)=>{ contactsFilter.q = e.target.value.toLowerCase(); drawContactsList(); };
+  drawContactsList();
+}
+window._openContactAccounts = window._openContactAccounts || new Set();
+function toggleContactCard(acct){
+  if(window._openContactAccounts.has(acct)) window._openContactAccounts.delete(acct);
+  else window._openContactAccounts.add(acct);
+  document.querySelectorAll('.abm-card').forEach(card=>{
+    if(card.dataset.acct === acct) card.classList.toggle('open');
+  });
+}
+function drawContactsList(){
+  const byAcct = DATA.contacts_by_account || {};
+  const stats = DATA.contacts_email_stats || {};
+  const acctByName = {};
+  (DATA.accounts||[]).forEach(a=>{ acctByName[a.name] = a; });
+  const q = contactsFilter.q;
+  let entries = Object.entries(byAcct);
+  if(q){
+    entries = entries.filter(([acct, list]) => acct.toLowerCase().includes(q) ||
+      list.some(c => (c.name||'').toLowerCase().includes(q) || (c.title||'').toLowerCase().includes(q)));
+  }
+  // within each account, champions come first, then contacts marked relevant, then the untouched
+  // default, then not-relevant sinks to the bottom; ties broken by replied status, then relevance
+  const hasReplied = (c) => { const s = c.email ? stats[c.email.toLowerCase()] : null; return !!(s && s.received > 0); };
+  entries = entries.map(([acct, list])=>{
+    const sortedList = list.slice().sort((a,b)=>{
+      const pa = contactPriority(acct, a), pb = contactPriority(acct, b);
+      if(pa !== pb) return pb - pa;
+      const ra = hasReplied(a) ? 1 : 0, rb = hasReplied(b) ? 1 : 0;
+      if(ra !== rb) return rb - ra;
+      return contactRelevanceScore(b, acctByName[acct]) - contactRelevanceScore(a, acctByName[acct]);
+    });
+    return [acct, sortedList];
+  });
+  // accounts are sorted alphabetically A-Z
+  entries.sort((a,b)=> a[0].localeCompare(b[0]));
+  document.getElementById('contactsList').innerHTML = entries.map(([acct, list], idx)=>{
+    const id = 'contact-card-'+idx;
+    const isOpen = window._openContactAccounts && window._openContactAccounts.has(acct);
+    const nrCount = list.filter(c => isNotRelevant(acct, c.name, c.not_relevant)).length;
+    const qlCount = list.filter(c => c.quality_lead).length;
+    const champCount = list.filter(c => isChampion(acct, c.name, c.champion)).length;
+    const relevantCount = list.length - nrCount;
+    const breakdown = `${list.length} contact${list.length>1?'s':''} &middot; ${relevantCount} relevant &middot; ${nrCount} not relevant &middot; ${qlCount} quality lead${qlCount!==1?'s':''}${champCount?` &middot; ${champCount} champion`:''}`;
+    return `<div class="abm-card${isOpen?' open':''}" id="${id}" data-acct="${escAttr(acct)}">
+      <div class="abm-head" onclick="toggleContactCard('${escAttr(acct)}')">
+        <span><b class="acct-link" data-acct="${escAttr(acct)}" style="color:var(--orange-dark);" onclick="event.stopPropagation()">${acct}</b> <span class="muted">(${breakdown})</span></span>
+        <span class="muted">&#9662;</span>
+      </div>
+      <div class="abm-body" style="padding:0 0 12px;">
+        <div class="table-scroll" style="max-height:none;">
+        <table class="resizable-table">
+          <thead><tr><th>Champion</th><th>Relevant</th><th>Not relevant</th><th>Name</th><th>Title</th><th>Email</th><th>Mobile</th><th>Office</th><th>LinkedIn</th><th>Outreach</th></tr></thead>
+          <tbody>
+        ${list.map(c=>{
+          const s = c.email ? stats[c.email.toLowerCase()] : null;
+          const legacyPhone = (!c.mobile_phone && !c.office_phone && !c.hq_phone && c.phone)
+            ? (String(c.phone) + (c.phone_suspect?' &#9888;':'')) : '';
+          const outreach = s ? `${s.sent} sent / <span style="color:${s.received?'var(--green)':'var(--gray)'};">${s.received} replied</span>` : '<span class="muted">not checked yet</span>';
+          const dot = c.api_relevant ? `<span title="Likely relevant for Postman - API/technical role" style="display:inline-block; width:8px; height:8px; border-radius:50%; background:var(--green); margin-right:6px;"></span>` : '';
+          const nr = isNotRelevant(acct, c.name, c.not_relevant);
+          const champ = isChampion(acct, c.name, c.champion);
+          const relMarked = isMarkedRelevant(acct, c.name, c.marked_relevant);
+          const rowClass = nr ? 'not-relevant-row' : (champ ? 'champion-row' : (relMarked ? 'relevant-marked-row' : ''));
+          return `<tr class="${rowClass}">
+            <td style="text-align:center;"><input type="checkbox" class="champion-checkbox" ${champ?'checked':''} title="Mark as our champion at this account" onclick="event.stopPropagation()" onchange="toggleChampion('${escAttr(acct)}','${escAttr(c.name)}', this.checked, 'contacts')"></td>
+            <td style="text-align:center;"><input type="checkbox" class="relevant-checkbox" ${relMarked?'checked':''} title="Mark as relevant (but not the champion)" onclick="event.stopPropagation()" onchange="toggleMarkedRelevant('${escAttr(acct)}','${escAttr(c.name)}', this.checked, 'contacts')"></td>
+            <td style="text-align:center;"><input type="checkbox" class="nr-checkbox" ${nr?'checked':''} onclick="event.stopPropagation()" onchange="toggleNotRelevant('${escAttr(acct)}','${escAttr(c.name)}', this.checked, 'contacts')"></td>
+            <td>${dot}<b class="contact-email-link" data-account="${escAttr(acct)}" data-contact="${escAttr(c.name)}" style="cursor:pointer;" title="Click to see a suggested email">${c.name}</b>${c.quality_lead?' <span class="tag" style="background:var(--cream); color:var(--orange-dark); font-size:9px; padding:2px 6px; border-radius:4px; font-weight:800; vertical-align:middle;" title="Flagged as a Quality Lead">QUALITY LEAD</span>':''}${champ?' <span class="tag-champion">&#9733; CHAMPION</span>':''}${relMarked?' <span class="tag-relevant-marked">RELEVANT</span>':''}${nr?' <span class="tag-not-relevant">NOT RELEVANT</span>':''}</td>
+            <td class="muted">${c.title||'-'}</td>
+            <td>${c.email||'-'}</td>
+            <td>${c.mobile_phone||(legacyPhone?legacyPhone:'-')}</td>
+            <td>${c.office_phone||'-'}</td>
+            <td>${c.linkedin_url?`<a href="${escAttr(c.linkedin_url)}" target="_blank" style="color:var(--orange-dark);">Profile</a>`:'-'}</td>
+            <td>${outreach}</td>
+          </tr>`;
+        }).join('')}
+          </tbody>
+        </table>
+        </div>
+      </div>
+    </div>`;
+  }).join('') || '<p class="muted">No contacts match that search.</p>';
+  const pb = document.getElementById('contactsPatterns');
+  if(pb) pb.innerHTML = renderPatternsBox();
+}
+
+/* ---------- QUALITY LEADS ---------- */
+let qlFilter = {q:''};
+async function renderQualityLeads(){
+  const panel = document.getElementById('panel-qualityleads');
+  const allLeadsRaw = [];
+  Object.entries(DATA.contacts_by_account||{}).forEach(([acct, contacts])=>{
+    contacts.forEach(c=>{
+      if(c.quality_lead){
+        allLeadsRaw.push(Object.assign({account: acct}, c));
+      }
+    });
+  });
+  let saved = {};
+  try{ const r = await window.storage.get('ql-reached-out', false); if(r) saved = JSON.parse(r.value); }catch(e){}
+  window._qlReachedState = saved;
+  await loadNotRelevantState();
+  const isReached = (l) => { const key=l.account+'||'+l.name; return (key in saved) ? !!saved[key] : !!l.reached_out; };
+  const allLeads = allLeadsRaw.filter(l=>!isReached(l));
+  const graduatedCount = allLeadsRaw.length - allLeads.length;
+
+  panel.innerHTML = `
+    <div class="kpi-grid" style="grid-template-columns:repeat(3,1fr);">
+      <div class="kpi"><div class="val">${allLeads.length}</div><div class="lbl">Quality leads flagged</div></div>
+      <div class="kpi"><div class="val">${new Set(allLeads.map(l=>l.account)).size}</div><div class="lbl">Accounts represented</div></div>
+      <div class="kpi"><div class="val">${allLeads.filter(l=>l.location_confirmed).length}</div><div class="lbl">Location-confirmed (IL/GR/CY)</div></div>
+    </div>
+    <p class="muted" style="margin-bottom:14px;">Contacts flagged as strongly relevant to Postman - senior technical/security title AND located in Israel, Greece, or Cyprus. This is your reach-out priority list.${graduatedCount?` (${graduatedCount} already reached out &mdash; moved to Contacts, still tagged Quality Lead there.)`:''}</p>
+    <div id="qlPatterns"></div>
+    <div class="filters"><input type="text" id="qlSearch" placeholder="Search companies or contacts..."></div>
+    <div id="qlTableWrap"></div>
+  `;
+  document.getElementById('qlPatterns').innerHTML = renderPatternsBox();
+  panel.querySelector('#qlSearch').oninput = (e)=>{ qlFilter.q = e.target.value.toLowerCase(); drawQLTable(); };
+  window._qlAllLeads = allLeads;
+  drawQLTable();
+}
+function drawQLTable(){
+  const q = qlFilter.q;
+  let leads = window._qlAllLeads || [];
+  if(q){
+    leads = leads.filter(l => (l.account||'').toLowerCase().includes(q) || (l.name||'').toLowerCase().includes(q) || (l.title||'').toLowerCase().includes(q));
+  }
+  // not-relevant leads sink to the bottom; among the rest, replied contacts float to the top
+  // (first glance at who's actually engaging); after that, ranked by relevance
+  const acctByName = {};
+  (DATA.accounts||[]).forEach(a=>{ acctByName[a.name] = a; });
+  leads = leads.slice().sort((a,b)=>{
+    const nra = isNotRelevant(a.account, a.name, a.not_relevant) ? 1 : 0, nrb = isNotRelevant(b.account, b.name, b.not_relevant) ? 1 : 0;
+    if(nra !== nrb) return nra - nrb;
+    const statsA = (DATA.contacts_email_stats||{})[(a.email||'').toLowerCase()];
+    const statsB = (DATA.contacts_email_stats||{})[(b.email||'').toLowerCase()];
+    const repliedA = statsA && statsA.received > 0 ? 1 : 0;
+    const repliedB = statsB && statsB.received > 0 ? 1 : 0;
+    if(repliedA !== repliedB) return repliedB - repliedA;
+    const scoreA = contactRelevanceScore(a, acctByName[a.account]);
+    const scoreB = contactRelevanceScore(b, acctByName[b.account]);
+    return scoreB - scoreA;
+  });
+  document.getElementById('qlTableWrap').innerHTML = `
+    <div class="card" style="padding:0;">
+    <div class="table-scroll" id="qlTableScroll">
+    <table class="resizable-table" id="qlTable">
+      <colgroup><col style="width:80px;"><col style="width:90px;"><col style="width:90px;"><col style="width:100px;"><col style="width:170px;"><col style="width:130px;"><col style="width:130px;"><col style="width:130px;"><col style="width:130px;"><col style="width:130px;"><col style="width:130px;"><col style="width:130px;"><col style="width:130px;"></colgroup>
+      <thead><tr><th>Not relevant</th><th>Reached out</th><th>Replied</th><th>Email</th><th></th><th>Account</th><th>Name</th><th>Title</th><th>Location</th><th>Email</th><th>Mobile</th><th>LinkedIn</th><th>Why flagged</th></tr></thead>
+      <tbody>${leads.map((l,i)=>{
+        const emailStats = (DATA.contacts_email_stats||{})[(l.email||'').toLowerCase()];
+        const sent = emailStats ? emailStats.sent||0 : 0;
+        const received = emailStats ? emailStats.received||0 : 0;
+        const repliedTag = sent===0 ? '<span class="muted">not sent</span>' : (received>0 ? '<span class="tag tag-ok">Yes</span>' : '<span class="tag tag-stale">No reply</span>');
+        const personalTag = l.research_backed ? '<span class="tag tag-ok" title="Written from real research on this specific person">&#9998; Personal</span>'
+                           : l.already_sent_real ? '<span class="tag tag-ok" title="Restored from an email you actually sent">&#9998; Real sent</span>'
+                           : '<span class="muted" style="font-size:10px;" title="Role-based draft - not yet personally researched">Generic</span>';
+        const nr = isNotRelevant(l.account, l.name, l.not_relevant);
+        return `<tr class="ql-row ${nr?'not-relevant-row':''}" data-idx="${i}" id="ql-row-${i}" style="cursor:pointer;" onclick="if(!event.target.closest('a, .acct-link, input')) toggleQLDetail(${i})">
+          <td style="text-align:center;"><input type="checkbox" class="nr-checkbox" ${nr?'checked':''} onclick="event.stopPropagation()" onchange="toggleNotRelevant('${escAttr(l.account)}','${escAttr(l.name)}', this.checked, 'ql')"></td>
+          <td style="text-align:center;"><input type="checkbox" id="ql-reached-${i}" style="width:16px; height:16px; accent-color:var(--orange); cursor:pointer;" onclick="event.stopPropagation()" onchange="toggleQLReached(${i}, this.checked)"></td>
+          <td>${repliedTag}</td>
+          <td>${personalTag}</td>
+          <td class="muted" style="font-size:10px;">&#9662;</td>
+          <td><b class="acct-link" data-acct="${escAttr(l.account)}" style="cursor:pointer; color:var(--orange-dark);">${l.account}</b></td>
+          <td><b>${l.name}</b>${nr?' <span class="tag-not-relevant">NOT RELEVANT</span>':''}</td>
+          <td class="muted">${l.title||'-'}</td>
+          <td>${l.location||'-'}</td>
+          <td>${l.email||'-'}</td>
+          <td>${l.mobile_phone||'-'}</td>
+          <td>${l.linkedin_url?`<a href="${escAttr(l.linkedin_url)}" target="_blank" style="color:var(--orange-dark);">Profile</a>`:'-'}</td>
+          <td class="muted">${l.quality_lead_reason||'-'}</td>
+        </tr>
+        <tr class="ql-detail" id="ql-detail-${i}" style="display:none;">
+          <td colspan="13" style="padding:0; border:none;">
+            <div id="ql-detail-inner-${i}" style="position:sticky; left:0; background:#FBF6EE; border-top:2px solid var(--orange); padding:14px 18px; box-sizing:border-box;"></div>
+          </td>
+        </tr>`;
+      }).join('') || '<tr><td colspan="13" class="muted" style="padding:16px;">No leads match that search.</td></tr>'}</tbody>
+    </table>
+    </div>
+    </div>
+  `;
+  window._qlLeads = leads;
+  makeResizable('qlTable', 'col-widths-qualityleads');
+  const pb = document.getElementById('qlPatterns');
+  if(pb) pb.innerHTML = renderPatternsBox();
+  if(window._openQLKey){
+    const newIdx = leads.findIndex(l => (l.account+'||'+l.name) === window._openQLKey);
+    if(newIdx >= 0) toggleQLDetail(newIdx);
+    else window._openQLKey = null;
+  }
+}
+async function toggleQLReached(i, checked){
+  const l = (window._qlLeads||[])[i];
+  if(!l) return;
+  const key = l.account + '||' + l.name;
+  if(!window._qlReachedState) window._qlReachedState = {};
+  window._qlReachedState[key] = checked;
+  try{ await window.storage.set('ql-reached-out', JSON.stringify(window._qlReachedState), false); }catch(e){}
+  if(checked){
+    const scrollY = window.scrollY;
+    await renderQualityLeads(); // graduates this lead out of the active list, into Contacts
+    window.scrollTo(0, scrollY);
+  }
+}
+window._openQLKey = window._openQLKey || null;
+function toggleQLDetail(i){
+  const l = (window._qlLeads||[])[i];
+  const key = l ? (l.account + '||' + l.name) : null;
+  const row = document.getElementById('ql-detail-'+i);
+  const inner = document.getElementById('ql-detail-inner-'+i);
+  const scroller = document.getElementById('qlTableScroll');
+  if(!row.style.display || row.style.display==='none'){
+    // close any other open row first
+    document.querySelectorAll('.ql-detail').forEach(r=>{ if(r!==row) r.style.display='none'; });
+    window._openQLKey = key;
+  } else {
+    row.style.display = 'none';
+    window._openQLKey = null;
+    return;
+  }
+  inner.style.width = scroller.clientWidth + 'px';
+  const u = (DATA.usage_export||[]).find(u=>u.name===l.account);
+  const acctData = DATA.accounts.find(a=>a.name===l.account);
+  let html = `<b style="font-size:12px;">Usage snapshot - ${l.account}</b>
+    <table style="width:100%; margin-top:8px; margin-bottom:16px; font-size:11px; border-collapse:collapse;">
+      <thead><tr style="border-bottom:1px solid var(--line);">
+        <th style="text-align:left; padding:4px 8px; color:var(--gray); font-weight:700;">90 DAU</th>
+        <th style="text-align:left; padding:4px 8px; color:var(--gray); font-weight:700;">Paid Users</th>
+        <th style="text-align:left; padding:4px 8px; color:var(--gray); font-weight:700;">Free Users</th>
+        <th style="text-align:left; padding:4px 8px; color:var(--gray); font-weight:700;">Team Users</th>
+        <th style="text-align:left; padding:4px 8px; color:var(--gray); font-weight:700;">Total/Paid/Free Teams</th>
+        <th style="text-align:left; padding:4px 8px; color:var(--gray); font-weight:700;">Total ARR</th>
+      </tr></thead>
+      <tbody><tr>
+        <td style="padding:4px 8px;">${(acctData&&acctData.dau)??(u&&u.dau_90)??'-'}</td>
+        <td style="padding:4px 8px;">${u?u.paid_users??'-':'-'}</td>
+        <td style="padding:4px 8px;">${u?u.free_team_users??'-':'-'}</td>
+        <td style="padding:4px 8px;">${u?u.postman_team_users??'-':'-'}</td>
+        <td style="padding:4px 8px;">${u?`${u.postman_teams??'-'}/${u.paid_teams??'-'}/${u.free_teams??'-'}`:'-'}</td>
+        <td style="padding:4px 8px;"><b>${u&&u.combined_arr?fmtMoney(u.combined_arr):(acctData&&acctData.arr?fmtMoney(acctData.arr):'-')}</b></td>
+      </tr></tbody>
+    </table>`;
+  if(l.draft_email_body){
+    const editKey = 'email-edit-' + l.account + '-' + l.name;
+    const isRtl = /[\u0590-\u05FF]/.test(l.draft_email_body);
+    html += `<div style="width:100%; box-sizing:border-box;">
+      <div style="display:flex; justify-content:space-between; align-items:center;">
+        <b style="font-size:12px;">Suggested first outreach email <span id="ql-edited-flag-${i}" class="muted" style="font-weight:400; display:none;">(edited by you)</span></b>
+      </div>
+      <div style="background:#fff; border:1px solid var(--line); border-radius:8px; padding:12px; margin-top:6px; box-sizing:border-box;">
+        <div class="muted" style="font-size:11px; margin-bottom:6px;"><b>Subject:</b> ${l.draft_email_subject||''}</div>
+        <textarea id="ql-email-textarea-${i}" dir="${isRtl?'rtl':'ltr'}" style="width:100%; min-height:220px; max-height:400px; font-size:12.5px; line-height:1.6; border:1px solid var(--line); border-radius:6px; padding:8px; box-sizing:border-box; font-family:inherit; resize:vertical;">${l.draft_email_body}</textarea>
+      </div>
+      <div style="margin-top:8px; display:flex; gap:8px;">
+        <button class="btn btn-secondary" style="font-size:11px; padding:6px 10px;" onclick="copyQLEmail(${i}, 1)">Copy email</button>
+        <button class="btn btn-secondary" style="font-size:11px; padding:6px 10px;" onclick="saveQLEmailEdit(${i})">Save my edit</button>
+        <button class="btn btn-secondary" style="font-size:11px; padding:6px 10px;" onclick="resetQLEmailEdit(${i})">Reset to original</button>
+      </div>
+    </div>`;
+  } else {
+    html += `<span class="muted">No draft email built for this contact yet.</span>`;
+  }
+  inner.innerHTML = html;
+  row.style.display = 'table-row';
+  if(l.draft_email_body){
+    (async ()=>{
+      const editKey = 'email-edit-' + l.account + '-' + l.name;
+      try{
+        const r = await window.storage.get(editKey, false);
+        if(r && r.value){
+          const ta = document.getElementById('ql-email-textarea-'+i);
+          if(ta){ ta.value = r.value; }
+          const flag = document.getElementById('ql-edited-flag-'+i);
+          if(flag){ flag.style.display = 'inline'; }
+        }
+      }catch(e){}
+    })();
+  }
+}
+function copyQLEmail(i, opt){
+  const l = (window._qlLeads||[])[i];
+  if(!l) return;
+  const subj = opt===2 ? l.draft_email_subject_2 : l.draft_email_subject;
+  const ta = document.getElementById('ql-email-textarea-'+i);
+  const bodyText = ta ? ta.value : (opt===2 ? l.draft_email_body_2 : l.draft_email_body);
+  if(!bodyText) return;
+  const text = (subj?('Subject: '+subj+'\n\n'):'') + bodyText;
+  if(navigator.clipboard) navigator.clipboard.writeText(text).catch(()=>{});
+}
+async function saveQLEmailEdit(i){
+  const l = (window._qlLeads||[])[i];
+  const ta = document.getElementById('ql-email-textarea-'+i);
+  if(!l || !ta) return;
+  const editKey = 'email-edit-' + l.account + '-' + l.name;
+  try{ await window.storage.set(editKey, ta.value, false); }catch(e){}
+  const flag = document.getElementById('ql-edited-flag-'+i);
+  if(flag) flag.style.display = 'inline';
+}
+async function resetQLEmailEdit(i){
+  const l = (window._qlLeads||[])[i];
+  const ta = document.getElementById('ql-email-textarea-'+i);
+  if(!l || !ta) return;
+  const editKey = 'email-edit-' + l.account + '-' + l.name;
+  try{ await window.storage.delete(editKey, false); }catch(e){}
+  ta.value = l.draft_email_body;
+  const flag = document.getElementById('ql-edited-flag-'+i);
+  if(flag) flag.style.display = 'none';
+}
+
+/* ---------- TABS ---------- */
+document.querySelectorAll('.tab').forEach(t=>{
+  t.onclick = ()=>{
+    if(t.classList.contains('dragging')) return;
+    document.querySelectorAll('.tab').forEach(x=>x.classList.remove('active'));
+    document.querySelectorAll('.panel').forEach(x=>x.classList.remove('active'));
+    t.classList.add('active');
+    document.getElementById('panel-'+t.dataset.tab).classList.add('active');
+  };
+});
+
+/* ---------- TAB DRAG-TO-REORDER ---------- */
+(function setupTabDragging(){
+  const bar = document.getElementById('tabsBar');
+  let dragEl = null;
+
+  bar.querySelectorAll('.tab').forEach(tab=>{
+    tab.addEventListener('dragstart', (e)=>{
+      dragEl = tab;
+      tab.classList.add('dragging');
+      e.dataTransfer.effectAllowed = 'move';
+    });
+    tab.addEventListener('dragend', ()=>{
+      tab.classList.remove('dragging');
+      bar.querySelectorAll('.tab').forEach(t=>t.classList.remove('drag-over'));
+      saveTabOrder();
+    });
+    tab.addEventListener('dragover', (e)=>{
+      e.preventDefault();
+      if(tab === dragEl) return;
+      bar.querySelectorAll('.tab').forEach(t=>t.classList.remove('drag-over'));
+      tab.classList.add('drag-over');
+    });
+    tab.addEventListener('drop', (e)=>{
+      e.preventDefault();
+      if(!dragEl || tab === dragEl) return;
+      const tabs = Array.from(bar.querySelectorAll('.tab'));
+      const dragIdx = tabs.indexOf(dragEl);
+      const dropIdx = tabs.indexOf(tab);
+      if(dragIdx < dropIdx) tab.after(dragEl);
+      else tab.before(dragEl);
+    });
+  });
+
+  async function saveTabOrder(){
+    const order = Array.from(bar.querySelectorAll('.tab')).map(t=>t.dataset.tab);
+    try{ await window.storage.set('tab-order', JSON.stringify(order), false); }catch(e){}
+  }
+
+  (async ()=>{
+    try{
+      const r = await window.storage.get('tab-order', false);
+      if(r){
+        const order = JSON.parse(r.value);
+        order.forEach(key=>{
+          const el = bar.querySelector(`.tab[data-tab="${key}"]`);
+          if(el) bar.appendChild(el);
+        });
+      }
+    }catch(e){}
+  })();
+})();
+
+/* ---------- REFRESH ---------- */
+function fullRefresh(){
+  const prompt = "Please run a full refresh of my Territory Command Center dashboard: re-pull current deals and next meetings from Aircover, recent emails from Gmail, upcoming meetings from Calendar, and relevant Slack activity for my active accounts, then regenerate the dashboard artifact with the updated data.";
+  if (typeof sendPrompt === 'function'){
+    sendPrompt(prompt);
+  } else {
+    // Not running inside Claude's artifact viewer (e.g. opened as a downloaded file) - sendPrompt doesn't exist here.
+    navigator.clipboard && navigator.clipboard.writeText(prompt).catch(()=>{});
+    alert("This button only works when the dashboard is open inside a Claude chat (not as a standalone downloaded file).\n\nI've copied the refresh request to your clipboard - paste it into your Claude chat to run it:\n\n" + prompt);
+  }
+}
+
+async function quickRefresh(){
+  const btn = document.getElementById('quickRefreshBtn');
+  const status = document.getElementById('refreshStatus');
+  btn.disabled = true; btn.innerHTML = '<span class="spin">&#x21bb;</span> Refreshing...';
+  status.textContent = 'Checking Gmail + Calendar for active accounts...';
+  try{
+    const accounts = Object.keys(DATA.live_signals||{});
+    const prompt = "You have access to the user's Gmail and Google Calendar via MCP tools. For these accounts: " + accounts.join(", ") + " - find the single most recent relevant email thread and the next upcoming calendar meeting (if any) for each account, using today's date as reference. Respond ONLY with a raw JSON object, no markdown, no prose, in this exact shape: {\"account name\": {\"latest_email_subject\": string or null, \"latest_email_date\": ISO date or null, \"next_meeting_date\": ISO date or null, \"next_meeting_title\": string or null}}. If you cannot find anything for an account, use null values but still include the key.";
+
+    const response = await fetch("https://api.anthropic.com/v1/messages", {
+      method: "POST",
+      headers: {"Content-Type":"application/json"},
+      body: JSON.stringify({
+        model: "claude-sonnet-4-6",
+        max_tokens: 1000,
+        messages: [{role:"user", content: prompt}],
+        mcp_servers: [
+          {type:"url", url:"https://gmailmcp.googleapis.com/mcp/v1", name:"gmail"},
+          {type:"url", url:"https://calendarmcp.googleapis.com/mcp/v1", name:"calendar"}
+        ]
+      })
+    });
+    const result = await response.json();
+    const textBlocks = (result.content||[]).filter(b=>b.type==='text').map(b=>b.text).join('\\n');
+    const cleaned = textBlocks.replace(/```json|```/g,'').trim();
+    let parsed = {};
+    try{ parsed = JSON.parse(cleaned); }catch(e){ console.error('parse fail', cleaned); }
+
+    Object.entries(parsed).forEach(([acct, info])=>{
+      if(DATA.live_signals[acct]){
+        if(info.next_meeting_date) DATA.live_signals[acct].next_meeting = info.next_meeting_date;
+        if(info.latest_email_subject) DATA.live_signals[acct].latest_email = info.latest_email_subject + (info.latest_email_date? ' ('+fmtDate(info.latest_email_date)+')':'');
+      }
+    });
+    try{ await window.storage.set('live-signals-cache', JSON.stringify(DATA.live_signals), false); }catch(e){}
+    renderLive();
+    status.textContent = 'Refreshed ' + new Date().toLocaleTimeString() + ' - meetings & emails updated for ' + accounts.length + ' active accounts';
+  }catch(e){
+    status.textContent = 'Quick refresh failed (' + e.message + '). Try Full refresh instead.';
+  }
+  btn.disabled = false; btn.innerHTML = '&#x21bb; Quick refresh';
+}
+
+/* ---------- CUSTOMER SNAPSHOT ---------- */
+function renderSnapshot(){
+  const panel = document.getElementById('panel-snapshot');
+  panel.innerHTML = `
+    <div class="snap-search-wrap">
+      <input type="text" class="snap-search" id="snapSearchInput" placeholder="Search any company (tracked account, self-serve, or billed team)..." autocomplete="off" oninput="onSnapSearchInput()" onkeydown="onSnapSearchKeydown(event)">
+      <div class="snap-suggestions" id="snapSuggestions"></div>
+    </div>
+    <div id="snapshotEmpty" class="snap-empty">Search for a company above to generate a client-ready snapshot of their Postman usage, licenses, ARR, and teams &mdash; then download it as HTML or PDF to send along.</div>
+    <div id="snapshotResult" style="display:none;"></div>
+  `;
+}
+
+function normalizeCompanyName(n){
+  return (n||'').toLowerCase()
+    .replace(/\([^)]*\)/g,' ')
+    .replace(/[^a-z0-9]+/g,' ')
+    .split(' ')
+    .filter(w=>w && !['software','limited','ltd','technologies','technology','group','inc','systems',
+      'holdings','bank','airlines','energy','financial','communications','comm','corp','corporation',
+      'company','co','plc','sa','nv','ag','the'].includes(w))
+    .join(' ')
+    .trim();
+}
+
+function snapshotIndex(){
+  if(window._snapIndex) return window._snapIndex;
+  const trackedNames = (DATA.accounts||[]).map(a=>a.name);
+  const buckets = {}; // normalizedKey -> {names:[], tags:Set}
+  function add(name, tag){
+    const key = normalizeCompanyName(name) || name.toLowerCase();
+    if(!buckets[key]) buckets[key] = {names:[], tags:new Set()};
+    if(!buckets[key].names.includes(name)) buckets[key].names.push(name);
+    buckets[key].tags.add(tag);
+  }
+  trackedNames.forEach(n=>add(n,'Tracked'));
+  Object.keys(DATA.teams_by_account||{}).forEach(n=>add(n,'Teams'));
+  Object.keys(DATA.self_serve_renewals||{}).forEach(n=>add(n,'Self-Serve'));
+
+  window._snapIndex = Object.values(buckets).map(entry=>{
+    // Consolidate name variants of the same company (e.g. "Check Point" / "Check Point Software")
+    // into one canonical entry, preferring the name used in the main tracked accounts.
+    let canonical = entry.names.find(n=>trackedNames.includes(n));
+    if(!canonical) canonical = entry.names.reduce((a,b)=>b.length>a.length?b:a, entry.names[0]);
+    return {name:canonical, tags:[...entry.tags]};
+  }).sort((a,b)=>a.name.localeCompare(b.name));
+  return window._snapIndex;
+}
+
+function onSnapSearchInput(){
+  const q = document.getElementById('snapSearchInput').value.trim().toLowerCase();
+  const box = document.getElementById('snapSuggestions');
+  if(!q){ box.classList.remove('open'); box.innerHTML=''; return; }
+  const matches = snapshotIndex().filter(x=>x.name.toLowerCase().includes(q)).slice(0,8);
+  if(!matches.length){ box.classList.remove('open'); box.innerHTML='<div class="snap-sugg-item">No matches</div>'; box.classList.add('open'); return; }
+  box.innerHTML = matches.map(m=>`<div class="snap-sugg-item" onclick="selectSnapshotCompany('${escAttr(m.name)}')">${m.name}<span class="src">${m.tags.join(' / ')}</span></div>`).join('');
+  box.classList.add('open');
+}
+function onSnapSearchKeydown(evt){
+  if(evt.key==='Enter'){
+    const box = document.getElementById('snapSuggestions');
+    const first = box.querySelector('.snap-sugg-item');
+    if(first && first.onclick) first.click();
+  }
+}
+document.addEventListener('click', function(e){
+  const wrap = document.getElementById('snapSearchInput');
+  const box = document.getElementById('snapSuggestions');
+  if(box && wrap && !wrap.contains(e.target) && !box.contains(e.target)){ box.classList.remove('open'); }
+});
+
+function planCategory(text){
+  const p = (text||'').toLowerCase();
+  if(p.includes('enterprise')) return 'Enterprise';
+  if(p.includes('professional')) return 'Professional';
+  if(p.includes('team')) return 'Team';
+  if(p.includes('solo')) return 'Solo';
+  if(p.includes('free')) return 'Free';
+  return 'Other';
+}
+const SNAP_PLAN_COLORS = {
+  'Free':'#B8C0CC', 'Solo':'#3B8FA3', 'Team':'#2E9E6C', 'Professional':'#D69A1F',
+  'Enterprise':'#FF6C37', 'Enterprise + ASA':'#8A2E1F', 'Other':'#5E6470'
+};
+
+function getSnapshotTeams(name){
+  const t1 = DATA.teams_by_account && DATA.teams_by_account[name];
+  if(t1 && t1.length) return {teams:t1, source:'Billed Postman teams (SFDC export)', alreadyTrackedElsewhere:false, selfServeTotalArr:null};
+  const ssr = DATA.self_serve_renewals && DATA.self_serve_renewals[name];
+  if(ssr && ssr.teams && ssr.teams.length){
+    return {teams:ssr.teams, source:'Self-serve team export', alreadyTrackedElsewhere: !!ssr.already_tracked, selfServeTotalArr: ssr.total_arr};
+  }
+  return {teams:[], source:null, alreadyTrackedElsewhere:false, selfServeTotalArr:null};
+}
+
+function topNWithOther(items, valueKey, n){
+  const sorted = items.filter(i=>(i[valueKey]||0)>0).sort((a,b)=>b[valueKey]-a[valueKey]);
+  const top = sorted.slice(0,n);
+  const rest = sorted.slice(n);
+  const restSum = rest.reduce((s,i)=>s+(i[valueKey]||0),0);
+  const out = top.map(i=>({name:i.team_name, value:i[valueKey]}));
+  if(restSum>0) out.push({name:`Other teams (${rest.length})`, value:restSum});
+  return out;
+}
+
+function selectSnapshotCompany(name){
+  document.getElementById('snapSearchInput').value = name;
+  document.getElementById('snapSuggestions').classList.remove('open');
+  document.getElementById('snapshotEmpty').style.display = 'none';
+  const result = document.getElementById('snapshotResult');
+  result.style.display = 'block';
+  window._snapCurrentName = name;
+  buildSnapshot(name);
+}
+
+window._snapEditMode = window._snapEditMode || false;
+window._snapHiddenFields = window._snapHiddenFields || new Set();
+window._snapHiddenCols = window._snapHiddenCols || new Set();
+
+function toggleSnapEditMode(){
+  window._snapEditMode = !window._snapEditMode;
+  if(window._snapCurrentName) buildSnapshot(window._snapCurrentName);
+}
+function hideSnapField(id){ window._snapHiddenFields.add(id); buildSnapshot(window._snapCurrentName); }
+function unhideSnapField(id){ window._snapHiddenFields.delete(id); buildSnapshot(window._snapCurrentName); }
+function resetSnapFields(){ window._snapHiddenFields.clear(); window._snapHiddenCols.clear(); buildSnapshot(window._snapCurrentName); }
+function toggleSnapCol(id){
+  if(window._snapHiddenCols.has(id)) window._snapHiddenCols.delete(id); else window._snapHiddenCols.add(id);
+  buildSnapshot(window._snapCurrentName);
+}
+function snapWrap(fieldId, label, innerHtml){
+  const hidden = window._snapHiddenFields.has(fieldId);
+  const editMode = window._snapEditMode;
+  if(hidden && !editMode) return '';
+  if(hidden && editMode){
+    return `<div class="snap-editctl" style="opacity:.55; border:1px dashed var(--gray); border-radius:8px; padding:10px; text-align:center; font-size:11px; cursor:pointer; color:var(--gray);" onclick="unhideSnapField('${fieldId}')">Hidden: ${label} &middot; click to restore</div>`;
+  }
+  if(editMode){
+    return `<div style="position:relative;">${innerHtml}<span class="snap-editctl" onclick="hideSnapField('${fieldId}')" title="Hide ${label} from client view" style="position:absolute; top:4px; right:4px; width:20px; height:20px; border-radius:50%; background:rgba(20,20,30,.55); color:#fff; cursor:pointer; font-size:12px; line-height:20px; text-align:center;">&times;</span></div>`;
+  }
+  return innerHtml;
+}
+
+const SNAP_TABLE_COLS = [
+  {id:'plan', label:'Plan'}, {id:'purchased', label:'Purchased'}, {id:'used', label:'Used'},
+  {id:'arr', label:'ARR'}, {id:'renewal', label:'Renewal'}, {id:'status', label:'Status'}
+];
+
+function buildSnapshot(name){
+  window._snapCurrentName = name;
+  const account = (DATA.accounts||[]).find(a=>a.name===name) || null;
+  const usage = (DATA.usage_export||[]).find(u=>u.name===name) || null;
+  const {teams, source, alreadyTrackedElsewhere, selfServeTotalArr} = getSnapshotTeams(name);
+  const hasAsa = (DATA.asa_accounts||[]).includes(name) || !!(usage && usage.has_asa);
+  const editMode = window._snapEditMode;
+  const colVisible = (id)=>!window._snapHiddenCols.has(id);
+
+  const totalARR = account?.arr ?? usage?.combined_arr ?? (alreadyTrackedElsewhere ? selfServeTotalArr : null) ?? teams.reduce((s,t)=>s+(t.arr||0),0);
+  const totalUsers = usage?.postman_team_users ?? teams.reduce((s,t)=>s+(t.used_licenses||t.purchased_licenses||0),0);
+  const totalTeams = usage?.postman_teams ?? teams.length;
+  const totalDAU = usage?.dau_90 ?? account?.dau ?? null;
+  const domain = account?.domain || usage?.domain || (teams[0] && teams[0].domain) || '';
+  const metaLine = [domain, account?.country || usage?.region, account?.sector].filter(Boolean).join(' &middot; ');
+
+  let html = `<div id="snapshotPrintArea">`;
+  if(alreadyTrackedElsewhere){
+    html += `<div class="card" style="border-color:#D69A1F; background:#FFF9EC; margin-bottom:16px;"><p class="muted" style="color:#8A6512;">&#9888; This company also appears under a different name in your main tracked accounts, and per-team ARR isn't reliably split in this self-serve export (it may show $0 below even though the account total is real). The Total ARR KPI above uses the verified account-level figure &mdash; but for the most accurate team-by-team breakdown, try searching this company's other name if you know it.</p></div>`;
+  }
+  html += `
+    <div class="snap-header">
+      <div>
+        <h2>${name}${account?.priority?` <span class="tag" style="font-size:10px;">${account.priority}</span>`:''}</h2>
+        <div class="sub">${metaLine || 'Company overview'}</div>
+      </div>
+      <div class="snap-actions">
+        <button class="snap-btn" onclick="toggleSnapEditMode()">${editMode?'&#10003; Done editing':'&#9998; Edit view'}</button>
+        ${editMode?'<button class="snap-btn" onclick="resetSnapFields()">&#8635; Reset hidden</button>':''}
+        <button class="snap-btn" onclick="downloadSnapshotHTML()">&#8681; Download HTML</button>
+        <button class="snap-btn primary" onclick="downloadSnapshotPDF()">&#8681; Download PDF</button>
+      </div>
+    </div>
+    ${editMode?'<p class="muted snap-editctl" style="margin-bottom:10px; font-size:11px;">Edit mode: click the &times; on any tile, chart, or table column to hide it from the client-facing view. Hidden items stay hidden in the HTML/PDF export.</p>':''}
+    <div class="kpi-grid" style="grid-template-columns:repeat(4,1fr);">
+      ${snapWrap('kpi-arr','Total ARR', `<div class="kpi"><div class="val">${totalARR!=null?fmtMoney(totalARR):'-'}</div><div class="lbl">Total ARR</div></div>`)}
+      ${snapWrap('kpi-dau','90-day DAU', `<div class="kpi"><div class="val">${totalDAU!=null?fmtNum(totalDAU):'-'}</div><div class="lbl">90-day DAU</div></div>`)}
+      ${snapWrap('kpi-teams','Total Teams', `<div class="kpi"><div class="val">${fmtNum(totalTeams)}</div><div class="lbl">Total Teams</div></div>`)}
+      ${snapWrap('kpi-users','Total Users', `<div class="kpi"><div class="val">${fmtNum(totalUsers)}</div><div class="lbl">Total Users</div></div>`)}
+    </div>`;
+
+  if(usage){
+    html += `<div class="card">
+      <h3>Usage &amp; Licenses</h3>
+      <div class="kpi-grid" style="grid-template-columns:repeat(6,1fr); gap:6px;">
+        ${snapWrap('u-paidseats','Paid Seats', `<div class="kpi-sm"><div class="val">${fmtNum(usage.paid_licenses)}</div><div class="lbl">Paid Seats</div></div>`)}
+        ${snapWrap('u-paidusers','Paid Users', `<div class="kpi-sm"><div class="val">${fmtNum(usage.paid_users)}</div><div class="lbl">Paid Users</div></div>`)}
+        ${snapWrap('u-paidteams','Paid Teams', `<div class="kpi-sm"><div class="val">${fmtNum(usage.paid_teams)}</div><div class="lbl">Paid Teams</div></div>`)}
+        ${snapWrap('u-mau','MAU', `<div class="kpi-sm"><div class="val">${fmtNum(usage.mau)}</div><div class="lbl">MAU</div></div>`)}
+        ${snapWrap('u-freeusers','Free Users', `<div class="kpi-sm"><div class="val">${fmtNum(usage.free_team_users)}</div><div class="lbl">Free Users</div></div>`)}
+        ${snapWrap('u-entusers','Ent. Users', `<div class="kpi-sm"><div class="val">${fmtNum(usage.enterprise_licenses)}</div><div class="lbl">Ent. Users</div></div>`)}
+      </div>
+    </div>`;
+  } else if(teams.length){
+    html += `<div class="card"><p class="muted">Detailed account-level usage &amp; license totals aren't available for this company &mdash; the figures below are built directly from its ${teams.length} known Postman team record(s) (${source}).</p></div>`;
+  }
+
+  if(teams.length){
+    html += `<div class="chart-grid">
+      ${snapWrap('chart-users','Teams by Users chart', `<div class="chart-card"><h3>Teams by Users</h3><div class="sub">Top teams by license usage</div><canvas id="snapChartUsers"></canvas></div>`)}
+      ${snapWrap('chart-arr','Teams by ARR chart', `<div class="chart-card"><h3>Teams by ARR</h3><div class="sub">Top teams by revenue contribution</div><canvas id="snapChartARR"></canvas></div>`)}
+    </div>
+    <div class="two-col">
+      ${snapWrap('chart-plan','Free vs Paid chart', `<div class="chart-card"><h3>Free vs. Paid Teams</h3><div class="sub">By plan type${hasAsa?' &middot; account has Advanced Security Add-on':''}</div><canvas id="snapChartPlan"></canvas></div>`)}
+      ${snapWrap('chart-planlegend','Plan breakdown legend', `<div class="card"><h3>Plan breakdown</h3><div class="snap-plan-legend" id="snapPlanLegend"></div></div>`)}
+    </div>
+    <div class="card">
+      <h3>Teams (${teams.length})</h3>
+      ${editMode?`<div class="snap-editctl" style="display:flex; gap:6px; margin-bottom:10px; flex-wrap:wrap;">${SNAP_TABLE_COLS.map(c=>{
+        const hidden = !colVisible(c.id);
+        return `<span onclick="toggleSnapCol('${c.id}')" style="cursor:pointer; padding:4px 10px; border-radius:14px; font-size:11px; border:1px solid ${hidden?'var(--line)':'var(--orange)'}; background:${hidden?'#F3EEE4':'#FFF1E6'}; color:${hidden?'var(--gray)':'var(--orange-dark)'};">${hidden?'&#9744;':'&#9745;'} ${c.label}</span>`;
+      }).join('')}</div>`:''}
+      <div style="overflow-x:auto;">
+      <table class="snap-table">
+        <thead><tr>
+          <th>Team</th>
+          ${colVisible('plan')?'<th>Plan</th>':''}
+          ${colVisible('purchased')?'<th>Purchased</th>':''}
+          ${colVisible('used')?'<th>Used</th>':''}
+          ${colVisible('arr')?'<th>ARR</th>':''}
+          ${colVisible('renewal')?'<th>Renewal</th>':''}
+          ${colVisible('status')?'<th>Status</th>':''}
+        </tr></thead>
+        <tbody>
+          ${[...teams].sort((a,b)=>(b.arr||0)-(a.arr||0)).map(t=>`<tr>
+            <td>${t.team_name||'-'}</td>
+            ${colVisible('plan')?`<td>${t.active_plan||'-'}</td>`:''}
+            ${colVisible('purchased')?`<td>${fmtNum(t.purchased_licenses)}</td>`:''}
+            ${colVisible('used')?`<td>${fmtNum(t.used_licenses)}</td>`:''}
+            ${colVisible('arr')?`<td>${fmtMoney(t.arr||0)}</td>`:''}
+            ${colVisible('renewal')?`<td>${t.renewal_date||'-'}</td>`:''}
+            ${colVisible('status')?`<td>${t.plan_state==='Delinquent'?'<span style="color:#D64545; font-weight:700;">Delinquent</span>':(t.plan_state||'-')}</td>`:''}
+          </tr>`).join('')}
+        </tbody>
+      </table>
+      </div>
+    </div>`;
+  } else {
+    html += `<div class="card"><p class="muted">No team-level records found for this company &mdash; only account-level totals are available.</p></div>`;
+  }
+
+  html += snapWrap('enterprise-features', "What's Included section", `<div class="card">
+    <h3>What's Included &mdash; Enterprise Plan</h3>
+    <div class="plan-features-cat">
+      <h4>Core API Work</h4>
+      <ul class="plan-features">
+        <li><span class="f-name">Collections, environments, requests, specs</span><span class="f-val check">&#10003; unlimited</span></li>
+        <li><span class="f-name">Native Git integration, VS Code extension</span><span class="f-val check">&#10003;</span></li>
+        <li><span class="f-name">Cloud &amp; local mock servers</span><span class="f-val check">&#10003; unlimited</span></li>
+        <li><span class="f-name">MCP Client (Model Context Protocol)</span><span class="f-val check">&#10003;</span></li>
+        <li><span class="f-name">Collection Runner &amp; performance testing</span><span class="f-val check">&#10003; unlimited</span></li>
+        <li><span class="f-name">Reusable requests</span><span class="f-val check">&#10003; incl. override support</span></li>
+        <li><span class="f-name">Postman API calls</span><span class="f-val">10M / mo</span></li>
+        <li><span class="f-name">Integrations (Slack, Jira, MS Teams, Fern, etc.)</span><span class="f-val">Unlimited collab &middot; 100 others</span></li>
+        <li><span class="f-name">Collection recovery window</span><span class="f-val">90 days</span></li>
+      </ul>
+    </div>
+    <div class="plan-features-cat">
+      <h4>AI &amp; Automation</h4>
+      <ul class="plan-features">
+        <li><span class="f-name">AI credits</span><span class="f-val">800 / user / mo, pooled</span></li>
+        <li><span class="f-name">Flows automation credits</span><span class="f-val">500 / team / mo</span></li>
+        <li><span class="f-name">Agent Mode (V12)</span><span class="f-val check">&#10003;</span></li>
+        <li><span class="f-name">AI input guardrails</span><span class="f-val check">&#10003;</span></li>
+      </ul>
+    </div>
+    <div class="plan-features-cat">
+      <h4>Collaboration &amp; Distribution</h4>
+      <ul class="plan-features">
+        <li><span class="f-name">Shared workspaces &amp; SDK generation</span><span class="f-val check">&#10003; unlimited</span></li>
+        <li><span class="f-name">Workspace viewers &amp; guest role</span><span class="f-val check">&#10003; unlimited</span></li>
+        <li><span class="f-name">Partner Workspaces</span><span class="f-val check">&#10003; unlimited</span></li>
+        <li><span class="f-name">Private (invite-only) workspaces</span><span class="f-val check">&#10003; unlimited</span></li>
+        <li><span class="f-name">Public &amp; Private API Network</span><span class="f-val check">&#10003;</span></li>
+        <li><span class="f-name">API Catalog (system of record)</span><span class="f-val check">&#10003;</span></li>
+        <li><span class="f-name">Insights<span class="f-sub">production API visibility</span></span><span class="f-val check">&#10003; consumption-based</span></li>
+        <li><span class="f-name">Shared Vault &amp; multi-protocol runner</span><span class="f-val check">&#10003;</span></li>
+        <li><span class="f-name">Private &amp; unlimited package libraries</span><span class="f-val check">&#10003;</span></li>
+        <li><span class="f-name">Data-driven testing &amp; test result exports</span><span class="f-val check">&#10003;</span></li>
+        <li><span class="f-name">Unlimited custom domains</span><span class="f-val check">&#10003;</span></li>
+      </ul>
+    </div>
+    <div class="plan-features-cat">
+      <h4>Governance &amp; Security</h4>
+      <ul class="plan-features">
+        <li><span class="f-name">RBAC</span><span class="f-val">Advanced (org-wide)</span></li>
+        <li><span class="f-name">SCIM user provisioning</span><span class="f-val check">&#10003;</span></li>
+        <li><span class="f-name">User groups &amp; Organizations</span><span class="f-val check">&#10003;</span></li>
+        <li><span class="f-name">SSO / SAML</span><span class="f-val check">&#10003; included</span></li>
+        <li><span class="f-name">Audit logs &amp; compliance reporting</span><span class="f-val check">&#10003;</span></li>
+        <li><span class="f-name">Data residency (EU-only option)</span><span class="f-val check">&#10003;</span></li>
+        <li><span class="f-name">API &amp; package library governance</span><span class="f-val check">&#10003;</span></li>
+        <li><span class="f-name">Deployment control</span><span class="f-val check">&#10003;</span></li>
+        <li><span class="f-name">Workspace archival</span><span class="f-val check">&#10003;</span></li>
+        <li><span class="f-name">Secret Scanner</span><span class="f-val check">&#10003; admin controls</span></li>
+        <li><span class="f-name">Governance roles<span class="f-sub">(Partner/API/Network Mgr, Super Admin)</span></span><span class="f-val check">&#10003;</span></li>
+        <li><span class="f-name">Private test &amp; Flows runners</span><span class="f-val check">&#10003;</span></li>
+      </ul>
+    </div>
+    <div class="plan-features-cat">
+      <h4>Support</h4>
+      <ul class="plan-features">
+        <li><span class="f-name">Support SLA</span><span class="f-val">24&times;5, 24h response</span></li>
+        <li><span class="f-name">Premium Support</span><span class="f-val">available as add-on</span></li>
+      </ul>
+    </div>
+  </div>`);
+
+  html += snapWrap('addons-table', 'Available Add-ons cards', `<div class="card">
+    <h3>Available Add-ons</h3>
+    <p class="muted" style="margin-bottom:14px; font-size:11.5px;">Additional Enterprise add-ons available on request.</p>
+    <div class="more-addons-grid">
+      <div class="more-addon-card">
+        <div class="more-addon-head">
+          <span class="more-addon-name">Advanced Security Administration (ASA)</span>
+          <span class="more-addon-price">$29/user/mo<br>team-wide</span>
+        </div>
+        <p class="more-addon-desc">Finds and locks down ungoverned Postman accounts across your company domain, plus deeper secret-scanning, alerts, and access controls.</p>
+      </div>
+      <div class="more-addon-card">
+        <div class="more-addon-head">
+          <span class="more-addon-name">Fabric AI Gateway</span>
+          <span class="more-addon-price">$29/user/mo<br>team-wide</span>
+        </div>
+        <p class="more-addon-desc">An AI-native gateway that routes, governs, and observes traffic from LLMs, MCP servers, and AI agents to your APIs through one endpoint you deploy in your own cloud.</p>
+      </div>
+      <div class="more-addon-card">
+        <div class="more-addon-head">
+          <span class="more-addon-name">Passport</span>
+          <span class="more-addon-price">$29/user/mo<br>team-wide</span>
+        </div>
+        <p class="more-addon-desc">Lets a developer or AI agent call an API without ever seeing the real password or key &mdash; a proxy in your own cloud swaps in the real secret at call time.</p>
+      </div>
+      <div class="more-addon-card">
+        <div class="more-addon-head">
+          <span class="more-addon-name">Premium Support</span>
+          <span class="more-addon-price">$8/user/mo<br>team-wide</span>
+        </div>
+        <p class="more-addon-desc">Faster, dedicated support with a guaranteed response time, instead of standard email/community support.</p>
+      </div>
+    </div>
+  </div>`);
+
+  html += `<p class="muted" style="text-align:center; margin-top:8px; font-size:10.5px;">Snapshot generated ${new Date().toLocaleDateString('en-GB',{day:'2-digit',month:'short',year:'numeric'})} &middot; Postman Territory Command Center</p>
+  </div>`;
+
+  document.getElementById('snapshotResult').innerHTML = html;
+  if(teams.length) renderSnapshotCharts(teams, hasAsa);
+}
+
+function renderSnapshotCharts(teams, hasAsa){
+  if(typeof Chart === 'undefined') return;
+  window._snapCharts = window._snapCharts || {};
+  ['snapChartUsers','snapChartARR','snapChartPlan'].forEach(id=>{
+    if(window._snapCharts[id]){ window._snapCharts[id].destroy(); delete window._snapCharts[id]; }
+  });
+  const orange = '#FF6C37', cyan = '#3B8FA3';
+  const palette = ['#FF6C37','#2E6E8E','#2E9E6C','#D69A1F','#B5652E','#8A6FB3','#5E6470','#D64545'];
+
+  const usersData = topNWithOther(teams.map(t=>({team_name:t.team_name, u:(t.used_licenses||t.purchased_licenses||0)})), 'u', 7);
+  window._snapCharts.snapChartUsers = new Chart(document.getElementById('snapChartUsers'), {
+    type:'pie',
+    data:{ labels:usersData.map(d=>d.name), datasets:[{ data:usersData.map(d=>d.value), backgroundColor:palette, borderWidth:0 }] },
+    options:{ plugins:{ legend:{ position:'bottom', labels:{ boxWidth:10, font:{size:10} } } } }
+  });
+
+  const arrData = topNWithOther(teams, 'arr', 7);
+  window._snapCharts.snapChartARR = new Chart(document.getElementById('snapChartARR'), {
+    type:'pie',
+    data:{ labels:arrData.map(d=>d.name), datasets:[{ data:arrData.map(d=>d.value), backgroundColor:palette, borderWidth:0 }] },
+    options:{ plugins:{ legend:{ position:'bottom', labels:{ boxWidth:10, font:{size:10} } }, tooltip:{ callbacks:{ label:c=>c.label+': $'+c.parsed.toLocaleString() } } } }
+  });
+
+  const planCounts = {};
+  teams.forEach(t=>{
+    let cat = planCategory(t.active_plan);
+    if(cat==='Enterprise' && hasAsa) cat = 'Enterprise + ASA';
+    planCounts[cat] = (planCounts[cat]||0) + 1;
+  });
+  const planLabels = Object.keys(planCounts);
+  window._snapCharts.snapChartPlan = new Chart(document.getElementById('snapChartPlan'), {
+    type:'doughnut',
+    data:{ labels:planLabels, datasets:[{ data:planLabels.map(l=>planCounts[l]), backgroundColor:planLabels.map(l=>SNAP_PLAN_COLORS[l]||'#5E6470'), borderWidth:0 }] },
+    options:{ plugins:{ legend:{ display:false } }, cutout:'55%' }
+  });
+
+  const legend = document.getElementById('snapPlanLegend');
+  if(legend){
+    legend.innerHTML = planLabels.sort((a,b)=>planCounts[b]-planCounts[a]).map(l=>
+      `<div class="snap-plan-row"><span class="snap-plan-dot" style="background:${SNAP_PLAN_COLORS[l]||'#5E6470'}"></span>${l}<b>${planCounts[l]}</b></div>`
+    ).join('');
+  }
+}
+
+function downloadSnapshotHTML(){
+  const area = document.getElementById('snapshotPrintArea');
+  if(!area) return;
+  const clone = area.cloneNode(true);
+  const liveCanvases = area.querySelectorAll('canvas');
+  const cloneCanvases = clone.querySelectorAll('canvas');
+  liveCanvases.forEach((c,i)=>{
+    try{
+      const img = document.createElement('img');
+      img.src = c.toDataURL('image/png');
+      img.style.maxWidth = '100%';
+      if(cloneCanvases[i]) cloneCanvases[i].replaceWith(img);
+    }catch(e){}
+  });
+  clone.querySelectorAll('.snap-actions').forEach(el=>el.remove());
+  clone.querySelectorAll('.snap-editctl').forEach(el=>el.remove());
+  const styleText = document.querySelector('style').textContent;
+  const companyName = (document.getElementById('snapSearchInput').value || 'customer').trim();
+  const docHtml = `<!DOCTYPE html><html><head><meta charset="UTF-8"><title>${companyName} \u2014 Postman Snapshot</title><style>${styleText}
+body{padding:24px; max-width:1100px; margin:0 auto;}</style></head><body>${clone.outerHTML}</body></html>`;
+  const blob = new Blob([docHtml], {type:'text/html'});
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url;
+  a.download = companyName.replace(/[^a-z0-9]+/gi,'_') + '_Postman_Snapshot.html';
+  document.body.appendChild(a); a.click(); a.remove();
+  URL.revokeObjectURL(url);
+}
+
+function downloadSnapshotPDF(){
+  window.print();
+}
+
+/* ---------- EXPORT / IMPORT MARKS (survive across new file versions) ---------- */
+async function exportMyMarks(){
+  const specs = [
+    ['ql-reached-out', '_qlReachedState'],
+    ['not-relevant-marks', '_notRelevantState'],
+    ['champion-marks', '_championState'],
+    ['relevant-marks', '_relevantMarkState'],
+  ];
+  const bundle = {};
+  for(const [storageKey, memVar] of specs){
+    if(window[memVar] && Object.keys(window[memVar]).length){
+      bundle[storageKey] = window[memVar];
+    } else {
+      try{ const r = await window.storage.get(storageKey, false); bundle[storageKey] = r ? JSON.parse(r.value) : (window[memVar]||{}); }
+      catch(e){ bundle[storageKey] = window[memVar] || {}; }
+    }
+  }
+  bundle._exported_at = new Date().toISOString();
+  const blob = new Blob([JSON.stringify(bundle, null, 2)], {type:'application/json'});
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url;
+  a.download = 'postman_dashboard_marks.json';
+  document.body.appendChild(a); a.click(); a.remove();
+  URL.revokeObjectURL(url);
+}
+async function importMyMarks(evt){
+  const file = evt.target.files[0];
+  if(!file) return;
+  try{
+    const text = await file.text();
+    const bundle = JSON.parse(text);
+    const specs = [
+      ['ql-reached-out', '_qlReachedState'],
+      ['not-relevant-marks', '_notRelevantState'],
+      ['champion-marks', '_championState'],
+      ['relevant-marks', '_relevantMarkState'],
+    ];
+    for(const [storageKey, memVar] of specs){
+      if(bundle[storageKey]){
+        // set the in-memory state directly so the re-render below reflects it immediately,
+        // regardless of whether the storage.set below succeeds
+        window[memVar] = bundle[storageKey];
+        try{ await window.storage.set(storageKey, JSON.stringify(bundle[storageKey]), false); }catch(e){}
+      }
+    }
+    // re-render whichever of these tabs exist, so the restore is visible immediately
+    if(document.getElementById('panel-contacts')) await renderContacts();
+    if(document.getElementById('panel-qualityleads')) await renderQualityLeads();
+    evt.target.value = '';
+    alert('Marks restored from ' + (bundle._exported_at ? new Date(bundle._exported_at).toLocaleString() : 'file') + '.');
+  }catch(e){
+    alert('Could not read that file - make sure it is a marks file exported from this dashboard.');
+  }
+}
+
+/* ---------- INIT ---------- */
+(async function init(){
+  try{
+    const response = await fetch('dashboard-data.json');
+    DATA = await response.json();
+  }catch(e){
+    document.body.innerHTML = '<div style="padding:40px;font-family:sans-serif;color:#900;">Could not load dashboard-data.json — make sure it is uploaded in the same folder as this file.</div>';
+    return;
+  }
+  try{
+    const cached = await window.storage.get('live-signals-cache', false);
+    if(cached){ Object.assign(DATA.live_signals, JSON.parse(cached.value)); }
+  }catch(e){}
+  renderAccounts(); renderUsage(); renderLive(); renderExpansion(); renderContacts(); renderQualityLeads(); renderSelfServe(); renderSnapshot();
+  await renderFollowups();
+})();
+</script>
+</body>
+</html>
