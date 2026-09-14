@@ -312,5 +312,64 @@ render('');
 document.getElementById('search-box').addEventListener('input', (e) => render(e.target.value));
 </script>
 
+<!-- ===== Dashboard switcher (present on every page) ===== -->
+<div id="dash-switcher">
+  <button id="dash-switcher-btn" title="נווט בין הכלים">🗂️</button>
+  <div id="dash-switcher-menu">
+    <div class="dash-switcher-title">הכלים שלי</div>
+    <a href="index.html">🏠 דף הבית</a>
+    <a href="postman-explainer.html">💬 סקריפט שיחת לקוח (עברית)</a>
+    <a href="postman-explainer-en.html">💬 Customer Pitch (EN)</a>
+    <a href="call_dashboard.html">📞 Call Command Center</a>
+    <a href="territory-command-center.html">🗺️ Territory Command Center</a>
+    <a href="role-scripts.html">🎯 תרחישי שיחה ראשונית</a>
+  </div>
+</div>
+<style>
+  #dash-switcher{position:fixed;bottom:20px;left:20px;z-index:2147483000;font-family:"Segoe UI","Arial Hebrew",Arial,sans-serif;direction:rtl;}
+  #dash-switcher-btn{
+    width:48px;height:48px;border-radius:50%;
+    background:#1C1C1E;color:#fff;border:none;
+    font-size:20px;cursor:pointer;
+    box-shadow:0 4px 12px rgba(0,0,0,.35);
+  }
+  #dash-switcher-btn:hover{background:#FF6C37;}
+  #dash-switcher-menu{
+    display:none;position:absolute;bottom:58px;left:0;
+    background:#fff;border:1px solid #E6E4E0;border-radius:10px;
+    box-shadow:0 10px 30px rgba(0,0,0,.25);
+    padding:8px;min-width:230px;
+  }
+  #dash-switcher-menu.open{display:block;}
+  #dash-switcher-menu .dash-switcher-title{
+    font-size:11px;font-weight:700;color:#5B5F66;
+    padding:4px 10px 8px;text-transform:uppercase;letter-spacing:.02em;
+  }
+  #dash-switcher-menu a{
+    display:block;padding:8px 10px;border-radius:6px;
+    color:#1C1C1E;text-decoration:none;font-size:13px;white-space:nowrap;
+  }
+  #dash-switcher-menu a:hover{background:#FFF6F1;color:#FF6C37;}
+  #dash-switcher-menu a.current{font-weight:700;color:#FF6C37;background:#FFF6F1;}
+</style>
+<script>
+(function(){
+  const btn = document.getElementById('dash-switcher-btn');
+  const wrap = document.getElementById('dash-switcher');
+  const menu = document.getElementById('dash-switcher-menu');
+  btn.addEventListener('click', function(e){
+    e.stopPropagation();
+    menu.classList.toggle('open');
+  });
+  document.addEventListener('click', function(e){
+    if(!wrap.contains(e.target)) menu.classList.remove('open');
+  });
+  const current = (location.pathname.split('/').pop() || 'index.html');
+  menu.querySelectorAll('a').forEach(function(a){
+    if(a.getAttribute('href') === current) a.classList.add('current');
+  });
+})();
+</script>
+
 </body>
 </html>

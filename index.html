@@ -8,8 +8,6 @@
     --orange:#FF6C37;
     --ink:#1C1C1E;
     --grey:#5B5F66;
-    --line:#E6E4E0;
-    --bg-card:#FBFAF8;
   }
   *{box-sizing:border-box;}
   body{
@@ -26,46 +24,15 @@
     font-size:18px;
     font-weight:700;
   }
-  .wrap{max-width:1000px;margin:0 auto;padding:40px 24px 80px;}
-  h1{font-size:24px;margin:0 0 8px;}
-  .sub{color:var(--grey);margin:0 0 36px;font-size:14.5px;}
-  .grid{
-    display:grid;
-    grid-template-columns:repeat(auto-fill, minmax(260px, 1fr));
-    gap:18px;
+  .wrap{max-width:700px;margin:0 auto;padding:60px 24px;text-align:center;}
+  h1{font-size:24px;margin:0 0 12px;}
+  .sub{color:var(--grey);font-size:14.5px;line-height:1.7;}
+  .hint{
+    display:inline-flex;align-items:center;gap:8px;
+    background:#fff;border:1px solid #E6E4E0;border-radius:10px;
+    padding:14px 20px;margin-top:20px;font-size:14px;
   }
-  .card{
-    background:#fff;
-    border:1px solid var(--line);
-    border-radius:10px;
-    padding:22px;
-    box-shadow:0 1px 3px rgba(20,20,20,0.06);
-    text-decoration:none;
-    color:var(--ink);
-    display:block;
-    transition:box-shadow .15s, transform .15s;
-  }
-  .card:hover{box-shadow:0 6px 16px rgba(20,20,20,0.12);transform:translateY(-2px);}
-  .card.disabled{
-    color:var(--grey);
-    background:var(--bg-card);
-    cursor:default;
-    pointer-events:none;
-  }
-  .card .icon{font-size:26px;margin-bottom:10px;display:block;}
-  .card .t{font-weight:700;font-size:15.5px;margin-bottom:6px;}
-  .card .d{font-size:13px;color:var(--grey);}
-  .badge{
-    display:inline-block;
-    font-size:11px;
-    padding:2px 8px;
-    border-radius:20px;
-    margin-right:6px;
-    background:#FFF6F1;
-    color:var(--orange);
-    font-weight:700;
-  }
-  .badge.soon{background:#EEE;color:var(--grey);}
+  .hint b{color:var(--orange);}
 </style>
 </head>
 <body>
@@ -74,40 +41,68 @@
 
   <div class="wrap">
     <h1>מרכז הכלים שלי</h1>
-    <p class="sub">כל כלי המכירה במקום אחד. לוחצים על כרטיס כדי לפתוח.</p>
-
-    <div class="grid">
-      <a class="card" href="postman-explainer.html">
-        <span class="icon">💬</span>
-        <span class="t">סקריפט שיחת לקוח <span class="badge">חי</span></span>
-        <span class="d">מוצרי Postman, השוואה למתחרים, תמחור, ובוט AI שעונה על שאלות תוך כדי שיחה. עברית.</span>
-      </a>
-
-      <a class="card" href="postman-explainer-en.html">
-        <span class="icon">💬</span>
-        <span class="t">Customer Pitch <span class="badge">Live</span></span>
-        <span class="d">Same script, English version.</span>
-      </a>
-
-      <a class="card" href="call_dashboard.html">
-        <span class="icon">📞</span>
-        <span class="t">Call Command Center <span class="badge">חי</span></span>
-        <span class="d">הכלי לשימוש חי במהלך שיחה — First Call.</span>
-      </a>
-
-      <a class="card" href="territory-command-center.html">
-        <span class="icon">🗺️</span>
-        <span class="t">Territory Command Center <span class="badge">חי</span></span>
-        <span class="d">98 חשבונות — Accounts, Usage, Live Deals, Expansion, Contacts, Quality Leads, Follow-ups, Self-Serve, Snapshot.</span>
-      </a>
-
-      <a class="card" href="role-scripts.html">
-        <span class="icon">🎯</span>
-        <span class="t">תרחישי שיחה ראשונית <span class="badge">חי</span></span>
-        <span class="d">17 סקריפטי פתיחה טלפונית לפי תפקיד — CISO, CIO, VP R&D, DevOps, ארכיטקטים ועוד.</span>
-      </a>
-    </div>
+    <p class="sub">כל הכלים נגישים מכל מקום — לא רק מהעמוד הזה.</p>
+    <div class="hint">👈 לחץ על <b>🗂️</b> בפינה השמאלית-תחתונה כדי לנווט בין הכלים בכל עמוד</div>
   </div>
+
+<!-- ===== Dashboard switcher (present on every page) ===== -->
+<div id="dash-switcher">
+  <button id="dash-switcher-btn" title="נווט בין הכלים">🗂️</button>
+  <div id="dash-switcher-menu">
+    <div class="dash-switcher-title">הכלים שלי</div>
+    <a href="index.html">🏠 דף הבית</a>
+    <a href="postman-explainer.html">💬 סקריפט שיחת לקוח (עברית)</a>
+    <a href="postman-explainer-en.html">💬 Customer Pitch (EN)</a>
+    <a href="call_dashboard.html">📞 Call Command Center</a>
+    <a href="territory-command-center.html">🗺️ Territory Command Center</a>
+    <a href="role-scripts.html">🎯 תרחישי שיחה ראשונית</a>
+  </div>
+</div>
+<style>
+  #dash-switcher{position:fixed;bottom:20px;left:20px;z-index:2147483000;font-family:"Segoe UI","Arial Hebrew",Arial,sans-serif;direction:rtl;}
+  #dash-switcher-btn{
+    width:48px;height:48px;border-radius:50%;
+    background:#1C1C1E;color:#fff;border:none;
+    font-size:20px;cursor:pointer;
+    box-shadow:0 4px 12px rgba(0,0,0,.35);
+  }
+  #dash-switcher-btn:hover{background:#FF6C37;}
+  #dash-switcher-menu{
+    display:none;position:absolute;bottom:58px;left:0;
+    background:#fff;border:1px solid #E6E4E0;border-radius:10px;
+    box-shadow:0 10px 30px rgba(0,0,0,.25);
+    padding:8px;min-width:230px;
+  }
+  #dash-switcher-menu.open{display:block;}
+  #dash-switcher-menu .dash-switcher-title{
+    font-size:11px;font-weight:700;color:#5B5F66;
+    padding:4px 10px 8px;text-transform:uppercase;letter-spacing:.02em;
+  }
+  #dash-switcher-menu a{
+    display:block;padding:8px 10px;border-radius:6px;
+    color:#1C1C1E;text-decoration:none;font-size:13px;white-space:nowrap;
+  }
+  #dash-switcher-menu a:hover{background:#FFF6F1;color:#FF6C37;}
+  #dash-switcher-menu a.current{font-weight:700;color:#FF6C37;background:#FFF6F1;}
+</style>
+<script>
+(function(){
+  const btn = document.getElementById('dash-switcher-btn');
+  const wrap = document.getElementById('dash-switcher');
+  const menu = document.getElementById('dash-switcher-menu');
+  btn.addEventListener('click', function(e){
+    e.stopPropagation();
+    menu.classList.toggle('open');
+  });
+  document.addEventListener('click', function(e){
+    if(!wrap.contains(e.target)) menu.classList.remove('open');
+  });
+  const current = (location.pathname.split('/').pop() || 'index.html');
+  menu.querySelectorAll('a').forEach(function(a){
+    if(a.getAttribute('href') === current) a.classList.add('current');
+  });
+})();
+</script>
 
 </body>
 </html>
