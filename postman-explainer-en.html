@@ -1568,7 +1568,7 @@
   async function translateAndSyncToOtherLanguage(question, answerHTML){
     flashSyncStatus('Translating to Hebrew…', true);
     try{
-      const prompt = 'Translate the following English sales Q&A into natural, professional Hebrew. This must be a COMPLETE, full-length, faithful translation — do not summarize, shorten, condense, or omit any part of the content. Match the original\\'s length and level of detail exactly. Keep every HTML tag exactly as-is (e.g. <b>, <span style="...">) — translate ONLY the visible text between tags, never tag names or attributes. Respond with ONLY a single valid JSON object and nothing else — no markdown fences, no preamble — in exactly this shape: {"q":"<translated question>","a":"<translated answer, HTML preserved, properly escaped for JSON>"}\n\nEnglish question: ' + question + '\nEnglish answer (HTML): ' + answerHTML;
+      const prompt = 'Translate the following English sales Q&A into natural, professional Hebrew. This must be a COMPLETE, full-length, faithful translation — do not summarize, shorten, condense, or omit any part of the content. Match the original\'s length and level of detail exactly. Keep every HTML tag exactly as-is (e.g. <b>, <span style="...">) — translate ONLY the visible text between tags, never tag names or attributes. Respond with ONLY a single valid JSON object and nothing else — no markdown fences, no preamble — in exactly this shape: {"q":"<translated question>","a":"<translated answer, HTML preserved, properly escaped for JSON>"}\n\nEnglish question: ' + question + '\nEnglish answer (HTML): ' + answerHTML;
       const response = await fetch(API_ENDPOINT, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
