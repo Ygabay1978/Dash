@@ -601,14 +601,12 @@
     <span id="clock">--:--:--</span>
     <button class="hbtn" id="editToggle" onclick="toggleEditMode()">✏️ Edit</button>
     <button class="hbtn" onclick="resetAllContent()" title="Wipe saved edits/notes in this browser and reload Claude's latest text">↺ Reset</button>
-    <button class="hbtn" onclick="downloadOverviewOnly()" title="Download a clean, read-only copy of just the Overview tab">📤 Share Overview</button>
     <button class="hbtn primary" onclick="downloadCopy()">⬇ Save copy</button>
   </div>
 </header>
 
 <nav class="tabs" id="tabNav">
-  <button class="tab-btn active" data-tab="overview"><span class="icon">🧭</span>Overview</button>
-  <button class="tab-btn" data-tab="discovery"><span class="icon">🔍</span>Discovery</button>
+  <button class="tab-btn active" data-tab="discovery"><span class="icon">🔍</span>Discovery</button>
   <button class="tab-btn" data-tab="explaineren"><span class="icon">📘</span>Explainer (EN)</button>
   <button class="tab-btn" data-tab="explainerhe"><span class="icon">📗</span>Explainer (HE)</button>
   <button class="tab-btn" data-tab="objections"><span class="icon">🛡️</span>Objections &amp; Battlecards</button>
@@ -619,125 +617,8 @@
 
 <main>
 
-  <!-- ================= OVERVIEW TAB ================= -->
-  <section class="panel active" id="panel-overview">
-
-    <div class="card full-width hero-card" data-editable="true" contenteditable="false">
-      <div class="hero-eyebrow">Existing Customer · Team Consolidation &amp; User Expansion · Introduction + Migration Call</div>
-      <h2>Postman × Global-E</h2>
-      <ul class="clean hero-sub-list">
-        <li>Existing Postman customer running 15 teams, only 2 of them paid - the SFDC opportunity is literally named "Team Consolidation and User Expansion."</li>
-        <li>Yosi Nasi (Information System Administrator) initiated this himself: "We've added 35 seats, and I'd like to move forward with the migration."</li>
-        <li>You (Yaniv) took over this territory about a month ago from Javier Pardo, who made the introduction. David Espi Hernandez (Postman) is the technical resource helping with the actual migration and is joining today's call.</li>
-        <li>Deal stage is early - "Problem Identification &amp; Research" in SFDC. This is a first real working session, not a close.</li>
-      </ul>
-      <div class="stat-grid" style="margin-top:16px;">
-        <div class="stat"><span class="num">15</span><span class="lbl">Postman teams total (2 paid, 13 free)</span></div>
-        <div class="stat"><span class="num">+35</span><span class="lbl">seats just added by Yosi</span></div>
-        <div class="stat"><span class="num" style="font-size:15px;">Problem ID &amp; Research</span><span class="lbl">SFDC stage</span></div>
-        <div class="stat"><span class="num">30 Jun</span><span class="lbl">last Postman-Global-E meeting</span></div>
-        <div class="stat"><span class="num">Today 18:30</span><span class="lbl">18:30-19:30 IL time</span></div>
-        <div class="stat"><span class="num" style="font-size:15px;color:var(--good);">Accepted</span><span class="lbl">Yosi's RSVP status</span></div>
-        <div class="stat"><span class="num" style="font-size:15px;">Yosi Nasi</span><span class="lbl">Contact</span></div>
-        <div class="stat"><span class="num" style="font-size:15px;">David Espi</span><span class="lbl">Postman, joining (technical)</span></div>
-      </div>
-    </div>
-
-    <div class="card full-width">
-      <h2>🎯 Your Strongest Sales Points - Global-E</h2>
-      <div class="sp-pills" id="salesPillsGrid">
-        <div class="sp-pill" data-editable="true" contenteditable="false"><b>He asked for this himself:</b> Yosi's own words were "I'd like to move forward with the migration" - this is inbound momentum, not a motion you have to create.</div>
-        <div class="sp-pill" data-editable="true" contenteditable="false"><b>13 free teams to 2 paid is a governance story, not just a cleanup:</b> that ratio alone is worth naming out loud - most of Global-E's Postman footprint isn't paid or governed today.</div>
-        <div class="sp-pill" data-editable="true" contenteditable="false"><b>Expansion is already happening:</b> 35 seats were just added before this call even started - proof this account is growing, not just maintaining.</div>
-        <div class="sp-pill" data-editable="true" contenteditable="false"><b>You have real technical backup:</b> David Espi is joining specifically to handle the migration mechanics - you can commit to concrete next steps live instead of "let me check."</div>
-        <div class="sp-pill" data-editable="true" contenteditable="false"><b>Deep institutional history exists:</b> a long list of Postman CS/SE/AE people have touched this account before you - there's real context to draw on if you ask the right people.</div>
-        <div class="sp-pill" data-editable="true" contenteditable="false"><b>Team Copy is a real, documented path:</b> the consolidation Yosi wants maps directly to Postman's self-service Team Copy feature - you can describe an actual mechanism today, not a vague promise.</div>
-      </div>
-    </div>
-
-    <div class="card full-width">
-      <h2 style="color:var(--bad);">⚠️ Key Risks - Global-E (be aware)</h2>
-      <div class="sp-pills" id="riskPillsGrid">
-        <div class="sp-pill risk" data-editable="true" contenteditable="false"><b>You're new to this account:</b> you took over a month ago and weren't on the Jun 30 call - lead by listening, not by assuming you know the history.</div>
-        <div class="sp-pill risk" data-editable="true" contenteditable="false"><b>Team Copy has real, known rough edges:</b> per internal engineering threads, team workspaces convert to private on the destination team by default (a security guarantee, not a bug) and role assignments can fail to carry over - set that expectation honestly rather than promise a seamless migration.</div>
-        <div class="sp-pill risk" data-editable="true" contenteditable="false"><b>No confirmed ARR, seat total, or usage figures:</b> I could not verify Global-E's current ARR or full seat count from what's retrievable - don't quote a number you don't have; ask Yosi or check SFDC live if it comes up.</div>
-        <div class="sp-pill risk" data-editable="true" contenteditable="false"><b>Many past Postman people have touched this account:</b> avoid contradicting something already promised - if anything sounds like it was agreed before, check with David or Javier rather than assume.</div>
-        <div class="sp-pill risk" data-editable="true" contenteditable="false"><b>Still an early-stage deal:</b> SFDC has this at "Problem Identification &amp; Research" - today is about scoping the consolidation properly, not rushing to a commitment.</div>
-      </div>
-    </div>
-
-    <div class="card">
-      <h2>Where Things Stand Right Now</h2>
-      <ul class="clean">
-        <li><b>Jun 30 -</b> last recorded Postman-Global-E meeting, before you owned this account.</li>
-        <li><b>Aug 13 -</b> Yosi emailed Javier Pardo: "We've added 35 seats, and I'd like to move forward with the migration. Please let me know the next steps."</li>
-        <li><b>Aug 17 -</b> Javier introduced you as the new Israel Enterprise owner; David Espi looped in to help with the technical migration.</li>
-        <li><b>Aug 17-31 -</b> several reschedules (Yosi was OOO, then David had conflicts) before landing on today.</li>
-        <li><b>Today, Sep 3, 18:30-19:30 IL -</b> "Global E / Postman - Migrating and Introduction" - a combined intro + migration working session.</li>
-      </ul>
-    </div>
-
-    <div class="card">
-      <h2>Key Contacts <button class="card-collapse-btn" onclick="toggleCardCollapse(this)" title="Minimize">▾</button></h2>
-      <div class="stakeholder"><div><div class="name">Yosi Nasi</div><div class="role">Information System Administrator - driving the consolidation request, added 35 seats himself. Yosi.Nasi@global-e.com</div></div><span class="flag active">On this call - accepted</span></div>
-      <div class="stakeholder"><div><div class="name">David Espi Hernandez</div><div class="role">Postman - technical resource for the migration, joining this call</div></div><span class="flag active">Internal, on this call</span></div>
-      <div class="stakeholder"><div><div class="name">Javier Pardo</div><div class="role">Postman - previous AE for this account, made the introduction to you</div></div><span class="flag map">Internal, not on this call</span></div>
-      <p class="muted" style="margin-top:10px;"><i>A long list of other Postman people appear on this account's history (CS, SE, and prior AEs across regions) - if something today sounds like it was already agreed, it's worth a quick check with David or Javier rather than assuming.</i></p>
-    </div>
-
-    <div class="card">
-      <h2>The Three Whys</h2>
-      <ul class="clean">
-        <li><b>Why change?</b>
-          <ul class="clean" style="margin-top:6px;">
-            <li>15 Postman teams at Global-E, only 2 of them paid - the same fragmentation pattern seen elsewhere, and Yosi has named it himself as the reason for the migration.</li>
-          </ul>
-        </li>
-        <li style="margin-top:10px;"><b>Why Postman?</b>
-          <ul class="clean" style="margin-top:6px;">
-            <li>They're already a paying customer who just added 35 seats - this is expansion of proven usage, not a new sell.</li>
-          </ul>
-        </li>
-        <li style="margin-top:10px;"><b>Why now?</b>
-          <ul class="clean" style="margin-top:6px;">
-            <li>Yosi asked for this himself in mid-August and has been waiting since - today is about not letting that momentum stall any further.</li>
-          </ul>
-        </li>
-      </ul>
-    </div>
-
-    <div class="acc open">
-      <div class="acc-head" onclick="toggleAcc(this)"><span>Call Script - Introduction + Migration Working Session</span><span class="chev">▶</span></div>
-      <div class="acc-body"><div class="acc-body-inner">
-        <ul class="clean">
-          <li><b>Open by naming that you're new -</b> "I know Javier introduced us last month, and I want to make sure I'm not asking you to repeat things you've already covered - what's the most important context for me to have going in?"</li>
-          <li><b>Confirm the real scope -</b> "You mentioned wanting to move forward with the migration after adding 35 seats - can you walk me through which teams specifically need to be consolidated, and why now?"</li>
-          <li><b>Let David set honest technical expectations -</b> Team Copy moves workspaces across, but team-level sharing converts to private by default on the destination (a security guarantee) - admins need to manually reset sharing after. Role assignments can occasionally not carry over. Say this plainly rather than promise a perfectly clean migration.</li>
-          <li><b>Ask about ownership -</b> "Once the teams are consolidated, who owns admin of the resulting team day to day - is that you, or someone else?"</li>
-          <li><b>Close concrete -</b> with David on the call, agree on the exact source/destination team IDs and a rough timeline before ending, rather than "we'll follow up."</li>
-        </ul>
-      </div></div>
-    </div>
-
-    <div class="card">
-      <h2>Proposed Next Steps</h2>
-      <ul class="clean">
-        <li>Get the exact list of team IDs to be consolidated (source teams → destination team) directly from Yosi.</li>
-        <li>Set honest expectations on Team Copy's known limitations - private workspace conversion, role-assignment gaps, possible partial failures - rather than promise a seamless migration.</li>
-        <li>Confirm who at Global-E owns admin of the consolidated team going forward.</li>
-        <li>Check with Javier or David before committing to anything that might contradict prior history on this account.</li>
-        <li>Update the SFDC opportunity stage based on what's learned today - it's currently at "Problem Identification &amp; Research."</li>
-      </ul>
-    </div>
-
-    <div class="switch-note">
-      <b>This tab changes per call.</b> Before your next call, tell me the account name and I'll rebuild this tab - pulling AirCover, Gmail and Postman usage data for existing customers, or fresh external research for new prospects.
-    </div>
-
-  </section>
-
   <!-- ================= DISCOVERY TAB ================= -->
-  <section class="panel" id="panel-discovery">
+  <section class="panel active" id="panel-discovery">
 
     <div class="disc-nav" id="discNav">
       <button onclick="jumpToDiscovery('disc-opening')">🎬 Opening</button>
@@ -1350,6 +1231,90 @@
     cursor:pointer;
   }
   .chat-quick-btn:hover{border-color:var(--orange);color:var(--orange);}
+
+  #saved-questions-wrap{
+    position:relative;
+    padding:0 16px 10px;
+    border-bottom:1px solid var(--line);
+    flex-shrink:0;
+  }
+  #saved-questions-btn{
+    width:100%;
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    background:var(--bg-card);
+    border:1px solid var(--line);
+    border-radius:6px;
+    padding:8px 10px;
+    font-size:12px;
+    font-family:inherit;
+    color:var(--ink);
+    cursor:pointer;
+  }
+  #saved-questions-btn:hover{border-color:var(--orange);color:var(--orange);}
+  #saved-questions-count{
+    background:var(--orange);
+    color:#fff;
+    font-size:10px;
+    font-weight:700;
+    border-radius:10px;
+    padding:1px 6px;
+    margin-left:auto;
+  }
+  #saved-questions-count:empty{display:none;}
+  #saved-questions-menu{
+    display:none;
+    position:absolute;
+    top:100%;
+    right:16px;
+    left:16px;
+    background:#fff;
+    border:1px solid var(--line);
+    border-radius:8px;
+    box-shadow:0 8px 24px rgba(0,0,0,.15);
+    max-height:260px;
+    overflow-y:auto;
+    z-index:50;
+    margin-top:4px;
+  }
+  #saved-questions-menu.open{display:block;}
+  #saved-questions-menu .sq-empty{
+    padding:14px;font-size:12px;color:var(--grey);
+  }
+  .sq-item{
+    display:flex;
+    align-items:center;
+    gap:6px;
+    padding:9px 10px;
+    border-bottom:1px solid var(--line);
+    cursor:pointer;
+    font-size:12.5px;
+  }
+  .sq-item:last-child{border-bottom:none;}
+  .sq-item:hover{background:#FFF6F1;color:var(--orange);}
+  .sq-item .sq-text{flex:1;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+  .sq-item .sq-delete{
+    background:none;border:none;color:var(--grey);
+    font-size:13px;cursor:pointer;flex-shrink:0;padding:2px 4px;
+  }
+  .sq-item .sq-delete:hover{color:#D64545;}
+
+  .chat-msg.bot{position:relative;padding-right:26px;}
+  .msg-star-btn{
+    position:absolute;
+    right:6px;
+    bottom:6px;
+    background:none;
+    border:none;
+    font-size:14px;
+    cursor:pointer;
+    opacity:.5;
+    line-height:1;
+    padding:2px;
+  }
+  .msg-star-btn:hover{opacity:1;}
+  .msg-star-btn.saved{opacity:1;}
   #chat-log{
     flex:1;
     overflow-y:auto;
@@ -2060,14 +2025,20 @@
 <button class=&quot;chat-quick-btn&quot; data-prompt=&quot;What is ASA and why is it an Add-on?&quot;>What is ASA and why is it an Add-on?</button>
 <button class=&quot;chat-quick-btn&quot; data-prompt=&quot;The customer uses Kong, how do I respond?&quot;>The customer uses Kong, how do I respond?</button>
 </div>
+<div id=&quot;saved-questions-wrap&quot;>
+  <button id=&quot;saved-questions-btn&quot;>📌 Saved questions <span id=&quot;saved-questions-count&quot;></span> <span class=&quot;sq-arrow&quot;>▾</span></button>
+  <div id=&quot;saved-questions-menu&quot;>
+    <div class=&quot;sq-empty&quot;>You haven't saved any questions yet — click ⭐ next to any answer to save it.</div>
+  </div>
+</div>
 <div id=&quot;chat-log&quot;>
-<div class=&quot;chat-placeholder&quot;>Ask any question about what’s written in the document — the answer will be based only on the content on the page, including the side panels.</div>
+<div class=&quot;chat-placeholder&quot;></div>
 </div>
 <div id=&quot;chat-input-row&quot;>
 <textarea id=&quot;chat-question&quot; placeholder=&quot;Type a question...&quot; rows=&quot;1&quot;></textarea>
 <button id=&quot;chat-send&quot;>Send</button>
 </div>
-<div class=&quot;chat-disclaimer&quot;>Answers are based only on the document’s content. Worth double-checking answers before relying on them in a live call.</div>
+
 </aside>
 </div>
 </div>
@@ -2446,8 +2417,9 @@
   const answerPanel = document.getElementById('answer-panel');
   const answerQuestionEl = document.getElementById('answer-question');
   const answerContentEl = document.getElementById('answer-content');
-  const SAVED_ANSWERS_KEY = 'postman-explainer-saved-answers';
+  const SAVED_ANSWERS_KEY = 'postman-explainer-saved-answers-en';
   let currentAnswerKey = null;
+  let currentAnswerOriginal = null;
 
   function normalizeQuestion(q){
     return q.trim().toLowerCase().replace(/\s+/g, ' ');
@@ -2456,14 +2428,57 @@
     try{ return JSON.parse(localStorage.getItem(SAVED_ANSWERS_KEY)) || {}; }
     catch(e){ return {}; }
   }
-  function getSavedAnswer(question){
-    return loadSavedAnswers()[normalizeQuestion(question)] || null;
+  function writeSavedAnswers(answers){
+    try{ localStorage.setItem(SAVED_ANSWERS_KEY, JSON.stringify(answers)); }catch(e){}
   }
+  function getSavedAnswer(question){
+    const entry = loadSavedAnswers()[normalizeQuestion(question)];
+    return entry ? entry.a : null;
+  }
+  function saveQA(question, answerHTML){
+    const answers = loadSavedAnswers();
+    answers[normalizeQuestion(question)] = { q: question, a: answerHTML };
+    writeSavedAnswers(answers);
+    renderSavedQuestionsMenu();
+    translateAndSyncToOtherLanguage(question, answerHTML);
+  }
+  function deleteSavedQA(key){
+    const answers = loadSavedAnswers();
+    delete answers[key];
+    writeSavedAnswers(answers);
+    renderSavedQuestionsMenu();
+  }
+
+  // Cross-language sync: saving here also (best-effort, silent) translates
+  // and writes into the Hebrew version's own storage key. Since both
+  // language pages sit on the same domain, they share localStorage — the
+  // Hebrew page just needs to be opened once for its dropdown to show it.
+  const OTHER_LANG_KEY = 'postman-explainer-saved-answers-he';
+  async function translateAndSyncToOtherLanguage(question, answerHTML){
+    try{
+      const prompt = 'Translate the following English sales Q&amp;A into natural, professional Hebrew. Keep every HTML tag exactly as-is (e.g. <b>, <span style=&quot;...&quot;>) — translate ONLY the visible text between tags, never tag names or attributes. Respond in EXACTLY this format and nothing else, no preamble:\nQUESTION:::<translated question>\nANSWER:::<translated answer, HTML preserved>\n\nEnglish question: ' + question + '\nEnglish answer (HTML): ' + answerHTML;
+      const response = await fetch(API_ENDPOINT, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ model: 'claude-sonnet-4-6', max_tokens: 600, messages: [{ role: 'user', content: prompt }] })
+      });
+      const data = await response.json();
+      const text = (data.content || []).filter(b => b.type === 'text').map(b => b.text).join('');
+      const qMatch = text.match(/QUESTION:::([\s\S]*?)\nANSWER:::/);
+      const aMatch = text.match(/ANSWER:::([\s\S]*)$/);
+      if(!qMatch || !aMatch) return;
+      const translatedQ = qMatch[1].trim();
+      const translatedA = aMatch[1].trim();
+      let otherAnswers = {};
+      try{ otherAnswers = JSON.parse(localStorage.getItem(OTHER_LANG_KEY)) || {}; }catch(e){}
+      otherAnswers[translatedQ.trim().toLowerCase().replace(/\s+/g, ' ')] = { q: translatedQ, a: translatedA };
+      localStorage.setItem(OTHER_LANG_KEY, JSON.stringify(otherAnswers));
+    }catch(e){ console.error('cross-language sync failed', e); }
+  }
+
   function saveCurrentAnswer(){
     if(!currentAnswerKey) return;
-    const answers = loadSavedAnswers();
-    answers[currentAnswerKey] = answerContentEl.innerHTML;
-    localStorage.setItem(SAVED_ANSWERS_KEY, JSON.stringify(answers));
+    saveQA(currentAnswerOriginal, answerContentEl.innerHTML);
     const saveBtn = document.getElementById('ans-save-btn');
     const original = saveBtn.textContent;
     saveBtn.textContent = 'Saved ✓';
@@ -2473,10 +2488,74 @@
 
   function openAnswerPanel(question){
     currentAnswerKey = normalizeQuestion(question);
+    currentAnswerOriginal = question;
     answerQuestionEl.textContent = question;
     if(window.openSidePanel) window.openSidePanel('answer-panel');
     else answerPanel.classList.add('open');
   }
+
+  // ---- ⭐ quick-save star on each bot bubble ----
+  function addStarToBubble(botMsgEl, question){
+    const star = document.createElement('button');
+    star.className = 'msg-star-btn';
+    star.title = 'Save this question and answer to your saved-questions list';
+    star.textContent = '☆';
+    if(getSavedAnswer(question) !== null) { star.textContent = '⭐'; star.classList.add('saved'); }
+    star.addEventListener('click', ()=>{
+      saveQA(question, botMsgEl.textContent);
+      star.textContent = '⭐';
+      star.classList.add('saved');
+    });
+    botMsgEl.appendChild(star);
+  }
+
+  // ---- saved-questions dropdown ----
+  const savedBtn = document.getElementById('saved-questions-btn');
+  const savedMenu = document.getElementById('saved-questions-menu');
+  const savedCountEl = document.getElementById('saved-questions-count');
+  function renderSavedQuestionsMenu(){
+    const answers = loadSavedAnswers();
+    const keys = Object.keys(answers);
+    savedCountEl.textContent = keys.length ? String(keys.length) : '';
+    if(keys.length === 0){
+      savedMenu.innerHTML = '<div class=&quot;sq-empty&quot;>You haven\'t saved any questions yet — click ⭐ next to any answer to save it.</div>';
+      return;
+    }
+    savedMenu.innerHTML = '';
+    keys.forEach(key=>{
+      const entry = answers[key];
+      const item = document.createElement('div');
+      item.className = 'sq-item';
+      const textSpan = document.createElement('span');
+      textSpan.className = 'sq-text';
+      textSpan.textContent = entry.q;
+      const delBtn = document.createElement('button');
+      delBtn.className = 'sq-delete';
+      delBtn.title = 'Remove from list';
+      delBtn.textContent = '✕';
+      item.appendChild(textSpan);
+      item.appendChild(delBtn);
+      textSpan.addEventListener('click', ()=>{
+        savedMenu.classList.remove('open');
+        ask(entry.q);
+      });
+      delBtn.addEventListener('click', (e)=>{
+        e.stopPropagation();
+        deleteSavedQA(key);
+      });
+      savedMenu.appendChild(item);
+    });
+  }
+  savedBtn.addEventListener('click', (e)=>{
+    e.stopPropagation();
+    savedMenu.classList.toggle('open');
+  });
+  document.addEventListener('click', (e)=>{
+    if(!document.getElementById('saved-questions-wrap').contains(e.target)){
+      savedMenu.classList.remove('open');
+    }
+  });
+  renderSavedQuestionsMenu();
 
   function addMessage(role, text){
     if(!placeholderRemoved){
@@ -2514,7 +2593,8 @@
       answerContentEl.classList.remove('loading');
       answerContentEl.innerHTML = saved;
       answerContentEl.setAttribute('contenteditable', 'true');
-      addMessage('bot', answerContentEl.innerText);
+      const botMsg = addMessage('bot', answerContentEl.innerText);
+      addStarToBubble(botMsg, question);
       conversationHistory.push({ role: 'user', content: question });
       conversationHistory.push({ role: 'assistant', content: answerContentEl.innerText });
       trimHistory();
@@ -2602,6 +2682,7 @@
       } else {
         conversationHistory.push({ role: 'assistant', content: accumulated });
         answerContentEl.setAttribute('contenteditable', 'true');
+        addStarToBubble(botMsg, question);
       }
     }catch(err){
       botMsg.classList.remove('loading');
@@ -2994,6 +3075,90 @@
     cursor:pointer;
   }
   .chat-quick-btn:hover{border-color:var(--orange);color:var(--orange);}
+
+  #saved-questions-wrap{
+    position:relative;
+    padding:0 16px 10px;
+    border-bottom:1px solid var(--line);
+    flex-shrink:0;
+  }
+  #saved-questions-btn{
+    width:100%;
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    background:var(--bg-card);
+    border:1px solid var(--line);
+    border-radius:6px;
+    padding:8px 10px;
+    font-size:12px;
+    font-family:inherit;
+    color:var(--ink);
+    cursor:pointer;
+  }
+  #saved-questions-btn:hover{border-color:var(--orange);color:var(--orange);}
+  #saved-questions-count{
+    background:var(--orange);
+    color:#fff;
+    font-size:10px;
+    font-weight:700;
+    border-radius:10px;
+    padding:1px 6px;
+    margin-right:auto;
+  }
+  #saved-questions-count:empty{display:none;}
+  #saved-questions-menu{
+    display:none;
+    position:absolute;
+    top:100%;
+    right:16px;
+    left:16px;
+    background:#fff;
+    border:1px solid var(--line);
+    border-radius:8px;
+    box-shadow:0 8px 24px rgba(0,0,0,.15);
+    max-height:260px;
+    overflow-y:auto;
+    z-index:50;
+    margin-top:4px;
+  }
+  #saved-questions-menu.open{display:block;}
+  #saved-questions-menu .sq-empty{
+    padding:14px;font-size:12px;color:var(--grey);
+  }
+  .sq-item{
+    display:flex;
+    align-items:center;
+    gap:6px;
+    padding:9px 10px;
+    border-bottom:1px solid var(--line);
+    cursor:pointer;
+    font-size:12.5px;
+  }
+  .sq-item:last-child{border-bottom:none;}
+  .sq-item:hover{background:#FFF6F1;color:var(--orange);}
+  .sq-item .sq-text{flex:1;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+  .sq-item .sq-delete{
+    background:none;border:none;color:var(--grey);
+    font-size:13px;cursor:pointer;flex-shrink:0;padding:2px 4px;
+  }
+  .sq-item .sq-delete:hover{color:#D64545;}
+
+  .chat-msg.bot{position:relative;padding-left:26px;}
+  .msg-star-btn{
+    position:absolute;
+    left:6px;
+    bottom:6px;
+    background:none;
+    border:none;
+    font-size:14px;
+    cursor:pointer;
+    opacity:.5;
+    line-height:1;
+    padding:2px;
+  }
+  .msg-star-btn:hover{opacity:1;}
+  .msg-star-btn.saved{opacity:1;}
   #chat-log{
     flex:1;
     overflow-y:auto;
@@ -3706,14 +3871,20 @@
 <button class=&quot;chat-quick-btn&quot; data-prompt=&quot;מה זה ASA ולמה זה Add-on?&quot;>מה זה ASA ולמה זה Add-on?</button>
 <button class=&quot;chat-quick-btn&quot; data-prompt=&quot;הלקוח משתמש ב-Kong, איך אני עונה?&quot;>הלקוח משתמש ב-Kong, איך אני עונה?</button>
 </div>
+<div id=&quot;saved-questions-wrap&quot;>
+  <button id=&quot;saved-questions-btn&quot;>📌 שאלות שמורות <span id=&quot;saved-questions-count&quot;></span> <span class=&quot;sq-arrow&quot;>▾</span></button>
+  <div id=&quot;saved-questions-menu&quot;>
+    <div class=&quot;sq-empty&quot;>עדיין לא שמרת שאלות — לחץ על ⭐ לצד כל תשובה כדי לשמור אותה.</div>
+  </div>
+</div>
 <div id=&quot;chat-log&quot;>
-<div class=&quot;chat-placeholder&quot;>שאל כל שאלה על מה שכתוב במסמך — התשובה תתבסס רק על התוכן שבדף, כולל הפאנלים הצדדיים.</div>
+<div class=&quot;chat-placeholder&quot;></div>
 </div>
 <div id=&quot;chat-input-row&quot;>
 <textarea id=&quot;chat-question&quot; placeholder=&quot;הקלד שאלה...&quot; rows=&quot;1&quot;></textarea>
 <button id=&quot;chat-send&quot;>שלח</button>
 </div>
-<div class=&quot;chat-disclaimer&quot;>התשובות מבוססות על תוכן המסמך בלבד. כדאי לבדוק תשובות לפני שמסתמכים עליהן בשיחה חייה.</div>
+
 </aside>
 </div>
 </div>
@@ -4085,12 +4256,16 @@
   const answerContentEl = document.getElementById('chat-answer-content');
   const saveEditBtn = document.getElementById('save-answer-edit-btn');
   const backdrop = document.getElementById('panel-backdrop');
+  const savedBtn = document.getElementById('saved-questions-btn');
+  const savedMenu = document.getElementById('saved-questions-menu');
+  const savedCountEl = document.getElementById('saved-questions-count');
   let placeholderRemoved = false;
   let currentQuestionKey = null;
+  let currentQuestionOriginal = null;
 
-  // Saved edits persist in localStorage — works once this is hosted for
+  // Saved Q&amp;A pairs persist in localStorage — works once this is hosted for
   // real; inside this preview it may or may not persist across reloads,
-  // but never breaks anything either way.
+  // but never breaks anything either way. Schema: { [normalizedKey]: { q, a } }
   const SAVED_ANSWERS_KEY = 'postman-explainer-saved-answers-he';
 
   function normalizeQuestion(q){
@@ -4100,18 +4275,57 @@
     try{ return JSON.parse(localStorage.getItem(SAVED_ANSWERS_KEY)) || {}; }
     catch(e){ return {}; }
   }
-  function getSavedAnswer(question){
-    return loadSavedAnswers()[normalizeQuestion(question)] || null;
+  function writeSavedAnswers(answers){
+    try{ localStorage.setItem(SAVED_ANSWERS_KEY, JSON.stringify(answers)); }catch(e){}
   }
+  function getSavedAnswer(question){
+    const entry = loadSavedAnswers()[normalizeQuestion(question)];
+    return entry ? entry.a : null;
+  }
+  function saveQA(question, answerHTML){
+    const answers = loadSavedAnswers();
+    answers[normalizeQuestion(question)] = { q: question, a: answerHTML };
+    writeSavedAnswers(answers);
+    renderSavedQuestionsMenu();
+    translateAndSyncToOtherLanguage(question, answerHTML);
+  }
+  function deleteSavedQA(key){
+    const answers = loadSavedAnswers();
+    delete answers[key];
+    writeSavedAnswers(answers);
+    renderSavedQuestionsMenu();
+  }
+
+  // Cross-language sync: saving here also (best-effort, silent) translates
+  // and writes into the English version's own storage key. Since both
+  // language pages sit on the same domain, they share localStorage — the
+  // English page just needs to be opened once for its dropdown to show it.
+  const OTHER_LANG_KEY = 'postman-explainer-saved-answers-en';
+  async function translateAndSyncToOtherLanguage(question, answerHTML){
+    try{
+      const prompt = 'Translate the following Hebrew sales Q&amp;A into natural, professional English. Keep every HTML tag exactly as-is (e.g. <b>, <span style=&quot;...&quot;>) — translate ONLY the visible text between tags, never tag names or attributes. Respond in EXACTLY this format and nothing else, no preamble:\nQUESTION:::<translated question>\nANSWER:::<translated answer, HTML preserved>\n\nHebrew question: ' + question + '\nHebrew answer (HTML): ' + answerHTML;
+      const response = await fetch(API_ENDPOINT, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ model: 'claude-sonnet-4-6', max_tokens: 600, messages: [{ role: 'user', content: prompt }] })
+      });
+      const data = await response.json();
+      const text = (data.content || []).filter(b => b.type === 'text').map(b => b.text).join('');
+      const qMatch = text.match(/QUESTION:::([\s\S]*?)\nANSWER:::/);
+      const aMatch = text.match(/ANSWER:::([\s\S]*)$/);
+      if(!qMatch || !aMatch) return;
+      const translatedQ = qMatch[1].trim();
+      const translatedA = aMatch[1].trim();
+      let otherAnswers = {};
+      try{ otherAnswers = JSON.parse(localStorage.getItem(OTHER_LANG_KEY)) || {}; }catch(e){}
+      otherAnswers[translatedQ.trim().toLowerCase().replace(/\s+/g, ' ')] = { q: translatedQ, a: translatedA };
+      localStorage.setItem(OTHER_LANG_KEY, JSON.stringify(otherAnswers));
+    }catch(e){ console.error('cross-language sync failed', e); }
+  }
+
   function saveCurrentAnswer(){
     if(!currentQuestionKey) return;
-    // innerHTML (not innerText) — this is the actual fix for edits not
-    // sticking: innerText re-serializes the DOM and can normalize away an
-    // in-progress edit in an RTL contenteditable region; innerHTML captures
-    // exactly what's rendered, formatting included.
-    const answers = loadSavedAnswers();
-    answers[currentQuestionKey] = answerContentEl.innerHTML;
-    localStorage.setItem(SAVED_ANSWERS_KEY, JSON.stringify(answers));
+    saveQA(currentQuestionOriginal, answerContentEl.innerHTML);
     const original = saveEditBtn.textContent;
     saveEditBtn.textContent = 'נשמר ✓';
     setTimeout(()=>{ saveEditBtn.textContent = original; }, 1500);
@@ -4124,9 +4338,70 @@
 
   function openAnswerWindow(question){
     currentQuestionKey = normalizeQuestion(question);
+    currentQuestionOriginal = question;
     answerWindow.classList.add('open');
     backdrop.classList.add('open');
   }
+
+  // ---- ⭐ quick-save star on each bot bubble ----
+  function addStarToBubble(botMsgEl, question){
+    const star = document.createElement('button');
+    star.className = 'msg-star-btn';
+    star.title = 'שמור שאלה ותשובה זו לרשימת השאלות השמורות';
+    star.textContent = '☆';
+    if(getSavedAnswer(question) !== null) { star.textContent = '⭐'; star.classList.add('saved'); }
+    star.addEventListener('click', ()=>{
+      saveQA(question, botMsgEl.textContent);
+      star.textContent = '⭐';
+      star.classList.add('saved');
+    });
+    botMsgEl.appendChild(star);
+  }
+
+  // ---- saved-questions dropdown ----
+  function renderSavedQuestionsMenu(){
+    const answers = loadSavedAnswers();
+    const keys = Object.keys(answers);
+    savedCountEl.textContent = keys.length ? String(keys.length) : '';
+    if(keys.length === 0){
+      savedMenu.innerHTML = '<div class=&quot;sq-empty&quot;>עדיין לא שמרת שאלות — לחץ על ⭐ לצד כל תשובה כדי לשמור אותה.</div>';
+      return;
+    }
+    savedMenu.innerHTML = '';
+    keys.forEach(key=>{
+      const entry = answers[key];
+      const item = document.createElement('div');
+      item.className = 'sq-item';
+      const textSpan = document.createElement('span');
+      textSpan.className = 'sq-text';
+      textSpan.textContent = entry.q;
+      const delBtn = document.createElement('button');
+      delBtn.className = 'sq-delete';
+      delBtn.title = 'הסר מהרשימה';
+      delBtn.textContent = '✕';
+      item.appendChild(textSpan);
+      item.appendChild(delBtn);
+      textSpan.addEventListener('click', ()=>{
+        savedMenu.classList.remove('open');
+        ask(entry.q);
+      });
+      delBtn.addEventListener('click', (e)=>{
+        e.stopPropagation();
+        deleteSavedQA(key);
+      });
+      savedMenu.appendChild(item);
+    });
+  }
+  savedBtn.addEventListener('click', (e)=>{
+    e.stopPropagation();
+    savedMenu.classList.toggle('open');
+  });
+  document.addEventListener('click', (e)=>{
+    if(!document.getElementById('saved-questions-wrap').contains(e.target)){
+      savedMenu.classList.remove('open');
+    }
+  });
+  renderSavedQuestionsMenu();
 
   // The actual fix for &quot;give me another follow-up question&quot; losing the
   // topic: we now keep the real message history and resend it every call.
@@ -4173,7 +4448,8 @@
       answerContentEl.classList.remove('loading');
       answerContentEl.innerHTML = saved;
       answerContentEl.setAttribute('contenteditable', 'true');
-      addMessage('bot', answerContentEl.innerText);
+      const botMsg = addMessage('bot', answerContentEl.innerText);
+      addStarToBubble(botMsg, question);
       conversationHistory.push({ role: 'user', content: question });
       conversationHistory.push({ role: 'assistant', content: answerContentEl.innerText });
       trimHistory();
@@ -4258,6 +4534,7 @@
         conversationHistory.push({ role: 'assistant', content: accumulated });
         answerContentEl.setAttribute('contenteditable', 'true');
         questionEl.value = accumulated;
+        addStarToBubble(botMsg, question);
       }
     }catch(err){
       botMsg.classList.remove('loading');
