@@ -103,7 +103,7 @@
     display:flex;
     overflow-x:auto;
     position:sticky;
-    top:150px;
+    top:64px;
     z-index:99;
     padding:10px 16px;
     gap:8px;
@@ -5243,6 +5243,21 @@
     document.getElementById('clock').textContent = d.toLocaleTimeString('en-GB');
   }
   tick(); setInterval(tick, 1000);
+
+  // ---------- Keep the sticky tab bar right under the header, always ----------
+  // nav.tabs used a hardcoded sticky "top" that assumed a specific header
+  // height. Shrinking the header (removing the big client-name title) broke
+  // that assumption — the tabs stuck at the old offset instead of the
+  // header's real height, making them float and overlap content. This
+  // measures the actual header height instead of guessing a fixed number,
+  // so it can never drift out of sync again.
+  function syncTabBarOffset(){
+    const header = document.querySelector('header');
+    const tabs = document.querySelector('nav.tabs');
+    if(header && tabs) tabs.style.top = header.offsetHeight + 'px';
+  }
+  syncTabBarOffset();
+  window.addEventListener('resize', syncTabBarOffset);
 
   // ---------- Collapsible cards (e.g. Key Contacts) ----------
   function toggleCardCollapse(btn){
