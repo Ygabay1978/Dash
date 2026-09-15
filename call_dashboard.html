@@ -55,7 +55,7 @@
      Pricing" / "Overview" documents reuse this same class name for their
      own big title, and copy this whole stylesheet verbatim, so the base
      rule above must stay full-size for them. */
-  #mainHeader .header-client-name{font-size:12px;font-weight:600;letter-spacing:0;color:var(--ink-soft);margin:0 4px 0 0;}
+  #mainHeader .header-client-name{display:none;}
   .header-right{display:flex;align-items:center;gap:10px;flex-shrink:0;}
   #clock{font-family:var(--mono);font-size:12px;color:var(--ink-soft);display:none;}
   @media(min-width:720px){#clock{display:inline;}}
@@ -1472,6 +1472,8 @@
   #answer-panel{
     left:auto;
     right:24px;
+    top:60px;
+    height:calc(100% - 80px);
   }
   .answer-body{
     display:flex;
@@ -3313,10 +3315,10 @@
      instead of tucked near the right edge — that's the spot marked in
      the screenshot. It's still just as draggable afterward. */
   #chat-answer-window{
-    top:20px;
+    top:60px;
     left:calc(50% - 240px);
     width:480px;
-    height:calc(100% - 40px);
+    height:calc(100% - 80px);
   }
   .panel-header{
     background:var(--ink);
