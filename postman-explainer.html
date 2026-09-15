@@ -264,7 +264,7 @@
 
   /* --- left sidebar: docked chat --- */
   #chat-panel{
-    width:300px;
+    width:340px;
     flex-shrink:0;
     background:#fff;
     border-right:1px solid var(--line);
@@ -375,7 +375,7 @@
   }
   .sq-item:last-child{border-bottom:none;}
   .sq-item:hover{background:#FFF6F1;color:var(--orange);}
-  .sq-item .sq-text{flex:1;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+  .sq-item .sq-text{flex:1;white-space:normal;word-break:break-word;line-height:1.4;}
   .sq-item .sq-delete{
     background:none;border:none;color:var(--grey);
     font-size:13px;cursor:pointer;flex-shrink:0;padding:2px 4px;
@@ -503,10 +503,10 @@
      instead of tucked near the right edge — that's the spot marked in
      the screenshot. It's still just as draggable afterward. */
   #chat-answer-window{
-    top:60px;
+    top:20px;
     left:calc(50% - 240px);
     width:480px;
-    height:calc(100% - 120px);
+    height:calc(100% - 40px);
   }
   .panel-header{
     background:var(--ink);
@@ -1466,8 +1466,15 @@
       const startY = e.clientY;
 
       function onMove(ev){
-        panel.style.left = (startLeft + (ev.clientX - startX)) + 'px';
-        panel.style.top = (startTop + (ev.clientY - startY)) + 'px';
+        const newLeft = startLeft + (ev.clientX - startX);
+        const newTop = startTop + (ev.clientY - startY);
+        // Clamp to the frame's own bounds — #app-frame clips overflow, so
+        // without this the panel (and its ✕ close button) could get
+        // dragged out past the edge and become genuinely unreachable.
+        const maxLeft = Math.max(0, frame.clientWidth - panel.offsetWidth);
+        const maxTop = Math.max(0, frame.clientHeight - panel.offsetHeight);
+        panel.style.left = Math.min(Math.max(0, newLeft), maxLeft) + 'px';
+        panel.style.top = Math.min(Math.max(0, newTop), maxTop) + 'px';
       }
       function onUp(){
         document.removeEventListener('mousemove', onMove);
@@ -1636,11 +1643,11 @@
   async function translateAndSyncToOtherLanguage(question, answerHTML){
     flashSyncStatus('מתרגם לאנגלית…', true);
     try{
-      const prompt = 'Translate the following Hebrew sales Q&A into natural, professional English. Keep every HTML tag exactly as-is (e.g. <b>, <span style="...">) — translate ONLY the visible text between tags, never tag names or attributes. Respond with ONLY a single valid JSON object and nothing else — no markdown fences, no preamble — in exactly this shape: {"q":"<translated question>","a":"<translated answer, HTML preserved, properly escaped for JSON>"}\n\nHebrew question: ' + question + '\nHebrew answer (HTML): ' + answerHTML;
+      const prompt = 'Translate the following Hebrew sales Q&A into natural, professional English. This must be a COMPLETE, full-length, faithful translation — do not summarize, shorten, condense, or omit any part of the content. Match the original\\'s length and level of detail exactly. Keep every HTML tag exactly as-is (e.g. <b>, <span style="...">) — translate ONLY the visible text between tags, never tag names or attributes. Respond with ONLY a single valid JSON object and nothing else — no markdown fences, no preamble — in exactly this shape: {"q":"<translated question>","a":"<translated answer, HTML preserved, properly escaped for JSON>"}\n\nHebrew question: ' + question + '\nHebrew answer (HTML): ' + answerHTML;
       const response = await fetch(API_ENDPOINT, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ model: 'claude-sonnet-4-6', max_tokens: 600, messages: [{ role: 'user', content: prompt }] })
+        body: JSON.stringify({ model: 'claude-sonnet-4-6', max_tokens: 2000, messages: [{ role: 'user', content: prompt }] })
       });
       if(!response.ok) throw new Error('bad response ' + response.status);
       const data = await response.json();
