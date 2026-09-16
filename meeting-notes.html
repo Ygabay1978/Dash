@@ -413,6 +413,7 @@
 
 
 
+
 <!-- ===== Dashboard switcher (present on every page) ===== -->
 <div id="dash-switcher">
   <button id="dash-switcher-btn" title="נווט בין הכלים">🗂️</button>
@@ -456,6 +457,14 @@
 </style>
 <script>
 (function(){
+  // Don't show this when the page is embedded inside another page's iframe
+  // (e.g. Territory Command Center embedded on the homepage) — the OUTER
+  // page already has its own switcher; a second one inside would just be
+  // a confusing duplicate floating on top of it.
+  if(window.self !== window.top){
+    document.getElementById('dash-switcher').style.display = 'none';
+    return;
+  }
   const btn = document.getElementById('dash-switcher-btn');
   const wrap = document.getElementById('dash-switcher');
   const menu = document.getElementById('dash-switcher-menu');

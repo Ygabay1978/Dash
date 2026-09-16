@@ -9,297 +9,71 @@
     --ink:#1C1C1E;
     --grey:#5B5F66;
     --line:#E6E4E0;
-    --bg-card:#FBFAF8;
   }
   *{box-sizing:border-box;}
+  html, body{margin:0;height:100%;overflow:hidden;}
   body{
-    margin:0;
     background:#E3E6EA;
     color:var(--ink);
     font-family:"Segoe UI","Arial Hebrew",Arial,sans-serif;
-    min-height:100vh;
+    display:flex;
+    flex-direction:column;
   }
   header{
     background:var(--ink);
     color:#fff;
-    padding:20px 40px;
-    font-size:18px;
+    padding:14px 24px;
+    font-size:16px;
     font-weight:700;
-  }
-  .page-layout{
-    display:flex;
-    gap:24px;
-    max-width:1240px;
-    margin:0 auto;
-    padding:40px 24px 80px;
-    align-items:flex-start;
-  }
-  .main-col{flex:1;min-width:0;}
-  h1{font-size:24px;margin:0 0 8px;}
-  .sub{color:var(--grey);margin:0 0 24px;font-size:14.5px;}
-  .grid{
-    display:grid;
-    grid-template-columns:repeat(auto-fill, minmax(260px, 1fr));
-    gap:18px;
-  }
-  .card{
-    position:relative;
-    background:#fff;
-    border:1px solid var(--line);
-    border-radius:10px;
-    padding:22px;
-    box-shadow:0 1px 3px rgba(20,20,20,0.06);
-    text-decoration:none;
-    color:var(--ink);
-    display:block;
-    transition:box-shadow .15s, transform .15s;
-  }
-  .card:hover{box-shadow:0 6px 16px rgba(20,20,20,0.12);transform:translateY(-2px);}
-  .card.dragging{opacity:0.4;}
-  .card .icon{font-size:26px;margin-bottom:10px;display:block;}
-  .card .t{font-weight:700;font-size:15.5px;margin-bottom:6px;display:block;}
-  .card .t[contenteditable="true"]{outline:none;border-bottom:1px dashed transparent;}
-  .card .t[contenteditable="true"]:focus{border-bottom-color:var(--orange);}
-  .card .d{font-size:13px;color:var(--grey);display:block;}
-  .card .d[contenteditable="true"]{outline:none;}
-  .card .d[contenteditable="true"]:focus{background:#FFF6F1;}
-  .badge{
-    display:inline-block;
-    font-size:11px;
-    padding:2px 8px;
-    border-radius:20px;
-    margin-right:6px;
-    background:#FFF6F1;
-    color:var(--orange);
-    font-weight:700;
-  }
-  .card-drag-grip{
-    position:absolute;top:10px;left:10px;
-    width:22px;height:22px;
-    display:flex;align-items:center;justify-content:center;
-    border-radius:5px;background:rgba(0,0,0,0.04);
-    cursor:grab;font-size:13px;color:var(--grey);
-  }
-  .card-drag-grip:hover{background:var(--orange);color:#fff;}
-  #edit-cards-toggle{
-    background:var(--bg-card);
-    border:1px solid var(--line);
-    border-radius:6px;
-    padding:8px 14px;
-    font-size:13px;
-    font-weight:600;
-    color:var(--ink);
-    cursor:pointer;
-    margin-bottom:18px;
-  }
-  #edit-cards-toggle:hover{border-color:var(--orange);color:var(--orange);}
-  #edit-cards-toggle.active{background:var(--orange);color:#fff;border-color:var(--orange);}
-
-  .sidebar{
-    width:260px;
     flex-shrink:0;
   }
-  .side-box{
+  #tool-tabs{
     background:#fff;
-    border:1px solid var(--line);
-    border-radius:10px;
-    padding:16px 18px;
-    margin-bottom:16px;
-    box-shadow:0 1px 3px rgba(20,20,20,0.06);
+    border-bottom:1px solid var(--line);
+    display:flex;
+    gap:8px;
+    padding:10px 16px;
+    overflow-x:auto;
+    flex-shrink:0;
   }
-  .side-box h3{font-size:13px;margin:0 0 10px;color:var(--grey);text-transform:uppercase;letter-spacing:.02em;}
-  .side-stat{display:flex;justify-content:space-between;align-items:baseline;margin-bottom:8px;font-size:13px;}
-  .side-stat-note{font-size:11px;color:var(--grey);line-height:1.5;margin-top:8px;}
-  .side-stat .num{font-weight:700;font-size:16px;color:var(--orange);}
-  .account-row{display:flex;justify-content:space-between;font-size:12.5px;padding:5px 0;border-bottom:1px solid var(--line);}
-  .account-row:last-child{border-bottom:none;}
-  .account-row .arr{color:var(--grey);}
-  .side-loading{color:var(--grey);font-size:12px;}
+  .tool-tab{
+    display:flex;
+    align-items:center;
+    gap:8px;
+    background:#FBFAF8;
+    border:1px solid var(--line);
+    border-radius:8px;
+    padding:9px 14px;
+    font-size:13.5px;
+    font-weight:700;
+    color:var(--ink);
+    text-decoration:none;
+    white-space:nowrap;
+    flex-shrink:0;
+    transition:border-color .12s, color .12s;
+  }
+  .tool-tab:hover{border-color:var(--orange);color:var(--orange);}
+  .tool-tab .icon{font-size:15px;}
+  #overview-frame-wrap{flex:1;min-height:0;}
+  #overview-frame{width:100%;height:100%;border:none;display:block;}
 </style>
 </head>
 <body>
 
   <header>כלי מכירות — Postman</header>
 
-  <div class="page-layout">
-    <div class="main-col">
-      <h1>מרכז הכלים שלי</h1>
-      <p class="sub">כל כלי המכירה במקום אחד. לוחצים על כרטיס כדי לפתוח (בטאב נפרד) — או משתמשים בסרגל הקטן בפינה השמאלית-תחתונה כדי לנווט בין הכלים מכל עמוד.</p>
-
-      <button id="edit-cards-toggle">✏️ ערוך סידור וכותרות</button>
-
-      <div class="grid" id="cards-grid">
-        <a class="card" href="postman-explainer.html" target="_blank" data-key="he-script">
-          <span class="icon">💬</span>
-          <span class="t" data-field="title">סקריפט שיחת לקוח <span class="badge">חי</span></span>
-          <span class="d" data-field="desc">מוצרי Postman, השוואה למתחרים, תמחור, ובוט AI שעונה על שאלות תוך כדי שיחה. עברית.</span>
-        </a>
-
-        <a class="card" href="postman-explainer-en.html" target="_blank" data-key="en-script">
-          <span class="icon">💬</span>
-          <span class="t" data-field="title">Customer Pitch <span class="badge">Live</span></span>
-          <span class="d" data-field="desc">Same script, English version.</span>
-        </a>
-
-        <a class="card" href="call_dashboard.html" target="_blank" data-key="call-center">
-          <span class="icon">📞</span>
-          <span class="t" data-field="title">Call Command Center <span class="badge">חי</span></span>
-          <span class="d" data-field="desc">הכלי לשימוש חי במהלך שיחה — First Call.</span>
-        </a>
-
-        <a class="card" href="territory-command-center.html" target="_blank" data-key="territory">
-          <span class="icon">🗺️</span>
-          <span class="t" data-field="title">Territory Command Center <span class="badge">חי</span></span>
-          <span class="d" data-field="desc">98 חשבונות — Overview, Accounts, Usage, Live Deals, Expansion, Contacts, Quality Leads, Follow-ups, Self-Serve, Snapshot.</span>
-        </a>
-
-        <a class="card" href="role-scripts.html" target="_blank" data-key="role-scripts">
-          <span class="icon">🎯</span>
-          <span class="t" data-field="title">תרחישי שיחה ראשונית <span class="badge">חי</span></span>
-          <span class="d" data-field="desc">17 סקריפטי פתיחה טלפונית לפי תפקיד — CISO, CIO, VP R&D, DevOps, ארכיטקטים ועוד.</span>
-        </a>
-
-        <a class="card" href="meeting-notes.html" target="_blank" data-key="meeting-notes">
-          <span class="icon">📓</span>
-          <span class="t" data-field="title">יומן פגישות לקוח <span class="badge">חי</span></span>
-          <span class="d" data-field="desc">טאב נפרד לכל חברה — Snapshot חי מה-Territory Command Center, פלוס הערות פגישה שנשארות שמורות בין פגישות.</span>
-        </a>
-      </div>
-    </div>
-
-    <div class="sidebar">
-      <div class="side-box" id="stats-box">
-        <h3>הטריטוריה שלי</h3>
-        <div class="side-loading">טוען נתונים…</div>
-      </div>
-      <div class="side-box" id="top-accounts-box">
-        <h3>חשבונות מובילים (ARR)</h3>
-        <div class="side-loading">טוען נתונים…</div>
-      </div>
-    </div>
+  <div id="tool-tabs">
+    <a class="tool-tab" href="postman-explainer.html" target="_blank"><span class="icon">💬</span>סקריפט שיחת לקוח (עברית)</a>
+    <a class="tool-tab" href="postman-explainer-en.html" target="_blank"><span class="icon">💬</span>Customer Pitch (EN)</a>
+    <a class="tool-tab" href="call_dashboard.html" target="_blank"><span class="icon">📞</span>Call Command Center</a>
+    <a class="tool-tab" href="territory-command-center.html" target="_blank"><span class="icon">🗺️</span>Territory Command Center (מלא)</a>
+    <a class="tool-tab" href="role-scripts.html" target="_blank"><span class="icon">🎯</span>תרחישי שיחה ראשונית</a>
+    <a class="tool-tab" href="meeting-notes.html" target="_blank"><span class="icon">📓</span>יומן פגישות לקוח</a>
   </div>
 
-<script>
-(function(){
-  // ---- card drag-reorder + rename, persisted ----
-  const grid = document.getElementById('cards-grid');
-  const toggleBtn = document.getElementById('edit-cards-toggle');
-  const STORAGE_KEY = 'home-cards-order-and-text';
-  let editMode = false;
-
-  function getDragAfterElement(y){
-    const cards = [...grid.querySelectorAll('.card:not(.dragging)')];
-    return cards.reduce((closest, card)=>{
-      const box = card.getBoundingClientRect();
-      const offset = y - box.top - box.height/2;
-      if(offset < 0 && offset > closest.offset) return {offset, element: card};
-      return closest;
-    }, {offset: Number.NEGATIVE_INFINITY, element: null}).element;
-  }
-
-  function saveState(){
-    const cards = Array.from(grid.querySelectorAll('.card'));
-    const state = cards.map(c => ({
-      key: c.dataset.key,
-      title: c.querySelector('[data-field="title"]').innerHTML,
-      desc: c.querySelector('[data-field="desc"]').innerHTML
-    }));
-    try{ localStorage.setItem(STORAGE_KEY, JSON.stringify(state)); }catch(e){}
-  }
-
-  function restoreState(){
-    let state;
-    try{ state = JSON.parse(localStorage.getItem(STORAGE_KEY)); }catch(e){ return; }
-    if(!state || !state.length) return;
-    const cardsByKey = {};
-    grid.querySelectorAll('.card').forEach(c => cardsByKey[c.dataset.key] = c);
-    state.forEach(entry=>{
-      const card = cardsByKey[entry.key];
-      if(!card) return;
-      card.querySelector('[data-field="title"]').innerHTML = entry.title;
-      card.querySelector('[data-field="desc"]').innerHTML = entry.desc;
-      grid.appendChild(card);
-    });
-  }
-  restoreState();
-
-  grid.querySelectorAll('.card').forEach(card=>{
-    const grip = document.createElement('span');
-    grip.className = 'card-drag-grip';
-    grip.textContent = '⠿';
-    grip.title = 'גרור כדי לשנות סדר';
-    card.appendChild(grip);
-  });
-
-  grid.addEventListener('dragover', (e)=>{
-    const dragging = grid.querySelector('.card.dragging');
-    if(!dragging) return;
-    e.preventDefault();
-    const afterEl = getDragAfterElement(e.clientY);
-    if(afterEl == null) grid.appendChild(dragging);
-    else grid.insertBefore(dragging, afterEl);
-  });
-
-  grid.querySelectorAll('.card').forEach(card=>{
-    card.addEventListener('dragstart', (e)=>{
-      if(!editMode){ e.preventDefault(); return; }
-      card.classList.add('dragging');
-    });
-    card.addEventListener('dragend', ()=>{
-      card.classList.remove('dragging');
-      saveState();
-    });
-  });
-
-  grid.addEventListener('input', (e)=>{
-    if(!e.target.closest('.card')) return;
-    clearTimeout(grid._saveTimer);
-    grid._saveTimer = setTimeout(saveState, 500);
-  });
-
-  toggleBtn.addEventListener('click', ()=>{
-    editMode = !editMode;
-    toggleBtn.classList.toggle('active', editMode);
-    toggleBtn.textContent = editMode ? '✓ סיים עריכה' : '✏️ ערוך סידור וכותרות';
-    grid.querySelectorAll('.card').forEach(card=>{
-      card.setAttribute('draggable', editMode ? 'true' : 'false');
-      card.querySelectorAll('[data-field]').forEach(f => f.setAttribute('contenteditable', editMode ? 'true' : 'false'));
-      if(editMode) card.addEventListener('click', preventNav);
-      else card.removeEventListener('click', preventNav);
-    });
-  });
-  function preventNav(e){ e.preventDefault(); }
-
-  // ---- live territory stats sidebar ----
-  async function loadStats(){
-    let data;
-    try{
-      const res = await fetch('dashboard-data.json');
-      data = await res.json();
-    }catch(e){
-      document.getElementById('stats-box').innerHTML = '<h3>הטריטוריה שלי</h3><div class="side-loading">לא נמצא dashboard-data.json באותה תיקייה.</div>';
-      document.getElementById('top-accounts-box').innerHTML = '<h3>חשבונות מובילים (ARR)</h3><div class="side-loading">—</div>';
-      return;
-    }
-    const accounts = data.accounts || [];
-    const actions = (data.actions_90day || []).slice(1); // first row is a header artifact
-    const totalArr = accounts.reduce((s,a)=> s + (a.arr_live ?? a.arr ?? 0), 0);
-
-    document.getElementById('stats-box').innerHTML =
-      '<h3>הטריטוריה שלי</h3>' +
-      '<div class="side-stat"><span>חשבונות במעקב</span><span class="num">' + accounts.length + '</span></div>' +
-      '<div class="side-stat"><span>ARR מצטבר</span><span class="num">$' + Math.round(totalArr).toLocaleString() + '</span></div>' +
-      '<div class="side-stat-note">מבוסס על dashboard-data.json — אם המספר לא תואם ל-CRM החי שלך, זה אומר שהקובץ הזה לא הכי טרי; תעדכן אותו כשתרצה שהדף הזה ישקף מספר חדש.</div>';
-
-    const top = accounts.slice().sort((a,b)=> (b.arr_live ?? b.arr ?? 0) - (a.arr_live ?? a.arr ?? 0)).slice(0, 5);
-    document.getElementById('top-accounts-box').innerHTML =
-      '<h3>חשבונות מובילים (ARR)</h3>' +
-      top.map(a => '<div class="account-row"><span>' + a.name + '</span><span class="arr">$' + Math.round(a.arr_live ?? a.arr ?? 0).toLocaleString() + '</span></div>').join('');
-  }
-  loadStats();
-})();
-</script>
-
+  <div id="overview-frame-wrap">
+    <iframe id="overview-frame" src="territory-command-center.html"></iframe>
+  </div>
 
 <!-- ===== Dashboard switcher (present on every page) ===== -->
 <div id="dash-switcher">
@@ -344,6 +118,14 @@
 </style>
 <script>
 (function(){
+  // Don't show this when the page is embedded inside another page's iframe
+  // (e.g. Territory Command Center embedded on the homepage) — the OUTER
+  // page already has its own switcher; a second one inside would just be
+  // a confusing duplicate floating on top of it.
+  if(window.self !== window.top){
+    document.getElementById('dash-switcher').style.display = 'none';
+    return;
+  }
   const btn = document.getElementById('dash-switcher-btn');
   const wrap = document.getElementById('dash-switcher');
   const menu = document.getElementById('dash-switcher-menu');

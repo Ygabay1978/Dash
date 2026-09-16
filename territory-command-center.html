@@ -228,6 +228,20 @@ tr:hover td{background:#FFFBF5;}
 
 /* Deal / meeting cards */
 .deal-card{border:1px solid var(--line); border-radius:10px; padding:14px 16px; margin-bottom:10px; background:#fff;}
+.my-action-row{display:flex;align-items:center;gap:10px;padding:8px 4px;border-bottom:1px solid var(--line);}
+.my-action-row:last-child{border-bottom:none;}
+.my-action-check{flex-shrink:0;width:16px;height:16px;cursor:pointer;}
+.my-action-text{flex:1;font-size:13.5px;outline:none;padding:2px 4px;border-radius:4px;}
+.my-action-text:focus{background:#FFF6F1;}
+.my-action-text.done{text-decoration:line-through;color:var(--gray);opacity:.6;}
+.my-action-delete{background:none;border:none;color:var(--gray);font-size:12px;cursor:pointer;flex-shrink:0;padding:2px 6px;}
+.my-action-delete:hover{color:var(--red);}
+.my-action-add-btn{
+  display:block;width:100%;margin-top:10px;padding:10px;
+  border:2px dashed var(--line);border-radius:8px;background:none;
+  color:var(--gray);font-size:13px;font-weight:600;cursor:pointer;
+}
+.my-action-add-btn:hover{border-color:var(--orange);color:var(--orange);}
 .deal-card.stale{border-color:var(--red); background:#FFF6F6;}
 .deal-card.discovered{border-color:var(--amber); background:#FFFBEF;}
 .deal-head{display:flex; justify-content:space-between; align-items:center; margin-bottom:6px;}
@@ -672,9 +686,84 @@ function renderOverview(){
       </div>
     </div>
     <div id="overviewOpportunities"></div>
+    <div id="myActionsSection"></div>
   `;
   document.getElementById('overviewOpportunities').innerHTML = buildOpportunitiesHTML();
+  renderMyActions();
   renderCharts();
+}
+
+/* ---------- MY 90-DAY PLAN (editable checklist — add/check-off/delete) ---------- */
+const MY_ACTIONS_KEY = 'my-actions-90day';
+function loadMyActions(){
+  let saved;
+  try{ saved = JSON.parse(localStorage.getItem(MY_ACTIONS_KEY)); }catch(e){ saved = null; }
+  if(saved) return saved;
+  // First time: seed from the 90-day plan in the data file (skip the header row).
+  const seed = (DATA.actions_90day || []).slice(1).map(a => ({
+    text: [a.account, a.action].filter(Boolean).join(' — '),
+    done: (a.status || '').toUpperCase() === 'DONE'
+  }));
+  try{ localStorage.setItem(MY_ACTIONS_KEY, JSON.stringify(seed)); }catch(e){}
+  return seed;
+}
+function saveMyActions(actions){
+  try{ localStorage.setItem(MY_ACTIONS_KEY, JSON.stringify(actions)); }catch(e){}
+}
+function renderMyActions(){
+  const el = document.getElementById('myActionsSection');
+  if(!el) return;
+  const actions = loadMyActions();
+  el.innerHTML = `
+    <div class="card" id="myActionsCard">
+      <h3>התוכנית שלי — ניתן לערוך, לסמן כבוצע, למחוק ולהוסיף</h3>
+      <div id="myActionsList">
+        ${actions.map((a, i) => `
+          <div class="my-action-row" data-idx="${i}">
+            <input type="checkbox" ${a.done ? 'checked' : ''} class="my-action-check">
+            <span class="my-action-text ${a.done ? 'done' : ''}" contenteditable="true">${a.text}</span>
+            <button class="my-action-delete" title="מחק">🗑</button>
+          </div>
+        `).join('') || '<p class="muted">אין פעולות עדיין — לחץ על "+ הוסף פעולה" כדי להתחיל.</p>'}
+      </div>
+      <button id="myActionsAddBtn" class="my-action-add-btn">+ הוסף פעולה</button>
+    </div>
+  `;
+
+  el.querySelectorAll('.my-action-check').forEach(cb=>{
+    cb.addEventListener('change', ()=>{
+      const actions = loadMyActions();
+      const idx = parseInt(cb.closest('.my-action-row').dataset.idx, 10);
+      actions[idx].done = cb.checked;
+      saveMyActions(actions);
+      cb.closest('.my-action-row').querySelector('.my-action-text').classList.toggle('done', cb.checked);
+    });
+  });
+  el.querySelectorAll('.my-action-text').forEach(span=>{
+    span.addEventListener('input', ()=>{
+      const actions = loadMyActions();
+      const idx = parseInt(span.closest('.my-action-row').dataset.idx, 10);
+      actions[idx].text = span.textContent;
+      saveMyActions(actions);
+    });
+  });
+  el.querySelectorAll('.my-action-delete').forEach(btn=>{
+    btn.addEventListener('click', ()=>{
+      const actions = loadMyActions();
+      const idx = parseInt(btn.closest('.my-action-row').dataset.idx, 10);
+      actions.splice(idx, 1);
+      saveMyActions(actions);
+      renderMyActions();
+    });
+  });
+  document.getElementById('myActionsAddBtn').addEventListener('click', ()=>{
+    const actions = loadMyActions();
+    actions.unshift({ text: 'פעולה חדשה...', done: false });
+    saveMyActions(actions);
+    renderMyActions();
+    const firstText = document.querySelector('.my-action-text');
+    if(firstText) firstText.focus();
+  });
 }
 
 /* ---------- SPOTLIGHT (linked accounts panel for map + charts) ---------- */
@@ -2680,6 +2769,7 @@ async function importMyMarks(evt){
 
 
 
+
 <!-- ===== Dashboard switcher (present on every page) ===== -->
 <div id="dash-switcher">
   <button id="dash-switcher-btn" title="נווט בין הכלים">🗂️</button>
@@ -2723,6 +2813,14 @@ async function importMyMarks(evt){
 </style>
 <script>
 (function(){
+  // Don't show this when the page is embedded inside another page's iframe
+  // (e.g. Territory Command Center embedded on the homepage) — the OUTER
+  // page already has its own switcher; a second one inside would just be
+  // a confusing duplicate floating on top of it.
+  if(window.self !== window.top){
+    document.getElementById('dash-switcher').style.display = 'none';
+    return;
+  }
   const btn = document.getElementById('dash-switcher-btn');
   const wrap = document.getElementById('dash-switcher');
   const menu = document.getElementById('dash-switcher-menu');
