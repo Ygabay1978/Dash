@@ -123,7 +123,7 @@ header{display:flex; align-items:center; justify-content:space-between; padding:
 .snap-sugg-item:hover, .snap-sugg-item.active{background:#FFF6EE;}
 .snap-sugg-item .src{float:right; font-size:10px; color:var(--gray); text-transform:uppercase;}
 .snap-empty{color:var(--gray); font-size:13px; padding:40px 0; text-align:center;}
-.snap-header{display:flex; justify-content:space-between; align-items:flex-start; margin-bottom:16px; flex-wrap:wrap; gap:12px;}
+.snap-header{display:flex; justify-content:flex-end; align-items:flex-start; margin-bottom:16px; flex-wrap:wrap; gap:12px;}
 .snap-header h2{font-size:20px; font-weight:800;}
 .snap-header .sub{font-size:12px; color:var(--gray); margin-top:2px;}
 .snap-actions{display:flex; gap:8px;}
@@ -2343,10 +2343,6 @@ function buildSnapshot(name){
   }
   html += `
     <div class="snap-header">
-      <div>
-        <h2>${name}${account?.priority?` <span class="tag" style="font-size:10px;">${account.priority}</span>`:''}</h2>
-        <div class="sub">${metaLine || 'Company overview'}</div>
-      </div>
       <div class="snap-actions">
         <button class="snap-btn" onclick="toggleSnapEditMode()">${editMode?'&#10003; Done editing':'&#9998; Edit view'}</button>
         ${editMode?'<button class="snap-btn" onclick="resetSnapFields()">&#8635; Reset hidden</button>':''}
@@ -2681,60 +2677,56 @@ async function importMyMarks(evt){
   await renderFollowups();
 })();
 </script>
-<!-- ===== Dashboard switcher (present on every page) ===== -->
+
+
+<!-- ===== Persistent tool switcher (present on every page) — pure overlay, never affects page layout ===== -->
 <div id="dash-switcher">
-  <button id="dash-switcher-btn" title="נווט בין הכלים">🗂️</button>
-  <div id="dash-switcher-menu">
-    <div class="dash-switcher-title">הכלים שלי</div>
-    <a href="index.html">🏠 דף הבית</a>
-    <a href="postman-explainer.html">💬 סקריפט שיחת לקוח (עברית)</a>
-    <a href="postman-explainer-en.html">💬 Customer Pitch (EN)</a>
-    <a href="call_dashboard.html">📞 Call Command Center</a>
-    <a href="territory-command-center.html">🗺️ Territory Command Center</a>
-    <a href="role-scripts.html">🎯 תרחישי שיחה ראשונית</a>
-  </div>
+  <a href="index.html" target="_blank" class="ds-item" title="דף הבית"><span class="ds-icon">🏠</span><span class="ds-label">דף הבית</span></a>
+  <a href="postman-explainer.html" target="_blank" class="ds-item" title="סקריפט שיחת לקוח (עברית)"><span class="ds-icon">💬</span><span class="ds-label">סקריפט (עברית)</span></a>
+  <a href="postman-explainer-en.html" target="_blank" class="ds-item" title="Customer Pitch (EN)"><span class="ds-icon">💬</span><span class="ds-label">Customer Pitch (EN)</span></a>
+  <a href="call_dashboard.html" target="_blank" class="ds-item" title="Call Command Center"><span class="ds-icon">📞</span><span class="ds-label">Call Command Center</span></a>
+  <a href="territory-command-center.html" target="_blank" class="ds-item" title="Territory Command Center"><span class="ds-icon">🗺️</span><span class="ds-label">Territory</span></a>
+  <a href="role-scripts.html" target="_blank" class="ds-item" title="תרחישי שיחה ראשונית"><span class="ds-icon">🎯</span><span class="ds-label">תרחישי שיחה</span></a>
+  <a href="meeting-notes.html" target="_blank" class="ds-item" title="יומן פגישות לקוח"><span class="ds-icon">📓</span><span class="ds-label">יומן פגישות</span></a>
 </div>
 <style>
-  #dash-switcher{position:fixed;bottom:20px;left:20px;z-index:2147483000;font-family:"Segoe UI","Arial Hebrew",Arial,sans-serif;direction:rtl;}
-  #dash-switcher-btn{
-    width:48px;height:48px;border-radius:50%;
-    background:#1C1C1E;color:#fff;border:none;
-    font-size:20px;cursor:pointer;
-    box-shadow:0 4px 12px rgba(0,0,0,.35);
+  #dash-switcher{
+    position:fixed;
+    bottom:16px;left:16px;
+    z-index:2147483000;
+    display:flex;
+    flex-direction:column;
+    gap:6px;
+    font-family:"Segoe UI","Arial Hebrew",Arial,sans-serif;
+    direction:rtl;
+    pointer-events:none;
   }
-  #dash-switcher-btn:hover{background:#FF6C37;}
-  #dash-switcher-menu{
-    display:none;position:absolute;bottom:58px;left:0;
-    background:#fff;border:1px solid #E6E4E0;border-radius:10px;
-    box-shadow:0 10px 30px rgba(0,0,0,.25);
-    padding:8px;min-width:230px;
+  .ds-item{
+    pointer-events:auto;
+    display:flex;
+    align-items:center;
+    gap:8px;
+    background:#1C1C1E;
+    color:#fff;
+    text-decoration:none;
+    border-radius:20px;
+    padding:8px;
+    box-shadow:0 3px 10px rgba(0,0,0,.25);
+    width:36px;
+    overflow:hidden;
+    white-space:nowrap;
+    transition:width .12s ease, background .12s ease;
   }
-  #dash-switcher-menu.open{display:block;}
-  #dash-switcher-menu .dash-switcher-title{
-    font-size:11px;font-weight:700;color:#5B5F66;
-    padding:4px 10px 8px;text-transform:uppercase;letter-spacing:.02em;
-  }
-  #dash-switcher-menu a{
-    display:block;padding:8px 10px;border-radius:6px;
-    color:#1C1C1E;text-decoration:none;font-size:13px;white-space:nowrap;
-  }
-  #dash-switcher-menu a:hover{background:#FFF6F1;color:#FF6C37;}
-  #dash-switcher-menu a.current{font-weight:700;color:#FF6C37;background:#FFF6F1;}
+  .ds-item:hover{width:180px;background:#FF6C37;}
+  .ds-icon{font-size:16px;flex-shrink:0;width:20px;text-align:center;}
+  .ds-label{font-size:12px;font-weight:600;}
+  .ds-item.current{background:#3A3A3C;}
+  .ds-item.current:hover{background:#FF6C37;}
 </style>
 <script>
 (function(){
-  const btn = document.getElementById('dash-switcher-btn');
-  const wrap = document.getElementById('dash-switcher');
-  const menu = document.getElementById('dash-switcher-menu');
-  btn.addEventListener('click', function(e){
-    e.stopPropagation();
-    menu.classList.toggle('open');
-  });
-  document.addEventListener('click', function(e){
-    if(!wrap.contains(e.target)) menu.classList.remove('open');
-  });
   const current = (location.pathname.split('/').pop() || 'index.html');
-  menu.querySelectorAll('a').forEach(function(a){
+  document.querySelectorAll('#dash-switcher .ds-item').forEach(function(a){
     if(a.getAttribute('href') === current) a.classList.add('current');
   });
 })();

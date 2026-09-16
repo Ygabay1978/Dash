@@ -1012,6 +1012,34 @@
     font-size:13px;font-weight:600;cursor:pointer;
   }
   .add-card-btn:hover{border-color:var(--orange);color:var(--orange);}
+  /* --- generic drag/add/delete for section &amp; panel content blocks --- */
+  .draggable-block{position:relative;}
+  .draggable-block.dragging{opacity:0.4;}
+  .block-drag-grip{
+    position:absolute;top:6px;right:4px;
+    width:20px;height:20px;
+    display:flex;align-items:center;justify-content:center;
+    border-radius:5px;background:rgba(0,0,0,0.05);
+    cursor:grab;font-size:12px;color:var(--grey);
+    user-select:none;
+  }
+  .block-drag-grip:hover{background:var(--orange);color:#fff;}
+  .block-delete-btn{
+    position:absolute;top:6px;right:28px;
+    width:20px;height:20px;
+    display:flex;align-items:center;justify-content:center;
+    border:none;border-radius:5px;background:rgba(0,0,0,0.05);
+    cursor:pointer;font-size:11px;color:var(--grey);
+  }
+  .block-delete-btn:hover{background:#D64545;color:#fff;}
+  .add-block-btn{
+    display:block;width:100%;
+    margin-top:10px;padding:12px;
+    border:2px dashed var(--line);border-radius:8px;
+    background:none;color:var(--grey);
+    font-size:13px;font-weight:600;cursor:pointer;
+  }
+  .add-block-btn:hover{border-color:var(--orange);color:var(--orange);}
   .prod .name{font-weight:700;font-size:15.5px;margin-bottom:8px;}
   .prod .pitch{font-size:14px;}
   .obj{border:1px solid var(--line);border-radius:8px;padding:14px 18px;margin-bottom:10px;background:var(--bg-card);box-shadow:0 1px 2px rgba(20,20,20,0.04);}
@@ -1635,7 +1663,7 @@
 &lt;h1 class=&quot;edit-unit&quot; contenteditable=&quot;false&quot;&gt;Customer Call Script — Postman Products&lt;/h1&gt;
 &lt;/header&gt;
 &lt;!-- SECTION 0: 30-SECOND OPENING PITCH --&gt;
-&lt;section&gt;
+&lt;section id=&quot;sec-opening&quot;&gt;
 &lt;h2 class=&quot;edit-unit&quot; contenteditable=&quot;false&quot;&gt;&lt;span class=&quot;num&quot;&gt;&lt;br/&gt;&lt;/span&gt; Opening Pitch — 30 Seconds&lt;/h2&gt;
 &lt;div class=&quot;pitch-open edit-unit&quot; contenteditable=&quot;false&quot;&gt;
 &lt;span class=&quot;tag&quot;&gt;&lt;span style=&quot;font-size: 15px; color: rgb(28, 28, 30);&quot;&gt;&quot;Great. Give me 30 seconds to explain how companies deal with this today.&lt;/span&gt;&lt;/span&gt;
@@ -3079,6 +3107,144 @@ A few additional capabilities that can be relevant, depending on the customer&#x
   });
 })();
 
+// --- generic drag/add/delete for section &amp; panel content blocks ---
+// (Products and Objections cards have their own dedicated system above —
+// this covers everything else: headings, paragraphs, cross-boxes, say-boxes,
+// lists, etc. inside each section or reference panel.)
+(function(){
+  const BLOCK_CONTAINERS = [
+    &#x27;#sec-opening&#x27;, &#x27;#sec-process&#x27;, &#x27;#sec-ai&#x27;, &#x27;#sec-stages&#x27;,
+    &#x27;#panel-fabric .panel-body&#x27;, &#x27;#panel-passport .panel-body&#x27;,
+    &#x27;#panel-asa .panel-body&#x27;, &#x27;#panel-database .panel-body&#x27;
+  ];
+  const SKIP_SELECTOR = &#x27;.fmt-group, .panel-toolbar, .panel-header, .add-block-btn, .add-card-btn, .offer-grid&#x27;;
+
+  function getDragAfterElement(container, y){
+    const blocks = [...container.querySelectorAll(&#x27;:scope &gt; .draggable-block:not(.dragging)&#x27;)];
+    return blocks.reduce((closest, el)=&gt;{
+      const box = el.getBoundingClientRect();
+      const offset = y - box.top - box.height / 2;
+      if(offset &lt; 0 &amp;&amp; offset &gt; closest.offset){
+        return { offset, element: el };
+      } else {
+        return closest;
+      }
+    }, { offset: Number.NEGATIVE_INFINITY, element: null }).element;
+  }
+
+  BLOCK_CONTAINERS.forEach(containerSelector=&gt;{
+    const container = document.querySelector(containerSelector);
+    if(!container) return;
+    const storageKey = &#x27;blocks:&#x27; + containerSelector;
+
+    // A full snapshot of every block&#x27;s outerHTML, in order — captures
+    // reordering, added blocks, deleted blocks, and text edits all at once.
+    try{
+      const saved = JSON.parse(localStorage.getItem(storageKey));
+      if(saved &amp;&amp; saved.length){
+        Array.from(container.children).forEach(c=&gt;{
+          if(!c.matches(SKIP_SELECTOR)) c.remove();
+        });
+        const addBtn = container.querySelector(&#x27;.add-block-btn&#x27;);
+        saved.forEach(htmlStr=&gt;{
+          const temp = document.createElement(&#x27;div&#x27;);
+          temp.innerHTML = htmlStr;
+          const el = temp.firstElementChild;
+          if(el){
+            if(addBtn) container.insertBefore(el, addBtn);
+            else container.appendChild(el);
+          }
+        });
+      }
+    }catch(e){}
+
+    function saveSnapshot(){
+      const blocks = Array.from(container.children).filter(c =&gt; c.classList.contains(&#x27;draggable-block&#x27;));
+      const htmlList = blocks.map(b =&gt; b.outerHTML);
+      try{ localStorage.setItem(storageKey, JSON.stringify(htmlList)); }catch(e){}
+    }
+
+    function currentEditableState(){
+      const sample = container.querySelector(&#x27;.edit-unit&#x27;);
+      return sample ? sample.getAttribute(&#x27;contenteditable&#x27;) : &#x27;true&#x27;;
+    }
+
+    function wireBlock(el){
+      if(el.dataset.blockWired) return;
+      el.dataset.blockWired = &#x27;1&#x27;;
+      el.classList.add(&#x27;draggable-block&#x27;);
+      el.setAttribute(&#x27;draggable&#x27;, &#x27;true&#x27;);
+
+      const grip = document.createElement(&#x27;span&#x27;);
+      grip.className = &#x27;block-drag-grip&#x27;;
+      grip.title = &#x27;Drag to move&#x27;;
+      grip.textContent = &#x27;⠿&#x27;;
+      el.appendChild(grip);
+
+      const del = document.createElement(&#x27;button&#x27;);
+      del.type = &#x27;button&#x27;;
+      del.className = &#x27;block-delete-btn&#x27;;
+      del.title = &#x27;Delete this block&#x27;;
+      del.textContent = &#x27;🗑&#x27;;
+      del.addEventListener(&#x27;click&#x27;, (e)=&gt;{
+        e.stopPropagation();
+        if(window.confirm(&#x27;Delete this block?&#x27;)){
+          el.remove();
+          saveSnapshot();
+        }
+      });
+      el.appendChild(del);
+
+      el.addEventListener(&#x27;dragstart&#x27;, ()=&gt;{ el.classList.add(&#x27;dragging&#x27;); });
+      el.addEventListener(&#x27;dragend&#x27;, ()=&gt;{ el.classList.remove(&#x27;dragging&#x27;); saveSnapshot(); });
+    }
+
+    Array.from(container.children).forEach(el=&gt;{
+      if(el.matches(SKIP_SELECTOR)) return;
+      wireBlock(el);
+    });
+
+    container.addEventListener(&#x27;dragover&#x27;, (e)=&gt;{
+      const dragging = container.querySelector(&#x27;:scope &gt; .dragging&#x27;);
+      if(!dragging) return;
+      e.preventDefault();
+      const addBtn = container.querySelector(&#x27;.add-block-btn&#x27;);
+      const afterEl = getDragAfterElement(container, e.clientY);
+      if(afterEl == null){
+        if(addBtn) container.insertBefore(dragging, addBtn); else container.appendChild(dragging);
+      } else {
+        container.insertBefore(dragging, afterEl);
+      }
+    });
+
+    let saveTimer;
+    container.addEventListener(&#x27;input&#x27;, (e)=&gt;{
+      if(!e.target.closest(&#x27;.draggable-block&#x27;)) return;
+      clearTimeout(saveTimer);
+      saveTimer = setTimeout(saveSnapshot, 600);
+    });
+
+    let addBtn = container.querySelector(&#x27;.add-block-btn&#x27;);
+    if(!addBtn){
+      addBtn = document.createElement(&#x27;button&#x27;);
+      addBtn.type = &#x27;button&#x27;;
+      addBtn.className = &#x27;add-block-btn&#x27;;
+      addBtn.textContent = &#x27;+ Add text block&#x27;;
+      container.appendChild(addBtn);
+    }
+    addBtn.addEventListener(&#x27;click&#x27;, ()=&gt;{
+      const el = document.createElement(&#x27;div&#x27;);
+      el.className = &#x27;cross-box edit-unit&#x27;;
+      el.setAttribute(&#x27;contenteditable&#x27;, currentEditableState());
+      el.textContent = &#x27;New text...&#x27;;
+      container.insertBefore(el, addBtn);
+      wireBlock(el);
+      saveSnapshot();
+      if(el.getAttribute(&#x27;contenteditable&#x27;) === &#x27;true&#x27;) el.focus();
+    });
+  });
+})();
+
 // --- generic content persistence + cross-language sync (for edit-units
 // OUTSIDE the reorderable card groups, which have their own snapshot system) ---
 (function(){
@@ -3271,6 +3437,34 @@ A few additional capabilities that can be relevant, depending on the customer&#x
     font-size:13px;font-weight:600;cursor:pointer;
   }
   .add-card-btn:hover{border-color:var(--orange);color:var(--orange);}
+  /* --- generic drag/add/delete for section &amp; panel content blocks --- */
+  .draggable-block{position:relative;}
+  .draggable-block.dragging{opacity:0.4;}
+  .block-drag-grip{
+    position:absolute;top:6px;right:4px;
+    width:20px;height:20px;
+    display:flex;align-items:center;justify-content:center;
+    border-radius:5px;background:rgba(0,0,0,0.05);
+    cursor:grab;font-size:12px;color:var(--grey);
+    user-select:none;
+  }
+  .block-drag-grip:hover{background:var(--orange);color:#fff;}
+  .block-delete-btn{
+    position:absolute;top:6px;right:28px;
+    width:20px;height:20px;
+    display:flex;align-items:center;justify-content:center;
+    border:none;border-radius:5px;background:rgba(0,0,0,0.05);
+    cursor:pointer;font-size:11px;color:var(--grey);
+  }
+  .block-delete-btn:hover{background:#D64545;color:#fff;}
+  .add-block-btn{
+    display:block;width:100%;
+    margin-top:10px;padding:12px;
+    border:2px dashed var(--line);border-radius:8px;
+    background:none;color:var(--grey);
+    font-size:13px;font-weight:600;cursor:pointer;
+  }
+  .add-block-btn:hover{border-color:var(--orange);color:var(--orange);}
   .prod .name{font-weight:700;font-size:15.5px;margin-bottom:8px;}
   .prod .pitch{font-size:14px;}
   .obj{border:1px solid var(--line);border-radius:8px;padding:14px 18px;margin-bottom:10px;background:var(--bg-card);box-shadow:0 1px 2px rgba(20,20,20,0.04);}
@@ -3895,7 +4089,7 @@ A few additional capabilities that can be relevant, depending on the customer&#x
 &lt;h1 class=&quot;edit-unit&quot; contenteditable=&quot;false&quot;&gt;סקריפט לשיחת לקוח — מוצרי Postman&lt;/h1&gt;
 &lt;/header&gt;
 &lt;!-- SECTION 0: 30-SECOND OPENING PITCH --&gt;
-&lt;section&gt;
+&lt;section id=&quot;sec-opening&quot;&gt;
 &lt;h2 class=&quot;edit-unit&quot; contenteditable=&quot;false&quot;&gt;&lt;span class=&quot;num&quot;&gt;&lt;br/&gt;&lt;/span&gt; פיץ&#x27; פתיחה — 30 שניות&lt;/h2&gt;
 &lt;div class=&quot;pitch-open edit-unit&quot; contenteditable=&quot;false&quot;&gt;
 &lt;span class=&quot;tag&quot;&gt;&lt;span style=&quot;font-size: 15px; color: rgb(28, 28, 30);&quot;&gt;&quot;מצוין. תנו לי 30 שניות להסביר איך חברות מתמודדות עם זה היום.&lt;/span&gt;&lt;/span&gt;
@@ -5345,6 +5539,144 @@ A few additional capabilities that can be relevant, depending on the customer&#x
       saveSnapshot();
       const firstEditable = card.querySelector(&#x27;.edit-unit&#x27;);
       if(firstEditable &amp;&amp; editState === &#x27;true&#x27;) firstEditable.focus();
+    });
+  });
+})();
+
+// --- generic drag/add/delete for section &amp; panel content blocks ---
+// (Products and Objections cards have their own dedicated system above —
+// this covers everything else: headings, paragraphs, cross-boxes, say-boxes,
+// lists, etc. inside each section or reference panel.)
+(function(){
+  const BLOCK_CONTAINERS = [
+    &#x27;#sec-opening&#x27;, &#x27;#sec-process&#x27;, &#x27;#sec-ai&#x27;, &#x27;#sec-stages&#x27;,
+    &#x27;#panel-fabric .panel-body&#x27;, &#x27;#panel-passport .panel-body&#x27;,
+    &#x27;#panel-asa .panel-body&#x27;, &#x27;#panel-database .panel-body&#x27;
+  ];
+  const SKIP_SELECTOR = &#x27;.fmt-group, .panel-toolbar, .panel-header, .add-block-btn, .add-card-btn, .offer-grid&#x27;;
+
+  function getDragAfterElement(container, y){
+    const blocks = [...container.querySelectorAll(&#x27;:scope &gt; .draggable-block:not(.dragging)&#x27;)];
+    return blocks.reduce((closest, el)=&gt;{
+      const box = el.getBoundingClientRect();
+      const offset = y - box.top - box.height / 2;
+      if(offset &lt; 0 &amp;&amp; offset &gt; closest.offset){
+        return { offset, element: el };
+      } else {
+        return closest;
+      }
+    }, { offset: Number.NEGATIVE_INFINITY, element: null }).element;
+  }
+
+  BLOCK_CONTAINERS.forEach(containerSelector=&gt;{
+    const container = document.querySelector(containerSelector);
+    if(!container) return;
+    const storageKey = &#x27;blocks:&#x27; + containerSelector;
+
+    // A full snapshot of every block&#x27;s outerHTML, in order — captures
+    // reordering, added blocks, deleted blocks, and text edits all at once.
+    try{
+      const saved = JSON.parse(localStorage.getItem(storageKey));
+      if(saved &amp;&amp; saved.length){
+        Array.from(container.children).forEach(c=&gt;{
+          if(!c.matches(SKIP_SELECTOR)) c.remove();
+        });
+        const addBtn = container.querySelector(&#x27;.add-block-btn&#x27;);
+        saved.forEach(htmlStr=&gt;{
+          const temp = document.createElement(&#x27;div&#x27;);
+          temp.innerHTML = htmlStr;
+          const el = temp.firstElementChild;
+          if(el){
+            if(addBtn) container.insertBefore(el, addBtn);
+            else container.appendChild(el);
+          }
+        });
+      }
+    }catch(e){}
+
+    function saveSnapshot(){
+      const blocks = Array.from(container.children).filter(c =&gt; c.classList.contains(&#x27;draggable-block&#x27;));
+      const htmlList = blocks.map(b =&gt; b.outerHTML);
+      try{ localStorage.setItem(storageKey, JSON.stringify(htmlList)); }catch(e){}
+    }
+
+    function currentEditableState(){
+      const sample = container.querySelector(&#x27;.edit-unit&#x27;);
+      return sample ? sample.getAttribute(&#x27;contenteditable&#x27;) : &#x27;true&#x27;;
+    }
+
+    function wireBlock(el){
+      if(el.dataset.blockWired) return;
+      el.dataset.blockWired = &#x27;1&#x27;;
+      el.classList.add(&#x27;draggable-block&#x27;);
+      el.setAttribute(&#x27;draggable&#x27;, &#x27;true&#x27;);
+
+      const grip = document.createElement(&#x27;span&#x27;);
+      grip.className = &#x27;block-drag-grip&#x27;;
+      grip.title = &#x27;גרור כדי להזיז&#x27;;
+      grip.textContent = &#x27;⠿&#x27;;
+      el.appendChild(grip);
+
+      const del = document.createElement(&#x27;button&#x27;);
+      del.type = &#x27;button&#x27;;
+      del.className = &#x27;block-delete-btn&#x27;;
+      del.title = &#x27;מחק בלוק זה&#x27;;
+      del.textContent = &#x27;🗑&#x27;;
+      del.addEventListener(&#x27;click&#x27;, (e)=&gt;{
+        e.stopPropagation();
+        if(window.confirm(&#x27;למחוק את הבלוק הזה?&#x27;)){
+          el.remove();
+          saveSnapshot();
+        }
+      });
+      el.appendChild(del);
+
+      el.addEventListener(&#x27;dragstart&#x27;, ()=&gt;{ el.classList.add(&#x27;dragging&#x27;); });
+      el.addEventListener(&#x27;dragend&#x27;, ()=&gt;{ el.classList.remove(&#x27;dragging&#x27;); saveSnapshot(); });
+    }
+
+    Array.from(container.children).forEach(el=&gt;{
+      if(el.matches(SKIP_SELECTOR)) return;
+      wireBlock(el);
+    });
+
+    container.addEventListener(&#x27;dragover&#x27;, (e)=&gt;{
+      const dragging = container.querySelector(&#x27;:scope &gt; .dragging&#x27;);
+      if(!dragging) return;
+      e.preventDefault();
+      const addBtn = container.querySelector(&#x27;.add-block-btn&#x27;);
+      const afterEl = getDragAfterElement(container, e.clientY);
+      if(afterEl == null){
+        if(addBtn) container.insertBefore(dragging, addBtn); else container.appendChild(dragging);
+      } else {
+        container.insertBefore(dragging, afterEl);
+      }
+    });
+
+    let saveTimer;
+    container.addEventListener(&#x27;input&#x27;, (e)=&gt;{
+      if(!e.target.closest(&#x27;.draggable-block&#x27;)) return;
+      clearTimeout(saveTimer);
+      saveTimer = setTimeout(saveSnapshot, 600);
+    });
+
+    let addBtn = container.querySelector(&#x27;.add-block-btn&#x27;);
+    if(!addBtn){
+      addBtn = document.createElement(&#x27;button&#x27;);
+      addBtn.type = &#x27;button&#x27;;
+      addBtn.className = &#x27;add-block-btn&#x27;;
+      addBtn.textContent = &#x27;+ הוסף בלוק טקסט&#x27;;
+      container.appendChild(addBtn);
+    }
+    addBtn.addEventListener(&#x27;click&#x27;, ()=&gt;{
+      const el = document.createElement(&#x27;div&#x27;);
+      el.className = &#x27;cross-box edit-unit&#x27;;
+      el.setAttribute(&#x27;contenteditable&#x27;, currentEditableState());
+      el.textContent = &#x27;טקסט חדש...&#x27;;
+      container.insertBefore(el, addBtn);
+      wireBlock(el);
+      saveSnapshot();
+      if(el.getAttribute(&#x27;contenteditable&#x27;) === &#x27;true&#x27;) el.focus();
     });
   });
 })();
