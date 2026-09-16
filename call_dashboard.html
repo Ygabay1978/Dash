@@ -996,6 +996,22 @@
   .reorderable-card.dragging{opacity:0.4;}
   .reorderable-card.drag-over-top{box-shadow:0 -3px 0 var(--orange) inset;}
   .reorderable-card.drag-over-bottom{box-shadow:0 3px 0 var(--orange) inset;}
+  .card-delete-btn{
+    position:absolute;top:8px;left:36px;
+    width:22px;height:22px;
+    display:flex;align-items:center;justify-content:center;
+    border:none;border-radius:5px;background:rgba(0,0,0,0.04);
+    cursor:pointer;font-size:12px;color:var(--grey);
+  }
+  .card-delete-btn:hover{background:#D64545;color:#fff;}
+  .add-card-btn{
+    display:block;width:100%;
+    margin-top:6px;padding:10px;
+    border:2px dashed var(--line);border-radius:8px;
+    background:none;color:var(--grey);
+    font-size:13px;font-weight:600;cursor:pointer;
+  }
+  .add-card-btn:hover{border-color:var(--orange);color:var(--orange);}
   .prod .name{font-weight:700;font-size:15.5px;margin-bottom:8px;}
   .prod .pitch{font-size:14px;}
   .obj{border:1px solid var(--line);border-radius:8px;padding:14px 18px;margin-bottom:10px;background:var(--bg-card);box-shadow:0 1px 2px rgba(20,20,20,0.04);}
@@ -1559,6 +1575,7 @@
 &lt;span id=&quot;doc-title&quot;&gt;Customer Call Script — Postman&lt;/span&gt;
 &lt;button disabled=&quot;&quot; id=&quot;undo-btn&quot;&gt;↩ Undo last change&lt;/button&gt;
 &lt;button class=&quot;secondary&quot; id=&quot;download-btn&quot;&gt;⬇ Download updated file&lt;/button&gt;
+&lt;button class=&quot;secondary&quot; id=&quot;save-sync-btn&quot; onclick=&quot;saveAndSyncContent()&quot;&gt;💾 Save &amp; translate to Hebrew&lt;/button&gt;
 &lt;button class=&quot;secondary&quot; id=&quot;toggle-btn&quot;&gt;🔒 Lock editing&lt;/button&gt;
 &lt;div class=&quot;fmt-group&quot;&gt;
 &lt;button id=&quot;bold-btn&quot; title=&quot;Bold (select text and click)&quot;&gt;B&lt;/button&gt;
@@ -2926,11 +2943,13 @@ A few additional capabilities that can be relevant, depending on the customer&#x
   });
 })();
 
-// --- drag-to-reorder for Core Products and Objections cards ---
+// --- drag-to-reorder + add/delete cards for Core Products and Objections ---
 (function(){
   const CARD_GROUPS = [
-    { containerSelector: &#x27;#sec-products&#x27;, cardSelector: &#x27;.prod&#x27;, storageKey: &#x27;reorder:products&#x27; },
-    { containerSelector: &#x27;#panel-objections .panel-body&#x27;, cardSelector: &#x27;.obj&#x27;, storageKey: &#x27;reorder:objections&#x27; }
+    { containerSelector: &#x27;#sec-products&#x27;, cardSelector: &#x27;.prod&#x27;, storageKey: &#x27;cards:products&#x27;,
+      newCardHTML: &#x27;&lt;div class=&quot;name edit-unit&quot; contenteditable=&quot;false&quot;&gt;Product name&lt;/div&gt;&lt;div class=&quot;pitch edit-unit&quot; contenteditable=&quot;false&quot;&gt;Product description...&lt;/div&gt;&#x27; },
+    { containerSelector: &#x27;#panel-objections .panel-body&#x27;, cardSelector: &#x27;.obj&#x27;, storageKey: &#x27;cards:objections&#x27;,
+      newCardHTML: &#x27;&lt;div class=&quot;q edit-unit&quot; contenteditable=&quot;false&quot;&gt;&quot;Customer question/objection?&quot;&lt;/div&gt;&lt;div class=&quot;a edit-unit&quot; contenteditable=&quot;false&quot;&gt;&quot;My answer...&quot;&lt;/div&gt;&#x27; }
   ];
 
   function getDragAfterElement(container, y, cardSelector){
@@ -2946,60 +2965,215 @@ A few additional capabilities that can be relevant, depending on the customer&#x
     }, { offset: Number.NEGATIVE_INFINITY, element: null }).element;
   }
 
-  CARD_GROUPS.forEach(({containerSelector, cardSelector, storageKey})=&gt;{
+  CARD_GROUPS.forEach(({containerSelector, cardSelector, storageKey, newCardHTML})=&gt;{
     const container = document.querySelector(containerSelector);
     if(!container) return;
-    // Captured once, in original DOM order — this is the fixed reference
-    // both for restoring a saved order and for recording a new one, so
-    // &quot;index&quot; always means the same thing no matter how many times the
-    // cards get reordered afterward.
-    const originalCards = Array.from(container.querySelectorAll(cardSelector));
-    if(originalCards.length &lt; 2) return;
+    const tagClass = cardSelector.slice(1);
 
+    // A full snapshot (each card&#x27;s complete outerHTML, in order) captures
+    // reordering, added cards, deleted cards, and text edits all at once —
+    // simpler and more robust than tracking them as separate operations.
     try{
       const saved = JSON.parse(localStorage.getItem(storageKey));
-      if(saved &amp;&amp; saved.length === originalCards.length){
-        saved.forEach(origIdx =&gt; { if(originalCards[origIdx]) container.appendChild(originalCards[origIdx]); });
+      if(saved &amp;&amp; saved.length){
+        container.querySelectorAll(cardSelector).forEach(c =&gt; c.remove());
+        saved.forEach(cardHTML=&gt;{
+          const temp = document.createElement(&#x27;div&#x27;);
+          temp.innerHTML = cardHTML;
+          const cardEl = temp.firstElementChild;
+          if(cardEl) container.appendChild(cardEl);
+        });
       }
     }catch(e){}
 
-    function saveOrder(){
+    function saveSnapshot(){
       const current = Array.from(container.querySelectorAll(cardSelector));
-      const order = current.map(card =&gt; originalCards.indexOf(card));
-      try{ localStorage.setItem(storageKey, JSON.stringify(order)); }catch(e){}
+      const htmlList = current.map(c =&gt; c.outerHTML);
+      try{ localStorage.setItem(storageKey, JSON.stringify(htmlList)); }catch(e){}
     }
 
-    originalCards.forEach(card=&gt;{
+    function currentEditableState(){
+      const sample = container.querySelector(cardSelector + &#x27; .edit-unit&#x27;);
+      return sample ? sample.getAttribute(&#x27;contenteditable&#x27;) : &#x27;true&#x27;;
+    }
+
+    function wireCard(card){
+      if(card.dataset.wired) return;
+      card.dataset.wired = &#x27;1&#x27;;
       card.classList.add(&#x27;reorderable-card&#x27;);
-      const grip = document.createElement(&#x27;div&#x27;);
-      grip.className = &#x27;drag-grip&#x27;;
-      grip.title = &#x27;Drag to reorder&#x27;;
-      grip.textContent = &#x27;⠿&#x27;;
       card.style.position = card.style.position || &#x27;relative&#x27;;
-      card.appendChild(grip);
       card.setAttribute(&#x27;draggable&#x27;, &#x27;true&#x27;);
 
-      card.addEventListener(&#x27;dragstart&#x27;, ()=&gt;{
-        card.classList.add(&#x27;dragging&#x27;);
-      });
-      card.addEventListener(&#x27;dragend&#x27;, ()=&gt;{
-        card.classList.remove(&#x27;dragging&#x27;);
-        saveOrder();
-      });
-    });
+      if(!card.querySelector(&#x27;.drag-grip&#x27;)){
+        const grip = document.createElement(&#x27;div&#x27;);
+        grip.className = &#x27;drag-grip&#x27;;
+        grip.title = &#x27;Drag to reorder&#x27;;
+        grip.textContent = &#x27;⠿&#x27;;
+        card.appendChild(grip);
+      }
+      if(!card.querySelector(&#x27;.card-delete-btn&#x27;)){
+        const del = document.createElement(&#x27;button&#x27;);
+        del.className = &#x27;card-delete-btn&#x27;;
+        del.title = &#x27;Delete this card&#x27;;
+        del.type = &#x27;button&#x27;;
+        del.textContent = &#x27;🗑&#x27;;
+        del.addEventListener(&#x27;click&#x27;, (e)=&gt;{
+          e.stopPropagation();
+          if(window.confirm(&#x27;Delete this card?&#x27;)){
+            card.remove();
+            saveSnapshot();
+          }
+        });
+        card.appendChild(del);
+      }
+
+      card.addEventListener(&#x27;dragstart&#x27;, ()=&gt;{ card.classList.add(&#x27;dragging&#x27;); });
+      card.addEventListener(&#x27;dragend&#x27;, ()=&gt;{ card.classList.remove(&#x27;dragging&#x27;); saveSnapshot(); });
+    }
+
+    container.querySelectorAll(cardSelector).forEach(wireCard);
 
     container.addEventListener(&#x27;dragover&#x27;, (e)=&gt;{
       e.preventDefault();
       const dragging = container.querySelector(cardSelector + &#x27;.dragging&#x27;);
       if(!dragging) return;
+      const addBtn = container.querySelector(&#x27;.add-card-btn&#x27;);
       const afterElement = getDragAfterElement(container, e.clientY, cardSelector);
       if(afterElement == null){
-        container.appendChild(dragging);
+        if(addBtn) container.insertBefore(dragging, addBtn); else container.appendChild(dragging);
       } else {
         container.insertBefore(dragging, afterElement);
       }
     });
+
+    // Re-save (debounced) on any text edit within a card, so edited wording
+    // is captured in the snapshot too, not just structure/order.
+    let saveTimer;
+    container.addEventListener(&#x27;input&#x27;, (e)=&gt;{
+      if(!e.target.closest(cardSelector)) return;
+      clearTimeout(saveTimer);
+      saveTimer = setTimeout(saveSnapshot, 600);
+    });
+
+    // &quot;+ add card&quot; control, always pinned at the end of the list.
+    let addBtn = container.querySelector(&#x27;.add-card-btn&#x27;);
+    if(!addBtn){
+      addBtn = document.createElement(&#x27;button&#x27;);
+      addBtn.type = &#x27;button&#x27;;
+      addBtn.className = &#x27;add-card-btn&#x27;;
+      addBtn.textContent = &#x27;+ Add card&#x27;;
+      container.appendChild(addBtn);
+    }
+    addBtn.addEventListener(&#x27;click&#x27;, ()=&gt;{
+      const card = document.createElement(&#x27;div&#x27;);
+      card.className = tagClass;
+      card.innerHTML = newCardHTML;
+      const editState = currentEditableState();
+      card.querySelectorAll(&#x27;.edit-unit&#x27;).forEach(u =&gt; u.setAttribute(&#x27;contenteditable&#x27;, editState));
+      container.insertBefore(card, addBtn);
+      wireCard(card);
+      saveSnapshot();
+      const firstEditable = card.querySelector(&#x27;.edit-unit&#x27;);
+      if(firstEditable &amp;&amp; editState === &#x27;true&#x27;) firstEditable.focus();
+    });
   });
+})();
+
+// --- generic content persistence + cross-language sync (for edit-units
+// OUTSIDE the reorderable card groups, which have their own snapshot system) ---
+(function(){
+  const LANG = &#x27;en&#x27;;
+  const OTHER_LANG = &#x27;he&#x27;;
+  const STORAGE_PREFIX = &#x27;content-edit:&#x27; + LANG + &#x27;:&#x27;;
+  const DIRTY_KEY = &#x27;content-edit-dirty:&#x27; + LANG;
+  const root = document.getElementById(&#x27;editable-root&#x27;);
+  if(!root) return;
+
+  function isInCardGroup(el){
+    return !!(el.closest(&#x27;.prod&#x27;) || el.closest(&#x27;.obj&#x27;));
+  }
+
+  let counter = 0;
+  const units = Array.from(root.querySelectorAll(&#x27;.edit-unit&#x27;)).filter(el =&gt; !isInCardGroup(el));
+  units.forEach(el=&gt;{
+    if(!el.dataset.ceid) el.dataset.ceid = &#x27;ce&#x27; + (counter++);
+  });
+
+  units.forEach(el=&gt;{
+    try{
+      const saved = localStorage.getItem(STORAGE_PREFIX + el.dataset.ceid);
+      if(saved !== null) el.innerHTML = saved;
+    }catch(e){}
+  });
+
+  function markDirty(ceid){
+    let dirty = [];
+    try{ dirty = JSON.parse(localStorage.getItem(DIRTY_KEY)) || []; }catch(e){}
+    if(!dirty.includes(ceid)) dirty.push(ceid);
+    try{ localStorage.setItem(DIRTY_KEY, JSON.stringify(dirty)); }catch(e){}
+  }
+
+  const timers = {};
+  root.addEventListener(&#x27;input&#x27;, (e)=&gt;{
+    const el = e.target.closest(&#x27;.edit-unit&#x27;);
+    if(!el || isInCardGroup(el) || !el.dataset.ceid) return;
+    const ceid = el.dataset.ceid;
+    clearTimeout(timers[ceid]);
+    timers[ceid] = setTimeout(()=&gt;{
+      try{ localStorage.setItem(STORAGE_PREFIX + ceid, el.innerHTML); }catch(err){}
+      markDirty(ceid);
+    }, 500);
+  });
+
+  async function translateHTML(htmlSnippet){
+    const prompt = &#x27;Translate the following English HTML snippet into natural, professional Hebrew. Keep every HTML tag exactly as-is (e.g. &lt;b&gt;, &lt;span style=&quot;...&quot;&gt;) — translate ONLY the visible text between tags, never tag names or attributes. Respond with ONLY the translated HTML snippet and nothing else — no markdown fences, no preamble, no explanation.\n\n&#x27; + htmlSnippet;
+    const response = await fetch(API_ENDPOINT, {
+      method: &#x27;POST&#x27;,
+      headers: { &#x27;Content-Type&#x27;: &#x27;application/json&#x27; },
+      body: JSON.stringify({ model: &#x27;claude-sonnet-4-6&#x27;, max_tokens: 1500, messages: [{ role: &#x27;user&#x27;, content: prompt }] })
+    });
+    if(!response.ok) throw new Error(&#x27;bad response &#x27; + response.status);
+    const data = await response.json();
+    const text = (data.content || []).filter(b =&gt; b.type === &#x27;text&#x27;).map(b =&gt; b.text).join(&#x27;&#x27;).trim();
+    if(!text) throw new Error(&#x27;empty translation&#x27;);
+    return text;
+  }
+
+  window.saveAndSyncContent = async function(){
+    let dirty = [];
+    try{ dirty = JSON.parse(localStorage.getItem(DIRTY_KEY)) || []; }catch(e){}
+    const btn = document.getElementById(&#x27;save-sync-btn&#x27;);
+    if(!dirty.length){
+      if(btn){
+        const orig = btn.textContent;
+        btn.textContent = &#x27;No new changes&#x27;;
+        setTimeout(()=&gt;{ btn.textContent = orig; }, 1800);
+      }
+      return;
+    }
+    if(btn){ btn.textContent = &#x27;Syncing... (0/&#x27; + dirty.length + &#x27;)&#x27;; btn.disabled = true; }
+    let done = 0, failed = 0;
+    for(const ceid of dirty){
+      const el = root.querySelector(&#x27;[data-ceid=&quot;&#x27; + ceid + &#x27;&quot;]&#x27;);
+      if(el){
+        try{
+          const translated = await translateHTML(el.innerHTML);
+          try{ localStorage.setItem(&#x27;content-edit:&#x27; + OTHER_LANG + &#x27;:&#x27; + ceid, translated); }catch(e){}
+        }catch(err){
+          failed++;
+          console.error(&#x27;sync failed for&#x27;, ceid, err);
+        }
+      }
+      done++;
+      if(btn) btn.textContent = &#x27;Syncing... (&#x27; + done + &#x27;/&#x27; + dirty.length + &#x27;)&#x27;;
+    }
+    try{ localStorage.setItem(DIRTY_KEY, JSON.stringify([])); }catch(e){}
+    if(btn){
+      btn.textContent = failed ? (&#x27;✓ Saved — &#x27; + failed + &#x27; not synced&#x27;) : &#x27;✓ Saved and synced to Hebrew&#x27;;
+      btn.disabled = false;
+      setTimeout(()=&gt;{ btn.textContent = &#x27;💾 Save &amp; translate to Hebrew&#x27;; }, 3000);
+    }
+  };
 })();
 
 &lt;/script&gt;
@@ -3081,6 +3255,22 @@ A few additional capabilities that can be relevant, depending on the customer&#x
   .reorderable-card.dragging{opacity:0.4;}
   .reorderable-card.drag-over-top{box-shadow:0 -3px 0 var(--orange) inset;}
   .reorderable-card.drag-over-bottom{box-shadow:0 3px 0 var(--orange) inset;}
+  .card-delete-btn{
+    position:absolute;top:8px;left:36px;
+    width:22px;height:22px;
+    display:flex;align-items:center;justify-content:center;
+    border:none;border-radius:5px;background:rgba(0,0,0,0.04);
+    cursor:pointer;font-size:12px;color:var(--grey);
+  }
+  .card-delete-btn:hover{background:#D64545;color:#fff;}
+  .add-card-btn{
+    display:block;width:100%;
+    margin-top:6px;padding:10px;
+    border:2px dashed var(--line);border-radius:8px;
+    background:none;color:var(--grey);
+    font-size:13px;font-weight:600;cursor:pointer;
+  }
+  .add-card-btn:hover{border-color:var(--orange);color:var(--orange);}
   .prod .name{font-weight:700;font-size:15.5px;margin-bottom:8px;}
   .prod .pitch{font-size:14px;}
   .obj{border:1px solid var(--line);border-radius:8px;padding:14px 18px;margin-bottom:10px;background:var(--bg-card);box-shadow:0 1px 2px rgba(20,20,20,0.04);}
@@ -3645,6 +3835,7 @@ A few additional capabilities that can be relevant, depending on the customer&#x
 &lt;span id=&quot;doc-title&quot;&gt;סקריפט שיחת לקוח — Postman&lt;/span&gt;
 &lt;button disabled=&quot;&quot; id=&quot;undo-btn&quot;&gt;↩ בטל שינוי אחרון&lt;/button&gt;
 &lt;button class=&quot;secondary&quot; id=&quot;download-btn&quot;&gt;⬇ הורד קובץ מעודכן&lt;/button&gt;
+&lt;button class=&quot;secondary&quot; id=&quot;save-sync-btn&quot; onclick=&quot;saveAndSyncContent()&quot;&gt;💾 שמור ותרגם לאנגלית&lt;/button&gt;
 &lt;button class=&quot;secondary&quot; id=&quot;toggle-btn&quot;&gt;🔒 נעילת עריכה&lt;/button&gt;
 &lt;div class=&quot;fmt-group&quot;&gt;
 &lt;button id=&quot;bold-btn&quot; title=&quot;הדגשה (סמן טקסט ולחץ)&quot;&gt;B&lt;/button&gt;
@@ -5022,11 +5213,13 @@ A few additional capabilities that can be relevant, depending on the customer&#x
   });
 })();
 
-// --- drag-to-reorder for Core Products and Objections cards ---
+// --- drag-to-reorder + add/delete cards for Core Products and Objections ---
 (function(){
   const CARD_GROUPS = [
-    { containerSelector: &#x27;#sec-products&#x27;, cardSelector: &#x27;.prod&#x27;, storageKey: &#x27;reorder:products&#x27; },
-    { containerSelector: &#x27;#panel-objections .panel-body&#x27;, cardSelector: &#x27;.obj&#x27;, storageKey: &#x27;reorder:objections&#x27; }
+    { containerSelector: &#x27;#sec-products&#x27;, cardSelector: &#x27;.prod&#x27;, storageKey: &#x27;cards:products&#x27;,
+      newCardHTML: &#x27;&lt;div class=&quot;name edit-unit&quot; contenteditable=&quot;false&quot;&gt;שם המוצר&lt;/div&gt;&lt;div class=&quot;pitch edit-unit&quot; contenteditable=&quot;false&quot;&gt;תיאור המוצר...&lt;/div&gt;&#x27; },
+    { containerSelector: &#x27;#panel-objections .panel-body&#x27;, cardSelector: &#x27;.obj&#x27;, storageKey: &#x27;cards:objections&#x27;,
+      newCardHTML: &#x27;&lt;div class=&quot;q edit-unit&quot; contenteditable=&quot;false&quot;&gt;&quot;השאלה/התנגדות של הלקוח?&quot;&lt;/div&gt;&lt;div class=&quot;a edit-unit&quot; contenteditable=&quot;false&quot;&gt;&quot;התשובה שלי...&quot;&lt;/div&gt;&#x27; }
   ];
 
   function getDragAfterElement(container, y, cardSelector){
@@ -5042,60 +5235,221 @@ A few additional capabilities that can be relevant, depending on the customer&#x
     }, { offset: Number.NEGATIVE_INFINITY, element: null }).element;
   }
 
-  CARD_GROUPS.forEach(({containerSelector, cardSelector, storageKey})=&gt;{
+  CARD_GROUPS.forEach(({containerSelector, cardSelector, storageKey, newCardHTML})=&gt;{
     const container = document.querySelector(containerSelector);
     if(!container) return;
-    // Captured once, in original DOM order — this is the fixed reference
-    // both for restoring a saved order and for recording a new one, so
-    // &quot;index&quot; always means the same thing no matter how many times the
-    // cards get reordered afterward.
-    const originalCards = Array.from(container.querySelectorAll(cardSelector));
-    if(originalCards.length &lt; 2) return;
+    const tagClass = cardSelector.slice(1);
 
+    // A full snapshot (each card&#x27;s complete outerHTML, in order) captures
+    // reordering, added cards, deleted cards, and text edits all at once —
+    // simpler and more robust than tracking them as separate operations.
     try{
       const saved = JSON.parse(localStorage.getItem(storageKey));
-      if(saved &amp;&amp; saved.length === originalCards.length){
-        saved.forEach(origIdx =&gt; { if(originalCards[origIdx]) container.appendChild(originalCards[origIdx]); });
+      if(saved &amp;&amp; saved.length){
+        container.querySelectorAll(cardSelector).forEach(c =&gt; c.remove());
+        saved.forEach(cardHTML=&gt;{
+          const temp = document.createElement(&#x27;div&#x27;);
+          temp.innerHTML = cardHTML;
+          const cardEl = temp.firstElementChild;
+          if(cardEl) container.appendChild(cardEl);
+        });
       }
     }catch(e){}
 
-    function saveOrder(){
+    function saveSnapshot(){
       const current = Array.from(container.querySelectorAll(cardSelector));
-      const order = current.map(card =&gt; originalCards.indexOf(card));
-      try{ localStorage.setItem(storageKey, JSON.stringify(order)); }catch(e){}
+      const htmlList = current.map(c =&gt; c.outerHTML);
+      try{ localStorage.setItem(storageKey, JSON.stringify(htmlList)); }catch(e){}
     }
 
-    originalCards.forEach(card=&gt;{
+    function currentEditableState(){
+      const sample = container.querySelector(cardSelector + &#x27; .edit-unit&#x27;);
+      return sample ? sample.getAttribute(&#x27;contenteditable&#x27;) : &#x27;true&#x27;;
+    }
+
+    function wireCard(card){
+      if(card.dataset.wired) return;
+      card.dataset.wired = &#x27;1&#x27;;
       card.classList.add(&#x27;reorderable-card&#x27;);
-      const grip = document.createElement(&#x27;div&#x27;);
-      grip.className = &#x27;drag-grip&#x27;;
-      grip.title = &#x27;גרור כדי לשנות סדר&#x27;;
-      grip.textContent = &#x27;⠿&#x27;;
       card.style.position = card.style.position || &#x27;relative&#x27;;
-      card.appendChild(grip);
       card.setAttribute(&#x27;draggable&#x27;, &#x27;true&#x27;);
 
-      card.addEventListener(&#x27;dragstart&#x27;, ()=&gt;{
-        card.classList.add(&#x27;dragging&#x27;);
-      });
-      card.addEventListener(&#x27;dragend&#x27;, ()=&gt;{
-        card.classList.remove(&#x27;dragging&#x27;);
-        saveOrder();
-      });
-    });
+      if(!card.querySelector(&#x27;.drag-grip&#x27;)){
+        const grip = document.createElement(&#x27;div&#x27;);
+        grip.className = &#x27;drag-grip&#x27;;
+        grip.title = &#x27;גרור כדי לשנות סדר&#x27;;
+        grip.textContent = &#x27;⠿&#x27;;
+        card.appendChild(grip);
+      }
+      if(!card.querySelector(&#x27;.card-delete-btn&#x27;)){
+        const del = document.createElement(&#x27;button&#x27;);
+        del.className = &#x27;card-delete-btn&#x27;;
+        del.title = &#x27;מחק כרטיס זה&#x27;;
+        del.type = &#x27;button&#x27;;
+        del.textContent = &#x27;🗑&#x27;;
+        del.addEventListener(&#x27;click&#x27;, (e)=&gt;{
+          e.stopPropagation();
+          if(window.confirm(&#x27;למחוק את הכרטיס הזה?&#x27;)){
+            card.remove();
+            saveSnapshot();
+          }
+        });
+        card.appendChild(del);
+      }
+
+      card.addEventListener(&#x27;dragstart&#x27;, ()=&gt;{ card.classList.add(&#x27;dragging&#x27;); });
+      card.addEventListener(&#x27;dragend&#x27;, ()=&gt;{ card.classList.remove(&#x27;dragging&#x27;); saveSnapshot(); });
+    }
+
+    container.querySelectorAll(cardSelector).forEach(wireCard);
 
     container.addEventListener(&#x27;dragover&#x27;, (e)=&gt;{
       e.preventDefault();
       const dragging = container.querySelector(cardSelector + &#x27;.dragging&#x27;);
       if(!dragging) return;
+      const addBtn = container.querySelector(&#x27;.add-card-btn&#x27;);
       const afterElement = getDragAfterElement(container, e.clientY, cardSelector);
       if(afterElement == null){
-        container.appendChild(dragging);
+        if(addBtn) container.insertBefore(dragging, addBtn); else container.appendChild(dragging);
       } else {
         container.insertBefore(dragging, afterElement);
       }
     });
+
+    // Re-save (debounced) on any text edit within a card, so edited wording
+    // is captured in the snapshot too, not just structure/order.
+    let saveTimer;
+    container.addEventListener(&#x27;input&#x27;, (e)=&gt;{
+      if(!e.target.closest(cardSelector)) return;
+      clearTimeout(saveTimer);
+      saveTimer = setTimeout(saveSnapshot, 600);
+    });
+
+    // &quot;+ add card&quot; control, always pinned at the end of the list.
+    let addBtn = container.querySelector(&#x27;.add-card-btn&#x27;);
+    if(!addBtn){
+      addBtn = document.createElement(&#x27;button&#x27;);
+      addBtn.type = &#x27;button&#x27;;
+      addBtn.className = &#x27;add-card-btn&#x27;;
+      addBtn.textContent = &#x27;+ הוסף כרטיס&#x27;;
+      container.appendChild(addBtn);
+    }
+    addBtn.addEventListener(&#x27;click&#x27;, ()=&gt;{
+      const card = document.createElement(&#x27;div&#x27;);
+      card.className = tagClass;
+      card.innerHTML = newCardHTML;
+      const editState = currentEditableState();
+      card.querySelectorAll(&#x27;.edit-unit&#x27;).forEach(u =&gt; u.setAttribute(&#x27;contenteditable&#x27;, editState));
+      container.insertBefore(card, addBtn);
+      wireCard(card);
+      saveSnapshot();
+      const firstEditable = card.querySelector(&#x27;.edit-unit&#x27;);
+      if(firstEditable &amp;&amp; editState === &#x27;true&#x27;) firstEditable.focus();
+    });
   });
+})();
+
+// --- generic content persistence + cross-language sync (for edit-units
+// OUTSIDE the reorderable card groups, which have their own snapshot system) ---
+(function(){
+  const LANG = &#x27;he&#x27;;
+  const OTHER_LANG = &#x27;en&#x27;;
+  const STORAGE_PREFIX = &#x27;content-edit:&#x27; + LANG + &#x27;:&#x27;;
+  const DIRTY_KEY = &#x27;content-edit-dirty:&#x27; + LANG;
+  const root = document.getElementById(&#x27;editable-root&#x27;);
+  if(!root) return;
+
+  function isInCardGroup(el){
+    return !!(el.closest(&#x27;.prod&#x27;) || el.closest(&#x27;.obj&#x27;));
+  }
+
+  // Stable ids, assigned once in document order — skips anything inside a
+  // reorderable card group, since those persist as part of the card&#x27;s own
+  // full-snapshot mechanism instead.
+  let counter = 0;
+  const units = Array.from(root.querySelectorAll(&#x27;.edit-unit&#x27;)).filter(el =&gt; !isInCardGroup(el));
+  units.forEach(el=&gt;{
+    if(!el.dataset.ceid) el.dataset.ceid = &#x27;ce&#x27; + (counter++);
+  });
+
+  // Restore any previously saved edits for this language.
+  units.forEach(el=&gt;{
+    try{
+      const saved = localStorage.getItem(STORAGE_PREFIX + el.dataset.ceid);
+      if(saved !== null) el.innerHTML = saved;
+    }catch(e){}
+  });
+
+  function markDirty(ceid){
+    let dirty = [];
+    try{ dirty = JSON.parse(localStorage.getItem(DIRTY_KEY)) || []; }catch(e){}
+    if(!dirty.includes(ceid)) dirty.push(ceid);
+    try{ localStorage.setItem(DIRTY_KEY, JSON.stringify(dirty)); }catch(e){}
+  }
+
+  // Auto-save on every edit — debounced per element — so content is never
+  // lost even if you never click the Save button at all.
+  const timers = {};
+  root.addEventListener(&#x27;input&#x27;, (e)=&gt;{
+    const el = e.target.closest(&#x27;.edit-unit&#x27;);
+    if(!el || isInCardGroup(el) || !el.dataset.ceid) return;
+    const ceid = el.dataset.ceid;
+    clearTimeout(timers[ceid]);
+    timers[ceid] = setTimeout(()=&gt;{
+      try{ localStorage.setItem(STORAGE_PREFIX + ceid, el.innerHTML); }catch(err){}
+      markDirty(ceid);
+    }, 500);
+  });
+
+  async function translateHTML(htmlSnippet){
+    const prompt = &#x27;Translate the following Hebrew HTML snippet into natural, professional English. Keep every HTML tag exactly as-is (e.g. &lt;b&gt;, &lt;span style=&quot;...&quot;&gt;) — translate ONLY the visible text between tags, never tag names or attributes. Respond with ONLY the translated HTML snippet and nothing else — no markdown fences, no preamble, no explanation.\n\n&#x27; + htmlSnippet;
+    const response = await fetch(API_ENDPOINT, {
+      method: &#x27;POST&#x27;,
+      headers: { &#x27;Content-Type&#x27;: &#x27;application/json&#x27; },
+      body: JSON.stringify({ model: &#x27;claude-sonnet-4-6&#x27;, max_tokens: 1500, messages: [{ role: &#x27;user&#x27;, content: prompt }] })
+    });
+    if(!response.ok) throw new Error(&#x27;bad response &#x27; + response.status);
+    const data = await response.json();
+    const text = (data.content || []).filter(b =&gt; b.type === &#x27;text&#x27;).map(b =&gt; b.text).join(&#x27;&#x27;).trim();
+    if(!text) throw new Error(&#x27;empty translation&#x27;);
+    return text;
+  }
+
+  window.saveAndSyncContent = async function(){
+    let dirty = [];
+    try{ dirty = JSON.parse(localStorage.getItem(DIRTY_KEY)) || []; }catch(e){}
+    const btn = document.getElementById(&#x27;save-sync-btn&#x27;);
+    if(!dirty.length){
+      if(btn){
+        const orig = btn.textContent;
+        btn.textContent = &#x27;אין שינויים חדשים&#x27;;
+        setTimeout(()=&gt;{ btn.textContent = orig; }, 1800);
+      }
+      return;
+    }
+    if(btn){ btn.textContent = &#x27;מסנכרן... (0/&#x27; + dirty.length + &#x27;)&#x27;; btn.disabled = true; }
+    let done = 0, failed = 0;
+    for(const ceid of dirty){
+      const el = root.querySelector(&#x27;[data-ceid=&quot;&#x27; + ceid + &#x27;&quot;]&#x27;);
+      if(el){
+        try{
+          const translated = await translateHTML(el.innerHTML);
+          try{ localStorage.setItem(&#x27;content-edit:&#x27; + OTHER_LANG + &#x27;:&#x27; + ceid, translated); }catch(e){}
+        }catch(err){
+          failed++;
+          console.error(&#x27;sync failed for&#x27;, ceid, err);
+        }
+      }
+      done++;
+      if(btn) btn.textContent = &#x27;מסנכרן... (&#x27; + done + &#x27;/&#x27; + dirty.length + &#x27;)&#x27;;
+    }
+    try{ localStorage.setItem(DIRTY_KEY, JSON.stringify([])); }catch(e){}
+    if(btn){
+      btn.textContent = failed ? (&#x27;✓ נשמר — &#x27; + failed + &#x27; לא סונכרנו&#x27;) : &#x27;✓ נשמר וסונכרן לאנגלית&#x27;;
+      btn.disabled = false;
+      setTimeout(()=&gt;{ btn.textContent = &#x27;💾 שמור ותרגם לאנגלית&#x27;; }, 3000);
+    }
+  };
 })();
 
 &lt;/script&gt;

@@ -69,6 +69,22 @@
   .reorderable-card.dragging{opacity:0.4;}
   .reorderable-card.drag-over-top{box-shadow:0 -3px 0 var(--orange) inset;}
   .reorderable-card.drag-over-bottom{box-shadow:0 3px 0 var(--orange) inset;}
+  .card-delete-btn{
+    position:absolute;top:8px;left:36px;
+    width:22px;height:22px;
+    display:flex;align-items:center;justify-content:center;
+    border:none;border-radius:5px;background:rgba(0,0,0,0.04);
+    cursor:pointer;font-size:12px;color:var(--grey);
+  }
+  .card-delete-btn:hover{background:#D64545;color:#fff;}
+  .add-card-btn{
+    display:block;width:100%;
+    margin-top:6px;padding:10px;
+    border:2px dashed var(--line);border-radius:8px;
+    background:none;color:var(--grey);
+    font-size:13px;font-weight:600;cursor:pointer;
+  }
+  .add-card-btn:hover{border-color:var(--orange);color:var(--orange);}
   .prod .name{font-weight:700;font-size:15.5px;margin-bottom:8px;}
   .prod .pitch{font-size:14px;}
   .obj{border:1px solid var(--line);border-radius:8px;padding:14px 18px;margin-bottom:10px;background:var(--bg-card);box-shadow:0 1px 2px rgba(20,20,20,0.04);}
@@ -633,6 +649,7 @@
 <span id="doc-title">סקריפט שיחת לקוח — Postman</span>
 <button disabled="" id="undo-btn">↩ בטל שינוי אחרון</button>
 <button class="secondary" id="download-btn">⬇ הורד קובץ מעודכן</button>
+<button class="secondary" id="save-sync-btn" onclick="saveAndSyncContent()">💾 שמור ותרגם לאנגלית</button>
 <button class="secondary" id="toggle-btn">🔒 נעילת עריכה</button>
 <div class="fmt-group">
 <button id="bold-btn" title="הדגשה (סמן טקסט ולחץ)">B</button>
@@ -2085,6 +2102,247 @@
   });
 })();
 </script>
+<script>
+// --- drag-to-reorder + add/delete cards for Core Products and Objections ---
+(function(){
+  const CARD_GROUPS = [
+    { containerSelector: '#sec-products', cardSelector: '.prod', storageKey: 'cards:products',
+      newCardHTML: '<div class="name edit-unit" contenteditable="false">שם המוצר</div><div class="pitch edit-unit" contenteditable="false">תיאור המוצר...</div>' },
+    { containerSelector: '#panel-objections .panel-body', cardSelector: '.obj', storageKey: 'cards:objections',
+      newCardHTML: '<div class="q edit-unit" contenteditable="false">"השאלה/התנגדות של הלקוח?"</div><div class="a edit-unit" contenteditable="false">"התשובה שלי..."</div>' }
+  ];
+
+  function getDragAfterElement(container, y, cardSelector){
+    const cards = [...container.querySelectorAll(cardSelector + ':not(.dragging)')];
+    return cards.reduce((closest, card)=>{
+      const box = card.getBoundingClientRect();
+      const offset = y - box.top - box.height / 2;
+      if(offset < 0 && offset > closest.offset){
+        return { offset, element: card };
+      } else {
+        return closest;
+      }
+    }, { offset: Number.NEGATIVE_INFINITY, element: null }).element;
+  }
+
+  CARD_GROUPS.forEach(({containerSelector, cardSelector, storageKey, newCardHTML})=>{
+    const container = document.querySelector(containerSelector);
+    if(!container) return;
+    const tagClass = cardSelector.slice(1);
+
+    // A full snapshot (each card's complete outerHTML, in order) captures
+    // reordering, added cards, deleted cards, and text edits all at once —
+    // simpler and more robust than tracking them as separate operations.
+    try{
+      const saved = JSON.parse(localStorage.getItem(storageKey));
+      if(saved && saved.length){
+        container.querySelectorAll(cardSelector).forEach(c => c.remove());
+        saved.forEach(cardHTML=>{
+          const temp = document.createElement('div');
+          temp.innerHTML = cardHTML;
+          const cardEl = temp.firstElementChild;
+          if(cardEl) container.appendChild(cardEl);
+        });
+      }
+    }catch(e){}
+
+    function saveSnapshot(){
+      const current = Array.from(container.querySelectorAll(cardSelector));
+      const htmlList = current.map(c => c.outerHTML);
+      try{ localStorage.setItem(storageKey, JSON.stringify(htmlList)); }catch(e){}
+    }
+
+    function currentEditableState(){
+      const sample = container.querySelector(cardSelector + ' .edit-unit');
+      return sample ? sample.getAttribute('contenteditable') : 'true';
+    }
+
+    function wireCard(card){
+      if(card.dataset.wired) return;
+      card.dataset.wired = '1';
+      card.classList.add('reorderable-card');
+      card.style.position = card.style.position || 'relative';
+      card.setAttribute('draggable', 'true');
+
+      if(!card.querySelector('.drag-grip')){
+        const grip = document.createElement('div');
+        grip.className = 'drag-grip';
+        grip.title = 'גרור כדי לשנות סדר';
+        grip.textContent = '⠿';
+        card.appendChild(grip);
+      }
+      if(!card.querySelector('.card-delete-btn')){
+        const del = document.createElement('button');
+        del.className = 'card-delete-btn';
+        del.title = 'מחק כרטיס זה';
+        del.type = 'button';
+        del.textContent = '🗑';
+        del.addEventListener('click', (e)=>{
+          e.stopPropagation();
+          if(window.confirm('למחוק את הכרטיס הזה?')){
+            card.remove();
+            saveSnapshot();
+          }
+        });
+        card.appendChild(del);
+      }
+
+      card.addEventListener('dragstart', ()=>{ card.classList.add('dragging'); });
+      card.addEventListener('dragend', ()=>{ card.classList.remove('dragging'); saveSnapshot(); });
+    }
+
+    container.querySelectorAll(cardSelector).forEach(wireCard);
+
+    container.addEventListener('dragover', (e)=>{
+      e.preventDefault();
+      const dragging = container.querySelector(cardSelector + '.dragging');
+      if(!dragging) return;
+      const addBtn = container.querySelector('.add-card-btn');
+      const afterElement = getDragAfterElement(container, e.clientY, cardSelector);
+      if(afterElement == null){
+        if(addBtn) container.insertBefore(dragging, addBtn); else container.appendChild(dragging);
+      } else {
+        container.insertBefore(dragging, afterElement);
+      }
+    });
+
+    // Re-save (debounced) on any text edit within a card, so edited wording
+    // is captured in the snapshot too, not just structure/order.
+    let saveTimer;
+    container.addEventListener('input', (e)=>{
+      if(!e.target.closest(cardSelector)) return;
+      clearTimeout(saveTimer);
+      saveTimer = setTimeout(saveSnapshot, 600);
+    });
+
+    // "+ add card" control, always pinned at the end of the list.
+    let addBtn = container.querySelector('.add-card-btn');
+    if(!addBtn){
+      addBtn = document.createElement('button');
+      addBtn.type = 'button';
+      addBtn.className = 'add-card-btn';
+      addBtn.textContent = '+ הוסף כרטיס';
+      container.appendChild(addBtn);
+    }
+    addBtn.addEventListener('click', ()=>{
+      const card = document.createElement('div');
+      card.className = tagClass;
+      card.innerHTML = newCardHTML;
+      const editState = currentEditableState();
+      card.querySelectorAll('.edit-unit').forEach(u => u.setAttribute('contenteditable', editState));
+      container.insertBefore(card, addBtn);
+      wireCard(card);
+      saveSnapshot();
+      const firstEditable = card.querySelector('.edit-unit');
+      if(firstEditable && editState === 'true') firstEditable.focus();
+    });
+  });
+})();
+</script>
+<script>
+// --- generic content persistence + cross-language sync (for edit-units
+// OUTSIDE the reorderable card groups, which have their own snapshot system) ---
+(function(){
+  const LANG = 'he';
+  const OTHER_LANG = 'en';
+  const STORAGE_PREFIX = 'content-edit:' + LANG + ':';
+  const DIRTY_KEY = 'content-edit-dirty:' + LANG;
+  const root = document.getElementById('editable-root');
+  if(!root) return;
+
+  function isInCardGroup(el){
+    return !!(el.closest('.prod') || el.closest('.obj'));
+  }
+
+  // Stable ids, assigned once in document order — skips anything inside a
+  // reorderable card group, since those persist as part of the card's own
+  // full-snapshot mechanism instead.
+  let counter = 0;
+  const units = Array.from(root.querySelectorAll('.edit-unit')).filter(el => !isInCardGroup(el));
+  units.forEach(el=>{
+    if(!el.dataset.ceid) el.dataset.ceid = 'ce' + (counter++);
+  });
+
+  // Restore any previously saved edits for this language.
+  units.forEach(el=>{
+    try{
+      const saved = localStorage.getItem(STORAGE_PREFIX + el.dataset.ceid);
+      if(saved !== null) el.innerHTML = saved;
+    }catch(e){}
+  });
+
+  function markDirty(ceid){
+    let dirty = [];
+    try{ dirty = JSON.parse(localStorage.getItem(DIRTY_KEY)) || []; }catch(e){}
+    if(!dirty.includes(ceid)) dirty.push(ceid);
+    try{ localStorage.setItem(DIRTY_KEY, JSON.stringify(dirty)); }catch(e){}
+  }
+
+  // Auto-save on every edit — debounced per element — so content is never
+  // lost even if you never click the Save button at all.
+  const timers = {};
+  root.addEventListener('input', (e)=>{
+    const el = e.target.closest('.edit-unit');
+    if(!el || isInCardGroup(el) || !el.dataset.ceid) return;
+    const ceid = el.dataset.ceid;
+    clearTimeout(timers[ceid]);
+    timers[ceid] = setTimeout(()=>{
+      try{ localStorage.setItem(STORAGE_PREFIX + ceid, el.innerHTML); }catch(err){}
+      markDirty(ceid);
+    }, 500);
+  });
+
+  async function translateHTML(htmlSnippet){
+    const prompt = 'Translate the following Hebrew HTML snippet into natural, professional English. Keep every HTML tag exactly as-is (e.g. <b>, <span style="...">) — translate ONLY the visible text between tags, never tag names or attributes. Respond with ONLY the translated HTML snippet and nothing else — no markdown fences, no preamble, no explanation.\n\n' + htmlSnippet;
+    const response = await fetch(API_ENDPOINT, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ model: 'claude-sonnet-4-6', max_tokens: 1500, messages: [{ role: 'user', content: prompt }] })
+    });
+    if(!response.ok) throw new Error('bad response ' + response.status);
+    const data = await response.json();
+    const text = (data.content || []).filter(b => b.type === 'text').map(b => b.text).join('').trim();
+    if(!text) throw new Error('empty translation');
+    return text;
+  }
+
+  window.saveAndSyncContent = async function(){
+    let dirty = [];
+    try{ dirty = JSON.parse(localStorage.getItem(DIRTY_KEY)) || []; }catch(e){}
+    const btn = document.getElementById('save-sync-btn');
+    if(!dirty.length){
+      if(btn){
+        const orig = btn.textContent;
+        btn.textContent = 'אין שינויים חדשים';
+        setTimeout(()=>{ btn.textContent = orig; }, 1800);
+      }
+      return;
+    }
+    if(btn){ btn.textContent = 'מסנכרן... (0/' + dirty.length + ')'; btn.disabled = true; }
+    let done = 0, failed = 0;
+    for(const ceid of dirty){
+      const el = root.querySelector('[data-ceid="' + ceid + '"]');
+      if(el){
+        try{
+          const translated = await translateHTML(el.innerHTML);
+          try{ localStorage.setItem('content-edit:' + OTHER_LANG + ':' + ceid, translated); }catch(e){}
+        }catch(err){
+          failed++;
+          console.error('sync failed for', ceid, err);
+        }
+      }
+      done++;
+      if(btn) btn.textContent = 'מסנכרן... (' + done + '/' + dirty.length + ')';
+    }
+    try{ localStorage.setItem(DIRTY_KEY, JSON.stringify([])); }catch(e){}
+    if(btn){
+      btn.textContent = failed ? ('✓ נשמר — ' + failed + ' לא סונכרנו') : '✓ נשמר וסונכרן לאנגלית';
+      btn.disabled = false;
+      setTimeout(()=>{ btn.textContent = '💾 שמור ותרגם לאנגלית'; }, 3000);
+    }
+  };
+})();
+</script>
 <!-- ===== Dashboard switcher (present on every page) ===== -->
 <div id="dash-switcher">
   <button id="dash-switcher-btn" title="נווט בין הכלים">🗂️</button>
@@ -2096,6 +2354,7 @@
     <a href="call_dashboard.html">📞 Call Command Center</a>
     <a href="territory-command-center.html">🗺️ Territory Command Center</a>
     <a href="role-scripts.html">🎯 תרחישי שיחה ראשונית</a>
+    <a href="meeting-notes.html">📓 יומן פגישות לקוח</a>
   </div>
 </div>
 <style>
@@ -2143,82 +2402,6 @@
   });
 })();
 </script>
-<script>
-// --- drag-to-reorder for Core Products and Objections cards ---
-(function(){
-  const CARD_GROUPS = [
-    { containerSelector: '#sec-products', cardSelector: '.prod', storageKey: 'reorder:products' },
-    { containerSelector: '#panel-objections .panel-body', cardSelector: '.obj', storageKey: 'reorder:objections' }
-  ];
 
-  function getDragAfterElement(container, y, cardSelector){
-    const cards = [...container.querySelectorAll(cardSelector + ':not(.dragging)')];
-    return cards.reduce((closest, card)=>{
-      const box = card.getBoundingClientRect();
-      const offset = y - box.top - box.height / 2;
-      if(offset < 0 && offset > closest.offset){
-        return { offset, element: card };
-      } else {
-        return closest;
-      }
-    }, { offset: Number.NEGATIVE_INFINITY, element: null }).element;
-  }
-
-  CARD_GROUPS.forEach(({containerSelector, cardSelector, storageKey})=>{
-    const container = document.querySelector(containerSelector);
-    if(!container) return;
-    // Captured once, in original DOM order — this is the fixed reference
-    // both for restoring a saved order and for recording a new one, so
-    // "index" always means the same thing no matter how many times the
-    // cards get reordered afterward.
-    const originalCards = Array.from(container.querySelectorAll(cardSelector));
-    if(originalCards.length < 2) return;
-
-    try{
-      const saved = JSON.parse(localStorage.getItem(storageKey));
-      if(saved && saved.length === originalCards.length){
-        saved.forEach(origIdx => { if(originalCards[origIdx]) container.appendChild(originalCards[origIdx]); });
-      }
-    }catch(e){}
-
-    function saveOrder(){
-      const current = Array.from(container.querySelectorAll(cardSelector));
-      const order = current.map(card => originalCards.indexOf(card));
-      try{ localStorage.setItem(storageKey, JSON.stringify(order)); }catch(e){}
-    }
-
-    originalCards.forEach(card=>{
-      card.classList.add('reorderable-card');
-      const grip = document.createElement('div');
-      grip.className = 'drag-grip';
-      grip.title = 'גרור כדי לשנות סדר';
-      grip.textContent = '⠿';
-      card.style.position = card.style.position || 'relative';
-      card.appendChild(grip);
-      card.setAttribute('draggable', 'true');
-
-      card.addEventListener('dragstart', ()=>{
-        card.classList.add('dragging');
-      });
-      card.addEventListener('dragend', ()=>{
-        card.classList.remove('dragging');
-        saveOrder();
-      });
-    });
-
-    container.addEventListener('dragover', (e)=>{
-      e.preventDefault();
-      const dragging = container.querySelector(cardSelector + '.dragging');
-      if(!dragging) return;
-      const afterElement = getDragAfterElement(container, e.clientY, cardSelector);
-      if(afterElement == null){
-        container.appendChild(dragging);
-      } else {
-        container.insertBefore(dragging, afterElement);
-      }
-    });
-  });
-})();
-</script>
 </body>
 </html>
