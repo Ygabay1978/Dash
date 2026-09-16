@@ -1,0 +1,475 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<title>יומן פגישות לקוח — Postman</title>
+<style>
+  :root{
+    --orange:#FF6C37;
+    --ink:#1C1C1E;
+    --grey:#5B5F66;
+    --line:#E6E4E0;
+    --bg-card:#FBFAF8;
+  }
+  *{box-sizing:border-box;}
+  body{
+    margin:0;
+    background:#E3E6EA;
+    color:var(--ink);
+    font-family:"Segoe UI","Arial Hebrew",Arial,sans-serif;
+    height:100vh;
+    overflow:hidden;
+    display:flex;
+    flex-direction:column;
+  }
+  header{
+    background:var(--ink);
+    color:#fff;
+    padding:12px 24px;
+    display:flex;
+    align-items:center;
+    gap:16px;
+    flex-shrink:0;
+  }
+  header h1{font-size:16px;margin:0;font-weight:700;}
+  header .sub{font-size:12px;color:#B9B9BC;margin-right:auto;}
+
+  #tab-bar{
+    background:#fff;
+    border-bottom:1px solid var(--line);
+    display:flex;
+    align-items:center;
+    gap:4px;
+    padding:8px 16px;
+    overflow-x:auto;
+    flex-shrink:0;
+  }
+  .company-tab{
+    display:flex;
+    align-items:center;
+    gap:8px;
+    background:var(--bg-card);
+    border:1px solid var(--line);
+    border-radius:8px;
+    padding:8px 12px;
+    font-size:13px;
+    font-weight:600;
+    cursor:pointer;
+    white-space:nowrap;
+    flex-shrink:0;
+  }
+  .company-tab:hover{border-color:var(--orange);}
+  .company-tab.active{background:#FFF6F1;border-color:var(--orange);color:var(--orange);}
+  .company-tab .tab-close{
+    background:none;border:none;color:var(--grey);
+    font-size:13px;cursor:pointer;line-height:1;padding:0;
+  }
+  .company-tab .tab-close:hover{color:#D64545;}
+  #add-tab-btn{
+    background:var(--orange);color:#fff;border:none;border-radius:8px;
+    padding:8px 14px;font-size:13px;font-weight:700;cursor:pointer;flex-shrink:0;
+  }
+  #add-tab-btn:hover{background:#e85a28;}
+
+  #content-area{
+    flex:1;
+    overflow-y:auto;
+    padding:24px 32px 60px;
+  }
+  .wrap{max-width:900px;margin:0 auto;}
+
+  .empty-state{
+    text-align:center;
+    color:var(--grey);
+    padding:80px 20px;
+    font-size:14px;
+  }
+
+  .company-header{margin-bottom:20px;}
+  .company-header h2{font-size:24px;margin:0 0 4px;}
+  .company-header .meta{font-size:13px;color:var(--grey);}
+
+  .snap-card{
+    background:#fff;
+    border:1px solid var(--line);
+    border-radius:10px;
+    padding:18px 20px;
+    margin-bottom:20px;
+    box-shadow:0 1px 3px rgba(20,20,20,0.06);
+  }
+  .snap-card.not-found{color:var(--grey);font-size:13px;}
+  .snap-stats{
+    display:grid;
+    grid-template-columns:repeat(auto-fit, minmax(120px, 1fr));
+    gap:14px;
+    margin-top:10px;
+  }
+  .snap-stat .label{font-size:11px;color:var(--grey);text-transform:uppercase;letter-spacing:.02em;}
+  .snap-stat .value{font-size:17px;font-weight:700;margin-top:2px;}
+  .snap-note{
+    margin-top:14px;
+    padding-top:14px;
+    border-top:1px solid var(--line);
+    font-size:13px;
+    white-space:pre-wrap;
+    color:var(--ink);
+  }
+  .snap-contacts{margin-top:14px;padding-top:14px;border-top:1px solid var(--line);}
+  .snap-contacts .contact-row{font-size:13px;margin-bottom:6px;}
+  .snap-contacts .contact-row b{margin-left:4px;}
+  .snap-contacts .contact-row .title{color:var(--grey);}
+  .snap-teams-table{width:100%;border-collapse:collapse;font-size:12.5px;margin-top:14px;}
+  .snap-teams-table th, .snap-teams-table td{border:1px solid var(--line);padding:6px 8px;text-align:right;}
+  .snap-teams-table th{background:var(--bg-card);font-weight:700;}
+
+  .notes-section h3{font-size:15px;margin:0 0 12px;}
+  #add-note-btn{
+    background:var(--orange);color:#fff;border:none;border-radius:6px;
+    padding:8px 14px;font-size:13px;font-weight:700;cursor:pointer;margin-bottom:16px;
+  }
+  #add-note-btn:hover{background:#e85a28;}
+  .note-entry{
+    background:#fff;
+    border:1px solid var(--line);
+    border-radius:8px;
+    padding:14px 16px;
+    margin-bottom:12px;
+    box-shadow:0 1px 2px rgba(20,20,20,0.04);
+  }
+  .note-entry .note-header{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    margin-bottom:8px;
+  }
+  .note-entry .note-date{
+    font-size:12px;font-weight:700;color:var(--orange);
+    border:none;background:none;font-family:inherit;
+  }
+  .note-entry .note-delete{
+    background:none;border:none;color:var(--grey);font-size:13px;cursor:pointer;
+  }
+  .note-entry .note-delete:hover{color:#D64545;}
+  .note-entry .note-text{
+    font-size:14px;line-height:1.6;min-height:40px;outline:none;white-space:pre-wrap;
+  }
+  .note-entry .note-text:focus{background:#FFFBF8;}
+  .notes-empty{color:var(--grey);font-size:13px;padding:10px 0;}
+</style>
+</head>
+<body>
+
+<header>
+  <h1>📓 יומן פגישות לקוח</h1>
+  <span class="sub">Snapshot חי + הערות שנשארות בין פגישות, לפי חברה</span>
+</header>
+
+<div id="tab-bar">
+  <button id="add-tab-btn">+ חברה חדשה</button>
+</div>
+
+<div id="content-area">
+  <div class="wrap" id="wrap-inner">
+    <div class="empty-state">לחץ על "+ חברה חדשה" כדי להתחיל תיעוד פגישה.</div>
+  </div>
+</div>
+
+<script>
+(function(){
+  const TABS_KEY = 'meeting-notes-tabs';
+  const ACTIVE_KEY = 'meeting-notes-active-tab';
+  function entriesKey(name){ return 'meeting-notes-entries:' + name.trim().toLowerCase(); }
+
+  let DATA = null;
+  let tabs = [];
+  let activeTab = null;
+
+  function loadTabs(){
+    try{ return JSON.parse(localStorage.getItem(TABS_KEY)) || []; }catch(e){ return []; }
+  }
+  function saveTabs(){
+    try{ localStorage.setItem(TABS_KEY, JSON.stringify(tabs)); }catch(e){}
+  }
+  function loadEntries(name){
+    try{ return JSON.parse(localStorage.getItem(entriesKey(name))) || []; }catch(e){ return []; }
+  }
+  function saveEntries(name, entries){
+    try{ localStorage.setItem(entriesKey(name), JSON.stringify(entries)); }catch(e){}
+  }
+
+  function todayStr(){
+    const d = new Date();
+    return d.toLocaleDateString('he-IL', { year: 'numeric', month: '2-digit', day: '2-digit' });
+  }
+
+  function renderTabBar(){
+    const bar = document.getElementById('tab-bar');
+    bar.querySelectorAll('.company-tab').forEach(el => el.remove());
+    tabs.forEach(name=>{
+      const tab = document.createElement('button');
+      tab.className = 'company-tab' + (name === activeTab ? ' active' : '');
+      tab.innerHTML = '<span class="tab-label"></span><span class="tab-close" title="הסר טאב (ההערות נשארות שמורות)">✕</span>';
+      tab.querySelector('.tab-label').textContent = name;
+      tab.addEventListener('click', (e)=>{
+        if(e.target.classList.contains('tab-close')) return;
+        setActiveTab(name);
+      });
+      tab.querySelector('.tab-close').addEventListener('click', (e)=>{
+        e.stopPropagation();
+        closeTab(name);
+      });
+      bar.insertBefore(tab, document.getElementById('add-tab-btn'));
+    });
+  }
+
+  function closeTab(name){
+    tabs = tabs.filter(t => t !== name);
+    saveTabs();
+    if(activeTab === name){
+      activeTab = tabs.length ? tabs[tabs.length - 1] : null;
+      try{ localStorage.setItem(ACTIVE_KEY, activeTab || ''); }catch(e){}
+    }
+    renderTabBar();
+    renderContent();
+  }
+
+  function setActiveTab(name){
+    activeTab = name;
+    try{ localStorage.setItem(ACTIVE_KEY, activeTab || ''); }catch(e){}
+    renderTabBar();
+    renderContent();
+  }
+
+  function addTab(name){
+    name = name.trim();
+    if(!name) return;
+    if(!tabs.includes(name)){
+      tabs.push(name);
+      saveTabs();
+    }
+    setActiveTab(name);
+  }
+
+  document.getElementById('add-tab-btn').addEventListener('click', ()=>{
+    const name = window.prompt('שם החברה:');
+    if(name && name.trim()) addTab(name);
+  });
+
+  // ---- snapshot lookup (lean version — key facts, not the full editable/chart snapshot) ----
+  function findAccount(name){
+    const norm = name.trim().toLowerCase();
+    return (DATA.accounts || []).find(a => (a.name || '').trim().toLowerCase() === norm) || null;
+  }
+  function findUsage(name){
+    const norm = name.trim().toLowerCase();
+    return (DATA.usage_export || []).find(u => (u.name || '').trim().toLowerCase() === norm) || null;
+  }
+  function findTeams(name){
+    return (DATA.teams_by_account && DATA.teams_by_account[name]) ||
+           (DATA.self_serve_renewals && DATA.self_serve_renewals[name] && DATA.self_serve_renewals[name].teams) ||
+           [];
+  }
+  function findContacts(name){
+    return (DATA.contacts_by_account && DATA.contacts_by_account[name]) || [];
+  }
+  function fmtMoney(n){ return (n === null || n === undefined) ? '—' : '$' + Number(n).toLocaleString(); }
+  function fmtNum(n){ return (n === null || n === undefined || n === '') ? '—' : Number(n).toLocaleString(); }
+
+  function renderSnapshotCard(name){
+    const account = findAccount(name);
+    const usage = findUsage(name);
+    const teams = findTeams(name);
+    const contacts = findContacts(name);
+
+    if(!account && !usage){
+      return '<div class="snap-card not-found">אין נתונים קיימים על "' + name + '" במאגר — זה כנראה לקוח/פרוספקט חדש שלא נמצא ב-Territory Command Center. אפשר עדיין לתעד פה הערות מהפגישה.</div>';
+    }
+
+    let html = '<div class="snap-card">';
+    html += '<div class="snap-stats">';
+    if(account){
+      html += '<div class="snap-stat"><div class="label">מדינה</div><div class="value" style="font-size:14px;">' + (account.country || '—') + '</div></div>';
+      html += '<div class="snap-stat"><div class="label">סקטור</div><div class="value" style="font-size:14px;">' + (account.sector || '—') + '</div></div>';
+      html += '<div class="snap-stat"><div class="label">סטטוס</div><div class="value" style="font-size:14px;">' + (account.status || '—') + '</div></div>';
+      html += '<div class="snap-stat"><div class="label">Priority</div><div class="value" style="font-size:14px;">' + (account.priority || '—') + '</div></div>';
+    }
+    const arr = (account && (account.arr_live ?? account.arr)) ?? (usage && usage.combined_arr);
+    html += '<div class="snap-stat"><div class="label">ARR</div><div class="value">' + fmtMoney(arr) + '</div></div>';
+    if(usage){
+      html += '<div class="snap-stat"><div class="label">DAU (90 יום)</div><div class="value">' + fmtNum(usage.dau_90) + '</div></div>';
+      html += '<div class="snap-stat"><div class="label">רישיונות בתשלום</div><div class="value">' + fmtNum(usage.paid_licenses) + '</div></div>';
+      html += '<div class="snap-stat"><div class="label">Postman Teams</div><div class="value">' + fmtNum(usage.postman_teams) + '</div></div>';
+    }
+    html += '</div>';
+
+    if(account && account.notes){
+      html += '<div class="snap-note">' + account.notes.replace(/\n/g, '<br>') + '</div>';
+    }
+
+    if(contacts.length){
+      html += '<div class="snap-contacts">';
+      contacts.slice(0, 6).forEach(c=>{
+        html += '<div class="contact-row"><b>' + (c.name || '') + '</b><span class="title"> — ' + (c.title || '') + '</span>' + (c.email ? ' · ' + c.email : '') + '</div>';
+      });
+      html += '</div>';
+    }
+
+    if(teams.length){
+      html += '<table class="snap-teams-table"><tr><th>Team</th><th>Plan</th><th>Used</th><th>Purchased</th><th>ARR</th></tr>';
+      teams.slice(0, 8).forEach(t=>{
+        html += '<tr><td>' + (t.team_name || '') + '</td><td>' + (t.active_plan || '') + '</td><td>' + fmtNum(t.used_licenses) + '</td><td>' + fmtNum(t.purchased_licenses) + '</td><td>' + fmtMoney(t.arr) + '</td></tr>';
+      });
+      html += '</table>';
+    }
+
+    html += '</div>';
+    return html;
+  }
+
+  // ---- meeting notes ----
+  function renderNotesSection(name){
+    const entries = loadEntries(name);
+    let html = '<div class="notes-section"><h3>הערות פגישה</h3>';
+    html += '<button id="add-note-btn">+ הערה מפגישה חדשה</button>';
+    html += '<div id="notes-list">';
+    if(!entries.length){
+      html += '<div class="notes-empty">אין עדיין הערות לחברה הזו. לחץ על הכפתור למעלה כדי להתחיל.</div>';
+    } else {
+      entries.forEach((entry, i)=>{
+        html += '<div class="note-entry" data-idx="' + i + '">' +
+          '<div class="note-header"><input class="note-date" value="' + (entry.date || '') + '"><button class="note-delete" title="מחק הערה זו">✕</button></div>' +
+          '<div class="note-text" contenteditable="true">' + (entry.text || '') + '</div>' +
+        '</div>';
+      });
+    }
+    html += '</div></div>';
+    return html;
+  }
+
+  function wireNotesSection(name){
+    document.getElementById('add-note-btn').addEventListener('click', ()=>{
+      const entries = loadEntries(name);
+      entries.unshift({ date: todayStr(), text: '' });
+      saveEntries(name, entries);
+      renderContent();
+      const firstText = document.querySelector('.note-entry .note-text');
+      if(firstText) firstText.focus();
+    });
+    document.querySelectorAll('.note-entry').forEach(el=>{
+      const idx = parseInt(el.dataset.idx, 10);
+      const dateInput = el.querySelector('.note-date');
+      const textDiv = el.querySelector('.note-text');
+      const delBtn = el.querySelector('.note-delete');
+      function persist(){
+        const entries = loadEntries(name);
+        if(!entries[idx]) return;
+        entries[idx].date = dateInput.value;
+        entries[idx].text = textDiv.innerHTML;
+        saveEntries(name, entries);
+      }
+      dateInput.addEventListener('input', persist);
+      textDiv.addEventListener('input', persist);
+      delBtn.addEventListener('click', ()=>{
+        if(!window.confirm('למחוק את ההערה הזו?')) return;
+        const entries = loadEntries(name);
+        entries.splice(idx, 1);
+        saveEntries(name, entries);
+        renderContent();
+      });
+    });
+  }
+
+  function renderContent(){
+    const wrap = document.getElementById('wrap-inner');
+    if(!activeTab){
+      wrap.innerHTML = '<div class="empty-state">לחץ על "+ חברה חדשה" כדי להתחיל תיעוד פגישה.</div>';
+      return;
+    }
+    let html = '<div class="company-header"><h2>' + activeTab + '</h2></div>';
+    html += renderSnapshotCard(activeTab);
+    html += renderNotesSection(activeTab);
+    wrap.innerHTML = html;
+    wireNotesSection(activeTab);
+  }
+
+  async function init(){
+    try{
+      const response = await fetch('dashboard-data.json');
+      DATA = await response.json();
+    }catch(e){
+      DATA = { accounts: [], usage_export: [], teams_by_account: {}, contacts_by_account: {}, self_serve_renewals: {} };
+      console.error('Could not load dashboard-data.json — snapshots will show "not found" until this file is available in the same folder.', e);
+    }
+    tabs = loadTabs();
+    let savedActive = null;
+    try{ savedActive = localStorage.getItem(ACTIVE_KEY); }catch(e){}
+    activeTab = (savedActive && tabs.includes(savedActive)) ? savedActive : (tabs[0] || null);
+    renderTabBar();
+    renderContent();
+  }
+  init();
+})();
+</script>
+
+<!-- ===== Dashboard switcher (present on every page) ===== -->
+<div id="dash-switcher">
+  <button id="dash-switcher-btn" title="נווט בין הכלים">🗂️</button>
+  <div id="dash-switcher-menu">
+    <div class="dash-switcher-title">הכלים שלי</div>
+    <a href="index.html">🏠 דף הבית</a>
+    <a href="postman-explainer.html">💬 סקריפט שיחת לקוח (עברית)</a>
+    <a href="postman-explainer-en.html">💬 Customer Pitch (EN)</a>
+    <a href="call_dashboard.html">📞 Call Command Center</a>
+    <a href="territory-command-center.html">🗺️ Territory Command Center</a>
+    <a href="role-scripts.html">🎯 תרחישי שיחה ראשונית</a>
+    <a href="meeting-notes.html">📓 יומן פגישות לקוח</a>
+  </div>
+</div>
+<style>
+  #dash-switcher{position:fixed;bottom:20px;left:20px;z-index:2147483000;font-family:"Segoe UI","Arial Hebrew",Arial,sans-serif;direction:rtl;}
+  #dash-switcher-btn{
+    width:48px;height:48px;border-radius:50%;
+    background:#1C1C1E;color:#fff;border:none;
+    font-size:20px;cursor:pointer;
+    box-shadow:0 4px 12px rgba(0,0,0,.35);
+  }
+  #dash-switcher-btn:hover{background:#FF6C37;}
+  #dash-switcher-menu{
+    display:none;position:absolute;bottom:58px;left:0;
+    background:#fff;border:1px solid #E6E4E0;border-radius:10px;
+    box-shadow:0 10px 30px rgba(0,0,0,.25);
+    padding:8px;min-width:230px;
+  }
+  #dash-switcher-menu.open{display:block;}
+  #dash-switcher-menu .dash-switcher-title{
+    font-size:11px;font-weight:700;color:#5B5F66;
+    padding:4px 10px 8px;text-transform:uppercase;letter-spacing:.02em;
+  }
+  #dash-switcher-menu a{
+    display:block;padding:8px 10px;border-radius:6px;
+    color:#1C1C1E;text-decoration:none;font-size:13px;white-space:nowrap;
+  }
+  #dash-switcher-menu a:hover{background:#FFF6F1;color:#FF6C37;}
+  #dash-switcher-menu a.current{font-weight:700;color:#FF6C37;background:#FFF6F1;}
+</style>
+<script>
+(function(){
+  const btn = document.getElementById('dash-switcher-btn');
+  const wrap = document.getElementById('dash-switcher');
+  const menu = document.getElementById('dash-switcher-menu');
+  btn.addEventListener('click', function(e){
+    e.stopPropagation();
+    menu.classList.toggle('open');
+  });
+  document.addEventListener('click', function(e){
+    if(!wrap.contains(e.target)) menu.classList.remove('open');
+  });
+  const current = (location.pathname.split('/').pop() || 'index.html');
+  menu.querySelectorAll('a').forEach(function(a){
+    if(a.getAttribute('href') === current) a.classList.add('current');
+  });
+})();
+</script>
+
+</body>
+</html>
