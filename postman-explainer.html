@@ -55,6 +55,20 @@
   .cross-box b{color:var(--orange);}
   .group-title{font-size:14px;font-weight:700;color:var(--grey);margin:26px 0 10px;}
   .prod{border:1px solid var(--line);border-radius:8px;padding:16px 18px;margin-bottom:12px;background:var(--bg-card);box-shadow:0 1px 2px rgba(20,20,20,0.04);}
+  /* Draggable reordering — grab the top-right handle and drag up/down within the same list */
+  .reorderable-card{position:relative;cursor:default;}
+  .reorderable-card .drag-grip{
+    position:absolute;top:8px;left:8px;
+    width:22px;height:22px;
+    display:flex;align-items:center;justify-content:center;
+    border-radius:5px;background:rgba(0,0,0,0.04);
+    cursor:grab;font-size:13px;color:var(--grey);
+    user-select:none;
+  }
+  .reorderable-card .drag-grip:hover{background:var(--orange);color:#fff;}
+  .reorderable-card.dragging{opacity:0.4;}
+  .reorderable-card.drag-over-top{box-shadow:0 -3px 0 var(--orange) inset;}
+  .reorderable-card.drag-over-bottom{box-shadow:0 3px 0 var(--orange) inset;}
   .prod .name{font-weight:700;font-size:15.5px;margin-bottom:8px;}
   .prod .pitch{font-size:14px;}
   .obj{border:1px solid var(--line);border-radius:8px;padding:14px 18px;margin-bottom:10px;background:var(--bg-card);box-shadow:0 1px 2px rgba(20,20,20,0.04);}
@@ -728,6 +742,43 @@
 </div>
 <div class="say edit-unit" contenteditable="false">
 <b class="tag"><br/><span style="font-size: 14.5px; color: rgb(28, 28, 30);">"אני תמיד ממקד את השיחה בשלבים 1 עד 3 — עיצוב, פיתוח ובדיקות — כי זה המקום שבו טעות עולה הכי פחות לתקן. פריסה ומעקב זה ערך נוסף שנוסיף בהמשך, אבל זה לא הליבה של מה שאני רוצה שתראו היום."</span></b></div>
+
+<div class="group-title edit-unit" contenteditable="false">2. Governance וניהול APIs בארגון בקנה מידה</div>
+<div class="cross-box edit-unit" contenteditable="false">
+בארגונים גדולים אנחנו רואים לא מעט מקרים שבהם צוותים שונים משתמשים ב-Postman באופן עצמאי, דרך חשבונות אישיים לצד חשבונות ארגוניים, בלי ניהול מרכזי של המשתמשים, ההרשאות, תהליכי העבודה, ה-APIs והאבטחה. עם הזמן, זה יוצר מצב שבו כל צוות עובד קצת אחרת, אין תמונה מרכזית של כלל ה-APIs והפעילות סביבם, וקשה לדעת מי משתמש במה ומי מחזיק גישה לאילו APIs ומערכות — במיוחד כשהפעילות מפוזרת בין משתמשים, צוותים, חשבונות, ויותר ויותר גם כלי AI ו-AI Agents. זה המקום שבו בדרך כלל מתחילים לעלות נושאים כמו API Governance, סטנדרטיזציה ואבטחה.
+</div>
+<div class="say edit-unit" contenteditable="false">
+<b class="tag">איך אני ממסגר את זה</b>
+"הפלטפורמה שלנו לא נועדה להחליף את ה-API Gateway — אלא אם תרצו בכך — הערך הוא ביצירת שכבת שיקוף, גילוי, אבטחה ו-Governance סביב ה-APIs, ובניהול יעיל יותר של כל מחזור החיים שלהם."
+</div>
+<div class="cross-box edit-unit" contenteditable="false">
+כפי שדיברנו, Postman נותנת מענה כולל לאורך כל מחזור החיים של ה-API באמצעות ארכיטקטורת מפל, שבה כל שלב מתבסס על מה שהוגדר בשלב הקודם, וגם אוכף אותו אוטומטית: בעיצוב (Design) מגדירים את חוזה ה-API ומיישמים Governance; בפיתוח (Development) בודקים ברציפות שהקוד נשאר בהתאם לחוזה ומזהים שינויים ששוברים מערכות קיימות; בבדיקות (Tests) מייצרים ומריצים בדיקות אוטומטית, עם AI שמתקן בדיקות שנכשלו ומריץ בדיקות עומס; ובהטמעה ומעקב (Deployment &amp; Monitoring) בדיקות אוטומטיות ממשיכות לוודא עמידה בסטנדרטים, ו-Insights מזהה פערים על בסיס תעבורה אמיתית. במקביל, Agent Mode ו-AI Engineer מספקים יכולות AI שמבינות את ההקשר ומבצעות פעולות אוטומטיות או מונחות לאורך השלבים — Agent Mode עובד עם APIs, בדיקות ותהליכי Governance, ו-AI Engineer עובד עם הקוד וההיסטוריה ב-Git כדי לזהות APIs ישנים או לא בשימוש, ולבדוק שינויים לפני Merge. אפשר גם ליצור את כללי ה-Governance עצמם בעזרת AI, ו-Postman אוכפת אותם באופן עקבי על פני כל הפרויקטים.
+</div>
+
+<div class="group-title edit-unit" contenteditable="false">מה כולל Postman Enterprise</div>
+<div class="cross-box edit-unit" contenteditable="false">
+תוכנית ה-Enterprise מיועדת לארגונים שרוצים לנהל APIs בקנה מידה רחב — Governance ארגוני, בקרות אבטחה ונראות מלאה, אכיפת כללים אוטומטית על פני כל הצוותים, ניהול סודות מרכזי, ותצוגה אחודה של כל ה-APIs שנבנים בארגון. בקנה מידה גדול, כלים מפוזרים ותהליכים ידניים הופכים לסיכון ממשי, במיוחד לנוכח דרישות אבטחה ותאימות שהולכות וגדלות.
+</div>
+<ul class="panel-list">
+<li><b>API Catalog</b> — מקום מרכזי לראות ולנהל את כל ה-APIs, כולל אלה שבפיתוח ולא רק אלה שבפרודקשן.</li>
+<li><b>API Governance</b> — הגדרת סטנדרטים וכללים ל-APIs ואכיפתם לאורך הפיתוח וה-CI/CD.</li>
+<li><b>Private API Network</b> — קטלוג פנימי שמאפשר למפתחים למצוא ולצרוך APIs מאושרים של הארגון.</li>
+<li><b>Advanced RBAC ובקרות ארגוניות</b> — שליטה מדויקת על מי יכול לראות, לערוך, לפרסם ולגשת ל-APIs ולמידע.</li>
+<li><b>Audit Logs, Reporting ו-API usage visibility</b> — שקיפות מלאה על מי עשה מה, מתי, ואיך משתמשים ב-APIs.</li>
+<li><b>Private Test and Flows Runners</b> — הרצת בדיקות ו-Flows בתוך הסביבה הפרטית של הארגון, בלי לשלוח מידע לחוץ.</li>
+<li><b>Insights</b> — תמונה ברורה של פעילות ה-APIs, שימוש, תעבורה ודפוסי פעילות.</li>
+<li><b>800 קרדיטי AI משותפים למשתמש/חודש</b> — קרדיטים חודשיים ליכולות ה-AI, משותפים בתוך הארגון.</li>
+</ul>
+<div class="cross-box edit-unit" contenteditable="false">
+כמה יכולות נוספות שיכולות להיות רלוונטיות, בהתאם לצרכי הלקוח:
+<br/><br/>
+<b>Advanced Security Administration (ASA)</b> — תוסף שמוסיף שכבת אבטחה ושליטה מתקדמת: Domain Capture, Account Discovery ו-Control, נראות ארגונית על Secret Scanner, אינטגרציה עם Azure Key Vault, AWS Secrets Manager ו-HashiCorp Vault, ו-BYOK.
+<br/><br/>
+<b>Passport</b> — תוסף שמתמקד באיך מפתחים, אפליקציות ו-AI Agents מוצאים APIs בארגון ומקבלים אליהם גישה — במקום לשאול ב-Slack מי יכול לשלוח API Key ולשמור אותו בקוד, מקבלים תהליך מסודר: למצוא, לבקש גישה, לקבל אישור, ולהשתמש בצורה מאובטחת, בלי לקבל את ה-Secret עצמו.
+<br/><br/>
+<b>Fabric</b> — שכבת בקרה מרכזית לעולם ה-AI בארגון. ככל שיותר צוותים עובדים עם מודלי LLM שונים, בונים AI Agents ומחברים AI למערכות פנימיות, Fabric נותן שכבה מרכזית לשלוט בתעבורה הזו, לאבטח אותה, להגדיר מה Agents יכולים לגשת אליו, לנהל Credentials, ולשלוט בעלויות ובצריכת Tokens.
+</div>
+
 </section>
 <!-- SECTION 2: AI SHIFT — EXPANDED -->
 <section id="sec-ai">
@@ -1130,6 +1181,77 @@
     <div class="cross-box edit-unit" contenteditable="false">
       <b>נקודת מיצוב:</b> לא למכור את Fabric כתחליף ל-Kong/Apigee — זו שכבת Governance מותאמת AI שיושבת לצד תשתית ה-API הקיימת.
     </div>
+<div class="group-title edit-unit" contenteditable="false">שאלות נפוצות מלקוחות ב-First Call</div>
+
+<div class="obj">
+<div class="q edit-unit" contenteditable="false">"אתם מתחברים למערכות אחרות (API Connect, Azure APIM)?"</div>
+<div class="a edit-unit" contenteditable="false">"כן. יש אינטגרציות עם gateways שונים (כולל Azure API Management ו-IBM API Connect) ועם AWS, Azure ו-Google Cloud. Postman שואב מידע מהסביבות הקיימות לצורך discovery ו-API Catalog." <br/><b>לזכור:</b> לברר קודם למה הלקוח מתכוון ב-"integration" — discovery, monitoring, testing או החלפת gateway.</div>
+</div>
+
+<div class="obj">
+<div class="q edit-unit" contenteditable="false">"Postman הוא Gateway, או ששם Gateway באמצע?"</div>
+<div class="a edit-unit" contenteditable="false">"לא. Postman לא נועד להחליף API Gateway. הוא מתחבר ל-Gateways קיימים ומקבל מהם מידע, ובנוסף יש agent שמאזין לפעילות בסביבה." <br/><b>לזכור:</b> להפריד — Gateway מטפל בתעבורה; Postman מנהל את ה-API lifecycle סביבו.</div>
+</div>
+
+<div class="obj">
+<div class="q edit-unit" contenteditable="false">"איך אתם מוצאים APIs שאנחנו בעצמנו לא מכירים?"</div>
+<div class="a edit-unit" contenteditable="false">"כמה מנגנוני discovery: אינטגרציה עם gateways ו-cloud providers, agent שמזהה APIs לפי תעבורת רשת (Postman Insights), ו-service discovery ב-Kubernetes (Cluster Watcher). המטרה — תמונה רחבה של כל ה-API landscape." <br/><b>לזכור:</b> זה מתחבר ישירות לבעיה של APIs לא מוכרים ול-API Catalog.</div>
+</div>
+
+<div class="obj">
+<div class="q edit-unit" contenteditable="false">"כדי לנטר APIs אתם חייבים ליירט תעבורה?"</div>
+<div class="a edit-unit" contenteditable="false">"לא בהכרח. באינטגרציה עם Gateway, Postman מקבל מידע ישירות מה-Gateway. אפשר גם agent שמאזין לסביבה ומזהה אילו APIs נקראים." <br/><b>לזכור:</b> לא להיכנס עמוק מדי לטכנולוגיה — יש כמה שיטות בהתאם לארכיטקטורה של הלקוח.</div>
+</div>
+
+<div class="obj">
+<div class="q edit-unit" contenteditable="false">"מה זה API Catalog, ולמה צריך אותו אם יש API Management?"</div>
+<div class="a edit-unit" contenteditable="false">"API Catalog הוא registry מרכזי שנותן single pane of glass על כל ה-APIs בארגון — מה קיים, מי הבעלים, ומה המצב שלו (מקושר ל-source control, CI/CD ו-production). API Management מטפל בתעבורה בזמן אמת; Catalog נותן את תמונת ה-visibility וה-ownership שמעליו." <br/><b>לזכור:</b> לא להציג Catalog כעוד רשימה, אלא כ-visibility ו-ownership על API landscape מבוזר.</div>
+</div>
+
+<div class="obj">
+<div class="q edit-unit" contenteditable="false">"אתם עובדים עם source code ו-repositories?"</div>
+<div class="a edit-unit" contenteditable="false">"כן. יש חיבור ל-GitHub שמקשר בין source code ל-APIs, וניתן גם להפוך קוד קיים ל-Postman collections." <br/><b>לזכור:</b> רלוונטי במיוחד לארגונים שעובדים Git-based.</div>
+</div>
+
+<div class="obj">
+<div class="q edit-unit" contenteditable="false">"אנחנו עובדים הרבה עם AI ו-Agents — איך Postman משתלב?"</div>
+<div class="a edit-unit" contenteditable="false">"Postman כולל יכולות AI מובנות (Postman AI ו-Agent Mode) לאוטומציה של תהליכי פיתוח API — יצירת בדיקות, תיעוד ו-workflows. מעבר לכך, ככל שיותר תהליכי AI/Agents צורכים APIs, גובר הצורך ב-APIs שניתנים לגילוי, אמינים ומתועדים היטב, וב-Governance כש-AI משתתף בתהליך." <br/><b>לזכור:</b> קודם להבין את ה-AI workflow של הלקוח, ורק אחר כך לחבר למוצר הרלוונטי.</div>
+</div>
+
+<div class="obj">
+<div class="q edit-unit" contenteditable="false">"אתם אוכפים standards כמו OpenAPI על צוותי הפיתוח?"</div>
+<div class="a edit-unit" contenteditable="false">"כן. Postman (API Governance) מאפשר להגדיר ולאכוף כללים על פני צוותים — כללים מובנים וגם custom rules — ולשלב Governance ב-CI/CD." <br/><b>לזכור:</b> להבדיל בין "אנחנו עובדים לפי OpenAPI" לבין "אנחנו אוכפים OpenAPI בפועל".</div>
+</div>
+
+<div class="obj">
+<div class="q edit-unit" contenteditable="false">"מה Postman מוסיף מעבר ל-WAF, DDoS ו-Authentication שיש לנו?"</div>
+<div class="a edit-unit" contenteditable="false">"Postman לא מתחרה ב-WAF/DDoS/authentication — הוא מוסיף שכבת אבטחה שממוקדת ב-API lifecycle: Secret Scanner שמאתר סודות ומפתחות שדלפו בקוד ובקולקציות, security scorecards ב-API Catalog, וגישת shift-left testing." <br/><b>לזכור:</b> לא להתווכח עם ה-stack הקיים. לברר איפה יש gaps ב-lifecycle, Governance, secrets ו-testing.</div>
+</div>
+
+<div class="obj">
+<div class="q edit-unit" contenteditable="false">"אנחנו עובדים עם MuleSoft — איפה Postman נכנס?"</div>
+<div class="a edit-unit" contenteditable="false">"Postman לא מחליף את MuleSoft כפלטפורמת אינטגרציה — MuleSoft/Anypoint הוא integration platform בפני עצמו עם ה-Catalog שלו. הכיוון הרלוונטי הוא self-service API publishing מ-Postman, עם Governance ו-approval flow, שממלא את הפער של המתנה ארוכה ליצירת APIs חדשים. אינטגרציה טכנית ישירה וספציפית מול MuleSoft טרם אושרה במלואה." <br/><b>לזכור:</b> לא להבטיח capability שלא הוצגה בפועל — לקבוע follow-up טכני עם SE.</div>
+</div>
+
+<div class="obj">
+<div class="q edit-unit" contenteditable="false">"אנחנו כבר משתמשים ב-Postman ל-testing — מה עוד נקבל?"</div>
+<div class="a edit-unit" contenteditable="false">"Enterprise מרחיב שימוש נקודתי ב-testing לכל ה-API lifecycle: design, Governance, ו-visibility ארגוני על כל ה-APIs בחברה — לא רק על אלה שכבר נבדקים." <br/><b>לזכור:</b> להתחיל ממה שהם כבר עושים עם Postman, ואז לזהות מה חסר סביבו.</div>
+</div>
+
+<div class="group-title edit-unit" contenteditable="false">10 שאלות שכדאי להיות מוכן אליהן בכל First Call</div>
+<ul class="panel-list">
+<li>אני כבר משתמש ב-Free — למה Enterprise?</li>
+<li>האם אתם מחליפים את ה-API Gateway?</li>
+<li>האם אתם מתחברים ל-API Management / Cloud / GitHub?</li>
+<li>איך אתם מגלים APIs שאני בכלל לא יודע שקיימים?</li>
+<li>האם אתם יושבים באמצע התעבורה?</li>
+<li>מה ההבדל בין API Catalog ל-API Management?</li>
+<li>איך אתם אוכפים OpenAPI / Governance?</li>
+<li>מה אתם מוסיפים מעבר ל-WAF / DDoS / Security tools?</li>
+<li>איך מוכיחים ROI?</li>
+<li>אפשר להתחיל קטן / Trial / POC?</li>
+</ul>
+
   </div>
 </div>
 
@@ -1168,6 +1290,8 @@
 <button class="chat-quick-btn" data-prompt="הלקוח מתנגד למחיר, איך אני עונה?">הלקוח מתנגד למחיר, איך אני עונה?</button>
 <button class="chat-quick-btn" data-prompt="מה זה ASA ולמה זה Add-on?">מה זה ASA ולמה זה Add-on?</button>
 <button class="chat-quick-btn" data-prompt="הלקוח משתמש ב-Kong, איך אני עונה?">הלקוח משתמש ב-Kong, איך אני עונה?</button>
+<button class="chat-quick-btn" data-prompt="האם אתם מחליפים את ה-API Gateway?">האם אתם מחליפים את ה-API Gateway?</button>
+<button class="chat-quick-btn" data-prompt="מה אתם מוסיפים מעבר ל-WAF / DDoS / Security tools?">מה אתם מוסיפים מעבר ל-WAF / DDoS?</button>
 </div>
 <div id="saved-questions-wrap">
   <button id="saved-questions-btn">📌 שאלות שמורות <span id="saved-questions-count"></span> <span class="sq-arrow">▾</span></button>
@@ -2019,6 +2143,82 @@
   });
 })();
 </script>
+<script>
+// --- drag-to-reorder for Core Products and Objections cards ---
+(function(){
+  const CARD_GROUPS = [
+    { containerSelector: '#sec-products', cardSelector: '.prod', storageKey: 'reorder:products' },
+    { containerSelector: '#panel-objections .panel-body', cardSelector: '.obj', storageKey: 'reorder:objections' }
+  ];
 
+  function getDragAfterElement(container, y, cardSelector){
+    const cards = [...container.querySelectorAll(cardSelector + ':not(.dragging)')];
+    return cards.reduce((closest, card)=>{
+      const box = card.getBoundingClientRect();
+      const offset = y - box.top - box.height / 2;
+      if(offset < 0 && offset > closest.offset){
+        return { offset, element: card };
+      } else {
+        return closest;
+      }
+    }, { offset: Number.NEGATIVE_INFINITY, element: null }).element;
+  }
+
+  CARD_GROUPS.forEach(({containerSelector, cardSelector, storageKey})=>{
+    const container = document.querySelector(containerSelector);
+    if(!container) return;
+    // Captured once, in original DOM order — this is the fixed reference
+    // both for restoring a saved order and for recording a new one, so
+    // "index" always means the same thing no matter how many times the
+    // cards get reordered afterward.
+    const originalCards = Array.from(container.querySelectorAll(cardSelector));
+    if(originalCards.length < 2) return;
+
+    try{
+      const saved = JSON.parse(localStorage.getItem(storageKey));
+      if(saved && saved.length === originalCards.length){
+        saved.forEach(origIdx => { if(originalCards[origIdx]) container.appendChild(originalCards[origIdx]); });
+      }
+    }catch(e){}
+
+    function saveOrder(){
+      const current = Array.from(container.querySelectorAll(cardSelector));
+      const order = current.map(card => originalCards.indexOf(card));
+      try{ localStorage.setItem(storageKey, JSON.stringify(order)); }catch(e){}
+    }
+
+    originalCards.forEach(card=>{
+      card.classList.add('reorderable-card');
+      const grip = document.createElement('div');
+      grip.className = 'drag-grip';
+      grip.title = 'גרור כדי לשנות סדר';
+      grip.textContent = '⠿';
+      card.style.position = card.style.position || 'relative';
+      card.appendChild(grip);
+      card.setAttribute('draggable', 'true');
+
+      card.addEventListener('dragstart', ()=>{
+        card.classList.add('dragging');
+      });
+      card.addEventListener('dragend', ()=>{
+        card.classList.remove('dragging');
+        saveOrder();
+      });
+    });
+
+    container.addEventListener('dragover', (e)=>{
+      e.preventDefault();
+      const dragging = container.querySelector(cardSelector + '.dragging');
+      if(!dragging) return;
+      const afterElement = getDragAfterElement(container, e.clientY, cardSelector);
+      if(afterElement == null){
+        container.appendChild(dragging);
+      } else {
+        container.insertBefore(dragging, afterElement);
+      }
+    });
+  });
+})();
+</script>
 </body>
 </html>

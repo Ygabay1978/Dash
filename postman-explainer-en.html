@@ -55,6 +55,20 @@
   .cross-box b{color:var(--orange);}
   .group-title{font-size:14px;font-weight:700;color:var(--grey);margin:26px 0 10px;}
   .prod{border:1px solid var(--line);border-radius:8px;padding:16px 18px;margin-bottom:12px;background:var(--bg-card);box-shadow:0 1px 2px rgba(20,20,20,0.04);}
+  /* Draggable reordering — grab the top-right handle and drag up/down within the same list */
+  .reorderable-card{position:relative;cursor:default;}
+  .reorderable-card .drag-grip{
+    position:absolute;top:8px;left:8px;
+    width:22px;height:22px;
+    display:flex;align-items:center;justify-content:center;
+    border-radius:5px;background:rgba(0,0,0,0.04);
+    cursor:grab;font-size:13px;color:var(--grey);
+    user-select:none;
+  }
+  .reorderable-card .drag-grip:hover{background:var(--orange);color:#fff;}
+  .reorderable-card.dragging{opacity:0.4;}
+  .reorderable-card.drag-over-top{box-shadow:0 -3px 0 var(--orange) inset;}
+  .reorderable-card.drag-over-bottom{box-shadow:0 3px 0 var(--orange) inset;}
   .prod .name{font-weight:700;font-size:15.5px;margin-bottom:8px;}
   .prod .pitch{font-size:14px;}
   .obj{border:1px solid var(--line);border-radius:8px;padding:14px 18px;margin-bottom:10px;background:var(--bg-card);box-shadow:0 1px 2px rgba(20,20,20,0.04);}
@@ -727,6 +741,43 @@
 </div>
 <div class="say edit-unit" contenteditable="false">
 <b class="tag"><br/><span style="font-size: 14.5px; color: rgb(28, 28, 30);">"I always focus the conversation on stages 1 through 3 — design, development, and testing — because that’s where a mistake costs the least to fix. Deployment and monitoring are additional value we’ll add later, but they’re not the core of what I want you to see today."</span></b></div>
+
+<div class="group-title edit-unit" contenteditable="false">2. Governance and Managing APIs at Scale</div>
+<div class="cross-box edit-unit" contenteditable="false">
+In large organizations, we often see different teams using Postman independently — through personal accounts alongside organizational ones — with no centralized management of users, permissions, workflows, APIs, or security. Over time, this creates a situation where every team works a bit differently, there's no central picture of all the APIs and the activity around them, and it's hard to know who's using what and who holds access to which APIs and systems — especially as activity spreads across users, teams, accounts, and increasingly AI tools and AI Agents. This is usually where topics like API Governance, standardization, and security start coming up.
+</div>
+<div class="say edit-unit" contenteditable="false">
+<b class="tag">How I frame this</b>
+"Our platform isn't meant to replace your API Gateway — unless you want it to — the value is in creating a layer of visibility, discovery, security, and Governance around your APIs, and managing their entire lifecycle more efficiently."
+</div>
+<div class="cross-box edit-unit" contenteditable="false">
+As we discussed, Postman provides end-to-end coverage across the whole API lifecycle through a waterfall-style architecture, where each stage builds on what was defined in the previous one — and enforces it automatically. In Design, teams define the API contract, apply Governance rules, and use AI to create and refine specs, while frontend teams can work against Mock APIs before the backend is ready. In Development, Postman continuously checks that the code stays aligned with the defined API contract, catching breaking changes early. In Testing, you can generate and run tests automatically, use AI to fix failing tests, and run load tests on your APIs. In Deployment &amp; Monitoring, automated checks keep verifying that internal and external APIs meet the defined standards, while Insights identifies gaps based on real traffic. At the same time, Agent Mode and AI Engineer provide context-aware AI capabilities that can take automatic or guided action across these stages — Agent Mode works with APIs, tests, and Governance workflows, while AI Engineer works with code and Git history to identify, for example, old or unused APIs, and to review changes before they're merged. You can even build the Governance rules themselves with AI, and Postman then enforces them consistently across every project.
+</div>
+
+<div class="group-title edit-unit" contenteditable="false">What's Included in Postman Enterprise</div>
+<div class="cross-box edit-unit" contenteditable="false">
+The Enterprise plan is built for organizations managing APIs at broad scale — organization-wide Governance, security controls, and full visibility, including automatic rule enforcement across every team, centralized secrets management, and a unified view of every API being built across the organization. At scale, fragmented tools and manual processes become a real risk, especially given growing security and compliance requirements.
+</div>
+<ul class="panel-list">
+<li><b>API Catalog</b> — a central place to see and manage every API, including ones still in development, not just what's already in production.</li>
+<li><b>API Governance</b> — defining standards and rules for APIs and enforcing them throughout development and CI/CD.</li>
+<li><b>Private API Network</b> — an internal catalog that lets developers easily find and consume approved organizational APIs.</li>
+<li><b>Advanced RBAC and organizational controls</b> — precise control over who can view, edit, publish, and access APIs and data.</li>
+<li><b>Audit Logs, Reporting, and API usage visibility</b> — full transparency into who did what, when, and how APIs are used.</li>
+<li><b>Private Test and Flows Runners</b> — running tests and Flows inside the organization's private environment, without sending data externally.</li>
+<li><b>Insights</b> — a clear picture of API activity, usage, traffic, and patterns.</li>
+<li><b>800 pooled AI credits per user/month</b> — monthly credits for Postman's AI capabilities, shared across the organization.</li>
+</ul>
+<div class="cross-box edit-unit" contenteditable="false">
+A few additional capabilities that can be relevant, depending on the customer's needs:
+<br/><br/>
+<b>Advanced Security Administration (ASA)</b> — an add-on that adds an extra layer of security and control: Domain Capture, Account Discovery and Control, org-wide visibility into Secret Scanner, integration with Azure Key Vault, AWS Secrets Manager, and HashiCorp Vault, and BYOK.
+<br/><br/>
+<b>Passport</b> — an add-on focused on how developers, applications, and AI Agents discover APIs in the organization and get access to them — instead of asking in Slack who can send an API key and then storing it in code, you get an orderly process: find the API, request access, get approved, and use it securely, without necessarily ever holding the secret itself.
+<br/><br/>
+<b>Fabric</b> — a central control layer for AI in the organization. As more teams work with different LLMs, build AI Agents, and connect AI to internal systems, Fabric gives you one central layer to control that traffic, secure it, define what Agents can access, manage credentials, and control costs and token usage.
+</div>
+
 </section>
 <!-- SECTION 2: AI SHIFT — EXPANDED -->
 <section id="sec-ai">
@@ -1069,6 +1120,77 @@
     <div class="cross-box edit-unit" contenteditable="false">
       <b>Positioning point:</b> Don’t sell Fabric as a replacement for Kong/Apigee — it’s an AI-tailored Governance layer that sits alongside the existing API infrastructure.
     </div>
+<div class="group-title edit-unit" contenteditable="false">Common Customer Questions in a First Call</div>
+
+<div class="obj">
+<div class="q edit-unit" contenteditable="false">"Do you connect to other systems (API Connect, Azure APIM)?"</div>
+<div class="a edit-unit" contenteditable="false">"Yes. There are integrations with various gateways (including Azure API Management and IBM API Connect) and with AWS, Azure, and Google Cloud. Postman pulls information from existing environments for discovery and the API Catalog." <br/><b>Remember:</b> first clarify what the customer means by "integration" — discovery, monitoring, testing, or replacing a gateway.</div>
+</div>
+
+<div class="obj">
+<div class="q edit-unit" contenteditable="false">"Is Postman a Gateway, or does it sit in the middle as one?"</div>
+<div class="a edit-unit" contenteditable="false">"No. Postman isn't meant to replace your API Gateway. It connects to existing Gateways and pulls information from them, plus there's an agent that listens to activity in the environment." <br/><b>Remember:</b> keep the distinction clear — the Gateway handles traffic; Postman manages the API lifecycle around it.</div>
+</div>
+
+<div class="obj">
+<div class="q edit-unit" contenteditable="false">"How do you find APIs that we ourselves don't know about?"</div>
+<div class="a edit-unit" contenteditable="false">"A few discovery mechanisms: integration with gateways and cloud providers, an agent that identifies APIs from network traffic (Postman Insights), and service discovery in Kubernetes (Cluster Watcher). The goal is a broad picture of your entire API landscape." <br/><b>Remember:</b> this connects directly to the "unknown APIs" problem and the API Catalog.</div>
+</div>
+
+<div class="obj">
+<div class="q edit-unit" contenteditable="false">"To monitor APIs, do you have to intercept traffic?"</div>
+<div class="a edit-unit" contenteditable="false">"Not necessarily. With a Gateway integration, Postman gets information directly from the Gateway. There's also an agent option that listens to the environment and identifies which APIs are being called." <br/><b>Remember:</b> don't go too deep into the technology — there are a few methods depending on the customer's architecture.</div>
+</div>
+
+<div class="obj">
+<div class="q edit-unit" contenteditable="false">"What is an API Catalog, and why do we need it if we have API Management?"</div>
+<div class="a edit-unit" contenteditable="false">"API Catalog is a central registry giving you a single pane of glass over every API in the organization — what exists, who owns it, and what state it's in (linked to source control, CI/CD, and production). API Management handles real-time traffic; the Catalog gives you the visibility and ownership picture above it." <br/><b>Remember:</b> don't present the Catalog as "just another list" — it's visibility and ownership over a distributed API landscape.</div>
+</div>
+
+<div class="obj">
+<div class="q edit-unit" contenteditable="false">"Do you work with source code and repositories?"</div>
+<div class="a edit-unit" contenteditable="false">"Yes. There's a GitHub connection that links source code to APIs, and you can also turn existing code into Postman collections." <br/><b>Remember:</b> especially relevant for Git-based organizations.</div>
+</div>
+
+<div class="obj">
+<div class="q edit-unit" contenteditable="false">"We work a lot with AI and Agents — how does Postman fit in?"</div>
+<div class="a edit-unit" contenteditable="false">"Postman includes built-in AI capabilities (Postman AI and Agent Mode) that automate API development work — generating tests, docs, and workflows. Beyond that, as more AI/agent workflows consume APIs, the need grows for APIs that are discoverable, reliable, and well-documented, and for Governance once AI is part of the process." <br/><b>Remember:</b> first understand the customer's AI workflow, only then connect it to the relevant product.</div>
+</div>
+
+<div class="obj">
+<div class="q edit-unit" contenteditable="false">"Do you enforce standards like OpenAPI on development teams?"</div>
+<div class="a edit-unit" contenteditable="false">"Yes. Postman (API Governance) lets you define and enforce rules across teams — both built-in and custom rules — and plug Governance into CI/CD." <br/><b>Remember:</b> distinguish between "we follow OpenAPI" and "we actually enforce OpenAPI."</div>
+</div>
+
+<div class="obj">
+<div class="q edit-unit" contenteditable="false">"What does Postman add beyond the WAF, DDoS, and Authentication we already have?"</div>
+<div class="a edit-unit" contenteditable="false">"Postman doesn't compete with WAF/DDoS/authentication — it adds a security layer focused on the API lifecycle itself: Secret Scanner, which finds leaked secrets and keys in code and collections, security scorecards in the API Catalog, and a shift-left testing approach." <br/><b>Remember:</b> don't argue with the existing stack. Find out where the gaps actually are — lifecycle, Governance, secrets, and testing.</div>
+</div>
+
+<div class="obj">
+<div class="q edit-unit" contenteditable="false">"We work with MuleSoft — where does Postman fit in?"</div>
+<div class="a edit-unit" contenteditable="false">"Postman doesn't replace MuleSoft as an integration platform — MuleSoft/Anypoint is its own integration platform with its own Catalog. The relevant angle is self-service API publishing from Postman, with Governance and an approval flow, which fills the gap of long waits to create new APIs. A direct, specific technical integration with MuleSoft hasn't been fully confirmed yet." <br/><b>Remember:</b> never promise a capability that hasn't actually been demonstrated — set up a technical follow-up with an SE.</div>
+</div>
+
+<div class="obj">
+<div class="q edit-unit" contenteditable="false">"We already use Postman for testing — what else do we get?"</div>
+<div class="a edit-unit" contenteditable="false">"Enterprise expands a point-solution use of testing into the full API lifecycle: design, Governance, and organization-wide visibility into every API in the company — not just the ones already being tested." <br/><b>Remember:</b> start from what they're already doing with Postman, then identify what's missing around it.</div>
+</div>
+
+<div class="group-title edit-unit" contenteditable="false">10 Questions You Should Be Ready For in Every First Call</div>
+<ul class="panel-list">
+<li>I'm already on Free — why Enterprise?</li>
+<li>Do you replace the API Gateway?</li>
+<li>Do you connect to API Management / Cloud / GitHub?</li>
+<li>How do you discover APIs I don't even know exist?</li>
+<li>Do you sit in the middle of the traffic?</li>
+<li>What's the difference between API Catalog and API Management?</li>
+<li>How do you enforce OpenAPI / Governance?</li>
+<li>What do you add beyond WAF / DDoS / Security tools?</li>
+<li>How do you prove ROI?</li>
+<li>Can we start small / Trial / POC?</li>
+</ul>
+
   </div>
 </div>
 
@@ -1108,6 +1230,8 @@
 <button class="chat-quick-btn" data-prompt="The customer objects to the price, how do I respond?">The customer objects to the price, how do I respond?</button>
 <button class="chat-quick-btn" data-prompt="What is ASA and why is it an Add-on?">What is ASA and why is it an Add-on?</button>
 <button class="chat-quick-btn" data-prompt="The customer uses Kong, how do I respond?">The customer uses Kong, how do I respond?</button>
+<button class="chat-quick-btn" data-prompt="Do you replace the API Gateway?">Do you replace the API Gateway?</button>
+<button class="chat-quick-btn" data-prompt="What do you add beyond WAF / DDoS / Security tools?">What do you add beyond WAF / DDoS?</button>
 </div>
 <div id="saved-questions-wrap">
   <button id="saved-questions-btn">📌 Saved questions <span id="saved-questions-count"></span> <span class="sq-arrow">▾</span></button>
@@ -1936,6 +2060,82 @@
   });
 })();
 </script>
+<script>
+// --- drag-to-reorder for Core Products and Objections cards ---
+(function(){
+  const CARD_GROUPS = [
+    { containerSelector: '#sec-products', cardSelector: '.prod', storageKey: 'reorder:products' },
+    { containerSelector: '#panel-objections .panel-body', cardSelector: '.obj', storageKey: 'reorder:objections' }
+  ];
 
+  function getDragAfterElement(container, y, cardSelector){
+    const cards = [...container.querySelectorAll(cardSelector + ':not(.dragging)')];
+    return cards.reduce((closest, card)=>{
+      const box = card.getBoundingClientRect();
+      const offset = y - box.top - box.height / 2;
+      if(offset < 0 && offset > closest.offset){
+        return { offset, element: card };
+      } else {
+        return closest;
+      }
+    }, { offset: Number.NEGATIVE_INFINITY, element: null }).element;
+  }
+
+  CARD_GROUPS.forEach(({containerSelector, cardSelector, storageKey})=>{
+    const container = document.querySelector(containerSelector);
+    if(!container) return;
+    // Captured once, in original DOM order — this is the fixed reference
+    // both for restoring a saved order and for recording a new one, so
+    // "index" always means the same thing no matter how many times the
+    // cards get reordered afterward.
+    const originalCards = Array.from(container.querySelectorAll(cardSelector));
+    if(originalCards.length < 2) return;
+
+    try{
+      const saved = JSON.parse(localStorage.getItem(storageKey));
+      if(saved && saved.length === originalCards.length){
+        saved.forEach(origIdx => { if(originalCards[origIdx]) container.appendChild(originalCards[origIdx]); });
+      }
+    }catch(e){}
+
+    function saveOrder(){
+      const current = Array.from(container.querySelectorAll(cardSelector));
+      const order = current.map(card => originalCards.indexOf(card));
+      try{ localStorage.setItem(storageKey, JSON.stringify(order)); }catch(e){}
+    }
+
+    originalCards.forEach(card=>{
+      card.classList.add('reorderable-card');
+      const grip = document.createElement('div');
+      grip.className = 'drag-grip';
+      grip.title = 'Drag to reorder';
+      grip.textContent = '⠿';
+      card.style.position = card.style.position || 'relative';
+      card.appendChild(grip);
+      card.setAttribute('draggable', 'true');
+
+      card.addEventListener('dragstart', ()=>{
+        card.classList.add('dragging');
+      });
+      card.addEventListener('dragend', ()=>{
+        card.classList.remove('dragging');
+        saveOrder();
+      });
+    });
+
+    container.addEventListener('dragover', (e)=>{
+      e.preventDefault();
+      const dragging = container.querySelector(cardSelector + '.dragging');
+      if(!dragging) return;
+      const afterElement = getDragAfterElement(container, e.clientY, cardSelector);
+      if(afterElement == null){
+        container.appendChild(dragging);
+      } else {
+        container.insertBefore(dragging, afterElement);
+      }
+    });
+  });
+})();
+</script>
 </body>
 </html>
