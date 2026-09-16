@@ -1040,6 +1040,16 @@
     font-size:13px;font-weight:600;cursor:pointer;
   }
   .add-block-btn:hover{border-color:var(--orange);color:var(--orange);}
+
+  body:not(.block-tools-active) .block-drag-grip,
+  body:not(.block-tools-active) .block-delete-btn,
+  body:not(.block-tools-active) .add-block-btn,
+  body:not(.block-tools-active) .drag-grip,
+  body:not(.block-tools-active) .card-delete-btn,
+  body:not(.block-tools-active) .add-card-btn{
+    display:none !important;
+  }
+  #block-tools-toggle.active{background:var(--orange);}
   .prod .name{font-weight:700;font-size:15.5px;margin-bottom:8px;}
   .prod .pitch{font-size:14px;}
   .obj{border:1px solid var(--line);border-radius:8px;padding:14px 18px;margin-bottom:10px;background:var(--bg-card);box-shadow:0 1px 2px rgba(20,20,20,0.04);}
@@ -1605,6 +1615,7 @@
 &lt;button class=&quot;secondary&quot; id=&quot;download-btn&quot;&gt;⬇ Download updated file&lt;/button&gt;
 &lt;button class=&quot;secondary&quot; id=&quot;save-sync-btn&quot; onclick=&quot;saveAndSyncContent()&quot;&gt;💾 Save &amp; translate to Hebrew&lt;/button&gt;
 &lt;button class=&quot;secondary&quot; id=&quot;toggle-btn&quot;&gt;🔒 Lock editing&lt;/button&gt;
+&lt;button class=&quot;secondary&quot; id=&quot;block-tools-toggle&quot;&gt;🧱 Move/delete tools&lt;/button&gt;
 &lt;div class=&quot;fmt-group&quot;&gt;
 &lt;button id=&quot;bold-btn&quot; title=&quot;Bold (select text and click)&quot;&gt;B&lt;/button&gt;
 &lt;button id=&quot;italic-btn&quot; title=&quot;Italic (select text and click)&quot;&gt;I&lt;/button&gt;
@@ -2323,6 +2334,12 @@ A few additional capabilities that can be relevant, depending on the customer&#x
     editingLocked = !editingLocked;
     units.forEach(el =&gt; el.setAttribute(&#x27;contenteditable&#x27;, editingLocked ? &#x27;false&#x27; : &#x27;true&#x27;));
     toggleBtn.textContent = editingLocked ? &#x27;✏️ Editing active&#x27; : &#x27;🔒 Lock editing&#x27;;
+  });
+
+  const blockToolsToggle = document.getElementById(&#x27;block-tools-toggle&#x27;);
+  blockToolsToggle.addEventListener(&#x27;click&#x27;, ()=&gt;{
+    const active = document.body.classList.toggle(&#x27;block-tools-active&#x27;);
+    blockToolsToggle.classList.toggle(&#x27;active&#x27;, active);
   });
 
   downloadBtn.addEventListener(&#x27;click&#x27;, ()=&gt;{
@@ -3256,7 +3273,13 @@ A few additional capabilities that can be relevant, depending on the customer&#x
   if(!root) return;
 
   function isInCardGroup(el){
-    return !!(el.closest(&#x27;.prod&#x27;) || el.closest(&#x27;.obj&#x27;));
+    return !!(
+      el.closest(&#x27;.prod&#x27;) || el.closest(&#x27;.obj&#x27;) ||
+      el.closest(&#x27;#sec-opening&#x27;) || el.closest(&#x27;#sec-process&#x27;) ||
+      el.closest(&#x27;#sec-ai&#x27;) || el.closest(&#x27;#sec-stages&#x27;) ||
+      el.closest(&#x27;#panel-fabric .panel-body&#x27;) || el.closest(&#x27;#panel-passport .panel-body&#x27;) ||
+      el.closest(&#x27;#panel-asa .panel-body&#x27;) || el.closest(&#x27;#panel-database .panel-body&#x27;)
+    );
   }
 
   let counter = 0;
@@ -3465,6 +3488,16 @@ A few additional capabilities that can be relevant, depending on the customer&#x
     font-size:13px;font-weight:600;cursor:pointer;
   }
   .add-block-btn:hover{border-color:var(--orange);color:var(--orange);}
+
+  body:not(.block-tools-active) .block-drag-grip,
+  body:not(.block-tools-active) .block-delete-btn,
+  body:not(.block-tools-active) .add-block-btn,
+  body:not(.block-tools-active) .drag-grip,
+  body:not(.block-tools-active) .card-delete-btn,
+  body:not(.block-tools-active) .add-card-btn{
+    display:none !important;
+  }
+  #block-tools-toggle.active{background:var(--orange);}
   .prod .name{font-weight:700;font-size:15.5px;margin-bottom:8px;}
   .prod .pitch{font-size:14px;}
   .obj{border:1px solid var(--line);border-radius:8px;padding:14px 18px;margin-bottom:10px;background:var(--bg-card);box-shadow:0 1px 2px rgba(20,20,20,0.04);}
@@ -4031,6 +4064,7 @@ A few additional capabilities that can be relevant, depending on the customer&#x
 &lt;button class=&quot;secondary&quot; id=&quot;download-btn&quot;&gt;⬇ הורד קובץ מעודכן&lt;/button&gt;
 &lt;button class=&quot;secondary&quot; id=&quot;save-sync-btn&quot; onclick=&quot;saveAndSyncContent()&quot;&gt;💾 שמור ותרגם לאנגלית&lt;/button&gt;
 &lt;button class=&quot;secondary&quot; id=&quot;toggle-btn&quot;&gt;🔒 נעילת עריכה&lt;/button&gt;
+&lt;button class=&quot;secondary&quot; id=&quot;block-tools-toggle&quot;&gt;🧱 כלי הזזה/מחיקה&lt;/button&gt;
 &lt;div class=&quot;fmt-group&quot;&gt;
 &lt;button id=&quot;bold-btn&quot; title=&quot;הדגשה (סמן טקסט ולחץ)&quot;&gt;B&lt;/button&gt;
 &lt;button id=&quot;italic-btn&quot; title=&quot;נטוי (סמן טקסט ולחץ)&quot;&gt;I&lt;/button&gt;
@@ -4748,6 +4782,12 @@ A few additional capabilities that can be relevant, depending on the customer&#x
     editingLocked = !editingLocked;
     units.forEach(el =&gt; el.setAttribute(&#x27;contenteditable&#x27;, editingLocked ? &#x27;false&#x27; : &#x27;true&#x27;));
     toggleBtn.textContent = editingLocked ? &#x27;✏️ עריכה פעילה&#x27; : &#x27;🔒 נעילת עריכה&#x27;;
+  });
+
+  const blockToolsToggle = document.getElementById(&#x27;block-tools-toggle&#x27;);
+  blockToolsToggle.addEventListener(&#x27;click&#x27;, ()=&gt;{
+    const active = document.body.classList.toggle(&#x27;block-tools-active&#x27;);
+    blockToolsToggle.classList.toggle(&#x27;active&#x27;, active);
   });
 
   downloadBtn.addEventListener(&#x27;click&#x27;, ()=&gt;{
@@ -5692,7 +5732,13 @@ A few additional capabilities that can be relevant, depending on the customer&#x
   if(!root) return;
 
   function isInCardGroup(el){
-    return !!(el.closest(&#x27;.prod&#x27;) || el.closest(&#x27;.obj&#x27;));
+    return !!(
+      el.closest(&#x27;.prod&#x27;) || el.closest(&#x27;.obj&#x27;) ||
+      el.closest(&#x27;#sec-opening&#x27;) || el.closest(&#x27;#sec-process&#x27;) ||
+      el.closest(&#x27;#sec-ai&#x27;) || el.closest(&#x27;#sec-stages&#x27;) ||
+      el.closest(&#x27;#panel-fabric .panel-body&#x27;) || el.closest(&#x27;#panel-passport .panel-body&#x27;) ||
+      el.closest(&#x27;#panel-asa .panel-body&#x27;) || el.closest(&#x27;#panel-database .panel-body&#x27;)
+    );
   }
 
   // Stable ids, assigned once in document order — skips anything inside a
