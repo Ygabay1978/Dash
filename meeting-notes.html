@@ -4,161 +4,189 @@
 <meta charset="UTF-8">
 <title>יומן פגישות לקוח — Postman</title>
 <style>
-  :root{
-    --orange:#FF6C37;
-    --ink:#1C1C1E;
-    --grey:#5B5F66;
-    --line:#E6E4E0;
-    --bg-card:#FBFAF8;
-  }
-  *{box-sizing:border-box;}
-  body{
-    margin:0;
-    background:#E3E6EA;
-    color:var(--ink);
-    font-family:"Segoe UI","Arial Hebrew",Arial,sans-serif;
-    height:100vh;
-    overflow:hidden;
-    display:flex;
-    flex-direction:column;
-  }
-  header{
-    background:var(--ink);
-    color:#fff;
-    padding:12px 24px;
-    display:flex;
-    align-items:center;
-    gap:16px;
-    flex-shrink:0;
-  }
-  header h1{font-size:16px;margin:0;font-weight:700;}
-  header .sub{font-size:12px;color:#B9B9BC;margin-right:auto;}
+:root{
+  --orange:#FF6C37;
+  --ink:#1C1C1E;
+  --grey:#5B5F66;
+  --line:#E6E4E0;
+  --bg-card:#FBFAF8;
+  --blue:#2F5FA8;
+}
+*{box-sizing:border-box;}
+body{
+  margin:0;
+  background:#E3E6EA;
+  color:var(--ink);
+  font-family:"Segoe UI","Arial Hebrew",Arial,sans-serif;
+  height:100vh;
+  overflow:hidden;
+  display:flex;
+  flex-direction:column;
+}
+header{
+  background:var(--ink);
+  color:#fff;
+  padding:12px 24px;
+  display:flex;
+  align-items:center;
+  gap:16px;
+  flex-shrink:0;
+}
+header h1{font-size:16px;margin:0;font-weight:700;}
+header .sub{font-size:12px;color:#B9B9BC;margin-right:auto;}
+#tab-bar{
+  background:#fff;
+  border-bottom:1px solid var(--line);
+  display:flex;
+  align-items:center;
+  gap:4px;
+  padding:8px 16px;
+  overflow-x:auto;
+  flex-shrink:0;
+}
+.company-tab{
+  display:flex;
+  align-items:center;
+  gap:8px;
+  background:var(--bg-card);
+  border:1px solid var(--line);
+  border-radius:8px;
+  padding:8px 12px;
+  font-size:13px;
+  font-weight:600;
+  cursor:pointer;
+  white-space:nowrap;
+  flex-shrink:0;
+}
+.company-tab:hover{border-color:var(--orange);}
+.company-tab.active{background:#FFF6F1;border-color:var(--orange);color:var(--orange);}
+.company-tab .tab-close{
+  background:none;border:none;color:var(--grey);
+  font-size:13px;cursor:pointer;line-height:1;padding:0;
+}
+.company-tab .tab-close:hover{color:#D64545;}
+#add-tab-btn{
+  background:var(--orange);color:#fff;border:none;border-radius:8px;
+  padding:8px 14px;font-size:13px;font-weight:700;cursor:pointer;flex-shrink:0;
+}
+#add-tab-btn:hover{background:#e85a28;}
+#content-area{
+  flex:1;
+  overflow-y:auto;
+  padding:24px 32px 60px;
+}
+.wrap{max-width:900px;margin:0 auto;}
+.empty-state{
+  text-align:center;
+  color:var(--grey);
+  padding:80px 20px;
+  font-size:14px;
+}
+.company-header{margin-bottom:20px;}
+.company-header h2{font-size:24px;margin:0 0 4px;}
+.company-header .meta{font-size:13px;color:var(--grey);}
+.snap-card{
+  background:#fff;
+  border:1px solid var(--line);
+  border-radius:10px;
+  padding:18px 20px;
+  margin-bottom:20px;
+  box-shadow:0 1px 3px rgba(20,20,20,0.06);
+}
+.snap-hint{color:var(--grey);font-size:12.5px;margin-bottom:12px;font-style:italic;}
 
-  #tab-bar{
-    background:#fff;
-    border-bottom:1px solid var(--line);
-    display:flex;
-    align-items:center;
-    gap:4px;
-    padding:8px 16px;
-    overflow-x:auto;
-    flex-shrink:0;
-  }
-  .company-tab{
-    display:flex;
-    align-items:center;
-    gap:8px;
-    background:var(--bg-card);
-    border:1px solid var(--line);
-    border-radius:8px;
-    padding:8px 12px;
-    font-size:13px;
-    font-weight:600;
-    cursor:pointer;
-    white-space:nowrap;
-    flex-shrink:0;
-  }
-  .company-tab:hover{border-color:var(--orange);}
-  .company-tab.active{background:#FFF6F1;border-color:var(--orange);color:var(--orange);}
-  .company-tab .tab-close{
-    background:none;border:none;color:var(--grey);
-    font-size:13px;cursor:pointer;line-height:1;padding:0;
-  }
-  .company-tab .tab-close:hover{color:#D64545;}
-  #add-tab-btn{
-    background:var(--orange);color:#fff;border:none;border-radius:8px;
-    padding:8px 14px;font-size:13px;font-weight:700;cursor:pointer;flex-shrink:0;
-  }
-  #add-tab-btn:hover{background:#e85a28;}
+/* ---- editable stat boxes (Check Point style) ---- */
+.stat-grid{display:flex;flex-wrap:wrap;gap:12px;margin-top:4px;}
+.stat-box{
+  background:#fff;
+  border:1px solid var(--line);
+  border-radius:10px;
+  padding:12px 16px;
+  flex:1 1 130px;
+  min-width:120px;
+}
+.stat-box .label{font-size:10.5px;color:var(--grey);text-transform:uppercase;letter-spacing:.03em;margin-bottom:6px;}
+.stat-box .value{font-size:19px;font-weight:800;color:var(--orange);outline:none;border-radius:4px;padding:1px 3px;margin:-1px -3px;}
+.stat-box .value:focus{background:#FFF6F1;}
+.stat-box .value:empty:before{content:'—';color:var(--grey);font-weight:400;}
+.stat-hint{font-size:10.5px;color:var(--grey);margin-top:10px;}
 
-  #content-area{
-    flex:1;
-    overflow-y:auto;
-    padding:24px 32px 60px;
-  }
-  .wrap{max-width:900px;margin:0 auto;}
+.snap-note{
+  margin-top:14px;
+  padding-top:14px;
+  border-top:1px solid var(--line);
+  font-size:13px;
+  white-space:pre-wrap;
+  color:var(--ink);
+  outline:none;
+  min-height:18px;
+}
+.snap-note:focus{background:#FFFBF8;}
+.snap-note:empty:before{content:'הוסף הערה כללית על הלקוח...';color:var(--grey);}
 
-  .empty-state{
-    text-align:center;
-    color:var(--grey);
-    padding:80px 20px;
-    font-size:14px;
-  }
+/* ---- contacts list (Monday.com-style) ---- */
+.snap-contacts{margin-top:14px;padding-top:14px;border-top:1px solid var(--line);}
+.contacts-list .contact-line{text-align:right;font-size:14px;margin-bottom:10px;line-height:1.5;}
+.contacts-list .contact-line:last-child{margin-bottom:0;}
+.contacts-list .contact-line b{font-weight:700;}
+.contacts-list .contact-line .role{color:var(--grey);}
+.contacts-list .contact-line .email-link{color:var(--blue);text-decoration:none;}
+.contacts-list .contact-line .email-link:hover{text-decoration:underline;}
 
-  .company-header{margin-bottom:20px;}
-  .company-header h2{font-size:24px;margin:0 0 4px;}
-  .company-header .meta{font-size:13px;color:var(--grey);}
+/* ---- teams table (Monday.com-style) ---- */
+.teams-table{width:100%;border-collapse:collapse;font-size:13px;margin-top:14px;}
+.teams-table th{
+  font-size:11px;text-transform:uppercase;color:var(--grey);font-weight:700;
+  text-align:right;padding:8px 10px;border-bottom:2px solid var(--line);
+}
+.teams-table td{padding:9px 10px;text-align:right;border-bottom:1px solid var(--line);}
+.teams-table .cell-arr{font-weight:700;color:var(--ink);}
+.teams-table .cell-num{color:var(--blue);}
+.teams-table .cell-team{color:var(--blue);font-weight:600;}
 
-  .snap-card{
-    background:#fff;
-    border:1px solid var(--line);
-    border-radius:10px;
-    padding:18px 20px;
-    margin-bottom:20px;
-    box-shadow:0 1px 3px rgba(20,20,20,0.06);
-  }
-  .snap-card.not-found{color:var(--grey);font-size:13px;}
-  .snap-stats{
-    display:grid;
-    grid-template-columns:repeat(auto-fit, minmax(120px, 1fr));
-    gap:14px;
-    margin-top:10px;
-  }
-  .snap-stat .label{font-size:11px;color:var(--grey);text-transform:uppercase;letter-spacing:.02em;}
-  .snap-stat .value{font-size:17px;font-weight:700;margin-top:2px;}
-  .snap-note{
-    margin-top:14px;
-    padding-top:14px;
-    border-top:1px solid var(--line);
-    font-size:13px;
-    white-space:pre-wrap;
-    color:var(--ink);
-  }
-  .snap-contacts{margin-top:14px;padding-top:14px;border-top:1px solid var(--line);}
-  .snap-contacts .contact-row{font-size:13px;margin-bottom:6px;}
-  .snap-contacts .contact-row b{margin-left:4px;}
-  .snap-contacts .contact-row .title{color:var(--grey);}
-  .snap-teams-table{width:100%;border-collapse:collapse;font-size:12.5px;margin-top:14px;}
-  .snap-teams-table th, .snap-teams-table td{border:1px solid var(--line);padding:6px 8px;text-align:right;}
-  .snap-teams-table th{background:var(--bg-card);font-weight:700;}
-
-  .notes-section h3{font-size:15px;margin:0 0 12px;}
-  #add-note-btn{
-    background:var(--orange);color:#fff;border:none;border-radius:6px;
-    padding:8px 14px;font-size:13px;font-weight:700;cursor:pointer;margin-bottom:16px;
-  }
-  #add-note-btn:hover{background:#e85a28;}
-  .note-entry{
-    background:#fff;
-    border:1px solid var(--line);
-    border-radius:8px;
-    padding:14px 16px;
-    margin-bottom:12px;
-    box-shadow:0 1px 2px rgba(20,20,20,0.04);
-  }
-  .note-entry .note-header{
-    display:flex;
-    justify-content:space-between;
-    align-items:center;
-    margin-bottom:8px;
-  }
-  .note-entry .note-date{
-    font-size:12px;font-weight:700;color:var(--orange);
-    border:none;background:none;font-family:inherit;
-  }
-  .note-entry .note-delete{
-    background:none;border:none;color:var(--grey);font-size:13px;cursor:pointer;
-  }
-  .note-entry .note-delete:hover{color:#D64545;}
-  .note-entry .note-text{
-    font-size:14px;line-height:1.6;min-height:40px;outline:none;white-space:pre-wrap;
-  }
-  .note-entry .note-text:focus{background:#FFFBF8;}
-  .notes-empty{color:var(--grey);font-size:13px;padding:10px 0;}
+.notes-section h3{font-size:15px;margin:0 0 12px;}
+#add-note-btn{
+  background:var(--orange);color:#fff;border:none;border-radius:6px;
+  padding:8px 14px;font-size:13px;font-weight:700;cursor:pointer;margin-bottom:16px;
+}
+#add-note-btn:hover{background:#e85a28;}
+.note-entry{
+  background:#fff;
+  border:1px solid var(--line);
+  border-radius:8px;
+  padding:14px 16px;
+  margin-bottom:12px;
+  box-shadow:0 1px 2px rgba(20,20,20,0.04);
+}
+.note-entry .note-header{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  margin-bottom:8px;
+  gap:10px;
+}
+.note-entry .note-date{
+  font-size:12px;font-weight:700;color:var(--orange);
+  border:none;background:none;font-family:inherit;flex-shrink:0;
+}
+.note-controls{display:flex;align-items:center;gap:2px;}
+.note-controls button{
+  background:none;border:none;color:var(--grey);font-size:13px;cursor:pointer;
+  padding:3px 6px;border-radius:4px;line-height:1;
+}
+.note-controls button:hover{color:var(--orange);background:var(--bg-card);}
+.note-controls button:disabled{opacity:.3;cursor:default;}
+.note-controls button:disabled:hover{color:var(--grey);background:none;}
+.note-controls .note-delete:hover{color:#D64545;background:var(--bg-card);}
+.note-entry .note-text{
+  font-size:14px;line-height:1.6;min-height:40px;outline:none;white-space:pre-wrap;
+}
+.note-entry .note-text:focus{background:#FFFBF8;}
+.note-entry.collapsed .note-text{display:none;}
+.notes-empty{color:var(--grey);font-size:13px;padding:10px 0;}
 </style>
 </head>
 <body>
-
 <header>
   <h1>📓 יומן פגישות לקוח</h1>
   <span class="sub">Snapshot חי + הערות שנשארות בין פגישות, לפי חברה</span>
@@ -179,6 +207,7 @@
   const TABS_KEY = 'meeting-notes-tabs';
   const ACTIVE_KEY = 'meeting-notes-active-tab';
   function entriesKey(name){ return 'meeting-notes-entries:' + name.trim().toLowerCase(); }
+  function overridesKey(name){ return 'meeting-notes-overrides:' + name.trim().toLowerCase(); }
 
   let DATA = null;
   let tabs = [];
@@ -196,7 +225,12 @@
   function saveEntries(name, entries){
     try{ localStorage.setItem(entriesKey(name), JSON.stringify(entries)); }catch(e){}
   }
-
+  function loadOverrides(name){
+    try{ return JSON.parse(localStorage.getItem(overridesKey(name))) || {}; }catch(e){ return {}; }
+  }
+  function saveOverrides(name, overrides){
+    try{ localStorage.setItem(overridesKey(name), JSON.stringify(overrides)); }catch(e){}
+  }
   function todayStr(){
     const d = new Date();
     return d.toLocaleDateString('he-IL', { year: 'numeric', month: '2-digit', day: '2-digit' });
@@ -255,7 +289,7 @@
     if(name && name.trim()) addTab(name);
   });
 
-  // ---- snapshot lookup (lean version — key facts, not the full editable/chart snapshot) ----
+  // ---- snapshot lookup ----
   function findAccount(name){
     const norm = name.trim().toLowerCase();
     return (DATA.accounts || []).find(a => (a.name || '').trim().toLowerCase() === norm) || null;
@@ -272,58 +306,101 @@
   function findContacts(name){
     return (DATA.contacts_by_account && DATA.contacts_by_account[name]) || [];
   }
-  function fmtMoney(n){ return (n === null || n === undefined) ? '—' : '$' + Number(n).toLocaleString(); }
+  function fmtMoney(n){ return (n === null || n === undefined || n === '') ? '—' : '$' + Number(n).toLocaleString(); }
   function fmtNum(n){ return (n === null || n === undefined || n === '') ? '—' : Number(n).toLocaleString(); }
+
+  // fields shown as editable stat boxes, in display order
+  const STAT_FIELDS = [
+    { key:'country',  label:'מדינה' },
+    { key:'sector',   label:'סקטור' },
+    { key:'status',   label:'סטטוס' },
+    { key:'priority', label:'Priority' },
+    { key:'arr',      label:'ARR' },
+    { key:'dau',      label:'DAU (90 יום)' },
+    { key:'paid',     label:'רישיונות בתשלום' },
+    { key:'teams',    label:'Postman Teams' }
+  ];
+
+  function defaultStatValues(account, usage){
+    const arr = (account && (account.arr_live ?? account.arr)) ?? (usage && usage.combined_arr);
+    return {
+      country:  account ? (account.country || '') : '',
+      sector:   account ? (account.sector || '') : '',
+      status:   account ? (account.status || '') : '',
+      priority: account ? (account.priority || '') : '',
+      arr:      fmtMoney(arr),
+      dau:      usage ? fmtNum(usage.dau_90) : '—',
+      paid:     usage ? fmtNum(usage.paid_licenses) : '—',
+      teams:    usage ? fmtNum(usage.postman_teams) : '—'
+    };
+  }
 
   function renderSnapshotCard(name){
     const account = findAccount(name);
     const usage = findUsage(name);
     const teams = findTeams(name);
     const contacts = findContacts(name);
-
-    if(!account && !usage){
-      return '<div class="snap-card not-found">אין נתונים קיימים על "' + name + '" במאגר — זה כנראה לקוח/פרוספקט חדש שלא נמצא ב-Territory Command Center. אפשר עדיין לתעד פה הערות מהפגישה.</div>';
-    }
+    const overrides = loadOverrides(name);
+    const defaults = defaultStatValues(account, usage);
 
     let html = '<div class="snap-card">';
-    html += '<div class="snap-stats">';
-    if(account){
-      html += '<div class="snap-stat"><div class="label">מדינה</div><div class="value" style="font-size:14px;">' + (account.country || '—') + '</div></div>';
-      html += '<div class="snap-stat"><div class="label">סקטור</div><div class="value" style="font-size:14px;">' + (account.sector || '—') + '</div></div>';
-      html += '<div class="snap-stat"><div class="label">סטטוס</div><div class="value" style="font-size:14px;">' + (account.status || '—') + '</div></div>';
-      html += '<div class="snap-stat"><div class="label">Priority</div><div class="value" style="font-size:14px;">' + (account.priority || '—') + '</div></div>';
-    }
-    const arr = (account && (account.arr_live ?? account.arr)) ?? (usage && usage.combined_arr);
-    html += '<div class="snap-stat"><div class="label">ARR</div><div class="value">' + fmtMoney(arr) + '</div></div>';
-    if(usage){
-      html += '<div class="snap-stat"><div class="label">DAU (90 יום)</div><div class="value">' + fmtNum(usage.dau_90) + '</div></div>';
-      html += '<div class="snap-stat"><div class="label">רישיונות בתשלום</div><div class="value">' + fmtNum(usage.paid_licenses) + '</div></div>';
-      html += '<div class="snap-stat"><div class="label">Postman Teams</div><div class="value">' + fmtNum(usage.postman_teams) + '</div></div>';
-    }
-    html += '</div>';
 
-    if(account && account.notes){
-      html += '<div class="snap-note">' + account.notes.replace(/\n/g, '<br>') + '</div>';
+    if(!account && !usage){
+      html += '<div class="snap-hint">אין נתונים קיימים על "' + name + '" ב-Territory Command Center — כנראה לקוח/פרוספקט חדש. אפשר למלא את הפרטים כאן ידנית (הם יישמרו בדפדפן הזה).</div>';
     }
+
+    html += '<div class="stat-grid">';
+    STAT_FIELDS.forEach(f=>{
+      const val = (overrides[f.key] !== undefined) ? overrides[f.key] : defaults[f.key];
+      html += '<div class="stat-box"><div class="label">' + f.label + '</div>' +
+              '<div class="value" contenteditable="true" data-field="' + f.key + '">' + (val || '') + '</div></div>';
+    });
+    html += '</div>';
+    html += '<div class="stat-hint">שדות אלה ניתנים לעריכה — השינויים נשמרים בדפדפן הזה ולא משפיעים על ה-Territory Command Center.</div>';
+
+    const accountNotesDefault = (account && account.notes) ? account.notes.replace(/\n/g, '<br>') : '';
+    const accountNotesValue = (overrides.accountNotes !== undefined) ? overrides.accountNotes : accountNotesDefault;
+    html += '<div class="snap-note" contenteditable="true" data-field="accountNotes">' + accountNotesValue + '</div>';
 
     if(contacts.length){
-      html += '<div class="snap-contacts">';
-      contacts.slice(0, 6).forEach(c=>{
-        html += '<div class="contact-row"><b>' + (c.name || '') + '</b><span class="title"> — ' + (c.title || '') + '</span>' + (c.email ? ' · ' + c.email : '') + '</div>';
+      html += '<div class="snap-contacts"><div class="contacts-list">';
+      contacts.slice(0, 8).forEach(c=>{
+        html += '<div class="contact-line"><b>' + (c.name || '') + '</b>' +
+                (c.title ? ' — <span class="role">' + c.title + '</span>' : '') +
+                (c.email ? ' · <a class="email-link" href="mailto:' + c.email + '">' + c.email + '</a>' : '') +
+                '</div>';
       });
-      html += '</div>';
+      html += '</div></div>';
     }
 
     if(teams.length){
-      html += '<table class="snap-teams-table"><tr><th>Team</th><th>Plan</th><th>Used</th><th>Purchased</th><th>ARR</th></tr>';
-      teams.slice(0, 8).forEach(t=>{
-        html += '<tr><td>' + (t.team_name || '') + '</td><td>' + (t.active_plan || '') + '</td><td>' + fmtNum(t.used_licenses) + '</td><td>' + fmtNum(t.purchased_licenses) + '</td><td>' + fmtMoney(t.arr) + '</td></tr>';
+      html += '<table class="teams-table"><thead><tr><th>ARR</th><th>Purchased</th><th>Used</th><th>Plan</th><th>Team</th></tr></thead><tbody>';
+      teams.slice(0, 10).forEach(t=>{
+        html += '<tr>' +
+                '<td class="cell-arr">' + fmtMoney(t.arr) + '</td>' +
+                '<td class="cell-num">' + fmtNum(t.purchased_licenses) + '</td>' +
+                '<td class="cell-num">' + fmtNum(t.used_licenses) + '</td>' +
+                '<td>' + (t.active_plan || '—') + '</td>' +
+                '<td class="cell-team">' + (t.team_name || '—') + '</td>' +
+                '</tr>';
       });
-      html += '</table>';
+      html += '</tbody></table>';
     }
 
     html += '</div>';
     return html;
+  }
+
+  function wireSnapshotCard(name){
+    const card = document.querySelector('.snap-card');
+    if(!card) return;
+    card.querySelectorAll('[contenteditable][data-field]').forEach(el=>{
+      el.addEventListener('blur', ()=>{
+        const overrides = loadOverrides(name);
+        overrides[el.dataset.field] = el.innerHTML;
+        saveOverrides(name, overrides);
+      });
+    });
   }
 
   // ---- meeting notes ----
@@ -336,10 +413,19 @@
       html += '<div class="notes-empty">אין עדיין הערות לחברה הזו. לחץ על הכפתור למעלה כדי להתחיל.</div>';
     } else {
       entries.forEach((entry, i)=>{
-        html += '<div class="note-entry" data-idx="' + i + '">' +
-          '<div class="note-header"><input class="note-date" value="' + (entry.date || '') + '"><button class="note-delete" title="מחק הערה זו">✕</button></div>' +
-          '<div class="note-text" contenteditable="true">' + (entry.text || '') + '</div>' +
-        '</div>';
+        const collapsed = !!entry.collapsed;
+        html += '<div class="note-entry' + (collapsed ? ' collapsed' : '') + '" data-idx="' + i + '">' +
+                '<div class="note-header">' +
+                  '<input class="note-date" value="' + (entry.date || '') + '">' +
+                  '<div class="note-controls">' +
+                    '<button class="note-toggle" title="מזער/הרחב">' + (collapsed ? '▸' : '▾') + '</button>' +
+                    '<button class="note-up" title="הזז מעלה"' + (i === 0 ? ' disabled' : '') + '>▲</button>' +
+                    '<button class="note-down" title="הזז מטה"' + (i === entries.length - 1 ? ' disabled' : '') + '>▼</button>' +
+                    '<button class="note-delete" title="מחק הערה זו">✕</button>' +
+                  '</div>' +
+                '</div>' +
+                '<div class="note-text" contenteditable="true">' + (entry.text || '') + '</div>' +
+                '</div>';
       });
     }
     html += '</div></div>';
@@ -349,17 +435,22 @@
   function wireNotesSection(name){
     document.getElementById('add-note-btn').addEventListener('click', ()=>{
       const entries = loadEntries(name);
-      entries.unshift({ date: todayStr(), text: '' });
+      entries.unshift({ date: todayStr(), text: '', collapsed: false });
       saveEntries(name, entries);
       renderContent();
       const firstText = document.querySelector('.note-entry .note-text');
       if(firstText) firstText.focus();
     });
+
     document.querySelectorAll('.note-entry').forEach(el=>{
       const idx = parseInt(el.dataset.idx, 10);
       const dateInput = el.querySelector('.note-date');
       const textDiv = el.querySelector('.note-text');
       const delBtn = el.querySelector('.note-delete');
+      const toggleBtn = el.querySelector('.note-toggle');
+      const upBtn = el.querySelector('.note-up');
+      const downBtn = el.querySelector('.note-down');
+
       function persist(){
         const entries = loadEntries(name);
         if(!entries[idx]) return;
@@ -369,10 +460,39 @@
       }
       dateInput.addEventListener('input', persist);
       textDiv.addEventListener('input', persist);
+
       delBtn.addEventListener('click', ()=>{
         if(!window.confirm('למחוק את ההערה הזו?')) return;
         const entries = loadEntries(name);
         entries.splice(idx, 1);
+        saveEntries(name, entries);
+        renderContent();
+      });
+
+      toggleBtn.addEventListener('click', ()=>{
+        const entries = loadEntries(name);
+        if(!entries[idx]) return;
+        entries[idx].collapsed = !entries[idx].collapsed;
+        saveEntries(name, entries);
+        renderContent();
+      });
+
+      upBtn.addEventListener('click', ()=>{
+        if(idx === 0) return;
+        const entries = loadEntries(name);
+        const tmp = entries[idx - 1];
+        entries[idx - 1] = entries[idx];
+        entries[idx] = tmp;
+        saveEntries(name, entries);
+        renderContent();
+      });
+
+      downBtn.addEventListener('click', ()=>{
+        const entries = loadEntries(name);
+        if(idx === entries.length - 1) return;
+        const tmp = entries[idx + 1];
+        entries[idx + 1] = entries[idx];
+        entries[idx] = tmp;
         saveEntries(name, entries);
         renderContent();
       });
@@ -389,6 +509,7 @@
     html += renderSnapshotCard(activeTab);
     html += renderNotesSection(activeTab);
     wrap.innerHTML = html;
+    wireSnapshotCard(activeTab);
     wireNotesSection(activeTab);
   }
 
@@ -407,12 +528,10 @@
     renderTabBar();
     renderContent();
   }
+
   init();
 })();
 </script>
-
-
-
 
 <!-- ===== Dashboard switcher (present on every page) ===== -->
 <div id="dash-switcher">
@@ -429,38 +548,34 @@
   </div>
 </div>
 <style>
-  #dash-switcher{position:fixed;bottom:20px;left:20px;z-index:2147483000;font-family:"Segoe UI","Arial Hebrew",Arial,sans-serif;direction:rtl;}
-  #dash-switcher-btn{
-    width:48px;height:48px;border-radius:50%;
-    background:#1C1C1E;color:#fff;border:none;
-    font-size:20px;cursor:pointer;
-    box-shadow:0 4px 12px rgba(0,0,0,.35);
-  }
-  #dash-switcher-btn:hover{background:#FF6C37;}
-  #dash-switcher-menu{
-    display:none;position:absolute;bottom:58px;left:0;
-    background:#fff;border:1px solid #E6E4E0;border-radius:10px;
-    box-shadow:0 10px 30px rgba(0,0,0,.25);
-    padding:8px;min-width:230px;
-  }
-  #dash-switcher-menu.open{display:block;}
-  #dash-switcher-menu .dash-switcher-title{
-    font-size:11px;font-weight:700;color:#5B5F66;
-    padding:4px 10px 8px;text-transform:uppercase;letter-spacing:.02em;
-  }
-  #dash-switcher-menu a{
-    display:block;padding:8px 10px;border-radius:6px;
-    color:#1C1C1E;text-decoration:none;font-size:13px;white-space:nowrap;
-  }
-  #dash-switcher-menu a:hover{background:#FFF6F1;color:#FF6C37;}
-  #dash-switcher-menu a.current{font-weight:700;color:#FF6C37;background:#FFF6F1;}
+#dash-switcher{position:fixed;bottom:20px;left:20px;z-index:2147483000;font-family:"Segoe UI","Arial Hebrew",Arial,sans-serif;direction:rtl;}
+#dash-switcher-btn{
+  width:48px;height:48px;border-radius:50%;
+  background:#1C1C1E;color:#fff;border:none;
+  font-size:20px;cursor:pointer;
+  box-shadow:0 4px 12px rgba(0,0,0,.35);
+}
+#dash-switcher-btn:hover{background:#FF6C37;}
+#dash-switcher-menu{
+  display:none;position:absolute;bottom:58px;left:0;
+  background:#fff;border:1px solid #E6E4E0;border-radius:10px;
+  box-shadow:0 10px 30px rgba(0,0,0,.25);
+  padding:8px;min-width:230px;
+}
+#dash-switcher-menu.open{display:block;}
+#dash-switcher-menu .dash-switcher-title{
+  font-size:11px;font-weight:700;color:#5B5F66;
+  padding:4px 10px 8px;text-transform:uppercase;letter-spacing:.02em;
+}
+#dash-switcher-menu a{
+  display:block;padding:8px 10px;border-radius:6px;
+  color:#1C1C1E;text-decoration:none;font-size:13px;white-space:nowrap;
+}
+#dash-switcher-menu a:hover{background:#FFF6F1;color:#FF6C37;}
+#dash-switcher-menu a.current{font-weight:700;color:#FF6C37;background:#FFF6F1;}
 </style>
 <script>
 (function(){
-  // Don't show this when the page is embedded inside another page's iframe
-  // (e.g. Territory Command Center embedded on the homepage) — the OUTER
-  // page already has its own switcher; a second one inside would just be
-  // a confusing duplicate floating on top of it.
   if(window.self !== window.top){
     document.getElementById('dash-switcher').style.display = 'none';
     return;
@@ -479,9 +594,6 @@
   menu.querySelectorAll('a').forEach(function(a){
     if(a.getAttribute('href') === current) a.classList.add('current');
   });
-
-  // Keep this menu's labels and order in sync with whatever you've
-  // renamed/reordered on the home page's own card editor.
   try{
     const saved = JSON.parse(localStorage.getItem('home-cards-order-and-text'));
     if(saved && saved.length){
@@ -501,6 +613,5 @@
   }catch(e){}
 })();
 </script>
-
 </body>
 </html>
