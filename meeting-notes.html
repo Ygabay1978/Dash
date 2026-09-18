@@ -361,7 +361,17 @@ header .sub{font-size:12px;color:#B9B9BC;margin-right:auto;}
   }
 
   // ---- fuzzy name matching ----
+  // Explicit aliases for cases the general fuzzy match can't resolve safely
+  // (e.g. "Harel Insurance" vs "Harel Group" share only a first word — matching
+  // on that generally would risk false positives like "Bank X" vs "Bank Y").
+  const NAME_ALIASES = {
+    'cellcom': 'Cellcom Israel',
+    'harelinsurance': 'Harel Group'
+  };
   function normKey(s){ return (s || '').toLowerCase().replace(/[\s\-_.]+/g, ''); }
+  function resolveAlias(name){
+    return NAME_ALIASES[normKey(name)] || name;
+  }
   function fuzzyEqual(a, b){
     const na = normKey(a), nb = normKey(b);
     if(!na || !nb) return false;
@@ -370,19 +380,22 @@ header .sub{font-size:12px;color:#B9B9BC;margin-right:auto;}
     return false;
   }
   function findAccount(name){
+    const target = resolveAlias(name);
     const list = DATA.accounts || [];
-    return list.find(a => normKey(a.name) === normKey(name)) ||
-           list.find(a => fuzzyEqual(a.name, name)) || null;
+    return list.find(a => normKey(a.name) === normKey(target)) ||
+           list.find(a => fuzzyEqual(a.name, target)) || null;
   }
   function findUsage(name){
+    const target = resolveAlias(name);
     const list = DATA.usage_export || [];
-    return list.find(u => normKey(u.name) === normKey(name)) ||
-           list.find(u => fuzzyEqual(u.name, name)) || null;
+    return list.find(u => normKey(u.name) === normKey(target)) ||
+           list.find(u => fuzzyEqual(u.name, target)) || null;
   }
   function findByFuzzyKey(dict, name){
     if(!dict) return null;
-    for(const key in dict){ if(normKey(key) === normKey(name)) return dict[key]; }
-    for(const key in dict){ if(fuzzyEqual(key, name)) return dict[key]; }
+    const target = resolveAlias(name);
+    for(const key in dict){ if(normKey(key) === normKey(target)) return dict[key]; }
+    for(const key in dict){ if(fuzzyEqual(key, target)) return dict[key]; }
     return null;
   }
   function findTeams(name){
