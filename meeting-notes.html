@@ -11,6 +11,7 @@
   --line:#E6E4E0;
   --bg-card:#FBFAF8;
   --blue:#2F5FA8;
+  --red:#D64545;
 }
 *{box-sizing:border-box;}
 body{
@@ -64,7 +65,7 @@ header .sub{font-size:12px;color:#B9B9BC;margin-right:auto;}
   background:none;border:none;color:var(--grey);
   font-size:13px;cursor:pointer;line-height:1;padding:0;
 }
-.company-tab .tab-close:hover{color:#D64545;}
+.company-tab .tab-close:hover{color:var(--red);}
 #add-tab-btn{
   background:var(--orange);color:#fff;border:none;border-radius:8px;
   padding:8px 14px;font-size:13px;font-weight:700;cursor:pointer;flex-shrink:0;
@@ -75,7 +76,22 @@ header .sub{font-size:12px;color:#B9B9BC;margin-right:auto;}
   overflow-y:auto;
   padding:24px 32px 60px;
 }
-.wrap{max-width:900px;margin:0 auto;}
+#layout-row{
+  display:flex;
+  gap:20px;
+  align-items:flex-start;
+  max-width:1300px;
+  margin:0 auto;
+}
+.wrap{flex:1;min-width:0;max-width:760px;}
+.side-panel{width:230px;flex-shrink:0;}
+.side-panel .side-card{
+  background:#fff;border:1px solid var(--line);border-radius:10px;
+  padding:14px 16px;margin-bottom:16px;box-shadow:0 1px 3px rgba(20,20,20,.06);
+}
+.side-panel h4{font-size:11.5px;margin:0 0 12px;color:var(--grey);text-transform:uppercase;letter-spacing:.03em;}
+@media (max-width: 1050px){ .side-panel{ display:none; } }
+
 .empty-state{
   text-align:center;
   color:var(--grey);
@@ -177,13 +193,31 @@ header .sub{font-size:12px;color:#B9B9BC;margin-right:auto;}
 .note-controls button:hover{color:var(--orange);background:var(--bg-card);}
 .note-controls button:disabled{opacity:.3;cursor:default;}
 .note-controls button:disabled:hover{color:var(--grey);background:none;}
-.note-controls .note-delete:hover{color:#D64545;background:var(--bg-card);}
+.note-controls .note-delete:hover{color:var(--red);background:var(--bg-card);}
 .note-entry .note-text{
   font-size:14px;line-height:1.6;min-height:40px;outline:none;white-space:pre-wrap;
 }
 .note-entry .note-text:focus{background:#FFFBF8;}
 .note-entry.collapsed .note-text{display:none;}
 .notes-empty{color:var(--grey);font-size:13px;padding:10px 0;}
+
+/* ---- side panel: diagrams ---- */
+.chart-row{display:flex;align-items:center;gap:6px;margin-bottom:7px;font-size:11px;}
+.chart-row .chart-label{width:76px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;color:var(--grey);flex-shrink:0;}
+.chart-bar-track{flex:1;background:#F1EFEA;border-radius:4px;height:9px;overflow:hidden;}
+.chart-bar-fill{height:100%;background:var(--orange);border-radius:4px;}
+.chart-bar-fill.blue{background:var(--blue);}
+.chart-value{width:44px;text-align:left;font-size:10px;color:var(--ink);font-weight:700;flex-shrink:0;}
+.side-empty{color:var(--grey);font-size:12px;font-style:italic;}
+
+/* ---- side panel: insights + personal notes ---- */
+.flag-list{list-style:none;margin:0;padding:0;}
+.flag-list li{font-size:12px;line-height:1.5;margin-bottom:8px;color:var(--ink);}
+.personal-note{
+  font-size:12.5px;line-height:1.55;min-height:80px;outline:none;white-space:pre-wrap;color:var(--ink);
+}
+.personal-note:focus{background:#FFFBF8;}
+.personal-note:empty:before{content:'כתוב כאן הערות אישיות, פעולות המשך, רישיונות לטפל בהם...';color:var(--grey);}
 </style>
 </head>
 <body>
@@ -197,8 +231,12 @@ header .sub{font-size:12px;color:#B9B9BC;margin-right:auto;}
 </div>
 
 <div id="content-area">
-  <div class="wrap" id="wrap-inner">
-    <div class="empty-state">לחץ על "+ חברה חדשה" כדי להתחיל תיעוד פגישה.</div>
+  <div id="layout-row">
+    <div class="side-panel" id="side-notes"></div>
+    <div class="wrap" id="wrap-inner">
+      <div class="empty-state">לחץ על "+ חברה חדשה" כדי להתחיל תיעוד פגישה.</div>
+    </div>
+    <div class="side-panel" id="side-diagrams"></div>
   </div>
 </div>
 
@@ -208,6 +246,7 @@ header .sub{font-size:12px;color:#B9B9BC;margin-right:auto;}
   const ACTIVE_KEY = 'meeting-notes-active-tab';
   function entriesKey(name){ return 'meeting-notes-entries:' + name.trim().toLowerCase(); }
   function overridesKey(name){ return 'meeting-notes-overrides:' + name.trim().toLowerCase(); }
+  function personalKey(name){ return 'meeting-notes-personal:' + name.trim().toLowerCase(); }
 
   let DATA = null;
   let tabs = [];
@@ -231,9 +270,21 @@ header .sub{font-size:12px;color:#B9B9BC;margin-right:auto;}
   function saveOverrides(name, overrides){
     try{ localStorage.setItem(overridesKey(name), JSON.stringify(overrides)); }catch(e){}
   }
+  function loadPersonalNote(name){
+    try{ return localStorage.getItem(personalKey(name)) || ''; }catch(e){ return ''; }
+  }
+  function savePersonalNote(name, html){
+    try{ localStorage.setItem(personalKey(name), html); }catch(e){}
+  }
   function todayStr(){
     const d = new Date();
     return d.toLocaleDateString('he-IL', { year: 'numeric', month: '2-digit', day: '2-digit' });
+  }
+
+  // Fuzzy name matching: strips spaces/hyphens/dots/underscores before comparing,
+  // so "Global E", "Global-E", "GLOBAL-E" etc. all resolve to the same record.
+  function normKey(s){
+    return (s || '').toLowerCase().replace(/[\s\-_.]+/g, '');
   }
 
   function renderTabBar(){
@@ -289,27 +340,34 @@ header .sub{font-size:12px;color:#B9B9BC;margin-right:auto;}
     if(name && name.trim()) addTab(name);
   });
 
-  // ---- snapshot lookup ----
+  // ---- snapshot lookup (fuzzy-matched against dashboard-data.json) ----
   function findAccount(name){
-    const norm = name.trim().toLowerCase();
-    return (DATA.accounts || []).find(a => (a.name || '').trim().toLowerCase() === norm) || null;
+    const target = normKey(name);
+    return (DATA.accounts || []).find(a => normKey(a.name) === target) || null;
   }
   function findUsage(name){
-    const norm = name.trim().toLowerCase();
-    return (DATA.usage_export || []).find(u => (u.name || '').trim().toLowerCase() === norm) || null;
+    const target = normKey(name);
+    return (DATA.usage_export || []).find(u => normKey(u.name) === target) || null;
+  }
+  function findByFuzzyKey(dict, name){
+    if(!dict) return null;
+    const target = normKey(name);
+    for(const key in dict){
+      if(normKey(key) === target) return dict[key];
+    }
+    return null;
   }
   function findTeams(name){
-    return (DATA.teams_by_account && DATA.teams_by_account[name]) ||
-           (DATA.self_serve_renewals && DATA.self_serve_renewals[name] && DATA.self_serve_renewals[name].teams) ||
+    return findByFuzzyKey(DATA.teams_by_account, name) ||
+           (findByFuzzyKey(DATA.self_serve_renewals, name) || {}).teams ||
            [];
   }
   function findContacts(name){
-    return (DATA.contacts_by_account && DATA.contacts_by_account[name]) || [];
+    return findByFuzzyKey(DATA.contacts_by_account, name) || [];
   }
   function fmtMoney(n){ return (n === null || n === undefined || n === '') ? '—' : '$' + Number(n).toLocaleString(); }
   function fmtNum(n){ return (n === null || n === undefined || n === '') ? '—' : Number(n).toLocaleString(); }
 
-  // fields shown as editable stat boxes, in display order
   const STAT_FIELDS = [
     { key:'country',  label:'מדינה' },
     { key:'sector',   label:'סקטור' },
@@ -346,7 +404,7 @@ header .sub{font-size:12px;color:#B9B9BC;margin-right:auto;}
     let html = '<div class="snap-card">';
 
     if(!account && !usage){
-      html += '<div class="snap-hint">אין נתונים קיימים על "' + name + '" ב-Territory Command Center — כנראה לקוח/פרוספקט חדש. אפשר למלא את הפרטים כאן ידנית (הם יישמרו בדפדפן הזה).</div>';
+      html += '<div class="snap-hint">אין נתונים קיימים על "' + name + '" ב-Territory Command Center — כנראה לקוח/פרוספקט חדש, או שם שלא תואם בדיוק. אפשר למלא את הפרטים כאן ידנית.</div>';
     }
 
     html += '<div class="stat-grid">';
@@ -356,7 +414,7 @@ header .sub{font-size:12px;color:#B9B9BC;margin-right:auto;}
               '<div class="value" contenteditable="true" data-field="' + f.key + '">' + (val || '') + '</div></div>';
     });
     html += '</div>';
-    html += '<div class="stat-hint">שדות אלה ניתנים לעריכה — השינויים נשמרים בדפדפן הזה ולא משפיעים על ה-Territory Command Center.</div>';
+    html += '<div class="stat-hint">שדות אלה ניתנים לעריכה — השינויים נשמרים בדפדפן הזה.</div>';
 
     const accountNotesDefault = (account && account.notes) ? account.notes.replace(/\n/g, '<br>') : '';
     const accountNotesValue = (overrides.accountNotes !== undefined) ? overrides.accountNotes : accountNotesDefault;
@@ -499,10 +557,91 @@ header .sub{font-size:12px;color:#B9B9BC;margin-right:auto;}
     });
   }
 
+  // ---- side panel: diagrams (pulled from Territory data) ----
+  function chartRows(items, labelFn, valueFn, colorClass){
+    const max = Math.max(1, ...items.map(valueFn));
+    return items.map(item=>{
+      const val = valueFn(item);
+      const pct = Math.max(2, Math.round((val / max) * 100));
+      return '<div class="chart-row">' +
+             '<div class="chart-label">' + labelFn(item) + '</div>' +
+             '<div class="chart-bar-track"><div class="chart-bar-fill ' + (colorClass||'') + '" style="width:' + pct + '%"></div></div>' +
+             '<div class="chart-value">' + val.toLocaleString() + '</div>' +
+             '</div>';
+    }).join('');
+  }
+
+  function renderDiagramsPanel(name){
+    const teams = findTeams(name);
+    let html = '<div class="side-card"><h4>📊 ARR לפי Team</h4>';
+    const arrTeams = teams.filter(t => (t.arr || 0) > 0).sort((a,b)=>(b.arr||0)-(a.arr||0)).slice(0,6);
+    if(arrTeams.length){
+      html += chartRows(arrTeams, t => (t.team_name || '—'), t => Math.round(t.arr || 0), '');
+    } else {
+      html += '<div class="side-empty">אין נתוני ARR להצגה.</div>';
+    }
+    html += '</div>';
+
+    html += '<div class="side-card"><h4>👥 משתמשים פעילים לפי Team</h4>';
+    const usedTeams = teams.filter(t => (t.used_licenses || 0) > 0).sort((a,b)=>(b.used_licenses||0)-(a.used_licenses||0)).slice(0,6);
+    if(usedTeams.length){
+      html += chartRows(usedTeams, t => (t.team_name || '—'), t => Math.round(t.used_licenses || 0), 'blue');
+    } else {
+      html += '<div class="side-empty">אין נתוני שימוש להצגה.</div>';
+    }
+    html += '</div>';
+    return html;
+  }
+
+  // ---- side panel: insights + personal notes ----
+  function computeActionFlags(teams){
+    const flags = [];
+    teams.forEach(t=>{
+      const status = (t.status || '').toLowerCase();
+      const plan = (t.active_plan || '').toLowerCase();
+      if(status === 'delinquent'){
+        flags.push('⚠️ <b>' + (t.team_name || 'Team') + '</b> — סטטוס Delinquent, דורש טיפול בחשבונית/תשלום.');
+      }
+      if(plan === 'free' && (t.used_licenses || 0) >= 3){
+        flags.push('💡 <b>' + (t.team_name || 'Team') + '</b> — ' + t.used_licenses + ' משתמשים פעילים בחינם, הזדמנות אפסייל.');
+      }
+    });
+    return flags;
+  }
+
+  function renderInsightsPanel(name){
+    const teams = findTeams(name);
+    const flags = computeActionFlags(teams);
+    let html = '<div class="side-card"><h4>🔎 נקודות לתשומת לב</h4>';
+    if(flags.length){
+      html += '<ul class="flag-list">' + flags.map(f => '<li>' + f + '</li>').join('') + '</ul>';
+    } else {
+      html += '<div class="side-empty">לא נמצאו דגלים אוטומטיים כרגע.</div>';
+    }
+    html += '</div>';
+
+    const personalNote = loadPersonalNote(name);
+    html += '<div class="side-card"><h4>✏️ הערות אישיות</h4>' +
+            '<div class="personal-note" contenteditable="true" data-personal-note="1">' + personalNote + '</div></div>';
+    return html;
+  }
+
+  function wireInsightsPanel(name){
+    const el = document.querySelector('.personal-note[data-personal-note]');
+    if(!el) return;
+    el.addEventListener('blur', ()=>{
+      savePersonalNote(name, el.innerHTML);
+    });
+  }
+
   function renderContent(){
     const wrap = document.getElementById('wrap-inner');
+    const sideDiagrams = document.getElementById('side-diagrams');
+    const sideNotes = document.getElementById('side-notes');
     if(!activeTab){
       wrap.innerHTML = '<div class="empty-state">לחץ על "+ חברה חדשה" כדי להתחיל תיעוד פגישה.</div>';
+      sideDiagrams.innerHTML = '';
+      sideNotes.innerHTML = '';
       return;
     }
     let html = '<div class="company-header"><h2>' + activeTab + '</h2></div>';
@@ -511,6 +650,10 @@ header .sub{font-size:12px;color:#B9B9BC;margin-right:auto;}
     wrap.innerHTML = html;
     wireSnapshotCard(activeTab);
     wireNotesSection(activeTab);
+
+    sideDiagrams.innerHTML = renderDiagramsPanel(activeTab);
+    sideNotes.innerHTML = renderInsightsPanel(activeTab);
+    wireInsightsPanel(activeTab);
   }
 
   async function init(){
