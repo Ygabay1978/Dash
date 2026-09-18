@@ -360,6 +360,15 @@ header .sub{font-size:12px;color:#B9B9BC;margin-right:auto;}
     if(generic.test(n)) return false;
     return true;
   }
+  // Only show contacts Yaniv has explicitly marked as Champion or Relevant
+  // (in the Territory Command Center's Contacts tab) — champion / marked_relevant
+  // fields. api_relevant is a separate, system-inferred guess and does NOT count.
+  function isRelevantOrChampion(c){
+    const champ = pick(c, ['champion','is_champion'], false) === true ||
+                  /champion/i.test(pick(c, ['tag','role_type'], ''));
+    const relevant = c.marked_relevant === true;
+    return champ || relevant;
+  }
 
   // ---- fuzzy name matching ----
   // Explicit aliases for cases the general fuzzy match can't resolve safely
