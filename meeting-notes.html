@@ -192,6 +192,7 @@ header .sub{font-size:12px;color:#B9B9BC;margin-right:auto;}
 .status-pill.other{background:#EFEFEF;color:var(--grey);}
 .contact-dot{display:inline-block;width:7px;height:7px;border-radius:50%;background:var(--green);margin-left:6px;vertical-align:middle;}
 .champion-badge{display:inline-block;background:#FFE9B8;color:#8A5A00;font-size:9.5px;font-weight:800;padding:1px 7px;border-radius:9px;margin-right:6px;}
+.not-relevant-badge{display:inline-block;background:#EFEFEF;color:var(--grey);font-size:9.5px;font-weight:700;padding:1px 7px;border-radius:9px;margin-right:6px;}
 
 .notes-section h3{font-size:15px;margin:0 0 12px;}
 #add-note-btn{
@@ -523,7 +524,7 @@ header .sub{font-size:12px;color:#B9B9BC;margin-right:auto;}
     const account = findAccount(name);
     const usage = findUsage(name);
     const allTeams = findTeams(name).slice().sort((a,b)=>(b.arr||0)-(a.arr||0));
-    const contacts = findContacts(name).filter(c => looksLikePerson(c.name));
+    const contacts = findContacts(name).filter(c => looksLikePerson(c.name) && isRelevantOrChampion(c));
     const overrides = loadOverrides(name);
     const defaults = defaultStatValues(account, usage);
 
@@ -552,12 +553,13 @@ header .sub{font-size:12px;color:#B9B9BC;margin-right:auto;}
       contacts.forEach(c=>{
         const isChampion = pick(c, ['champion','is_champion'], false) === true ||
                             /champion/i.test(pick(c, ['tag','role_type'], ''));
+        const isNotRelevant = c.not_relevant === true;
         const linkedin = pick(c, ['linkedin','linkedin_url'], null);
         const outreach = pick(c, ['outreach','outreach_status'], null) ||
                           (c.outreach_sent !== undefined ? (c.outreach_sent + ' sent / ' + (c.outreach_replied || 0) + ' replied') :
                           (c.reached_out === true ? 'Reached out' : (c.already_sent_real === true ? 'Email sent' : 'Not contacted')));
         html += '<tr>' +
-                '<td><span class="contact-dot"></span>' + (isChampion ? '<span class="champion-badge">★ CHAMPION</span>' : '') + '<b>' + (c.name || '') + '</b></td>' +
+                '<td><span class="contact-dot"></span>' + (isChampion ? '<span class="champion-badge">★ CHAMPION</span>' : '') + (isNotRelevant ? '<span class="not-relevant-badge">לא רלוונטי</span>' : '') + '<b>' + (c.name || '') + '</b></td>' +
                 '<td>' + pick(c, ['team','team_name'], '—') + '</td>' +
                 '<td>' + (c.title || '—') + '</td>' +
                 '<td>' + (c.email ? '<a href="mailto:' + c.email + '">' + c.email + '</a>' : '—') + '</td>' +
