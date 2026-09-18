@@ -251,7 +251,7 @@ header .sub{font-size:12px;color:#B9B9BC;margin-right:auto;}
 .chart-pill-fill{height:100%;border-radius:6px;position:absolute;top:0;right:0;}
 .chart-pill-fill.orange{background:linear-gradient(90deg,var(--orange),var(--orange-light));}
 .chart-pill-fill.green{background:linear-gradient(90deg,var(--green),var(--green-light));z-index:2;}
-.chart-pill-fill.purchased-overlay{background:rgba(46,158,91,0.25);z-index:1;}
+.chart-pill-fill.purchased-overlay{background:rgba(52,104,200,0.32);z-index:1;}
 .chart-pct{font-size:10.5px;color:var(--grey);margin-top:4px;}
 .chart-legend{display:flex;gap:12px;font-size:10px;color:var(--grey);margin-bottom:8px;}
 .chart-legend .dot{display:inline-block;width:8px;height:8px;border-radius:2px;margin-left:4px;vertical-align:middle;}
@@ -363,11 +363,12 @@ header .sub{font-size:12px;color:#B9B9BC;margin-right:auto;}
   // Only show contacts Yaniv has explicitly marked as Champion or Relevant
   // (in the Territory Command Center's Contacts tab) — champion / marked_relevant
   // fields. api_relevant is a separate, system-inferred guess and does NOT count.
+  function isChampionFlag(c){
+    return pick(c, ['champion','is_champion'], false) === true ||
+           /champion/i.test(pick(c, ['tag','role_type'], ''));
+  }
   function isRelevantOrChampion(c){
-    const champ = pick(c, ['champion','is_champion'], false) === true ||
-                  /champion/i.test(pick(c, ['tag','role_type'], ''));
-    const relevant = c.marked_relevant === true;
-    return champ || relevant;
+    return isChampionFlag(c) || c.marked_relevant === true;
   }
 
   // ---- fuzzy name matching ----
@@ -534,6 +535,15 @@ header .sub{font-size:12px;color:#B9B9BC;margin-right:auto;}
     const usage = findUsage(name);
     const allTeams = findTeams(name).slice().sort((a,b)=>(b.arr||0)-(a.arr||0));
     const contacts = findContacts(name).filter(c => looksLikePerson(c.name) && isRelevantOrChampion(c));
+    contacts.sort((a, b) => {
+      const champA = isChampionFlag(a) ? 0 : 1;
+      const champB = isChampionFlag(b) ? 0 : 1;
+      if(champA !== champB) return champA - champB; // champions always first
+      const teamA = (pick(a, ['team','team_name'], '') || '').toLowerCase();
+      const teamB = (pick(b, ['team','team_name'], '') || '').toLowerCase();
+      if(teamA !== teamB) return teamA.localeCompare(teamB);
+      return (a.name || '').localeCompare(b.name || '');
+    });
     const overrides = loadOverrides(name);
     const defaults = defaultStatValues(account, usage);
 
@@ -560,8 +570,7 @@ header .sub{font-size:12px;color:#B9B9BC;margin-right:auto;}
       html += '<div class="snap-contacts"><h5>Key Contacts (' + contacts.length + ')</h5><div class="table-scroll" dir="ltr">';
       html += '<table class="crm-table" dir="ltr"><thead><tr><th>NAME</th><th>TEAM</th><th>TITLE</th><th>EMAIL</th><th>MOBILE</th><th>LINKEDIN</th><th>OUTREACH</th></tr></thead><tbody>';
       contacts.forEach(c=>{
-        const isChampion = pick(c, ['champion','is_champion'], false) === true ||
-                            /champion/i.test(pick(c, ['tag','role_type'], ''));
+        const isChampion = isChampionFlag(c);
         const isNotRelevant = c.not_relevant === true;
         const linkedin = pick(c, ['linkedin','linkedin_url'], null);
         const outreach = pick(c, ['outreach','outreach_status'], null) ||
@@ -786,7 +795,7 @@ header .sub{font-size:12px;color:#B9B9BC;margin-right:auto;}
     const usedTeams = teams.filter(t => (t.used_licenses || 0) > 0).sort((a,b)=>(b.used_licenses||0)-(a.used_licenses||0)).slice(0,6);
     if(usedTeams.length){
       html += '<div class="chart-legend"><span><span class="dot" style="background:linear-gradient(90deg,var(--green),var(--green-light));background-color:#2E9E5B;"></span>Used</span>' +
-              '<span><span class="dot" style="background:rgba(46,158,91,0.25);"></span>Purchased</span></div>';
+              '<span><span class="dot" style="background:rgba(52,104,200,0.32);"></span>Purchased</span></div>';
       html += usageChartBlock(usedTeams);
     } else {
       html += '<div class="side-empty">אין נתוני שימוש להצגה.</div>';
