@@ -40,31 +40,31 @@ header{
 header h1{font-size:16px;margin:0;font-weight:700;}
 header .sub{font-size:12px;color:#B9B9BC;margin-right:auto;}
 
-/* ---- shared rich-text edit toolbar ---- */
-.rich-toolbar{
-  display:none;
-  align-items:center;
-  gap:6px;
-  background:#fff;
-  border-bottom:1px solid var(--line);
-  padding:8px 20px;
-  flex-shrink:0;
+/* ---- always-visible per-field formatting toolbar ---- */
+.mini-toolbar{
+  display:flex;align-items:center;gap:5px;
+  background:var(--bg-page);border:1px solid var(--line);border-radius:6px 6px 0 0;
+  padding:5px 8px;margin-top:8px;
 }
-.rich-toolbar button{
-  background:var(--bg-page);border:1px solid var(--line);border-radius:6px;
-  min-width:28px;height:28px;font-size:13px;cursor:pointer;color:var(--ink);
+.mini-toolbar button{
+  background:#fff;border:1px solid var(--line);border-radius:5px;
+  min-width:24px;height:24px;font-size:12px;cursor:pointer;color:var(--ink);
 }
-.rich-toolbar button:hover{border-color:var(--orange);color:var(--orange);}
-.rich-toolbar .swatch{
-  width:20px;height:20px;border-radius:5px;cursor:pointer;border:1px solid rgba(0,0,0,.15);
+.mini-toolbar button:hover{border-color:var(--orange);color:var(--orange);}
+.mini-toolbar .swatch{
+  width:17px;height:17px;border-radius:4px;cursor:pointer;border:1px solid rgba(0,0,0,.15);
   display:inline-block;
 }
-.rich-toolbar .rt-sep{width:1px;height:20px;background:var(--line);margin:0 4px;}
-.rich-toolbar .rt-save{
-  margin-right:auto;background:var(--orange);color:#fff;border:none;border-radius:6px;
-  padding:0 14px;height:28px;font-size:12.5px;font-weight:700;cursor:pointer;
+.mini-toolbar .mt-sep{width:1px;height:17px;background:var(--line);margin:0 3px;}
+.mini-toolbar .mt-save{
+  margin-right:auto;background:var(--orange);color:#fff;border:none;border-radius:5px;
+  padding:0 12px;height:24px;font-size:11.5px;font-weight:700;cursor:pointer;
 }
-.rich-toolbar .rt-save:hover{background:#e85a28;}
+.mini-toolbar .mt-save:hover{background:#e85a28;}
+.mini-toolbar .save-flash{font-size:11px;color:var(--green);font-weight:700;min-width:44px;}
+.edit-block .rich-editable{
+  border:1px solid var(--line);border-top:none;border-radius:0 0 6px 6px;padding:10px 12px;
+}
 
 #tab-bar{
   background:#fff;
@@ -119,14 +119,14 @@ header .sub{font-size:12px;color:#B9B9BC;margin-right:auto;}
   max-width:1360px;
   margin:0 auto;
 }
-.wrap{flex:1;min-width:0;max-width:740px;}
+.wrap{flex:1;min-width:0;max-width:820px;}
 .side-panel{width:260px;flex-shrink:0;}
 .side-panel .side-card{
   background:var(--bg-card);border:1px solid var(--line);border-radius:10px;
   padding:18px 20px;margin-bottom:18px;box-shadow:0 1px 3px rgba(20,20,20,.06);
 }
 .side-panel h4{font-size:12.5px;margin:0 0 14px;color:var(--grey);text-transform:uppercase;letter-spacing:.03em;}
-@media (max-width: 1100px){ .side-panel{ display:none; } }
+@media (max-width: 1150px){ .side-panel{ display:none; } }
 
 .empty-state{
   text-align:center;
@@ -161,37 +161,36 @@ header .sub{font-size:12px;color:#B9B9BC;margin-right:auto;}
 .stat-hint{font-size:10.5px;color:var(--grey);margin-top:10px;}
 
 .snap-note{
-  margin-top:14px;
-  padding-top:14px;
-  border-top:1px solid var(--line);
   font-size:13px;
   white-space:pre-wrap;
   color:var(--ink);
   outline:none;
-  min-height:18px;
+  min-height:50px;
 }
 .snap-note:focus{background:#FFFBF8;}
 .snap-note:empty:before{content:'הוסף הערה כללית על הלקוח...';color:var(--grey);}
+.snap-note-wrap{margin-top:14px;padding-top:14px;border-top:1px solid var(--line);}
 
-/* ---- contacts list ---- */
-.snap-contacts{margin-top:14px;padding-top:14px;border-top:1px solid var(--line);}
-.contacts-list .contact-line{text-align:right;font-size:14px;margin-bottom:10px;line-height:1.5;}
-.contacts-list .contact-line:last-child{margin-bottom:0;}
-.contacts-list .contact-line b{font-weight:700;}
-.contacts-list .contact-line .role{color:var(--grey);}
-.contacts-list .contact-line .email-link{color:var(--blue);text-decoration:none;}
-.contacts-list .contact-line .email-link:hover{text-decoration:underline;}
-
-/* ---- teams table (exact TEAM/PLAN/USED/PURCHASED/ARR format, LTR columns) ---- */
-.teams-table{width:100%;border-collapse:collapse;font-size:13px;margin-top:14px;}
-.teams-table th{
-  font-size:11px;text-transform:uppercase;color:var(--grey);font-weight:700;
-  text-align:right;padding:8px 10px;border-bottom:2px solid var(--line);
+/* ---- CRM-style tables (exact Check Point format) ---- */
+.snap-contacts,.snap-teams{margin-top:16px;padding-top:16px;border-top:1px solid var(--line);}
+.snap-contacts h5,.snap-teams h5{font-size:12px;font-weight:800;color:var(--ink);margin:0 0 10px;}
+.table-scroll{overflow-x:auto;}
+.crm-table{width:100%;border-collapse:collapse;font-size:12.5px;white-space:nowrap;}
+.crm-table th{
+  font-size:10.5px;text-transform:uppercase;color:var(--grey);font-weight:700;
+  text-align:left;padding:8px 10px;border-bottom:2px solid var(--line);background:var(--bg-page);
 }
-.teams-table td{padding:9px 10px;text-align:right;border-bottom:1px solid var(--line);}
-.teams-table .cell-arr{font-weight:700;color:var(--ink);}
-.teams-table .cell-num{color:var(--blue);}
-.teams-table .cell-team{color:var(--blue);font-weight:600;}
+.crm-table td{padding:9px 10px;text-align:left;border-bottom:1px solid var(--line);}
+.crm-table .cell-arr{font-weight:700;color:var(--ink);}
+.crm-table .cell-link{color:var(--blue);font-weight:600;}
+.crm-table a{color:var(--blue);text-decoration:none;}
+.crm-table a:hover{text-decoration:underline;}
+.status-pill{display:inline-block;padding:2px 10px;border-radius:12px;font-size:10.5px;font-weight:700;}
+.status-pill.active{background:#DDF3E4;color:#1E7F45;}
+.status-pill.delinquent{background:#FBE0E0;color:#B23B3B;}
+.status-pill.other{background:#EFEFEF;color:var(--grey);}
+.contact-dot{display:inline-block;width:7px;height:7px;border-radius:50%;background:var(--green);margin-left:6px;vertical-align:middle;}
+.champion-badge{display:block;background:#FFE9B8;color:#8A5A00;font-size:9.5px;font-weight:800;padding:1px 7px;border-radius:9px;margin-top:3px;width:fit-content;}
 
 .notes-section h3{font-size:15px;margin:0 0 12px;}
 #add-note-btn{
@@ -211,8 +210,9 @@ header .sub{font-size:12px;color:#B9B9BC;margin-right:auto;}
   display:flex;
   justify-content:space-between;
   align-items:center;
-  margin-bottom:8px;
+  margin-bottom:0;
   gap:10px;
+  flex-wrap:wrap;
 }
 .note-entry .note-date{
   font-size:12px;font-weight:700;color:var(--orange);
@@ -223,6 +223,9 @@ header .sub{font-size:12px;color:#B9B9BC;margin-right:auto;}
   background:none;border:none;color:var(--grey);font-size:13px;cursor:pointer;
   padding:3px 6px;border-radius:4px;line-height:1;
 }
+.note-controls .note-eng{
+  border:1px solid var(--line);font-size:11px;font-weight:700;padding:3px 8px;
+}
 .note-controls button:hover{color:var(--orange);background:var(--bg-page);}
 .note-controls button:disabled{opacity:.3;cursor:default;}
 .note-controls button:disabled:hover{color:var(--grey);background:none;}
@@ -231,10 +234,10 @@ header .sub{font-size:12px;color:#B9B9BC;margin-right:auto;}
   font-size:14px;line-height:1.6;min-height:40px;outline:none;white-space:pre-wrap;
 }
 .note-entry .note-text:focus{background:#FFFBF8;}
-.note-entry.collapsed .note-text{display:none;}
+.note-entry.collapsed .edit-block{display:none;}
 .notes-empty{color:var(--grey);font-size:13px;padding:10px 0;}
 
-/* ---- side panel: diagrams (Overview-style gradient pill bars) ---- */
+/* ---- side panel: diagrams ---- */
 .chart-block{margin-bottom:14px;}
 .chart-block:last-child{margin-bottom:0;}
 .chart-row-label-line{display:flex;justify-content:space-between;align-items:baseline;font-size:12.5px;margin-bottom:5px;gap:8px;}
@@ -253,10 +256,20 @@ header .sub{font-size:12px;color:#B9B9BC;margin-right:auto;}
 .flag-list{list-style:none;margin:0;padding:0;}
 .flag-list li{font-size:12.5px;line-height:1.5;margin-bottom:9px;color:var(--ink);}
 .personal-note{
-  font-size:13px;line-height:1.55;min-height:90px;outline:none;white-space:pre-wrap;color:var(--ink);
+  font-size:13px;line-height:1.55;min-height:80px;outline:none;white-space:pre-wrap;color:var(--ink);
 }
 .personal-note:focus{background:#FFFBF8;}
 .personal-note:empty:before{content:'כתוב כאן הערות אישיות, פעולות המשך, רישיונות לטפל בהם...';color:var(--grey);}
+
+/* ---- translate modal ---- */
+.modal-overlay{position:fixed;inset:0;background:rgba(0,0,0,.45);z-index:9999;display:none;align-items:center;justify-content:center;}
+.modal-overlay.open{display:flex;}
+.modal-box{background:#fff;border-radius:12px;max-width:700px;width:90%;max-height:80vh;overflow-y:auto;padding:20px 24px;direction:ltr;text-align:left;box-shadow:0 20px 60px rgba(0,0,0,.3);}
+.modal-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:14px;border-bottom:1px solid var(--line);padding-bottom:10px;}
+.modal-header span{font-weight:800;font-size:16px;color:var(--ink);}
+.modal-header button{background:none;border:none;font-size:18px;cursor:pointer;color:var(--grey);}
+.modal-body{font-size:14px;line-height:1.7;color:var(--ink);white-space:pre-wrap;}
+.modal-body a{color:var(--blue);}
 </style>
 </head>
 <body>
@@ -264,22 +277,6 @@ header .sub{font-size:12px;color:#B9B9BC;margin-right:auto;}
   <h1>📓 יומן פגישות לקוח</h1>
   <span class="sub">Snapshot חי + הערות שנשארות בין פגישות, לפי חברה</span>
 </header>
-
-<div id="rich-toolbar" class="rich-toolbar">
-  <button data-cmd="bold" title="מודגש"><b>B</b></button>
-  <button data-cmd="italic" title="נטוי"><i>I</i></button>
-  <div class="rt-sep"></div>
-  <button data-cmd="dec" title="הקטן גופן">A-</button>
-  <button data-cmd="inc" title="הגדל גופן">A+</button>
-  <div class="rt-sep"></div>
-  <span class="swatch" data-color="#1C1C1E" style="background:#1C1C1E" title="שחור"></span>
-  <span class="swatch" data-color="#FF6C37" style="background:#FF6C37" title="כתום"></span>
-  <span class="swatch" data-color="#D64545" style="background:#D64545" title="אדום"></span>
-  <span class="swatch" data-color="#2E9E5B" style="background:#2E9E5B" title="ירוק"></span>
-  <span class="swatch" data-color="#3468C8" style="background:#3468C8" title="כחול"></span>
-  <span class="swatch" data-color="#8A8F98" style="background:#8A8F98" title="אפור"></span>
-  <button class="rt-save" id="rich-save-btn">Save edit</button>
-</div>
 
 <div id="tab-bar">
   <button id="add-tab-btn">+ חברה חדשה</button>
@@ -293,6 +290,14 @@ header .sub{font-size:12px;color:#B9B9BC;margin-right:auto;}
       <div class="empty-state">לחץ על "+ חברה חדשה" כדי להתחיל תיעוד פגישה.</div>
     </div>
     <div class="side-panel" id="side-diagrams"></div>
+  </div>
+</div>
+
+<!-- translate modal -->
+<div class="modal-overlay" id="translate-modal">
+  <div class="modal-box">
+    <div class="modal-header"><span>Translation (EN)</span><button id="translate-modal-close">✕</button></div>
+    <div class="modal-body" id="translate-modal-body">Translating...</div>
   </div>
 </div>
 
@@ -336,11 +341,15 @@ header .sub{font-size:12px;color:#B9B9BC;margin-right:auto;}
     const d = new Date();
     return d.toLocaleDateString('he-IL', { year: 'numeric', month: '2-digit', day: '2-digit' });
   }
-
-  // ---- fuzzy name matching: "Global E" must resolve to "Global-E Online" ----
-  function normKey(s){
-    return (s || '').toLowerCase().replace(/[\s\-_.]+/g, '');
+  function pick(obj, keys, fallback){
+    for(const k of keys){
+      if(obj[k] !== undefined && obj[k] !== null && obj[k] !== '') return obj[k];
+    }
+    return fallback;
   }
+
+  // ---- fuzzy name matching ----
+  function normKey(s){ return (s || '').toLowerCase().replace(/[\s\-_.]+/g, ''); }
   function fuzzyEqual(a, b){
     const na = normKey(a), nb = normKey(b);
     if(!na || !nb) return false;
@@ -454,6 +463,37 @@ header .sub{font-size:12px;color:#B9B9BC;margin-right:auto;}
     };
   }
 
+  // ---- generic mini-toolbar markup (always visible, wraps any rich-editable) ----
+  function editBlock(innerHtml, extraClass, dataAttrs){
+    return '<div class="edit-block">' +
+      '<div class="mini-toolbar">' +
+        '<button type="button" data-cmd="bold"><b>B</b></button>' +
+        '<button type="button" data-cmd="italic"><i>I</i></button>' +
+        '<div class="mt-sep"></div>' +
+        '<button type="button" data-cmd="dec">A-</button>' +
+        '<button type="button" data-cmd="inc">A+</button>' +
+        '<div class="mt-sep"></div>' +
+        '<span class="swatch" data-color="#1C1C1E" style="background:#1C1C1E"></span>' +
+        '<span class="swatch" data-color="#FF6C37" style="background:#FF6C37"></span>' +
+        '<span class="swatch" data-color="#D64545" style="background:#D64545"></span>' +
+        '<span class="swatch" data-color="#2E9E5B" style="background:#2E9E5B"></span>' +
+        '<span class="swatch" data-color="#3468C8" style="background:#3468C8"></span>' +
+        '<span class="swatch" data-color="#8A8F98" style="background:#8A8F98"></span>' +
+        '<button type="button" class="mt-save">Save</button>' +
+        '<span class="save-flash"></span>' +
+      '</div>' +
+      '<div class="rich-editable ' + (extraClass||'') + '" contenteditable="true"' + (dataAttrs||'') + '>' + innerHtml + '</div>' +
+    '</div>';
+  }
+
+  function statusPillHTML(status){
+    const s = (status || '').toLowerCase();
+    if(s === 'active') return '<span class="status-pill active">Active</span>';
+    if(s === 'delinquent') return '<span class="status-pill delinquent">Delinquent</span>';
+    if(!status) return '—';
+    return '<span class="status-pill other">' + status + '</span>';
+  }
+
   function renderSnapshotCard(name){
     const account = findAccount(name);
     const usage = findUsage(name);
@@ -472,38 +512,61 @@ header .sub{font-size:12px;color:#B9B9BC;margin-right:auto;}
     STAT_FIELDS.forEach(f=>{
       const val = (overrides[f.key] !== undefined) ? overrides[f.key] : defaults[f.key];
       html += '<div class="stat-box"><div class="label">' + f.label + '</div>' +
-              '<div class="value rich-editable" contenteditable="true" data-field="' + f.key + '">' + (val || '') + '</div></div>';
+              '<div class="value" contenteditable="true" data-field="' + f.key + '">' + (val || '') + '</div></div>';
     });
     html += '</div>';
     html += '<div class="stat-hint">שדות אלה ניתנים לעריכה — השינויים נשמרים בדפדפן הזה.</div>';
 
     const accountNotesDefault = (account && account.notes) ? account.notes.replace(/\n/g, '<br>') : '';
     const accountNotesValue = (overrides.accountNotes !== undefined) ? overrides.accountNotes : accountNotesDefault;
-    html += '<div class="snap-note rich-editable" contenteditable="true" data-field="accountNotes">' + accountNotesValue + '</div>';
+    html += '<div class="snap-note-wrap">' + editBlock(accountNotesValue, 'snap-note', ' data-field="accountNotes"') + '</div>';
 
     if(contacts.length){
-      html += '<div class="snap-contacts"><div class="contacts-list">';
-      contacts.slice(0, 8).forEach(c=>{
-        html += '<div class="contact-line"><b>' + (c.name || '') + '</b>' +
-                (c.title ? ' — <span class="role">' + c.title + '</span>' : '') +
-                (c.email ? ' · <a class="email-link" href="mailto:' + c.email + '">' + c.email + '</a>' : '') +
-                '</div>';
+      html += '<div class="snap-contacts"><h5>Key Contacts (' + contacts.length + ')</h5><div class="table-scroll">';
+      html += '<table class="crm-table" dir="ltr"><thead><tr><th>NAME</th><th>TEAM</th><th>TITLE</th><th>EMAIL</th><th>MOBILE</th><th>OFFICE</th><th>LINKEDIN</th><th>OUTREACH</th></tr></thead><tbody>';
+      contacts.slice(0, 12).forEach(c=>{
+        const isChampion = pick(c, ['champion','is_champion'], false) === true ||
+                            /champion/i.test(pick(c, ['tag','role_type'], ''));
+        const linkedin = pick(c, ['linkedin','linkedin_url'], null);
+        const outreach = pick(c, ['outreach','outreach_status'], null) ||
+                          (c.outreach_sent !== undefined ? (c.outreach_sent + ' sent / ' + (c.outreach_replied || 0) + ' replied') : 'not checked');
+        html += '<tr>' +
+                '<td><span class="contact-dot"></span><b>' + (c.name || '') + '</b>' +
+                (isChampion ? '<span class="champion-badge">★ CHAMPION</span>' : '') + '</td>' +
+                '<td>' + pick(c, ['team','team_name'], '—') + '</td>' +
+                '<td>' + (c.title || '—') + '</td>' +
+                '<td>' + (c.email ? '<a href="mailto:' + c.email + '">' + c.email + '</a>' : '—') + '</td>' +
+                '<td>' + pick(c, ['mobile','phone_mobile','cell'], '-') + '</td>' +
+                '<td>' + pick(c, ['office','phone_office','office_phone'], '-') + '</td>' +
+                '<td>' + (linkedin ? '<a href="' + linkedin + '" target="_blank">profile</a>' : '-') + '</td>' +
+                '<td>' + outreach + '</td>' +
+                '</tr>';
       });
-      html += '</div></div>';
+      html += '</tbody></table></div></div>';
     }
 
     if(teams.length){
-      html += '<table class="teams-table" dir="ltr"><thead><tr><th>TEAM</th><th>PLAN</th><th>USED</th><th>PURCHASED</th><th>ARR</th></tr></thead><tbody>';
-      teams.slice(0, 10).forEach(t=>{
+      html += '<div class="snap-teams"><h5>Postman teams (' + teams.length + ')</h5><div class="table-scroll">';
+      html += '<table class="crm-table" dir="ltr"><thead><tr><th>TEAM</th><th>CHILD CO.</th><th>PLAN</th><th>ARR</th><th>RENEWAL</th><th>SELF-SERVE</th><th>STATUS</th></tr></thead><tbody>';
+      teams.slice(0, 15).forEach(t=>{
+        const childCo = pick(t, ['child_co','childCompany','child'], '-');
+        const renewal = pick(t, ['renewal','renewal_date','renewalDate'], '—');
+        let selfServeRaw = pick(t, ['self_serve','selfServe'], null);
+        let selfServe = '—';
+        if(selfServeRaw !== null){
+          selfServe = (selfServeRaw === true || /^y/i.test(String(selfServeRaw))) ? 'Yes' : 'No';
+        }
         html += '<tr>' +
-                '<td class="cell-team">' + (t.team_name || '—') + '</td>' +
+                '<td class="cell-link">' + (t.team_name || '—') + '</td>' +
+                '<td>' + (childCo === '-' ? '-' : '<a href="#">' + childCo + '</a>') + '</td>' +
                 '<td>' + (t.active_plan || '—') + '</td>' +
-                '<td class="cell-num">' + fmtNum(t.used_licenses) + '</td>' +
-                '<td class="cell-num">' + fmtNum(t.purchased_licenses) + '</td>' +
                 '<td class="cell-arr">' + fmtMoney(t.arr) + '</td>' +
+                '<td>' + renewal + '</td>' +
+                '<td>' + selfServe + '</td>' +
+                '<td>' + statusPillHTML(t.status) + '</td>' +
                 '</tr>';
       });
-      html += '</tbody></table>';
+      html += '</tbody></table></div></div>';
     }
 
     html += '</div>';
@@ -513,13 +576,21 @@ header .sub{font-size:12px;color:#B9B9BC;margin-right:auto;}
   function wireSnapshotCard(name){
     const card = document.querySelector('.snap-card');
     if(!card) return;
-    card.querySelectorAll('[contenteditable][data-field]').forEach(el=>{
+    card.querySelectorAll('.stat-box .value[data-field]').forEach(el=>{
       el.addEventListener('blur', ()=>{
         const overrides = loadOverrides(name);
         overrides[el.dataset.field] = el.innerHTML;
         saveOverrides(name, overrides);
       });
     });
+    const noteEl = card.querySelector('.rich-editable.snap-note');
+    if(noteEl){
+      noteEl.addEventListener('blur', ()=>{
+        const overrides = loadOverrides(name);
+        overrides.accountNotes = noteEl.innerHTML;
+        saveOverrides(name, overrides);
+      });
+    }
   }
 
   // ---- meeting notes ----
@@ -537,13 +608,14 @@ header .sub{font-size:12px;color:#B9B9BC;margin-right:auto;}
                 '<div class="note-header">' +
                   '<input class="note-date" value="' + (entry.date || '') + '">' +
                   '<div class="note-controls">' +
+                    '<button class="note-eng" title="תרגום לאנגלית">ENG</button>' +
                     '<button class="note-toggle" title="מזער/הרחב">' + (collapsed ? '▸' : '▾') + '</button>' +
                     '<button class="note-up" title="הזז מעלה"' + (i === 0 ? ' disabled' : '') + '>▲</button>' +
                     '<button class="note-down" title="הזז מטה"' + (i === entries.length - 1 ? ' disabled' : '') + '>▼</button>' +
                     '<button class="note-delete" title="מחק הערה זו">✕</button>' +
                   '</div>' +
                 '</div>' +
-                '<div class="note-text rich-editable" contenteditable="true">' + (entry.text || '') + '</div>' +
+                editBlock(entry.text || '', 'note-text') +
                 '</div>';
       });
     }
@@ -569,6 +641,7 @@ header .sub{font-size:12px;color:#B9B9BC;margin-right:auto;}
       const toggleBtn = el.querySelector('.note-toggle');
       const upBtn = el.querySelector('.note-up');
       const downBtn = el.querySelector('.note-down');
+      const engBtn = el.querySelector('.note-eng');
 
       function persist(){
         const entries = loadEntries(name);
@@ -579,6 +652,7 @@ header .sub{font-size:12px;color:#B9B9BC;margin-right:auto;}
       }
       dateInput.addEventListener('input', persist);
       textDiv.addEventListener('input', persist);
+      textDiv.addEventListener('blur', persist);
 
       delBtn.addEventListener('click', ()=>{
         if(!window.confirm('למחוק את ההערה הזו?')) return;
@@ -615,10 +689,14 @@ header .sub{font-size:12px;color:#B9B9BC;margin-right:auto;}
         saveEntries(name, entries);
         renderContent();
       });
+
+      engBtn.addEventListener('click', ()=>{
+        openTranslateModal(textDiv.innerText || textDiv.textContent || '');
+      });
     });
   }
 
-  // ---- side panel: diagrams (Overview-style gradient pill bars) ----
+  // ---- side panel: diagrams ----
   function chartBlock(items, labelFn, valueFn, colorClass, total){
     const max = Math.max(1, ...items.map(valueFn));
     return items.map(item=>{
@@ -686,13 +764,12 @@ header .sub{font-size:12px;color:#B9B9BC;margin-right:auto;}
     html += '</div>';
 
     const personalNote = loadPersonalNote(name);
-    html += '<div class="side-card"><h4>✏️ הערות אישיות</h4>' +
-            '<div class="personal-note rich-editable" contenteditable="true" data-personal-note="1">' + personalNote + '</div></div>';
+    html += '<div class="side-card"><h4>✏️ הערות אישיות</h4>' + editBlock(personalNote, 'personal-note', ' data-personal-note="1"') + '</div>';
     return html;
   }
 
   function wireInsightsPanel(name){
-    const el = document.querySelector('.personal-note[data-personal-note]');
+    const el = document.querySelector('.rich-editable.personal-note');
     if(!el) return;
     el.addEventListener('blur', ()=>{
       savePersonalNote(name, el.innerHTML);
@@ -726,41 +803,77 @@ header .sub{font-size:12px;color:#B9B9BC;margin-right:auto;}
     wireInsightsPanel(activeTab);
   }
 
-  // ---- shared rich-text edit toolbar ----
-  (function setupRichToolbar(){
-    const toolbar = document.getElementById('rich-toolbar');
-    let currentEditable = null;
+  // ---- mini-toolbar behavior (event delegation, works on any .edit-block rendered anywhere) ----
+  document.addEventListener('mousedown', (e)=>{
+    if(e.target.closest('.mini-toolbar')) e.preventDefault();
+  });
+  document.addEventListener('click', (e)=>{
+    const swatch = e.target.closest('.mini-toolbar .swatch');
+    const cmdBtn = e.target.closest('.mini-toolbar button[data-cmd]');
+    const saveBtn = e.target.closest('.mini-toolbar .mt-save');
+    if(!swatch && !cmdBtn && !saveBtn) return;
+    const block = e.target.closest('.edit-block');
+    if(!block) return;
+    const target = block.querySelector('.rich-editable');
+    if(swatch){
+      document.execCommand('foreColor', false, swatch.dataset.color);
+      return;
+    }
+    if(cmdBtn){
+      const cmd = cmdBtn.dataset.cmd;
+      if(cmd === 'bold') document.execCommand('bold');
+      else if(cmd === 'italic') document.execCommand('italic');
+      else if(cmd === 'dec') document.execCommand('fontSize', false, '2');
+      else if(cmd === 'inc') document.execCommand('fontSize', false, '5');
+      return;
+    }
+    if(saveBtn){
+      target.blur();
+      const flash = block.querySelector('.save-flash');
+      if(flash){
+        flash.textContent = '✓ נשמר';
+        setTimeout(()=>{ flash.textContent = ''; }, 1500);
+      }
+    }
+  });
 
-    toolbar.addEventListener('mousedown', e => e.preventDefault());
+  // ---- translate modal ----
+  const translateModal = document.getElementById('translate-modal');
+  const translateModalBody = document.getElementById('translate-modal-body');
+  document.getElementById('translate-modal-close').addEventListener('click', ()=>{
+    translateModal.classList.remove('open');
+  });
+  translateModal.addEventListener('click', (e)=>{
+    if(e.target === translateModal) translateModal.classList.remove('open');
+  });
 
-    toolbar.querySelectorAll('button[data-cmd]').forEach(btn=>{
-      btn.addEventListener('click', ()=>{
-        const cmd = btn.dataset.cmd;
-        if(cmd === 'bold') document.execCommand('bold');
-        else if(cmd === 'italic') document.execCommand('italic');
-        else if(cmd === 'dec') document.execCommand('fontSize', false, '2');
-        else if(cmd === 'inc') document.execCommand('fontSize', false, '5');
-      });
-    });
-    toolbar.querySelectorAll('.swatch').forEach(sw=>{
-      sw.addEventListener('click', ()=>{
-        document.execCommand('foreColor', false, sw.dataset.color);
-      });
-    });
-    document.getElementById('rich-save-btn').addEventListener('click', ()=>{
-      if(currentEditable) currentEditable.blur();
-      toolbar.style.display = 'none';
-    });
+  async function translateText(text){
+    const plain = text.replace(/<[^>]+>/g, ' ').replace(/\s+/g, ' ').trim();
+    if(!plain) return '(no text)';
+    try{
+      const url = 'https://translate.googleapis.com/translate_a/single?client=gtx&sl=he&tl=en&dt=t&q=' + encodeURIComponent(plain);
+      const res = await fetch(url);
+      if(!res.ok) throw new Error('bad status ' + res.status);
+      const data = await res.json();
+      return data[0].map(seg => seg[0]).join('');
+    }catch(e){
+      console.error('translate failed', e);
+      return null;
+    }
+  }
 
-    document.addEventListener('focusin', (e)=>{
-      if(e.target.classList && e.target.classList.contains('rich-editable')){
-        currentEditable = e.target;
-        toolbar.style.display = 'flex';
-      } else if(!toolbar.contains(e.target)){
-        toolbar.style.display = 'none';
+  window.openTranslateModal = function(rawText){
+    translateModal.classList.add('open');
+    translateModalBody.textContent = 'Translating...';
+    translateText(rawText).then(result=>{
+      if(result){
+        translateModalBody.textContent = result;
+      } else {
+        const url = 'https://translate.google.com/?sl=he&tl=en&text=' + encodeURIComponent(rawText.replace(/<[^>]+>/g,' ')) + '&op=translate';
+        translateModalBody.innerHTML = 'Could not translate directly on the page (network/CORS blocked). Open in Google Translate instead: <br><br><a href="' + url + '" target="_blank">Open in Google Translate →</a>';
       }
     });
-  })();
+  };
 
   async function init(){
     try{
