@@ -557,7 +557,7 @@ header .sub{font-size:12px;color:#B9B9BC;margin-right:auto;}
     html += '<div class="snap-note-wrap">' + editBlock(accountNotesValue, 'snap-note', ' data-field="accountNotes"') + '</div>';
 
     if(contacts.length){
-      html += '<div class="snap-contacts"><h5>Key Contacts (' + contacts.length + ')</h5><div class="table-scroll">';
+      html += '<div class="snap-contacts"><h5>Key Contacts (' + contacts.length + ')</h5><div class="table-scroll" dir="ltr">';
       html += '<table class="crm-table" dir="ltr"><thead><tr><th>NAME</th><th>TEAM</th><th>TITLE</th><th>EMAIL</th><th>MOBILE</th><th>LINKEDIN</th><th>OUTREACH</th></tr></thead><tbody>';
       contacts.forEach(c=>{
         const isChampion = pick(c, ['champion','is_champion'], false) === true ||
@@ -581,7 +581,7 @@ header .sub{font-size:12px;color:#B9B9BC;margin-right:auto;}
     }
 
     if(allTeams.length){
-      html += '<div class="snap-teams"><h5>Postman teams (' + allTeams.length + ')</h5><div class="table-scroll">';
+      html += '<div class="snap-teams"><h5>Postman teams (' + allTeams.length + ')</h5><div class="table-scroll" dir="ltr">';
       html += '<table class="crm-table" dir="ltr"><thead><tr><th>TEAM</th><th>CHILD CO.</th><th>PLAN</th><th>ARR</th><th>RENEWAL</th><th>SELF-SERVE</th><th>STATUS</th></tr></thead><tbody>';
       allTeams.forEach(t=>{
         const childCo = pick(t, ['child_company','child_co','childCompany','child'], '-');
