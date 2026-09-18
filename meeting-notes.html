@@ -6,17 +6,21 @@
 <style>
 :root{
   --orange:#FF6C37;
+  --orange-light:#FFA36B;
+  --green:#2E9E5B;
+  --green-light:#7BC99A;
   --ink:#1C1C1E;
   --grey:#5B5F66;
-  --line:#E6E4E0;
-  --bg-card:#FBFAF8;
+  --line:#EAD9C8;
+  --bg-page:#FDF3EC;
+  --bg-card:#FFFFFF;
   --blue:#2F5FA8;
   --red:#D64545;
 }
 *{box-sizing:border-box;}
 body{
   margin:0;
-  background:#E3E6EA;
+  background:var(--bg-page);
   color:var(--ink);
   font-family:"Segoe UI","Arial Hebrew",Arial,sans-serif;
   height:100vh;
@@ -35,6 +39,33 @@ header{
 }
 header h1{font-size:16px;margin:0;font-weight:700;}
 header .sub{font-size:12px;color:#B9B9BC;margin-right:auto;}
+
+/* ---- shared rich-text edit toolbar ---- */
+.rich-toolbar{
+  display:none;
+  align-items:center;
+  gap:6px;
+  background:#fff;
+  border-bottom:1px solid var(--line);
+  padding:8px 20px;
+  flex-shrink:0;
+}
+.rich-toolbar button{
+  background:var(--bg-page);border:1px solid var(--line);border-radius:6px;
+  min-width:28px;height:28px;font-size:13px;cursor:pointer;color:var(--ink);
+}
+.rich-toolbar button:hover{border-color:var(--orange);color:var(--orange);}
+.rich-toolbar .swatch{
+  width:20px;height:20px;border-radius:5px;cursor:pointer;border:1px solid rgba(0,0,0,.15);
+  display:inline-block;
+}
+.rich-toolbar .rt-sep{width:1px;height:20px;background:var(--line);margin:0 4px;}
+.rich-toolbar .rt-save{
+  margin-right:auto;background:var(--orange);color:#fff;border:none;border-radius:6px;
+  padding:0 14px;height:28px;font-size:12.5px;font-weight:700;cursor:pointer;
+}
+.rich-toolbar .rt-save:hover{background:#e85a28;}
+
 #tab-bar{
   background:#fff;
   border-bottom:1px solid var(--line);
@@ -49,7 +80,7 @@ header .sub{font-size:12px;color:#B9B9BC;margin-right:auto;}
   display:flex;
   align-items:center;
   gap:8px;
-  background:var(--bg-card);
+  background:var(--bg-page);
   border:1px solid var(--line);
   border-radius:8px;
   padding:8px 12px;
@@ -76,21 +107,26 @@ header .sub{font-size:12px;color:#B9B9BC;margin-right:auto;}
   overflow-y:auto;
   padding:24px 32px 60px;
 }
+#company-title-wrap{
+  max-width:1360px;margin:0 auto 20px;text-align:center;
+  padding-bottom:16px;border-bottom:1px solid var(--line);
+}
+#company-title{font-size:26px;margin:0;color:var(--orange);font-weight:800;}
 #layout-row{
   display:flex;
   gap:20px;
   align-items:flex-start;
-  max-width:1300px;
+  max-width:1360px;
   margin:0 auto;
 }
-.wrap{flex:1;min-width:0;max-width:760px;}
-.side-panel{width:230px;flex-shrink:0;}
+.wrap{flex:1;min-width:0;max-width:740px;}
+.side-panel{width:260px;flex-shrink:0;}
 .side-panel .side-card{
-  background:#fff;border:1px solid var(--line);border-radius:10px;
-  padding:14px 16px;margin-bottom:16px;box-shadow:0 1px 3px rgba(20,20,20,.06);
+  background:var(--bg-card);border:1px solid var(--line);border-radius:10px;
+  padding:18px 20px;margin-bottom:18px;box-shadow:0 1px 3px rgba(20,20,20,.06);
 }
-.side-panel h4{font-size:11.5px;margin:0 0 12px;color:var(--grey);text-transform:uppercase;letter-spacing:.03em;}
-@media (max-width: 1050px){ .side-panel{ display:none; } }
+.side-panel h4{font-size:12.5px;margin:0 0 14px;color:var(--grey);text-transform:uppercase;letter-spacing:.03em;}
+@media (max-width: 1100px){ .side-panel{ display:none; } }
 
 .empty-state{
   text-align:center;
@@ -98,11 +134,8 @@ header .sub{font-size:12px;color:#B9B9BC;margin-right:auto;}
   padding:80px 20px;
   font-size:14px;
 }
-.company-header{margin-bottom:20px;}
-.company-header h2{font-size:24px;margin:0 0 4px;}
-.company-header .meta{font-size:13px;color:var(--grey);}
 .snap-card{
-  background:#fff;
+  background:var(--bg-card);
   border:1px solid var(--line);
   border-radius:10px;
   padding:18px 20px;
@@ -111,10 +144,10 @@ header .sub{font-size:12px;color:#B9B9BC;margin-right:auto;}
 }
 .snap-hint{color:var(--grey);font-size:12.5px;margin-bottom:12px;font-style:italic;}
 
-/* ---- editable stat boxes (Check Point style) ---- */
+/* ---- editable stat boxes ---- */
 .stat-grid{display:flex;flex-wrap:wrap;gap:12px;margin-top:4px;}
 .stat-box{
-  background:#fff;
+  background:var(--bg-card);
   border:1px solid var(--line);
   border-radius:10px;
   padding:12px 16px;
@@ -140,7 +173,7 @@ header .sub{font-size:12px;color:#B9B9BC;margin-right:auto;}
 .snap-note:focus{background:#FFFBF8;}
 .snap-note:empty:before{content:'הוסף הערה כללית על הלקוח...';color:var(--grey);}
 
-/* ---- contacts list (Monday.com-style) ---- */
+/* ---- contacts list ---- */
 .snap-contacts{margin-top:14px;padding-top:14px;border-top:1px solid var(--line);}
 .contacts-list .contact-line{text-align:right;font-size:14px;margin-bottom:10px;line-height:1.5;}
 .contacts-list .contact-line:last-child{margin-bottom:0;}
@@ -149,7 +182,7 @@ header .sub{font-size:12px;color:#B9B9BC;margin-right:auto;}
 .contacts-list .contact-line .email-link{color:var(--blue);text-decoration:none;}
 .contacts-list .contact-line .email-link:hover{text-decoration:underline;}
 
-/* ---- teams table (Monday.com-style) ---- */
+/* ---- teams table (exact TEAM/PLAN/USED/PURCHASED/ARR format, LTR columns) ---- */
 .teams-table{width:100%;border-collapse:collapse;font-size:13px;margin-top:14px;}
 .teams-table th{
   font-size:11px;text-transform:uppercase;color:var(--grey);font-weight:700;
@@ -167,7 +200,7 @@ header .sub{font-size:12px;color:#B9B9BC;margin-right:auto;}
 }
 #add-note-btn:hover{background:#e85a28;}
 .note-entry{
-  background:#fff;
+  background:var(--bg-card);
   border:1px solid var(--line);
   border-radius:8px;
   padding:14px 16px;
@@ -190,10 +223,10 @@ header .sub{font-size:12px;color:#B9B9BC;margin-right:auto;}
   background:none;border:none;color:var(--grey);font-size:13px;cursor:pointer;
   padding:3px 6px;border-radius:4px;line-height:1;
 }
-.note-controls button:hover{color:var(--orange);background:var(--bg-card);}
+.note-controls button:hover{color:var(--orange);background:var(--bg-page);}
 .note-controls button:disabled{opacity:.3;cursor:default;}
 .note-controls button:disabled:hover{color:var(--grey);background:none;}
-.note-controls .note-delete:hover{color:var(--red);background:var(--bg-card);}
+.note-controls .note-delete:hover{color:var(--red);background:var(--bg-page);}
 .note-entry .note-text{
   font-size:14px;line-height:1.6;min-height:40px;outline:none;white-space:pre-wrap;
 }
@@ -201,20 +234,26 @@ header .sub{font-size:12px;color:#B9B9BC;margin-right:auto;}
 .note-entry.collapsed .note-text{display:none;}
 .notes-empty{color:var(--grey);font-size:13px;padding:10px 0;}
 
-/* ---- side panel: diagrams ---- */
-.chart-row{display:flex;align-items:center;gap:6px;margin-bottom:7px;font-size:11px;}
-.chart-row .chart-label{width:76px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;color:var(--grey);flex-shrink:0;}
-.chart-bar-track{flex:1;background:#F1EFEA;border-radius:4px;height:9px;overflow:hidden;}
-.chart-bar-fill{height:100%;background:var(--orange);border-radius:4px;}
-.chart-bar-fill.blue{background:var(--blue);}
-.chart-value{width:44px;text-align:left;font-size:10px;color:var(--ink);font-weight:700;flex-shrink:0;}
-.side-empty{color:var(--grey);font-size:12px;font-style:italic;}
+/* ---- side panel: diagrams (Overview-style gradient pill bars) ---- */
+.chart-block{margin-bottom:14px;}
+.chart-block:last-child{margin-bottom:0;}
+.chart-row-label-line{display:flex;justify-content:space-between;align-items:baseline;font-size:12.5px;margin-bottom:5px;gap:8px;}
+.chart-row-label-line .name{font-weight:600;color:var(--ink);overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
+.chart-row-label-line .val{font-weight:800;font-size:13px;flex-shrink:0;}
+.chart-row-label-line .val.orange{color:var(--orange);}
+.chart-row-label-line .val.green{color:var(--green);}
+.chart-pill-track{height:12px;border-radius:6px;background:#F3E5D8;overflow:hidden;}
+.chart-pill-fill{height:100%;border-radius:6px;}
+.chart-pill-fill.orange{background:linear-gradient(90deg,var(--orange),var(--orange-light));}
+.chart-pill-fill.green{background:linear-gradient(90deg,var(--green),var(--green-light));}
+.chart-pct{font-size:10.5px;color:var(--grey);margin-top:4px;}
+.side-empty{color:var(--grey);font-size:12.5px;font-style:italic;}
 
 /* ---- side panel: insights + personal notes ---- */
 .flag-list{list-style:none;margin:0;padding:0;}
-.flag-list li{font-size:12px;line-height:1.5;margin-bottom:8px;color:var(--ink);}
+.flag-list li{font-size:12.5px;line-height:1.5;margin-bottom:9px;color:var(--ink);}
 .personal-note{
-  font-size:12.5px;line-height:1.55;min-height:80px;outline:none;white-space:pre-wrap;color:var(--ink);
+  font-size:13px;line-height:1.55;min-height:90px;outline:none;white-space:pre-wrap;color:var(--ink);
 }
 .personal-note:focus{background:#FFFBF8;}
 .personal-note:empty:before{content:'כתוב כאן הערות אישיות, פעולות המשך, רישיונות לטפל בהם...';color:var(--grey);}
@@ -226,11 +265,28 @@ header .sub{font-size:12px;color:#B9B9BC;margin-right:auto;}
   <span class="sub">Snapshot חי + הערות שנשארות בין פגישות, לפי חברה</span>
 </header>
 
+<div id="rich-toolbar" class="rich-toolbar">
+  <button data-cmd="bold" title="מודגש"><b>B</b></button>
+  <button data-cmd="italic" title="נטוי"><i>I</i></button>
+  <div class="rt-sep"></div>
+  <button data-cmd="dec" title="הקטן גופן">A-</button>
+  <button data-cmd="inc" title="הגדל גופן">A+</button>
+  <div class="rt-sep"></div>
+  <span class="swatch" data-color="#1C1C1E" style="background:#1C1C1E" title="שחור"></span>
+  <span class="swatch" data-color="#FF6C37" style="background:#FF6C37" title="כתום"></span>
+  <span class="swatch" data-color="#D64545" style="background:#D64545" title="אדום"></span>
+  <span class="swatch" data-color="#2E9E5B" style="background:#2E9E5B" title="ירוק"></span>
+  <span class="swatch" data-color="#3468C8" style="background:#3468C8" title="כחול"></span>
+  <span class="swatch" data-color="#8A8F98" style="background:#8A8F98" title="אפור"></span>
+  <button class="rt-save" id="rich-save-btn">Save edit</button>
+</div>
+
 <div id="tab-bar">
   <button id="add-tab-btn">+ חברה חדשה</button>
 </div>
 
 <div id="content-area">
+  <div id="company-title-wrap" style="display:none;"><h2 id="company-title"></h2></div>
   <div id="layout-row">
     <div class="side-panel" id="side-notes"></div>
     <div class="wrap" id="wrap-inner">
@@ -281,12 +337,45 @@ header .sub{font-size:12px;color:#B9B9BC;margin-right:auto;}
     return d.toLocaleDateString('he-IL', { year: 'numeric', month: '2-digit', day: '2-digit' });
   }
 
-  // Fuzzy name matching: strips spaces/hyphens/dots/underscores before comparing,
-  // so "Global E", "Global-E", "GLOBAL-E" etc. all resolve to the same record.
+  // ---- fuzzy name matching: "Global E" must resolve to "Global-E Online" ----
   function normKey(s){
     return (s || '').toLowerCase().replace(/[\s\-_.]+/g, '');
   }
+  function fuzzyEqual(a, b){
+    const na = normKey(a), nb = normKey(b);
+    if(!na || !nb) return false;
+    if(na === nb) return true;
+    if(na.length >= 3 && nb.length >= 3) return na.includes(nb) || nb.includes(na);
+    return false;
+  }
+  function findAccount(name){
+    const list = DATA.accounts || [];
+    return list.find(a => normKey(a.name) === normKey(name)) ||
+           list.find(a => fuzzyEqual(a.name, name)) || null;
+  }
+  function findUsage(name){
+    const list = DATA.usage_export || [];
+    return list.find(u => normKey(u.name) === normKey(name)) ||
+           list.find(u => fuzzyEqual(u.name, name)) || null;
+  }
+  function findByFuzzyKey(dict, name){
+    if(!dict) return null;
+    for(const key in dict){ if(normKey(key) === normKey(name)) return dict[key]; }
+    for(const key in dict){ if(fuzzyEqual(key, name)) return dict[key]; }
+    return null;
+  }
+  function findTeams(name){
+    return findByFuzzyKey(DATA.teams_by_account, name) ||
+           (findByFuzzyKey(DATA.self_serve_renewals, name) || {}).teams ||
+           [];
+  }
+  function findContacts(name){
+    return findByFuzzyKey(DATA.contacts_by_account, name) || [];
+  }
+  function fmtMoney(n){ return (n === null || n === undefined || n === '') ? '—' : '$' + Number(n).toLocaleString(); }
+  function fmtNum(n){ return (n === null || n === undefined || n === '') ? '—' : Number(n).toLocaleString(); }
 
+  // ---- tabs UI ----
   function renderTabBar(){
     const bar = document.getElementById('tab-bar');
     bar.querySelectorAll('.company-tab').forEach(el => el.remove());
@@ -340,34 +429,6 @@ header .sub{font-size:12px;color:#B9B9BC;margin-right:auto;}
     if(name && name.trim()) addTab(name);
   });
 
-  // ---- snapshot lookup (fuzzy-matched against dashboard-data.json) ----
-  function findAccount(name){
-    const target = normKey(name);
-    return (DATA.accounts || []).find(a => normKey(a.name) === target) || null;
-  }
-  function findUsage(name){
-    const target = normKey(name);
-    return (DATA.usage_export || []).find(u => normKey(u.name) === target) || null;
-  }
-  function findByFuzzyKey(dict, name){
-    if(!dict) return null;
-    const target = normKey(name);
-    for(const key in dict){
-      if(normKey(key) === target) return dict[key];
-    }
-    return null;
-  }
-  function findTeams(name){
-    return findByFuzzyKey(DATA.teams_by_account, name) ||
-           (findByFuzzyKey(DATA.self_serve_renewals, name) || {}).teams ||
-           [];
-  }
-  function findContacts(name){
-    return findByFuzzyKey(DATA.contacts_by_account, name) || [];
-  }
-  function fmtMoney(n){ return (n === null || n === undefined || n === '') ? '—' : '$' + Number(n).toLocaleString(); }
-  function fmtNum(n){ return (n === null || n === undefined || n === '') ? '—' : Number(n).toLocaleString(); }
-
   const STAT_FIELDS = [
     { key:'country',  label:'מדינה' },
     { key:'sector',   label:'סקטור' },
@@ -404,21 +465,21 @@ header .sub{font-size:12px;color:#B9B9BC;margin-right:auto;}
     let html = '<div class="snap-card">';
 
     if(!account && !usage){
-      html += '<div class="snap-hint">אין נתונים קיימים על "' + name + '" ב-Territory Command Center — כנראה לקוח/פרוספקט חדש, או שם שלא תואם בדיוק. אפשר למלא את הפרטים כאן ידנית.</div>';
+      html += '<div class="snap-hint">אין נתונים קיימים על "' + name + '" ב-Territory Command Center — כנראה לקוח/פרוספקט חדש, או שם שלא תואם. אפשר למלא את הפרטים כאן ידנית.</div>';
     }
 
     html += '<div class="stat-grid">';
     STAT_FIELDS.forEach(f=>{
       const val = (overrides[f.key] !== undefined) ? overrides[f.key] : defaults[f.key];
       html += '<div class="stat-box"><div class="label">' + f.label + '</div>' +
-              '<div class="value" contenteditable="true" data-field="' + f.key + '">' + (val || '') + '</div></div>';
+              '<div class="value rich-editable" contenteditable="true" data-field="' + f.key + '">' + (val || '') + '</div></div>';
     });
     html += '</div>';
     html += '<div class="stat-hint">שדות אלה ניתנים לעריכה — השינויים נשמרים בדפדפן הזה.</div>';
 
     const accountNotesDefault = (account && account.notes) ? account.notes.replace(/\n/g, '<br>') : '';
     const accountNotesValue = (overrides.accountNotes !== undefined) ? overrides.accountNotes : accountNotesDefault;
-    html += '<div class="snap-note" contenteditable="true" data-field="accountNotes">' + accountNotesValue + '</div>';
+    html += '<div class="snap-note rich-editable" contenteditable="true" data-field="accountNotes">' + accountNotesValue + '</div>';
 
     if(contacts.length){
       html += '<div class="snap-contacts"><div class="contacts-list">';
@@ -432,14 +493,14 @@ header .sub{font-size:12px;color:#B9B9BC;margin-right:auto;}
     }
 
     if(teams.length){
-      html += '<table class="teams-table"><thead><tr><th>ARR</th><th>Purchased</th><th>Used</th><th>Plan</th><th>Team</th></tr></thead><tbody>';
+      html += '<table class="teams-table" dir="ltr"><thead><tr><th>TEAM</th><th>PLAN</th><th>USED</th><th>PURCHASED</th><th>ARR</th></tr></thead><tbody>';
       teams.slice(0, 10).forEach(t=>{
         html += '<tr>' +
-                '<td class="cell-arr">' + fmtMoney(t.arr) + '</td>' +
-                '<td class="cell-num">' + fmtNum(t.purchased_licenses) + '</td>' +
-                '<td class="cell-num">' + fmtNum(t.used_licenses) + '</td>' +
-                '<td>' + (t.active_plan || '—') + '</td>' +
                 '<td class="cell-team">' + (t.team_name || '—') + '</td>' +
+                '<td>' + (t.active_plan || '—') + '</td>' +
+                '<td class="cell-num">' + fmtNum(t.used_licenses) + '</td>' +
+                '<td class="cell-num">' + fmtNum(t.purchased_licenses) + '</td>' +
+                '<td class="cell-arr">' + fmtMoney(t.arr) + '</td>' +
                 '</tr>';
       });
       html += '</tbody></table>';
@@ -482,7 +543,7 @@ header .sub{font-size:12px;color:#B9B9BC;margin-right:auto;}
                     '<button class="note-delete" title="מחק הערה זו">✕</button>' +
                   '</div>' +
                 '</div>' +
-                '<div class="note-text" contenteditable="true">' + (entry.text || '') + '</div>' +
+                '<div class="note-text rich-editable" contenteditable="true">' + (entry.text || '') + '</div>' +
                 '</div>';
       });
     }
@@ -557,35 +618,39 @@ header .sub{font-size:12px;color:#B9B9BC;margin-right:auto;}
     });
   }
 
-  // ---- side panel: diagrams (pulled from Territory data) ----
-  function chartRows(items, labelFn, valueFn, colorClass){
+  // ---- side panel: diagrams (Overview-style gradient pill bars) ----
+  function chartBlock(items, labelFn, valueFn, colorClass, total){
     const max = Math.max(1, ...items.map(valueFn));
     return items.map(item=>{
       const val = valueFn(item);
-      const pct = Math.max(2, Math.round((val / max) * 100));
-      return '<div class="chart-row">' +
-             '<div class="chart-label">' + labelFn(item) + '</div>' +
-             '<div class="chart-bar-track"><div class="chart-bar-fill ' + (colorClass||'') + '" style="width:' + pct + '%"></div></div>' +
-             '<div class="chart-value">' + val.toLocaleString() + '</div>' +
+      const pct = Math.max(3, Math.round((val / max) * 100));
+      const ofTotal = total ? Math.round((val / total) * 100) : null;
+      return '<div class="chart-block">' +
+             '<div class="chart-row-label-line"><span class="name">' + labelFn(item) + '</span>' +
+             '<span class="val ' + colorClass + '">' + val.toLocaleString() + '</span></div>' +
+             '<div class="chart-pill-track"><div class="chart-pill-fill ' + colorClass + '" style="width:' + pct + '%"></div></div>' +
+             (ofTotal !== null ? '<div class="chart-pct">' + ofTotal + '% מסך ה-ARR של הלקוח</div>' : '') +
              '</div>';
     }).join('');
   }
 
   function renderDiagramsPanel(name){
     const teams = findTeams(name);
+    const totalArr = teams.reduce((s,t)=> s + (t.arr || 0), 0);
+
     let html = '<div class="side-card"><h4>📊 ARR לפי Team</h4>';
-    const arrTeams = teams.filter(t => (t.arr || 0) > 0).sort((a,b)=>(b.arr||0)-(a.arr||0)).slice(0,6);
+    const arrTeams = teams.filter(t => (t.arr || 0) > 0).sort((a,b)=>(b.arr||0)-(a.arr||0)).slice(0,5);
     if(arrTeams.length){
-      html += chartRows(arrTeams, t => (t.team_name || '—'), t => Math.round(t.arr || 0), '');
+      html += chartBlock(arrTeams, t => (t.team_name || '—'), t => Math.round(t.arr || 0), 'orange', totalArr);
     } else {
       html += '<div class="side-empty">אין נתוני ARR להצגה.</div>';
     }
     html += '</div>';
 
     html += '<div class="side-card"><h4>👥 משתמשים פעילים לפי Team</h4>';
-    const usedTeams = teams.filter(t => (t.used_licenses || 0) > 0).sort((a,b)=>(b.used_licenses||0)-(a.used_licenses||0)).slice(0,6);
+    const usedTeams = teams.filter(t => (t.used_licenses || 0) > 0).sort((a,b)=>(b.used_licenses||0)-(a.used_licenses||0)).slice(0,5);
     if(usedTeams.length){
-      html += chartRows(usedTeams, t => (t.team_name || '—'), t => Math.round(t.used_licenses || 0), 'blue');
+      html += chartBlock(usedTeams, t => (t.team_name || '—'), t => Math.round(t.used_licenses || 0), 'green', null);
     } else {
       html += '<div class="side-empty">אין נתוני שימוש להצגה.</div>';
     }
@@ -622,7 +687,7 @@ header .sub{font-size:12px;color:#B9B9BC;margin-right:auto;}
 
     const personalNote = loadPersonalNote(name);
     html += '<div class="side-card"><h4>✏️ הערות אישיות</h4>' +
-            '<div class="personal-note" contenteditable="true" data-personal-note="1">' + personalNote + '</div></div>';
+            '<div class="personal-note rich-editable" contenteditable="true" data-personal-note="1">' + personalNote + '</div></div>';
     return html;
   }
 
@@ -638,16 +703,21 @@ header .sub{font-size:12px;color:#B9B9BC;margin-right:auto;}
     const wrap = document.getElementById('wrap-inner');
     const sideDiagrams = document.getElementById('side-diagrams');
     const sideNotes = document.getElementById('side-notes');
+    const titleWrap = document.getElementById('company-title-wrap');
+    const titleEl = document.getElementById('company-title');
+
     if(!activeTab){
+      titleWrap.style.display = 'none';
       wrap.innerHTML = '<div class="empty-state">לחץ על "+ חברה חדשה" כדי להתחיל תיעוד פגישה.</div>';
       sideDiagrams.innerHTML = '';
       sideNotes.innerHTML = '';
       return;
     }
-    let html = '<div class="company-header"><h2>' + activeTab + '</h2></div>';
-    html += renderSnapshotCard(activeTab);
-    html += renderNotesSection(activeTab);
-    wrap.innerHTML = html;
+
+    titleWrap.style.display = 'block';
+    titleEl.textContent = activeTab;
+
+    wrap.innerHTML = renderSnapshotCard(activeTab) + renderNotesSection(activeTab);
     wireSnapshotCard(activeTab);
     wireNotesSection(activeTab);
 
@@ -655,6 +725,42 @@ header .sub{font-size:12px;color:#B9B9BC;margin-right:auto;}
     sideNotes.innerHTML = renderInsightsPanel(activeTab);
     wireInsightsPanel(activeTab);
   }
+
+  // ---- shared rich-text edit toolbar ----
+  (function setupRichToolbar(){
+    const toolbar = document.getElementById('rich-toolbar');
+    let currentEditable = null;
+
+    toolbar.addEventListener('mousedown', e => e.preventDefault());
+
+    toolbar.querySelectorAll('button[data-cmd]').forEach(btn=>{
+      btn.addEventListener('click', ()=>{
+        const cmd = btn.dataset.cmd;
+        if(cmd === 'bold') document.execCommand('bold');
+        else if(cmd === 'italic') document.execCommand('italic');
+        else if(cmd === 'dec') document.execCommand('fontSize', false, '2');
+        else if(cmd === 'inc') document.execCommand('fontSize', false, '5');
+      });
+    });
+    toolbar.querySelectorAll('.swatch').forEach(sw=>{
+      sw.addEventListener('click', ()=>{
+        document.execCommand('foreColor', false, sw.dataset.color);
+      });
+    });
+    document.getElementById('rich-save-btn').addEventListener('click', ()=>{
+      if(currentEditable) currentEditable.blur();
+      toolbar.style.display = 'none';
+    });
+
+    document.addEventListener('focusin', (e)=>{
+      if(e.target.classList && e.target.classList.contains('rich-editable')){
+        currentEditable = e.target;
+        toolbar.style.display = 'flex';
+      } else if(!toolbar.contains(e.target)){
+        toolbar.style.display = 'none';
+      }
+    });
+  })();
 
   async function init(){
     try{
