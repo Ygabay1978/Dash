@@ -171,16 +171,17 @@ header .sub{font-size:12px;color:#B9B9BC;margin-right:auto;}
 .snap-note:empty:before{content:'הוסף הערה כללית על הלקוח...';color:var(--grey);}
 .snap-note-wrap{margin-top:14px;padding-top:14px;border-top:1px solid var(--line);}
 
-/* ---- CRM-style tables (exact Check Point format) ---- */
+/* ---- CRM-style tables (scrollable, full list) ---- */
 .snap-contacts,.snap-teams{margin-top:16px;padding-top:16px;border-top:1px solid var(--line);}
 .snap-contacts h5,.snap-teams h5{font-size:12px;font-weight:800;color:var(--ink);margin:0 0 10px;}
-.table-scroll{overflow-x:auto;}
+.table-scroll{overflow-x:auto;overflow-y:auto;max-height:360px;border:1px solid var(--line);border-radius:8px;}
 .crm-table{width:100%;border-collapse:collapse;font-size:12.5px;white-space:nowrap;}
+.crm-table thead th{position:sticky;top:0;z-index:1;}
 .crm-table th{
   font-size:10.5px;text-transform:uppercase;color:var(--grey);font-weight:700;
   text-align:left;padding:8px 10px;border-bottom:2px solid var(--line);background:var(--bg-page);
 }
-.crm-table td{padding:9px 10px;text-align:left;border-bottom:1px solid var(--line);}
+.crm-table td{padding:9px 10px;text-align:left;border-bottom:1px solid var(--line);background:#fff;}
 .crm-table .cell-arr{font-weight:700;color:var(--ink);}
 .crm-table .cell-link{color:var(--blue);font-weight:600;}
 .crm-table a{color:var(--blue);text-decoration:none;}
@@ -190,7 +191,7 @@ header .sub{font-size:12px;color:#B9B9BC;margin-right:auto;}
 .status-pill.delinquent{background:#FBE0E0;color:#B23B3B;}
 .status-pill.other{background:#EFEFEF;color:var(--grey);}
 .contact-dot{display:inline-block;width:7px;height:7px;border-radius:50%;background:var(--green);margin-left:6px;vertical-align:middle;}
-.champion-badge{display:block;background:#FFE9B8;color:#8A5A00;font-size:9.5px;font-weight:800;padding:1px 7px;border-radius:9px;margin-top:3px;width:fit-content;}
+.champion-badge{display:inline-block;background:#FFE9B8;color:#8A5A00;font-size:9.5px;font-weight:800;padding:1px 7px;border-radius:9px;margin-right:6px;}
 
 .notes-section h3{font-size:15px;margin:0 0 12px;}
 #add-note-btn{
@@ -245,11 +246,14 @@ header .sub{font-size:12px;color:#B9B9BC;margin-right:auto;}
 .chart-row-label-line .val{font-weight:800;font-size:13px;flex-shrink:0;}
 .chart-row-label-line .val.orange{color:var(--orange);}
 .chart-row-label-line .val.green{color:var(--green);}
-.chart-pill-track{height:12px;border-radius:6px;background:#F3E5D8;overflow:hidden;}
-.chart-pill-fill{height:100%;border-radius:6px;}
+.chart-pill-track{height:12px;border-radius:6px;background:#F3E5D8;overflow:hidden;position:relative;}
+.chart-pill-fill{height:100%;border-radius:6px;position:absolute;top:0;right:0;}
 .chart-pill-fill.orange{background:linear-gradient(90deg,var(--orange),var(--orange-light));}
-.chart-pill-fill.green{background:linear-gradient(90deg,var(--green),var(--green-light));}
+.chart-pill-fill.green{background:linear-gradient(90deg,var(--green),var(--green-light));z-index:2;}
+.chart-pill-fill.purchased-overlay{background:rgba(46,158,91,0.25);z-index:1;}
 .chart-pct{font-size:10.5px;color:var(--grey);margin-top:4px;}
+.chart-legend{display:flex;gap:12px;font-size:10px;color:var(--grey);margin-bottom:8px;}
+.chart-legend .dot{display:inline-block;width:8px;height:8px;border-radius:2px;margin-left:4px;vertical-align:middle;}
 .side-empty{color:var(--grey);font-size:12.5px;font-style:italic;}
 
 /* ---- side panel: insights + personal notes ---- */
@@ -261,15 +265,14 @@ header .sub{font-size:12px;color:#B9B9BC;margin-right:auto;}
 .personal-note:focus{background:#FFFBF8;}
 .personal-note:empty:before{content:'כתוב כאן הערות אישיות, פעולות המשך, רישיונות לטפל בהם...';color:var(--grey);}
 
-/* ---- translate modal ---- */
+/* ---- translate / english-summary modal ---- */
 .modal-overlay{position:fixed;inset:0;background:rgba(0,0,0,.45);z-index:9999;display:none;align-items:center;justify-content:center;}
 .modal-overlay.open{display:flex;}
-.modal-box{background:#fff;border-radius:12px;max-width:700px;width:90%;max-height:80vh;overflow-y:auto;padding:20px 24px;direction:ltr;text-align:left;box-shadow:0 20px 60px rgba(0,0,0,.3);}
+.modal-box{background:#fff;border-radius:12px;max-width:800px;width:92%;max-height:85vh;overflow-y:auto;padding:20px 24px;direction:ltr;text-align:left;box-shadow:0 20px 60px rgba(0,0,0,.3);}
 .modal-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:14px;border-bottom:1px solid var(--line);padding-bottom:10px;}
 .modal-header span{font-weight:800;font-size:16px;color:var(--ink);}
 .modal-header button{background:none;border:none;font-size:18px;cursor:pointer;color:var(--grey);}
-.modal-body{font-size:14px;line-height:1.7;color:var(--ink);white-space:pre-wrap;}
-.modal-body a{color:var(--blue);}
+#translate-modal .rich-editable{min-height:340px;font-size:14px;}
 </style>
 </head>
 <body>
@@ -293,11 +296,11 @@ header .sub{font-size:12px;color:#B9B9BC;margin-right:auto;}
   </div>
 </div>
 
-<!-- translate modal -->
+<!-- english summary modal -->
 <div class="modal-overlay" id="translate-modal">
   <div class="modal-box">
-    <div class="modal-header"><span>Translation (EN)</span><button id="translate-modal-close">✕</button></div>
-    <div class="modal-body" id="translate-modal-body">Translating...</div>
+    <div class="modal-header"><span>סיכום באנגלית — English Summary</span><button id="translate-modal-close">✕</button></div>
+    <div class="modal-body" id="translate-modal-body"></div>
   </div>
 </div>
 
@@ -346,6 +349,15 @@ header .sub{font-size:12px;color:#B9B9BC;margin-right:auto;}
       if(obj[k] !== undefined && obj[k] !== null && obj[k] !== '') return obj[k];
     }
     return fallback;
+  }
+  function looksLikePerson(name){
+    if(!name) return false;
+    const n = String(name).trim();
+    if(!n) return false;
+    if(/@/.test(n)) return false;
+    const generic = /^(billing|accounts?( payable)?|finance( team)?|procurement|support|admin|info|it( team)?|noreply|helpdesk|ap|purchasing|legal|security( team)?|accounting)$/i;
+    if(generic.test(n)) return false;
+    return true;
   }
 
   // ---- fuzzy name matching ----
@@ -497,8 +509,8 @@ header .sub{font-size:12px;color:#B9B9BC;margin-right:auto;}
   function renderSnapshotCard(name){
     const account = findAccount(name);
     const usage = findUsage(name);
-    const teams = findTeams(name);
-    const contacts = findContacts(name);
+    const allTeams = findTeams(name).slice().sort((a,b)=>(b.arr||0)-(a.arr||0));
+    const contacts = findContacts(name).filter(c => looksLikePerson(c.name));
     const overrides = loadOverrides(name);
     const defaults = defaultStatValues(account, usage);
 
@@ -523,21 +535,20 @@ header .sub{font-size:12px;color:#B9B9BC;margin-right:auto;}
 
     if(contacts.length){
       html += '<div class="snap-contacts"><h5>Key Contacts (' + contacts.length + ')</h5><div class="table-scroll">';
-      html += '<table class="crm-table" dir="ltr"><thead><tr><th>NAME</th><th>TEAM</th><th>TITLE</th><th>EMAIL</th><th>MOBILE</th><th>OFFICE</th><th>LINKEDIN</th><th>OUTREACH</th></tr></thead><tbody>';
-      contacts.slice(0, 12).forEach(c=>{
+      html += '<table class="crm-table" dir="ltr"><thead><tr><th>NAME</th><th>TEAM</th><th>TITLE</th><th>EMAIL</th><th>MOBILE</th><th>LINKEDIN</th><th>OUTREACH</th></tr></thead><tbody>';
+      contacts.forEach(c=>{
         const isChampion = pick(c, ['champion','is_champion'], false) === true ||
                             /champion/i.test(pick(c, ['tag','role_type'], ''));
         const linkedin = pick(c, ['linkedin','linkedin_url'], null);
         const outreach = pick(c, ['outreach','outreach_status'], null) ||
-                          (c.outreach_sent !== undefined ? (c.outreach_sent + ' sent / ' + (c.outreach_replied || 0) + ' replied') : 'not checked');
+                          (c.outreach_sent !== undefined ? (c.outreach_sent + ' sent / ' + (c.outreach_replied || 0) + ' replied') :
+                          (c.reached_out === true ? 'Reached out' : (c.already_sent_real === true ? 'Email sent' : 'Not contacted')));
         html += '<tr>' +
-                '<td><span class="contact-dot"></span><b>' + (c.name || '') + '</b>' +
-                (isChampion ? '<span class="champion-badge">★ CHAMPION</span>' : '') + '</td>' +
+                '<td><span class="contact-dot"></span>' + (isChampion ? '<span class="champion-badge">★ CHAMPION</span>' : '') + '<b>' + (c.name || '') + '</b></td>' +
                 '<td>' + pick(c, ['team','team_name'], '—') + '</td>' +
                 '<td>' + (c.title || '—') + '</td>' +
                 '<td>' + (c.email ? '<a href="mailto:' + c.email + '">' + c.email + '</a>' : '—') + '</td>' +
-                '<td>' + pick(c, ['mobile','phone_mobile','cell'], '-') + '</td>' +
-                '<td>' + pick(c, ['office','phone_office','office_phone'], '-') + '</td>' +
+                '<td>' + pick(c, ['mobile_phone','mobile','phone_mobile','cell'], '-') + '</td>' +
                 '<td>' + (linkedin ? '<a href="' + linkedin + '" target="_blank">profile</a>' : '-') + '</td>' +
                 '<td>' + outreach + '</td>' +
                 '</tr>';
@@ -545,12 +556,12 @@ header .sub{font-size:12px;color:#B9B9BC;margin-right:auto;}
       html += '</tbody></table></div></div>';
     }
 
-    if(teams.length){
-      html += '<div class="snap-teams"><h5>Postman teams (' + teams.length + ')</h5><div class="table-scroll">';
+    if(allTeams.length){
+      html += '<div class="snap-teams"><h5>Postman teams (' + allTeams.length + ')</h5><div class="table-scroll">';
       html += '<table class="crm-table" dir="ltr"><thead><tr><th>TEAM</th><th>CHILD CO.</th><th>PLAN</th><th>ARR</th><th>RENEWAL</th><th>SELF-SERVE</th><th>STATUS</th></tr></thead><tbody>';
-      teams.slice(0, 15).forEach(t=>{
-        const childCo = pick(t, ['child_co','childCompany','child'], '-');
-        const renewal = pick(t, ['renewal','renewal_date','renewalDate'], '—');
+      allTeams.forEach(t=>{
+        const childCo = pick(t, ['child_company','child_co','childCompany','child'], '-');
+        const renewal = pick(t, ['renewal_date','renewal','renewalDate'], '—');
         let selfServeRaw = pick(t, ['self_serve','selfServe'], null);
         let selfServe = '—';
         if(selfServeRaw !== null){
@@ -563,7 +574,7 @@ header .sub{font-size:12px;color:#B9B9BC;margin-right:auto;}
                 '<td class="cell-arr">' + fmtMoney(t.arr) + '</td>' +
                 '<td>' + renewal + '</td>' +
                 '<td>' + selfServe + '</td>' +
-                '<td>' + statusPillHTML(t.status) + '</td>' +
+                '<td>' + statusPillHTML(pick(t, ['plan_state','status'], null)) + '</td>' +
                 '</tr>';
       });
       html += '</tbody></table></div></div>';
@@ -608,7 +619,7 @@ header .sub{font-size:12px;color:#B9B9BC;margin-right:auto;}
                 '<div class="note-header">' +
                   '<input class="note-date" value="' + (entry.date || '') + '">' +
                   '<div class="note-controls">' +
-                    '<button class="note-eng" title="תרגום לאנגלית">ENG</button>' +
+                    '<button class="note-eng" title="סיכום באנגלית">ENG</button>' +
                     '<button class="note-toggle" title="מזער/הרחב">' + (collapsed ? '▸' : '▾') + '</button>' +
                     '<button class="note-up" title="הזז מעלה"' + (i === 0 ? ' disabled' : '') + '>▲</button>' +
                     '<button class="note-down" title="הזז מטה"' + (i === entries.length - 1 ? ' disabled' : '') + '>▼</button>' +
@@ -626,7 +637,7 @@ header .sub{font-size:12px;color:#B9B9BC;margin-right:auto;}
   function wireNotesSection(name){
     document.getElementById('add-note-btn').addEventListener('click', ()=>{
       const entries = loadEntries(name);
-      entries.unshift({ date: todayStr(), text: '', collapsed: false });
+      entries.unshift({ date: todayStr(), text: '', textEn: '', collapsed: false });
       saveEntries(name, entries);
       renderContent();
       const firstText = document.querySelector('.note-entry .note-text');
@@ -691,7 +702,7 @@ header .sub{font-size:12px;color:#B9B9BC;margin-right:auto;}
       });
 
       engBtn.addEventListener('click', ()=>{
-        openTranslateModal(textDiv.innerText || textDiv.textContent || '');
+        openEnglishModal(name, idx);
       });
     });
   }
@@ -712,6 +723,28 @@ header .sub{font-size:12px;color:#B9B9BC;margin-right:auto;}
     }).join('');
   }
 
+  function usageChartBlock(items){
+    const max = Math.max(1, ...items.map(t => Math.max(t.used_licenses || 0, t.purchased_licenses || 0)));
+    return items.map(t=>{
+      const used = t.used_licenses || 0;
+      const purchased = t.purchased_licenses || 0;
+      const usedPct = Math.max(3, Math.round((used / max) * 100));
+      const purchasedPct = purchased > 0 ? Math.max(usedPct, Math.round((purchased / max) * 100)) : 0;
+      const occupancy = purchased > 0 ? Math.round((used / purchased) * 100) : null;
+      return '<div class="chart-block">' +
+             '<div class="chart-row-label-line"><span class="name">' + (t.team_name || '—') + '</span>' +
+             '<span class="val green">' + used.toLocaleString() + '</span></div>' +
+             '<div class="chart-pill-track">' +
+               (purchasedPct > 0 ? '<div class="chart-pill-fill purchased-overlay" style="width:' + purchasedPct + '%"></div>' : '') +
+               '<div class="chart-pill-fill green" style="width:' + usedPct + '%"></div>' +
+             '</div>' +
+             '<div class="chart-pct">' +
+               (purchased > 0 ? purchased.toLocaleString() + ' נרכשו · תפוסה: ' + occupancy + '%' : 'ללא הגבלת רישיונות (Free)') +
+             '</div>' +
+             '</div>';
+    }).join('');
+  }
+
   function renderDiagramsPanel(name){
     const teams = findTeams(name);
     const totalArr = teams.reduce((s,t)=> s + (t.arr || 0), 0);
@@ -726,9 +759,11 @@ header .sub{font-size:12px;color:#B9B9BC;margin-right:auto;}
     html += '</div>';
 
     html += '<div class="side-card"><h4>👥 משתמשים פעילים לפי Team</h4>';
-    const usedTeams = teams.filter(t => (t.used_licenses || 0) > 0).sort((a,b)=>(b.used_licenses||0)-(a.used_licenses||0)).slice(0,5);
+    const usedTeams = teams.filter(t => (t.used_licenses || 0) > 0).sort((a,b)=>(b.used_licenses||0)-(a.used_licenses||0)).slice(0,6);
     if(usedTeams.length){
-      html += chartBlock(usedTeams, t => (t.team_name || '—'), t => Math.round(t.used_licenses || 0), 'green', null);
+      html += '<div class="chart-legend"><span><span class="dot" style="background:linear-gradient(90deg,var(--green),var(--green-light));background-color:#2E9E5B;"></span>Used</span>' +
+              '<span><span class="dot" style="background:rgba(46,158,91,0.25);"></span>Purchased</span></div>';
+      html += usageChartBlock(usedTeams);
     } else {
       html += '<div class="side-empty">אין נתוני שימוש להצגה.</div>';
     }
@@ -740,7 +775,7 @@ header .sub{font-size:12px;color:#B9B9BC;margin-right:auto;}
   function computeActionFlags(teams){
     const flags = [];
     teams.forEach(t=>{
-      const status = (t.status || '').toLowerCase();
+      const status = (pick(t, ['plan_state','status'], '') || '').toLowerCase();
       const plan = (t.active_plan || '').toLowerCase();
       if(status === 'delinquent'){
         flags.push('⚠️ <b>' + (t.team_name || 'Team') + '</b> — סטטוס Delinquent, דורש טיפול בחשבונית/תשלום.');
@@ -803,7 +838,7 @@ header .sub{font-size:12px;color:#B9B9BC;margin-right:auto;}
     wireInsightsPanel(activeTab);
   }
 
-  // ---- mini-toolbar behavior (event delegation, works on any .edit-block rendered anywhere) ----
+  // ---- mini-toolbar behavior (event delegation, works on any .edit-block rendered anywhere, including inside the modal) ----
   document.addEventListener('mousedown', (e)=>{
     if(e.target.closest('.mini-toolbar')) e.preventDefault();
   });
@@ -837,7 +872,7 @@ header .sub{font-size:12px;color:#B9B9BC;margin-right:auto;}
     }
   });
 
-  // ---- translate modal ----
+  // ---- English summary modal: manual textbox, no auto-translate ----
   const translateModal = document.getElementById('translate-modal');
   const translateModalBody = document.getElementById('translate-modal-body');
   document.getElementById('translate-modal-close').addEventListener('click', ()=>{
@@ -847,32 +882,21 @@ header .sub{font-size:12px;color:#B9B9BC;margin-right:auto;}
     if(e.target === translateModal) translateModal.classList.remove('open');
   });
 
-  async function translateText(text){
-    const plain = text.replace(/<[^>]+>/g, ' ').replace(/\s+/g, ' ').trim();
-    if(!plain) return '(no text)';
-    try{
-      const url = 'https://translate.googleapis.com/translate_a/single?client=gtx&sl=he&tl=en&dt=t&q=' + encodeURIComponent(plain);
-      const res = await fetch(url);
-      if(!res.ok) throw new Error('bad status ' + res.status);
-      const data = await res.json();
-      return data[0].map(seg => seg[0]).join('');
-    }catch(e){
-      console.error('translate failed', e);
-      return null;
-    }
-  }
-
-  window.openTranslateModal = function(rawText){
+  window.openEnglishModal = function(name, idx){
+    const entries = loadEntries(name);
+    const entry = entries[idx];
+    if(!entry) return;
+    translateModalBody.innerHTML = editBlock(entry.textEn || '', 'translate-editor');
     translateModal.classList.add('open');
-    translateModalBody.textContent = 'Translating...';
-    translateText(rawText).then(result=>{
-      if(result){
-        translateModalBody.textContent = result;
-      } else {
-        const url = 'https://translate.google.com/?sl=he&tl=en&text=' + encodeURIComponent(rawText.replace(/<[^>]+>/g,' ')) + '&op=translate';
-        translateModalBody.innerHTML = 'Could not translate directly on the page (network/CORS blocked). Open in Google Translate instead: <br><br><a href="' + url + '" target="_blank">Open in Google Translate →</a>';
+    const editor = translateModalBody.querySelector('.rich-editable');
+    editor.addEventListener('blur', ()=>{
+      const freshEntries = loadEntries(name);
+      if(freshEntries[idx]){
+        freshEntries[idx].textEn = editor.innerHTML;
+        saveEntries(name, freshEntries);
       }
     });
+    setTimeout(()=> editor.focus(), 0);
   };
 
   async function init(){
