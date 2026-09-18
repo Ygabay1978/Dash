@@ -163,7 +163,7 @@ header{display:flex; align-items:center; justify-content:space-between; padding:
 /* Modal */
 .modal-overlay{display:none; position:fixed; inset:0; background:rgba(26,26,46,.5); z-index:100; align-items:center; justify-content:center;}
 .modal-overlay.open{display:flex;}
-.modal-box{background:#fff; border-radius:12px; max-width:900px; width:92%; max-height:88vh; overflow-y:auto; padding:22px 26px; position:relative;}
+.modal-box{background:#fff; border-radius:12px; max-width:1200px; width:96%; max-height:92vh; overflow-y:auto; padding:22px 26px; position:relative;}
 .modal-close{position:absolute; top:14px; right:16px; cursor:pointer; font-size:20px; color:var(--gray); background:none; border:none;}
 .modal-box h2{font-size:18px; margin-bottom:4px;}
 .modal-section{margin-top:14px; padding-top:12px; border-top:1px solid var(--line);}
@@ -1007,17 +1007,19 @@ function drawUsageBody(){
                 </div>
                 <table class="resizable-table" style="font-size:11px; width:100%;">
                   <thead><tr>
-                    <th style="width:32px;">#</th><th>Team</th><th>Child Co.</th><th>Pricing Plan</th><th>Status</th><th>Purchased</th><th>Used</th><th>Occupancy</th><th>ARR</th><th>Renewal</th><th>Self-Serve</th><th>Billing Method</th><th>SFDC</th>
+                    <th style="width:32px;">#</th><th>Team</th><th>Team ID</th><th>Child Co.</th><th>Pricing Plan</th><th>Status</th><th>Purchased</th><th>Used</th><th>Occupancy</th><th>ARR</th><th>Renewal</th><th>Self-Serve</th><th>Billing Method</th><th>SFDC</th>
                   </tr></thead>
                   <tbody>${cg.teams.slice().sort((a,b)=>{
                     const rtA = realByName[a.team_name], rtB = realByName[b.team_name];
                     return ((rtB&&rtB.arr)||0)-((rtA&&rtA.arr)||0) || (b.purchased_licenses||0)-(a.purchased_licenses||0);
                   }).map((t,ti)=>{
                     const rt = realByName[t.team_name];
+                    const teamId = t.team_id || (t.team_url ? t.team_url.split('/').pop() : null);
                     return `
                     <tr>
                       <td class="muted">${ti+1}</td>
                       <td><b>${t.team_name||'-'}</b></td>
+                      <td class="muted" style="font-family:monospace; font-size:10px;">${teamId||'-'}</td>
                       <td class="muted">${cg.is_parent_itself ? '-' : cg.child_name}</td>
                       <td class="muted">${rt && rt.active_plan ? rt.active_plan : (t.pricing_plan||'Free')}</td>
                       <td><span class="tag ${t.plan_state==='Delinquent'?'tag-stale':'tag-ok'}">${t.plan_state||'-'}</span></td>
@@ -1445,14 +1447,13 @@ async function openAccountModal(name){
   }
 
   if(contacts && contacts.length){
-    const teamOpts = accountTeamOptions(name);
     const keyContacts = contacts.filter(c => isChampion(name, c.name, c.champion) || isMarkedRelevant(name, c.name, c.marked_relevant));
     html += `<div class="card" style="padding:0;">
-      <h3 style="padding:16px 18px 0;">Contacts &mdash; Champions &amp; Relevant (${keyContacts.length} of ${contacts.length})</h3>
-      <p class="muted" style="padding:4px 18px 0; font-size:11px;">Only contacts marked Champion or Relevant show here. Mark more from the Contacts tab, or right here.</p>
-      ${keyContacts.length ? `<div class="table-scroll" style="max-height:320px; margin-top:10px;"><table class="resizable-table" style="font-size:11.5px;">
-      <colgroup><col style="width:80px;"><col style="width:80px;"><col style="width:90px;"><col style="width:170px;"><col style="width:110px;"><col style="width:130px;"><col style="width:130px;"><col style="width:130px;"><col style="width:130px;"><col style="width:130px;"><col style="width:130px;"></colgroup>
-      <thead><tr><th>Champion</th><th>Relevant</th><th>Not relevant</th><th>Name</th><th>Team</th><th>Title</th><th>Email</th><th>Mobile</th><th>Office</th><th>LinkedIn</th><th>Outreach</th></tr></thead>
+      <h3 style="padding:16px 18px 0;">Key Contacts (${keyContacts.length} of ${contacts.length})</h3>
+      <p class="muted" style="padding:4px 18px 0; font-size:11px;">Contacts marked Champion or Relevant in the Contacts tab.</p>
+      ${keyContacts.length ? `<div class="table-scroll" style="max-height:280px; margin-top:10px;"><table class="resizable-table" style="font-size:11.5px;">
+      <colgroup><col style="width:170px;"><col style="width:100px;"><col style="width:130px;"><col style="width:130px;"><col style="width:130px;"><col style="width:130px;"><col style="width:130px;"><col style="width:130px;"></colgroup>
+      <thead><tr><th>Name</th><th>Team</th><th>Title</th><th>Email</th><th>Mobile</th><th>Office</th><th>LinkedIn</th><th>Outreach</th></tr></thead>
       <tbody>${keyContacts.map(c=>{
         const s = c.email ? stats[c.email.toLowerCase()] : null;
         const legacyPhone = (!c.mobile_phone && !c.office_phone && !c.hq_phone && c.phone) ? (String(c.phone) + (c.phone_suspect?' &#9888;':'')) : '';
@@ -1461,18 +1462,9 @@ async function openAccountModal(name){
         const champ = isChampion(name, c.name, c.champion);
         const relMarked = isMarkedRelevant(name, c.name, c.marked_relevant);
         const curTeam = getContactTeam(name, c.name, c.team);
-        const teamCell = teamOpts.length > 1
-          ? `<select style="font-size:11px; padding:2px 4px;" onchange="toggleModalMark(this)" data-acct="${escAttr(name)}" data-contact="${escAttr(c.name)}" data-kind="team">
-               <option value=""${curTeam?'':' selected'}>&mdash;</option>
-               ${teamOpts.map(t=>`<option value="${escAttr(t)}"${t===curTeam?' selected':''}>${t}</option>`).join('')}
-             </select>`
-          : (curTeam ? curTeam : '<span class="muted">-</span>');
-        return `<tr class="${champ?'champion-row':(relMarked?'relevant-marked-row':'')}">
-          <td style="text-align:center;"><input type="checkbox" class="champion-checkbox" ${champ?'checked':''} data-acct="${escAttr(name)}" data-contact="${escAttr(c.name)}" data-kind="champion" onchange="toggleModalMark(this)"></td>
-          <td style="text-align:center;"><input type="checkbox" class="relevant-checkbox" ${relMarked?'checked':''} data-acct="${escAttr(name)}" data-contact="${escAttr(c.name)}" data-kind="relevant" onchange="toggleModalMark(this)"></td>
-          <td style="text-align:center;"><input type="checkbox" class="nr-checkbox" data-acct="${escAttr(name)}" data-contact="${escAttr(c.name)}" data-kind="not_relevant" onchange="toggleModalMark(this)"></td>
+        return `<tr>
           <td>${dot}<b>${c.name}</b>${champ?' <span class="tag-champion">&#9733; CHAMPION</span>':''}${relMarked?' <span class="tag-relevant-marked">RELEVANT</span>':''}</td>
-          <td>${teamCell}</td>
+          <td class="muted">${curTeam || '-'}</td>
           <td class="muted">${c.title||'-'}</td>
           <td>${c.email||'-'}</td>
           <td>${c.mobile_phone||(legacyPhone?legacyPhone:'-')}</td>
@@ -1480,7 +1472,7 @@ async function openAccountModal(name){
           <td>${c.linkedin_url?`<a href="${escAttr(c.linkedin_url)}" target="_blank" style="color:var(--orange-dark);">Profile</a>`:'-'}</td>
           <td>${outreach}</td>
         </tr>`;
-      }).join('')}</tbody></table></div>` : `<p class="muted" style="padding:0 18px 16px;">No one marked Champion or Relevant yet for this account.</p>`}
+      }).join('')}</tbody></table></div>` : `<p class="muted" style="padding:0 18px 16px;">No one marked Champion or Relevant yet for this account &mdash; do that from the Contacts tab.</p>`}
     </div>`;
   }
 
