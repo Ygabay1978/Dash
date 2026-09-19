@@ -121,6 +121,12 @@ header .sub{font-size:12px;color:#B9B9BC;margin-right:auto;}
 #search-results{max-height:260px;overflow-y:auto;}
 #search-results .search-result-item{
   padding:7px 8px;border-radius:6px;cursor:pointer;font-size:13px;
+  display:flex;align-items:center;justify-content:space-between;gap:8px;
+}
+#search-results .search-count{
+  background:var(--orange);color:#fff;font-size:10.5px;font-weight:700;
+  border-radius:10px;min-width:18px;height:18px;line-height:18px;text-align:center;
+  padding:0 5px;flex-shrink:0;
 }
 #search-results .search-result-item:hover{background:var(--bg-page);color:var(--orange);}
 #search-results .search-empty{color:var(--grey);font-size:12.5px;padding:6px 4px;}
@@ -450,6 +456,35 @@ header .sub{font-size:12px;color:#B9B9BC;margin-right:auto;}
     return null;
   }
   function findTeams(name){
+    // team_breakdown_by_account is the complete source (paid + free teams, split by
+    // child company) — it's what postman_teams counts add up to. teams_by_account
+    // only ever lists the paying team(s), so use it as a supplement for renewal_date
+    // and self_serve (fields the breakdown doesn't carry per-team), not as the primary list.
+    const breakdown = findByFuzzyKey(DATA.team_breakdown_by_account, name);
+    if(breakdown && Array.isArray(breakdown.child_groups) && breakdown.child_groups.length){
+      const flatByName = {};
+      (findByFuzzyKey(DATA.teams_by_account, name) || []).forEach(t=>{ flatByName[t.team_name] = t; });
+      const rows = [];
+      breakdown.child_groups.forEach(g=>{
+        const childCo = g.is_parent_itself ? null : (g.child_name || null);
+        (g.teams || []).forEach(t=>{
+          const extra = flatByName[t.team_name] || {};
+          const isFree = (t.pricing_plan || '').toLowerCase() === 'free';
+          rows.push({
+            team_name: t.team_name,
+            child_company: childCo,
+            active_plan: t.pricing_plan || extra.active_plan,
+            plan_state: t.plan_state || extra.plan_state,
+            arr: (extra.arr !== undefined ? extra.arr : (isFree ? 0 : null)),
+            renewal_date: extra.renewal_date || null,
+            self_serve: extra.self_serve || null,
+            purchased_licenses: t.purchased_licenses,
+            used_licenses: t.used_licenses
+          });
+        });
+      });
+      return rows;
+    }
     return findByFuzzyKey(DATA.teams_by_account, name) ||
            (findByFuzzyKey(DATA.self_serve_renewals, name) || {}).teams ||
            [];
@@ -554,6 +589,14 @@ header .sub{font-size:12px;color:#B9B9BC;margin-right:auto;}
     const input = document.getElementById('search-input');
     const results = document.getElementById('search-results');
 
+    function noteCountFor(accountName){
+      // notes are stored under whichever tab-name key was actually used (which may
+      // differ from the official account name, e.g. "Global E" vs "Global-E Online"),
+      // so check any already-open tab that fuzzy-matches this account first.
+      const matchingTab = tabs.find(t => normKey(t) === normKey(accountName) || fuzzyEqual(t, accountName));
+      return loadEntries(matchingTab || accountName).length;
+    }
+
     function renderResults(query){
       const q = (query || '').trim().toLowerCase();
       const accounts = (DATA && DATA.accounts) ? DATA.accounts : [];
@@ -564,7 +607,13 @@ header .sub{font-size:12px;color:#B9B9BC;margin-right:auto;}
         results.innerHTML = '<div class="search-empty">לא נמצאה חברה תואמת.</div>';
         return;
       }
-      results.innerHTML = matches.map(a => '<div class="search-result-item" data-name="' + a.name.replace(/"/g,'&quot;') + '">' + a.name + '</div>').join('');
+      results.innerHTML = matches.map(a=>{
+        const count = noteCountFor(a.name);
+        return '<div class="search-result-item" data-name="' + a.name.replace(/"/g,'&quot;') + '">' +
+               '<span>' + a.name + '</span>' +
+               (count > 0 ? '<span class="search-count">' + count + '</span>' : '') +
+               '</div>';
+      }).join('');
       results.querySelectorAll('.search-result-item').forEach(item=>{
         item.addEventListener('click', ()=>{
           addTab(item.dataset.name);
