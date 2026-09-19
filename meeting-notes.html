@@ -143,8 +143,21 @@ header .sub{font-size:12px;color:#B9B9BC;margin-right:auto;}
 #company-title-wrap{
   max-width:1360px;margin:0 auto 20px;text-align:center;
   padding-bottom:16px;border-bottom:1px solid var(--line);
+  display:flex;align-items:center;justify-content:center;gap:12px;
 }
 #company-title{font-size:26px;margin:0;color:var(--orange);font-weight:800;}
+.company-logo-wrap{position:relative;width:44px;height:44px;flex-shrink:0;}
+.company-logo-wrap img{width:44px;height:44px;object-fit:contain;border-radius:8px;background:#fff;border:1px solid var(--line);display:block;}
+.company-logo-wrap .logo-fallback{
+  width:44px;height:44px;border-radius:8px;background:var(--orange);color:#fff;
+  display:flex;align-items:center;justify-content:center;font-weight:800;font-size:18px;
+}
+.company-logo-edit-btn{
+  position:absolute;bottom:-5px;left:-5px;width:19px;height:19px;border-radius:50%;
+  background:#fff;border:1px solid var(--line);font-size:10px;cursor:pointer;
+  display:flex;align-items:center;justify-content:center;padding:0;color:var(--grey);
+}
+.company-logo-edit-btn:hover{border-color:var(--orange);color:var(--orange);}
 #layout-row{
   display:flex;
   gap:20px;
@@ -178,7 +191,7 @@ header .sub{font-size:12px;color:#B9B9BC;margin-right:auto;}
 .snap-hint{color:var(--grey);font-size:12.5px;margin-bottom:12px;font-style:italic;}
 
 /* ---- editable stat boxes ---- */
-.stat-grid{display:grid;grid-template-columns:repeat(auto-fill, minmax(118px, 1fr));gap:10px;margin-top:4px;}
+.stat-grid{display:grid;grid-template-columns:repeat(5, minmax(0, 1fr));gap:10px;margin-top:4px;}
 .stat-box{
   background:var(--bg-card);
   border:1px solid var(--line);
@@ -331,7 +344,10 @@ header .sub{font-size:12px;color:#B9B9BC;margin-right:auto;}
 </div>
 
 <div id="content-area">
-  <div id="company-title-wrap" style="display:none;"><h2 id="company-title"></h2></div>
+  <div id="company-title-wrap" style="display:none;">
+    <div id="company-logo-slot"></div>
+    <h2 id="company-title"></h2>
+  </div>
   <div id="layout-row">
     <div class="side-panel" id="side-notes"></div>
     <div class="wrap" id="wrap-inner">
@@ -653,7 +669,7 @@ header .sub{font-size:12px;color:#B9B9BC;margin-right:auto;}
     { key:'arr',      label:'ARR' },
     { key:'dau',      label:'DAU (90 יום)' },
     { key:'paidTotal', label:'יוזרים בתשלום' },
-    { key:'paidUsed',  label:'בשימוש מתוך שנרכש' },
+    { key:'paidUsed',  label:'יוזרים בשימוש' },
     { key:'freeUsers', label:'יוזרים בחינם' },
     { key:'teams',    label:'Postman Teams' }
   ];
@@ -1041,6 +1057,39 @@ header .sub{font-size:12px;color:#B9B9BC;margin-right:auto;}
     });
   }
 
+  // ---- company logo (auto-guessed from domain via Clearbit's free logo API, editable) ----
+  function renderCompanyLogo(name){
+    const slot = document.getElementById('company-logo-slot');
+    if(!slot) return;
+    const overrides = loadOverrides(name);
+    const account = findAccount(name);
+    const domain = account && account.domain;
+    const autoUrl = domain ? ('https://logo.clearbit.com/' + domain) : null;
+    const url = (overrides.logoUrl !== undefined) ? overrides.logoUrl : autoUrl;
+    const initial = (name || '?').trim().charAt(0).toUpperCase();
+
+    slot.innerHTML = '<div class="company-logo-wrap">' +
+      (url ? '<img src="' + url + '" alt="" onerror="this.style.display=\'none\'; this.nextElementSibling.style.display=\'flex\';">' : '') +
+      '<div class="logo-fallback" style="display:' + (url ? 'none' : 'flex') + ';">' + initial + '</div>' +
+      '<button class="company-logo-edit-btn" title="' + (url ? 'שנה / הסר לוגו' : 'הוסף לוגו') + '">✎</button>' +
+    '</div>';
+
+    slot.querySelector('.company-logo-edit-btn').addEventListener('click', ()=>{
+      const currentOverrides = loadOverrides(name);
+      const current = (currentOverrides.logoUrl !== undefined) ? currentOverrides.logoUrl : (autoUrl || '');
+      const input = window.prompt('כתובת URL לתמונת הלוגו (השאר ריק כדי לחזור ללוגו האוטומטי):', current || '');
+      if(input === null) return;
+      const ov = loadOverrides(name);
+      if(input.trim() === ''){
+        delete ov.logoUrl;
+      } else {
+        ov.logoUrl = input.trim();
+      }
+      saveOverrides(name, ov);
+      renderCompanyLogo(name);
+    });
+  }
+
   function renderContent(){
     const wrap = document.getElementById('wrap-inner');
     const sideDiagrams = document.getElementById('side-diagrams');
@@ -1056,8 +1105,9 @@ header .sub{font-size:12px;color:#B9B9BC;margin-right:auto;}
       return;
     }
 
-    titleWrap.style.display = 'block';
+    titleWrap.style.display = 'flex';
     titleEl.textContent = activeTab;
+    renderCompanyLogo(activeTab);
 
     wrap.innerHTML = renderSnapshotCard(activeTab) + renderNotesSection(activeTab);
     wireSnapshotCard(activeTab);
