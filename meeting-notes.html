@@ -178,18 +178,17 @@ header .sub{font-size:12px;color:#B9B9BC;margin-right:auto;}
 .snap-hint{color:var(--grey);font-size:12.5px;margin-bottom:12px;font-style:italic;}
 
 /* ---- editable stat boxes ---- */
-.stat-grid{display:flex;flex-wrap:wrap;gap:12px;margin-top:4px;}
+.stat-grid{display:grid;grid-template-columns:repeat(auto-fill, minmax(118px, 1fr));gap:10px;margin-top:4px;}
 .stat-box{
   background:var(--bg-card);
   border:1px solid var(--line);
   border-radius:10px;
-  padding:12px 16px;
-  flex:1 1 130px;
-  min-width:120px;
+  padding:10px 12px;
+  min-width:0;
 }
-.stat-box .label{font-size:10.5px;color:var(--grey);text-transform:uppercase;letter-spacing:.03em;margin-bottom:6px;}
-.stat-box .value{font-size:19px;font-weight:800;color:var(--orange);outline:none;border-radius:4px;padding:1px 3px;margin:-1px -3px;}
-.stat-box .value:focus{background:#FFF6F1;}
+.stat-box .label{font-size:10px;color:var(--grey);text-transform:uppercase;letter-spacing:.02em;margin-bottom:5px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.stat-box .value{font-size:16px;font-weight:800;color:var(--orange);outline:none;border-radius:4px;padding:1px 3px;margin:-1px -3px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;display:block;}
+.stat-box .value:focus{background:#FFF6F1;overflow:visible;text-overflow:unset;}
 .stat-box .value:empty:before{content:'—';color:var(--grey);font-weight:400;}
 .stat-hint{font-size:10.5px;color:var(--grey);margin-top:10px;}
 #reset-overrides-btn{
@@ -653,7 +652,9 @@ header .sub{font-size:12px;color:#B9B9BC;margin-right:auto;}
     { key:'priority', label:'Priority' },
     { key:'arr',      label:'ARR' },
     { key:'dau',      label:'DAU (90 יום)' },
-    { key:'paid',     label:'רישיונות בתשלום' },
+    { key:'paidTotal', label:'יוזרים בתשלום' },
+    { key:'paidUsed',  label:'בשימוש מתוך שנרכש' },
+    { key:'freeUsers', label:'יוזרים בחינם' },
     { key:'teams',    label:'Postman Teams' }
   ];
 
@@ -666,7 +667,9 @@ header .sub{font-size:12px;color:#B9B9BC;margin-right:auto;}
       priority: account ? (account.priority || '') : '',
       arr:      fmtMoney(arr),
       dau:      usage ? fmtNum(usage.dau_90) : '—',
-      paid:     usage ? fmtNum(usage.paid_licenses) : '—',
+      paidTotal: usage ? fmtNum(usage.paid_licenses) : '—',
+      paidUsed:  usage ? (fmtNum(usage.paid_users) + ' / ' + fmtNum(usage.paid_licenses)) : '—',
+      freeUsers: usage ? fmtNum(usage.free_team_users) : '—',
       teams:    usage ? fmtNum(usage.postman_teams) : '—'
     };
   }
@@ -789,9 +792,21 @@ header .sub{font-size:12px;color:#B9B9BC;margin-right:auto;}
     return html;
   }
 
+  function fitStatBoxFonts(){
+    document.querySelectorAll('.stat-box .value').forEach(el=>{
+      let size = 16;
+      el.style.fontSize = size + 'px';
+      while(el.scrollWidth > el.clientWidth && size > 10){
+        size -= 1;
+        el.style.fontSize = size + 'px';
+      }
+    });
+  }
+
   function wireSnapshotCard(name){
     const card = document.querySelector('.snap-card');
     if(!card) return;
+    fitStatBoxFonts();
     const resetBtn = card.querySelector('#reset-overrides-btn');
     if(resetBtn){
       resetBtn.addEventListener('click', ()=>{
@@ -805,7 +820,9 @@ header .sub{font-size:12px;color:#B9B9BC;margin-right:auto;}
         const overrides = loadOverrides(name);
         overrides[el.dataset.field] = el.innerHTML;
         saveOverrides(name, overrides);
+        fitStatBoxFonts();
       });
+      el.addEventListener('input', ()=>{ el.style.fontSize = '16px'; fitStatBoxFonts(); });
     });
     const noteEl = card.querySelector('.rich-editable.snap-note');
     if(noteEl){
