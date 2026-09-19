@@ -97,6 +97,33 @@ header .sub{font-size:12px;color:#B9B9BC;margin-right:auto;}
   font-size:13px;cursor:pointer;line-height:1;padding:0;
 }
 .company-tab .tab-close:hover{color:var(--red);}
+.company-tab .tab-edit{
+  background:none;border:none;color:var(--grey);
+  font-size:12px;cursor:pointer;line-height:1;padding:0;
+}
+.company-tab .tab-edit:hover{color:var(--orange);}
+#search-tab-btn{
+  background:#fff;border:1px solid var(--line);border-radius:8px;
+  width:36px;height:36px;font-size:14px;cursor:pointer;flex-shrink:0;
+}
+#search-tab-btn:hover{border-color:var(--orange);}
+#search-panel-wrap{position:relative;flex-shrink:0;}
+#search-panel{
+  display:none;position:absolute;top:42px;left:0;
+  background:#fff;border:1px solid var(--line);border-radius:10px;
+  box-shadow:0 10px 30px rgba(0,0,0,.18);padding:10px;width:280px;z-index:50;
+}
+#search-panel.open{display:block;}
+#search-input{
+  width:100%;padding:8px 10px;border:1px solid var(--line);border-radius:6px;
+  font-size:13px;margin-bottom:8px;box-sizing:border-box;
+}
+#search-results{max-height:260px;overflow-y:auto;}
+#search-results .search-result-item{
+  padding:7px 8px;border-radius:6px;cursor:pointer;font-size:13px;
+}
+#search-results .search-result-item:hover{background:var(--bg-page);color:var(--orange);}
+#search-results .search-empty{color:var(--grey);font-size:12.5px;padding:6px 4px;}
 #add-tab-btn{
   background:var(--orange);color:#fff;border:none;border-radius:8px;
   padding:8px 14px;font-size:13px;font-weight:700;cursor:pointer;flex-shrink:0;
@@ -159,6 +186,11 @@ header .sub{font-size:12px;color:#B9B9BC;margin-right:auto;}
 .stat-box .value:focus{background:#FFF6F1;}
 .stat-box .value:empty:before{content:'—';color:var(--grey);font-weight:400;}
 .stat-hint{font-size:10.5px;color:var(--grey);margin-top:10px;}
+#reset-overrides-btn{
+  background:none;border:1px solid var(--line);border-radius:5px;color:var(--grey);
+  font-size:10.5px;cursor:pointer;padding:2px 8px;margin-right:6px;
+}
+#reset-overrides-btn:hover{border-color:var(--red);color:var(--red);}
 
 .snap-note{
   font-size:13px;
@@ -284,6 +316,13 @@ header .sub{font-size:12px;color:#B9B9BC;margin-right:auto;}
 
 <div id="tab-bar">
   <button id="add-tab-btn">+ חברה חדשה</button>
+  <div id="search-panel-wrap">
+    <button id="search-tab-btn" title="חיפוש חברה מרשימת הלקוחות">🔍</button>
+    <div id="search-panel">
+      <input id="search-input" type="text" placeholder="חפש חברה מכל רשימת הלקוחות...">
+      <div id="search-results"></div>
+    </div>
+  </div>
 </div>
 
 <div id="content-area">
@@ -377,7 +416,8 @@ header .sub{font-size:12px;color:#B9B9BC;margin-right:auto;}
   // on that generally would risk false positives like "Bank X" vs "Bank Y").
   const NAME_ALIASES = {
     'cellcom': 'Cellcom Israel',
-    'harelinsurance': 'Harel Group'
+    'harelinsurance': 'Harel Group',
+    'unisystems': 'Info Quest Technologies'
   };
   function normKey(s){ return (s || '').toLowerCase().replace(/[\s\-_.]+/g, ''); }
   function resolveAlias(name){
@@ -421,17 +461,50 @@ header .sub{font-size:12px;color:#B9B9BC;margin-right:auto;}
   function fmtNum(n){ return (n === null || n === undefined || n === '') ? '—' : Number(n).toLocaleString(); }
 
   // ---- tabs UI ----
+  function renameTab(oldName){
+    const newName = window.prompt('שם חדש לחברה:', oldName);
+    if(!newName || !newName.trim() || newName.trim() === oldName) return;
+    const trimmed = newName.trim();
+    // migrate any per-company localStorage data (notes, overrides, personal note) to the new key
+    try{
+      [entriesKey, overridesKey, personalKey].forEach(fn=>{
+        const oldVal = localStorage.getItem(fn(oldName));
+        if(oldVal !== null){
+          localStorage.setItem(fn(trimmed), oldVal);
+          localStorage.removeItem(fn(oldName));
+        }
+      });
+    }catch(e){}
+    tabs = tabs.map(t => t === oldName ? trimmed : t);
+    saveTabs();
+    if(activeTab === oldName){
+      activeTab = trimmed;
+      try{ localStorage.setItem(ACTIVE_KEY, activeTab || ''); }catch(e){}
+    }
+    renderTabBar();
+    renderContent();
+  }
+
   function renderTabBar(){
     const bar = document.getElementById('tab-bar');
     bar.querySelectorAll('.company-tab').forEach(el => el.remove());
-    tabs.forEach(name=>{
+    const sortedTabs = tabs.slice().sort((a,b)=> a.localeCompare(b, 'he'));
+    sortedTabs.forEach(name=>{
       const tab = document.createElement('button');
       tab.className = 'company-tab' + (name === activeTab ? ' active' : '');
-      tab.innerHTML = '<span class="tab-label"></span><span class="tab-close" title="הסר טאב (ההערות נשארות שמורות)">✕</span>';
+      tab.innerHTML = '<span class="tab-label"></span><span class="tab-edit" title="שנה שם חברה">✎</span><span class="tab-close" title="הסר טאב (ההערות נשארות שמורות)">✕</span>';
       tab.querySelector('.tab-label').textContent = name;
       tab.addEventListener('click', (e)=>{
-        if(e.target.classList.contains('tab-close')) return;
+        if(e.target.classList.contains('tab-close') || e.target.classList.contains('tab-edit')) return;
         setActiveTab(name);
+      });
+      tab.querySelector('.tab-label').addEventListener('dblclick', (e)=>{
+        e.stopPropagation();
+        renameTab(name);
+      });
+      tab.querySelector('.tab-edit').addEventListener('click', (e)=>{
+        e.stopPropagation();
+        renameTab(name);
       });
       tab.querySelector('.tab-close').addEventListener('click', (e)=>{
         e.stopPropagation();
@@ -473,6 +546,50 @@ header .sub{font-size:12px;color:#B9B9BC;margin-right:auto;}
     const name = window.prompt('שם החברה:');
     if(name && name.trim()) addTab(name);
   });
+
+  // ---- search panel: find any of the ~100 accounts, not just already-open tabs ----
+  (function setupSearchPanel(){
+    const searchBtn = document.getElementById('search-tab-btn');
+    const panel = document.getElementById('search-panel');
+    const input = document.getElementById('search-input');
+    const results = document.getElementById('search-results');
+
+    function renderResults(query){
+      const q = (query || '').trim().toLowerCase();
+      const accounts = (DATA && DATA.accounts) ? DATA.accounts : [];
+      const matches = accounts
+        .filter(a => !q || (a.name || '').toLowerCase().includes(q))
+        .slice(0, 30);
+      if(!matches.length){
+        results.innerHTML = '<div class="search-empty">לא נמצאה חברה תואמת.</div>';
+        return;
+      }
+      results.innerHTML = matches.map(a => '<div class="search-result-item" data-name="' + a.name.replace(/"/g,'&quot;') + '">' + a.name + '</div>').join('');
+      results.querySelectorAll('.search-result-item').forEach(item=>{
+        item.addEventListener('click', ()=>{
+          addTab(item.dataset.name);
+          panel.classList.remove('open');
+          input.value = '';
+        });
+      });
+    }
+
+    searchBtn.addEventListener('click', (e)=>{
+      e.stopPropagation();
+      panel.classList.toggle('open');
+      if(panel.classList.contains('open')){
+        renderResults('');
+        input.focus();
+      }
+    });
+    input.addEventListener('input', ()=> renderResults(input.value));
+    document.addEventListener('click', (e)=>{
+      if(!panel.contains(e.target) && e.target !== searchBtn) panel.classList.remove('open');
+    });
+    document.addEventListener('keydown', (e)=>{
+      if(e.key === 'Escape') panel.classList.remove('open');
+    });
+  })();
 
   const STAT_FIELDS = [
     { key:'country',  label:'מדינה' },
@@ -560,7 +677,7 @@ header .sub{font-size:12px;color:#B9B9BC;margin-right:auto;}
               '<div class="value" contenteditable="true" data-field="' + f.key + '">' + (val || '') + '</div></div>';
     });
     html += '</div>';
-    html += '<div class="stat-hint">שדות אלה ניתנים לעריכה — השינויים נשמרים בדפדפן הזה.</div>';
+    html += '<div class="stat-hint">שדות אלה ניתנים לעריכה — השינויים נשמרים בדפדפן הזה. <button id="reset-overrides-btn" title="מוחק את כל השדות שנערכו ידנית וחוזר לנתוני המקור מה-Territory Command Center">↺ אפס לנתוני המקור</button></div>';
 
     const accountNotesDefault = (account && account.notes) ? account.notes.replace(/\n/g, '<br>') : '';
     const accountNotesValue = (overrides.accountNotes !== undefined) ? overrides.accountNotes : accountNotesDefault;
@@ -620,6 +737,14 @@ header .sub{font-size:12px;color:#B9B9BC;margin-right:auto;}
   function wireSnapshotCard(name){
     const card = document.querySelector('.snap-card');
     if(!card) return;
+    const resetBtn = card.querySelector('#reset-overrides-btn');
+    if(resetBtn){
+      resetBtn.addEventListener('click', ()=>{
+        if(!window.confirm('לאפס את כל השדות שנערכו ידנית ולחזור לנתוני המקור? (הערות הפגישה למטה לא יימחקו, רק שדות הכרטיס העליון)')) return;
+        try{ localStorage.removeItem(overridesKey(name)); }catch(e){}
+        renderContent();
+      });
+    }
     card.querySelectorAll('.stat-box .value[data-field]').forEach(el=>{
       el.addEventListener('blur', ()=>{
         const overrides = loadOverrides(name);
