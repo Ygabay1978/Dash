@@ -1,0 +1,474 @@
+<!DOCTYPE html>
+<html dir="rtl" lang="he">
+<head>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Fern — תרחיש שיחה</title>
+<style>
+:root{
+  --orange:#FF6C37;
+  --orange-dark:#E15A28;
+  --ink:#1C1C1E;
+  --grey:#5B5F66;
+  --line:#E6E4E0;
+  --bg-card:#FBFAF8;
+  --bg-page:#FFFFFF;
+  --cream:#FFF6EE;
+  --green:#2E7D5B;
+  --good:#1E8E5A;
+  --bad:#D64545;
+}
+*{box-sizing:border-box;}
+body{
+  margin:0;
+  background:var(--bg-page);
+  color:var(--ink);
+  font-family:"Segoe UI","Arial Hebrew","Noto Sans Hebrew",Arial,sans-serif;
+  line-height:1.75;
+  padding:0 5vw 100px;
+}
+header.top{
+  padding:20px 0 20px;
+  border-bottom:3px solid var(--orange);
+  margin-bottom:26px;
+  display:flex;justify-content:space-between;align-items:flex-end;flex-wrap:wrap;gap:14px;
+}
+header.top .htext{padding-top:14px;}
+header.top h1{font-size:30px;margin:0 0 8px;}
+header.top p{color:var(--grey);margin:0;font-size:15.5px;max-width:700px;}
+.toolbar{display:flex;gap:8px;flex-wrap:wrap;}
+.tbtn{
+  appearance:none;border:1px solid var(--line);background:#fff;color:var(--ink);
+  font-size:12.5px;font-weight:600;padding:8px 14px;border-radius:8px;cursor:pointer;
+  display:flex;align-items:center;gap:6px;transition:.15s;
+}
+.tbtn:hover{border-color:var(--orange);color:var(--orange-dark);}
+.tbtn.on{background:var(--orange-dark);color:#fff;border-color:var(--orange-dark);}
+.tbtn.save{background:var(--orange);color:#fff;border-color:var(--orange);}
+.tbtn.save:hover{background:var(--orange-dark);}
+
+main{max-width:820px;margin:0 auto;}
+
+/* ---------- draggable + editable blocks ---------- */
+.block{position:relative;margin-bottom:6px;border-radius:8px;transition:box-shadow .15s;}
+body.edit-mode .block{cursor:default;box-shadow:0 0 0 1px transparent;}
+body.edit-mode .block:hover{box-shadow:0 0 0 1px #FFD9C7;}
+.drag-handle{
+  display:none;position:absolute;top:6px;left:-30px;width:24px;height:24px;
+  border-radius:6px;background:var(--cream);color:var(--orange-dark);
+  align-items:center;justify-content:center;cursor:grab;font-size:14px;user-select:none;
+}
+body.edit-mode .drag-handle{display:flex;}
+.block.dragging{opacity:.4;}
+.block-content[contenteditable="true"]{outline:1px dashed transparent;border-radius:6px;padding:2px 4px;}
+body.edit-mode .block-content:hover{outline-color:#FFD9C7;}
+body.edit-mode .block-content:focus{outline-color:var(--orange);background:#FFFDF9;}
+
+.script p{font-size:16px;margin:0 0 16px;}
+.script p:last-child{margin-bottom:0;}
+.eyebrow{
+  display:block;color:var(--orange-dark);font-weight:700;font-size:12.5px;
+  text-transform:uppercase;letter-spacing:.04em;margin:6px 0 8px;
+}
+
+.say{background:#F3F7F5;border-right:3px solid var(--green);border-radius:6px;padding:14px 18px;margin:16px 0;font-size:15.5px;}
+.say b.tag{color:var(--green);display:block;font-size:12px;margin-bottom:6px;}
+
+.say-critical{background:#FDECEC;border-right:4px solid var(--bad);border-radius:6px;padding:14px 18px;margin:0 0 12px;font-size:15px;}
+.say-critical b.tag{color:var(--bad);display:block;font-size:12px;margin-bottom:6px;text-transform:uppercase;}
+.say-critical:last-of-type{margin-bottom:18px;}
+
+.cross-box{background:var(--cream);border:1px solid #FFD9C7;border-radius:8px;padding:16px 20px;margin:16px 0;font-size:14.5px;}
+.cross-box b{color:var(--orange-dark);}
+
+.prod{border:2px solid var(--orange);border-radius:10px;padding:20px 22px;margin:18px 0;background:var(--bg-card);}
+.prod .t{font-weight:800;color:var(--orange-dark);font-size:17px;margin-bottom:10px;}
+.prod p{font-size:14.5px;margin:0 0 10px;}
+.prod p:last-child{margin-bottom:0;}
+
+.chip{
+  display:inline-flex;align-items:center;gap:6px;background:var(--cream);border:1px solid #FFD9C7;
+  color:var(--orange-dark);font-size:13px;font-weight:700;padding:7px 14px;border-radius:20px;
+  cursor:pointer;margin:4px 4px 4px 0;transition:.15s;
+}
+.chip:hover{background:var(--orange);color:#fff;border-color:var(--orange);}
+.chip::before{content:"↗";font-size:12px;}
+.chip-row{margin:4px 0;}
+
+.stage-row{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin:12px 0 6px;}
+.stage{background:var(--bg-card);border:1px solid var(--line);border-radius:8px;padding:12px 10px;}
+.stage.core{border-color:var(--orange);background:var(--cream);}
+.stage .t{font-weight:700;font-size:14px;margin:0 0 4px;}
+.stage .d{font-size:12.5px;color:var(--grey);}
+
+.closing{margin-top:30px;text-align:center;padding:22px 20px;background:var(--cream);border:1px solid #FFD9C7;border-radius:10px;font-size:16.5px;font-weight:700;color:var(--orange-dark);}
+
+/* ---------- popup panels ---------- */
+#backdrop{position:fixed;inset:0;background:rgba(28,28,30,.45);opacity:0;visibility:hidden;transition:opacity .2s;z-index:200;}
+#backdrop.show{opacity:1;visibility:visible;}
+.panel{position:fixed;top:0;right:-92vw;width:640px;max-width:92vw;height:100vh;background:var(--bg-page);box-shadow:-14px 0 34px rgba(0,0,0,.2);z-index:201;transition:right .25s ease;overflow-y:auto;padding:22px 26px 60px;}
+.panel.open{right:0;}
+.panel-head{display:flex;justify-content:space-between;align-items:center;border-bottom:2px solid var(--orange);padding-bottom:12px;margin-bottom:16px;}
+.panel-head h3{font-size:18px;margin:0;color:var(--ink);}
+.panel-close{border:none;background:var(--cream);color:var(--orange-dark);width:30px;height:30px;border-radius:50%;font-size:15px;cursor:pointer;}
+.panel-close:hover{background:var(--orange);color:#fff;}
+.panel-body[contenteditable="true"]{outline:1px dashed transparent;}
+body.edit-mode .panel-body:hover{outline-color:#FFD9C7;}
+body.edit-mode .panel-body:focus{outline-color:var(--orange);}
+
+table.bt{width:100%;border-collapse:collapse;font-size:13.5px;margin-top:10px;}
+table.bt th{text-align:right;background:var(--cream);padding:9px 12px;font-size:11.5px;text-transform:uppercase;letter-spacing:.02em;color:var(--grey);}
+table.bt td{padding:9px 12px;border-top:1px solid var(--line);vertical-align:top;}
+table.bt tr:nth-child(even) td{background:#FCFCFB;}
+table.bt caption{text-align:right;font-size:13px;color:var(--grey);margin-bottom:6px;caption-side:top;}
+.fit-high{color:var(--good);font-weight:700;}
+.fit-mid{color:#B8860B;font-weight:700;}
+.fit-low{color:var(--bad);font-weight:700;}
+
+.bubble{border-radius:8px;padding:11px 15px;margin-bottom:8px;font-size:14px;line-height:1.55;border-right:3px solid transparent;}
+.bubble:last-child{margin-bottom:0;}
+.bubble.ae{background:var(--cream);border-right-color:var(--orange);}
+.bubble .bubble-role{font-size:10px;text-transform:uppercase;letter-spacing:.05em;display:block;margin-bottom:4px;color:var(--grey);font-weight:800;}
+.bubble.ae .bubble-role{color:var(--orange-dark);}
+.obj-wrap{border:1px solid var(--line);border-radius:8px;padding:14px 16px;margin-bottom:12px;background:var(--bg-page);}
+.obj-wrap .q{font-weight:700;margin-bottom:8px;}
+ul.clean{margin:0;padding-right:18px;}
+ul.clean li{margin-bottom:8px;font-size:14.5px;}
+
+/* format toolbar */
+#fmtbar{
+  position:fixed;bottom:20px;left:50%;transform:translateX(-50%) translateY(120%);
+  background:#fff;border:1px solid var(--line);border-radius:30px;padding:8px 12px;
+  display:flex;gap:6px;align-items:center;box-shadow:0 8px 24px rgba(0,0,0,.16);z-index:250;transition:transform .2s ease;
+}
+body.edit-mode #fmtbar{transform:translateX(-50%) translateY(0);}
+#fmtbar button{appearance:none;border:none;background:transparent;width:32px;height:32px;border-radius:50%;cursor:pointer;font-size:14px;}
+#fmtbar button:hover{background:var(--cream);color:var(--orange-dark);}
+#fmtbar .lbl{font-size:11px;color:var(--grey);padding:0 6px;}
+
+@media(max-width:760px){.stage-row{grid-template-columns:repeat(2,1fr);} .drag-handle{left:-4px;top:-4px;position:relative;margin-bottom:4px;}}
+</style>
+</head>
+<body>
+
+<header class="top">
+  <div class="htext">
+    <h1>Fern</h1>
+    <p>Postman עוזר לבנות API טוב. Fern עוזר לגרום לו להיות בשימוש בפועל — על ידי מפתחים וגם על ידי AI Agents.</p>
+  </div>
+  <div class="toolbar">
+    <button class="tbtn" id="editToggle" onclick="toggleEdit()">✏️ ערוך</button>
+    <button class="tbtn save" onclick="saveAll()">💾 שמור</button>
+    <button class="tbtn" onclick="resetAll()">↺ אפס</button>
+  </div>
+</header>
+
+<main>
+<div id="mainBlocks">
+
+<div class="block" data-id="b1">
+  <span class="drag-handle">⠿</span>
+  <div class="block-content script">
+    <p>תחשוב על זה כך, ותפתח את השיחה בדיוק בנקודה הזו: <b>Postman עוזר לך לבנות, לבדוק ולנהל API. Fern לוקח את אותו API ועושה לו משהו אחר לגמרי — הוא הופך אותו לקל לצריכה, גם על ידי מפתחים וגם על ידי AI Agents.</b></p>
+    <p>ה-API של הלקוח יכול להיות מצוין מבחינה טכנית, אבל ברגע שמפתח חיצוני או פנימי צריך להשתמש בו, הוא שואל שאלות פשוטות: איפה ה-API? איך אני מתחבר? איזה SDK יש בשפה שלי? האם התיעוד בכלל מעודכן? <b>Fern יושב בדיוק בנקודה הזו</b> — בצד ה-Consumption, לא ה-Governance. הוא לוקח את ה-API Specification ובונה סביבו אוטומטית תיעוד, SDKs, כלי שורת פקודה, ושרתי MCP ל-AI Agents.</p>
+    <div class="stage-row">
+      <div class="stage core"><div class="t">Documentation</div><div class="d">endpoints, דוגמאות קוד, authentication</div></div>
+      <div class="stage core"><div class="t">SDKs</div><div class="d">ספרייה מוכנה בשפת המפתח</div></div>
+      <div class="stage"><div class="t">CLI</div><div class="d">גישה ל-API משורת פקודה</div></div>
+      <div class="stage"><div class="t">MCP Servers</div><div class="d">חיבור מסודר ל-AI Agents</div></div>
+    </div>
+    <p>במשפט אחד שכדאי לך לזכור בעל פה: <b>Fern לוקח API קיים והופך אותו ל-Developer Experience מלא</b> — לא רק מסמך שמתאר אותו.</p>
+  </div>
+</div>
+
+<div class="block" data-id="b2">
+  <span class="drag-handle">⠿</span>
+  <div class="block-content script">
+    <span class="eyebrow">מכאן אתה עובר לבעיה</span>
+    <p>נניח שחברה בנתה API. מבחינת צוות הפיתוח — הוא קיים, הוא עובד, הכל בסדר. אבל מפתח חיצוני שמגיע מבחוץ שואל שאלות אחרות לגמרי: איפה ה-API, איך עושים Authentication, איזה Endpoint רלוונטי, איך מטפלים ב-Pagination, איזה SDK צריך, ואיפה בכלל הדוגמאות. וככל שה-API משתנה — וזה טוב, זה סימן שהעסק חי — נוצרת בעיה נוספת: השכבות <b>API → Documentation → SDK → Examples</b> יוצאות מסנכרון אחת מהשנייה. זה <b>Drift</b>, וזה הכאב המרכזי שרוב הארגונים חווים בלי לשים לו שם.</p>
+    <p>הלקוח לא באמת קונה Documentation. הוא קונה <b>דרך להפוך APIs למוצר שקל יותר לצרוך</b>. ה-Documentation הוא בדרך כלל נקודת הכניסה, אבל Fern נותן סביב אותו API הרבה יותר מזה — וזה מה שהופך אותו לרחב בהרבה מכלי Documentation בלבד.</p>
+    <div class="chip-row"><span class="chip" onclick="openPanel('panel-discovery')">שאלות Discovery — כולל השאלה שהיא כסף</span></div>
+  </div>
+</div>
+
+<div class="block" data-id="b3">
+  <span class="drag-handle">⠿</span>
+  <div class="block-content script">
+    <span class="eyebrow">תרחיש ראשון שאתה יכול לפרוש: חברת ביטוח</span>
+    <div class="prod">
+      <div class="t">חברת ביטוח גדולה</div>
+      <p>יש לה APIs עבור לקוחות, פוליסות, תביעות, הצעות מחיר וסוכנים — והיא מאפשרת לשותפים ולסוכנויות ביטוח להתחבר אליהם. המצב: מאות APIs, תיעוד במקומות שונים, SDKs שנבנים ידנית, וכל שינוי ב-API דורש לעדכן כמה מקומות.</p>
+      <p>הבעיה העסקית: <b>סוכנות חדשה רוצה להתחבר.</b> היא צריכה לעבור תיעוד → להבין Authentication → להבין Endpoints → לבנות אינטגרציה → לפתור בעיות. Fern יכול לתת: <b>API Specification → Documentation + SDKs + Examples</b> — וה-Key מקבל דרך הרבה יותר מסודרת להתחיל לעבוד.</p>
+      <p>ובגלל שמדובר בחברת ביטוח, היכולת של Fern לרוץ <b>Self-Hosted</b> (להריץ את יצירת ה-Documentation וה-SDKs בתוך התשתית של הלקוח, כולל On-Prem או Private Cloud) יכולה להיות חלק משמעותי מהשיחה — שווה להעלות את זה מוקדם, לא לחכות שישאלו.</p>
+      <div class="say" style="margin-top:12px;">
+        <b class="tag">שאלת Discovery לסגירת התרחיש</b>
+        "כמה זמן לוקח היום לשותף חדש לעבור מהשלב שבו הוא מקבל גישה ל-API עד שהאינטגרציה הראשונה שלו עובדת?"
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="block" data-id="b4">
+  <span class="drag-handle">⠿</span>
+  <div class="block-content script">
+    <span class="eyebrow">תרחיש שני: חברת אשראי / תשלומים</span>
+    <div class="prod">
+      <div class="t">חברת אשראי שמאפשרת לבתי עסק להתחבר ל-Payment APIs</div>
+      <p>יש לה: Payment API, Refund API, Customer API, Transaction API, Fraud API, ו-Webhooks — והיא רוצה ש-Partners ו-Developers יתחברו במהירות.</p>
+      <p><b>הבעיה:</b> ה-API משתנה לעיתים קרובות. כל שינוי דורש לעדכן Docs + SDK + Examples + Code Samples — וזה בדרך כלל נעשה באופן ידני.</p>
+      <p>Fern יכול להפוך את ה-API Specification למקור שממנו נוצרים ה-SDKs וה-Documentation — כך שהעדכון קורה במקום אחד, ולא בעשרים מקומות בנפרד בכל פעם שה-API הפיננסי משתנה.</p>
+    </div>
+  </div>
+</div>
+
+<div class="block" data-id="b5">
+  <span class="drag-handle">⠿</span>
+  <div class="block-content script">
+    <span class="eyebrow">איך תסגור את הפיץ'</span>
+    <p>ההבחנה החשובה שצריך לזכור, אם עולה שאלה על Postman עצמו: <b>Governance / Management / Discovery → Postman. Consumption / Developer Experience → Fern.</b> Fern לא מחליף את ה-API Catalog — הוא יושב במורד הזרם, השכבה הרחבה יותר סביב ה-APIs: קונטקסט עסקי, Guides, דוגמאות, Troubleshooting. אם הלקוח הוא לקוח Postman, Postman נשאר נקודת המגע הראשונה שלו.</p>
+    <div class="chip-row">
+      <span class="chip" onclick="openPanel('panel-fit')">למי Fern מתאים ולמי לא</span>
+      <span class="chip" onclick="openPanel('panel-signals')">Buying Signals — מה להקשיב לו</span>
+      <span class="chip" onclick="openPanel('panel-ecosystem')">Fern מול Catalog / Passport / Fabric</span>
+      <span class="chip" onclick="openPanel('panel-objections')">התנגדויות נפוצות</span>
+      <span class="chip" onclick="openPanel('panel-competition')">תחרות</span>
+      <span class="chip" onclick="openPanel('panel-pricing')">תמחור</span>
+    </div>
+  </div>
+</div>
+
+</div>
+
+<div class="closing">Fern לוקח API קיים והופך אותו ל-Developer Experience מלא — Documentation + SDKs + CLI + MCP.</div>
+</main>
+
+<div id="fmtbar">
+  <button onclick="document.execCommand('bold')" title="Bold"><b>B</b></button>
+  <button onclick="document.execCommand('italic')" title="Italic"><i>I</i></button>
+  <button onclick="document.execCommand('underline')" title="Underline"><u>U</u></button>
+  <span class="lbl">|</span>
+  <button onclick="document.execCommand('foreColor', false, '#E15A28')" title="כתום" style="color:#E15A28;">●</button>
+  <button onclick="document.execCommand('foreColor', false, '#D64545')" title="אדום" style="color:#D64545;">●</button>
+  <button onclick="document.execCommand('foreColor', false, '#1C1C1E')" title="שחור" style="color:#1C1C1E;">●</button>
+  <span class="lbl">גרור מהידית ⠿ לשינוי מיקום</span>
+</div>
+
+<!-- ================= POPUP PANELS ================= -->
+<div id="backdrop" onclick="closeAllPanels()"></div>
+
+<div class="panel" id="panel-discovery">
+  <div class="panel-head"><h3>שאלות Discovery</h3><button class="panel-close" onclick="closeAllPanels()">✕</button></div>
+  <div class="panel-body">
+    <div class="say-critical">
+      <b class="tag">השאלה הראשית #1 — ואז שתוק</b>
+      "למה אתה מדבר איתי דווקא עכשיו?" זו השאלה שמגלה את הכאב האמיתי — תשאל, ותשאיר את השקט לבדו. אל תמלא אותו.
+    </div>
+    <div class="say-critical">
+      <b class="tag">השאלה הראשית #2 — זו הכסף</b>
+      "יש Drift בין ה-API שלכם, ה-SDKs וה-Docs? כל כמה זמן?" הלקוח יגיד שתחזוקה עצמית עולה לו רק כמה שעות Engineering — ה-Drift הוא התשובה שלך. שאלת המשך: מה קורה כשמשהו דחוף יותר נופל? כמה זמן זה בפועל לוקח לתקן את הפער? מה נשבר לשותף בינתיים?
+    </div>
+    <ul class="clean">
+      <li>אם מפתח רוצה להשתמש היום באחד ה-APIs שלכם, איך הוא מוצא את המידע שהוא צריך?</li>
+      <li>כמה קל למפתח להגיע מהשלב שבו הוא מגלה את ה-API עד ל-API Call הראשון?</li>
+      <li>מי אחראי אצלכם על ה-Developer Experience של ה-APIs?</li>
+      <li>אתם מתחזקים את ה-SDKs בעצמכם? אם כן — כמה מהעבודה הזו נעשית ידנית?</li>
+      <li>האם אתם כבר חושבים על AI Agents שיצרכו את ה-APIs שלכם? בונים MCP Servers היום?</li>
+      <li>כמה זמן לוקח היום לשותף חדש לעבור מהשלב שבו הוא מקבל גישה ל-API עד שהאינטגרציה הראשונה שלו עובדת?</li>
+    </ul>
+  </div>
+</div>
+
+<div class="panel" id="panel-fit">
+  <div class="panel-head"><h3>למי Fern מתאים — ולמי פחות</h3><button class="panel-close" onclick="closeAllPanels()">✕</button></div>
+  <div class="panel-body">
+  <table class="bt">
+    <tr><th>פרופיל</th><th>למה</th></tr>
+    <tr><td>חברות Tech-forward בצמיחה, ~50 עובדים ומעלה, עם API או מוצר פונה-מפתחים/צרכן</td><td><span class="fit-high">גבוהה</span> — API חיצוני אידיאלי (הכנסה מתחברת אליו), אבל גם פנימי עובד</td></tr>
+    <tr><td>חברות פיננסיות, ביטוח, תשלומים, SaaS, AI, Marketplace</td><td><span class="fit-high">גבוהה</span></td></tr>
+    <tr><td>API Product Teams — ה-API חלק מהמוצר</td><td><span class="fit-high">גבוהה</span></td></tr>
+    <tr><td>צוותי Developer Experience / Platform Engineering</td><td><span class="fit-mid">גבוהה-בינונית</span></td></tr>
+    <tr><td>פרסונות IT כלליות בלי בעלות על API / Developer Experience</td><td><span class="fit-low">נמוכה</span> — זו שיחת Postman/Governance</td></tr>
+    <tr><td>חברות בשלב מוקדם מאוד (טרי מ-YC)</td><td><span class="fit-low">נמוכה</span> — Free tier מכסה אותן</td></tr>
+    <tr><td>רק צורך ב-API Governance / רק Discovery</td><td><span class="fit-low">נמוכה</span> — כנראה Postman / Catalog</td></tr>
+  </table>
+  </div>
+</div>
+
+<div class="panel" id="panel-signals">
+  <div class="panel-head"><h3>Buying Signals + זיהוי Opportunity</h3><button class="panel-close" onclick="closeAllPanels()">✕</button></div>
+  <div class="panel-body">
+  <p style="font-size:14px;color:var(--grey);">המילה שמזהה לקוח מיידי: <b style="color:var(--orange-dark);">"External consumers"</b> — ברגע שיש צרכנים חיצוניים ל-API, אתר התיעוד, ה-SDKs וה-CLI רלוונטיים באופן מיידי.</p>
+  <table class="bt">
+    <tr><th>הלקוח אומר...</th><th>מה זה אומר</th></tr>
+    <tr><td>יש לנו External Developers / Developer Portal</td><td><span class="fit-high">Signal חזק</span></td></tr>
+    <tr><td>אנחנו מתחזקים SDKs בעצמנו</td><td><span class="fit-high">Signal חזק</span></td></tr>
+    <tr><td>ה-Docs שלנו לא תמיד מעודכנים</td><td><span class="fit-high">Signal חזק</span></td></tr>
+    <tr><td>קשה למפתחים להתחיל לעבוד עם ה-API</td><td><span class="fit-high">Signal חזק</span></td></tr>
+    <tr><td>אנחנו משיקים APIs חדשים / הרבה Partners / APIs בכמה שפות / צריכים MCP</td><td>Signal</td></tr>
+    <tr><td>יש לנו הרבה APIs פנימיים</td><td><span class="fit-mid">Signal בינוני-חזק</span></td></tr>
+    <tr><td>אנחנו צריכים API Governance</td><td>כנראה Postman</td></tr>
+    <tr><td>אנחנו צריכים לדעת אילו APIs קיימים</td><td>כנראה API Catalog</td></tr>
+    <tr><td>אנחנו צריכים לשלוט למי יש גישה</td><td>כנראה Passport</td></tr>
+  </table>
+  <table class="bt" style="margin-top:16px;">
+    <caption>זיהוי Opportunity — מיפוי מהיר</caption>
+    <tr><th>הלקוח אומר...</th><th>המוצר</th></tr>
+    <tr><td>רק רוצים לדעת אילו APIs קיימים בארגון</td><td>API Catalog</td></tr>
+    <tr><td>צריכים לשלוט מי מקבל גישה ל-APIs</td><td>Passport</td></tr>
+    <tr><td>רוצים לשלוט ב-AI Agents, Models, MCP, Policies, Token Costs</td><td>Fabric</td></tr>
+    <tr><td>יש API אבל קשה למפתחים/שותפים להשתמש בו, מתחזקים Docs/SDKs ידנית, רוצים API יותר Agent-friendly</td><td><b style="color:var(--orange-dark);">Fern</b></td></tr>
+  </table>
+  </div>
+</div>
+
+<div class="panel" id="panel-ecosystem">
+  <div class="panel-head"><h3>Fern בתוך המשפחה של Postman</h3><button class="panel-close" onclick="closeAllPanels()">✕</button></div>
+  <div class="panel-body">
+  <table class="bt">
+    <caption>Fern מול Postman API Catalog</caption>
+    <tr><th></th><th>API Catalog</th><th>Fern</th></tr>
+    <tr><td>השאלה</td><td>אילו APIs יש לנו?</td><td>איך משתמשים ב-API?</td></tr>
+    <tr><td>מטרה</td><td>Discovery ו-Visibility</td><td>Consumption ו-Developer Experience</td></tr>
+    <tr><td>קהל</td><td>צוותים בתוך הארגון</td><td>Developers / Partners / API Consumers</td></tr>
+    <tr><td>SDK / MCP</td><td>לא המטרה המרכזית</td><td>כן</td></tr>
+  </table>
+  <table class="bt" style="margin-top:16px;">
+    <caption>Fern מול Passport</caption>
+    <tr><th></th><th>Passport</th><th>Fern</th></tr>
+    <tr><td>הבעיה</td><td>למי יש גישה ל-API?</td><td>איך משתמשים ב-API?</td></tr>
+    <tr><td>מטרה</td><td>Access</td><td>Consumption</td></tr>
+    <tr><td>הרשאות / Credentials</td><td>מרכזי</td><td>לא המטרה המרכזית</td></tr>
+  </table>
+  <table class="bt" style="margin-top:16px;">
+    <caption>Fern מול Fabric</caption>
+    <tr><th></th><th>Fabric</th><th>Fern</th></tr>
+    <tr><td>הבעיה</td><td>איך מנהלים AI Agents ו-AI consumption</td><td>איך הופכים APIs לקלים לצריכה</td></tr>
+    <tr><td>מיקוד</td><td>AI Control Layer</td><td>API Consumption Layer</td></tr>
+    <tr><td>Models / Policies / Secrets</td><td>מרכזי</td><td>לא המיקוד</td></tr>
+  </table>
+  </div>
+</div>
+
+<div class="panel" id="panel-objections">
+  <div class="panel-head"><h3>התנגדויות נפוצות</h3><button class="panel-close" onclick="closeAllPanels()">✕</button></div>
+  <div class="panel-body">
+  <div class="obj-wrap">
+    <div class="q">"יש לנו כבר Documentation"</div>
+    <div class="bubble ae"><span class="bubble-role">AE</span>מעולה. השאלה היא לא רק אם יש תיעוד, אלא כמה קל לתחזק אותו ולשמור אותו מסונכרן עם ה-API וה-SDKs. איך אתם מטפלים היום ב-Drift בין ה-API, ה-Docs וה-SDK?</div>
+  </div>
+  <div class="obj-wrap">
+    <div class="q">"אנחנו בונים את זה בעצמנו"</div>
+    <div class="bubble ae"><span class="bubble-role">AE</span>ברור שאפשר לבנות את זה בעצמכם. השאלה היא כמה Engineering effort זה עולה לכם היום, וכמה עולה לתחזק את זה לאורך זמן. מה קורה כשיש שינוי ב-API? כמה מקומות צריכים להתעדכן?</div>
+  </div>
+  <div class="obj-wrap">
+    <div class="q">"יש לנו כבר Mintlify / ReadMe / GitBook"</div>
+    <div class="bubble ae"><span class="bubble-role">AE</span>אז השאלה היא אם אתם מחפשים רק Documentation, או שכבת API Consumption רחבה יותר. אתם גם מייצרים SDKs? CLI? MCP? איך אתם שומרים עליהם מסונכרנים עם ה-API?</div>
+  </div>
+  <div class="obj-wrap">
+    <div class="q">"יש לנו API Catalog של Postman"</div>
+    <div class="bubble ae"><span class="bubble-role">AE</span>מצוין — הם למעשה משלימים אחד את השני. Catalog עוזר לכם להבין אילו APIs קיימים, ו-Fern עוזר למפתח להבין איך להשתמש בכל API.</div>
+  </div>
+  <div class="obj-wrap">
+    <div class="q">"אנחנו ארגון מאובטח, אי אפשר להעביר את ה-API Specs שלנו לענן"</div>
+    <div class="bubble ae"><span class="bubble-role">AE</span>זו בדיוק אחת הסיבות ש-Self-Hosted רלוונטי — Fern מאפשר להריץ את Docs ואת SDK Generation על התשתית שלכם, כולל On-Prem או Private Cloud.</div>
+  </div>
+  <div class="obj-wrap">
+    <div class="q">"אנחנו לא צריכים AI Agents"</div>
+    <div class="bubble ae"><span class="bubble-role">AE</span>זה בסדר — Fern לא חייב להיות פרויקט AI. הערך המרכזי הוא Documentation, SDKs ו-Developer Experience. ה-AI/MCP הוא שכבת שימוש נוספת שיכולה להיות רלוונטית בהמשך.</div>
+  </div>
+  </div>
+</div>
+
+<div class="panel" id="panel-competition">
+  <div class="panel-head"><h3>תחרות</h3><button class="panel-close" onclick="closeAllPanels()">✕</button></div>
+  <div class="panel-body">
+  <div class="prod" style="border-width:1px;border-color:var(--line);">
+    <div class="t">Mintlify — המתחרה הכי גדול. שני טיעונים מנצחים</div>
+    <p><b>1. Fern הוא קו מוצרים מלא, לא Feature בודד.</b> Documentation, SDKs, CLI ו-MCP servers בפלטפורמה אחת, שבה ה-Docs מפנים אוטומטית לכל מה שעוד Fern מייצר. Mintlify זה תיעוד בלבד.</p>
+    <p><b>2. Fern מגובה על ידי Postman.</b> חברה בשווי 5.5 מיליארד דולר, נשמר כקו מוצרים עצמאי עם Roadmap משלו.</p>
+  </div>
+  <table class="bt">
+    <tr><th>מתחרה</th><th>מה חשוב לדעת</th></tr>
+    <tr><td><b>GitBook / ReadMe</b></td><td>מבוססים, אבל התחילו UI-first והדביקו Docs-as-code מאוחר יותר. מגיע לעיתים, פחות מ-Mintlify</td></tr>
+    <tr><td><b>Redocly</b></td><td>מגיע לעיתים רחוקות, קריאה של Fern: מוצר חלש יותר</td></tr>
+    <tr><td><b>Open Source / DIY</b></td><td>Docusaurus הוא הנפוץ. Build vs Buy קלאסי — הם מחזיקים בקוד ובכל תקלה</td></tr>
+  </table>
+  </div>
+</div>
+
+<div class="panel" id="panel-pricing">
+  <div class="panel-head"><h3>תמחור</h3><button class="panel-close" onclick="closeAllPanels()">✕</button></div>
+  <div class="panel-body">
+  <p style="font-size:14.5px;">לפי מוצר, ומבוסס-ערך — לפי מורכבות ה-API, סקאלה (שטח פנים ל-API חיצוני, מספר Microservices לפנימי), וגודל/הכנסות החברה.</p>
+  <p style="font-size:14.5px;"><b>Documentation:</b> מ-4,000$ (רצפת Enterprise) ועד 800,000$ לארגון גדול ומפוזר טכנולוגית. <b>SDKs:</b> רצפה דומה, עד 500,000$ לשפה. <b>הנחה:</b> עד 50% ממחיר הליסט.</p>
+  <div class="say"><b class="tag">אם המחיר עולה בשיחה הראשונה</b>"זה מבוסס על הגודל והמורכבות של ה-API שלכם, ונצלול לזה במהלך ההערכה."</div>
+  </div>
+</div>
+
+<script>
+let editMode = false;
+
+function toggleEdit(){
+  editMode = !editMode;
+  document.body.classList.toggle('edit-mode', editMode);
+  document.getElementById('editToggle').classList.toggle('on', editMode);
+  document.querySelectorAll('.block-content, .panel-body').forEach(function(el){ el.contentEditable = editMode; });
+  document.querySelectorAll('.block').forEach(function(el){ el.draggable = editMode; });
+}
+
+function openPanel(id){
+  closeAllPanels();
+  document.getElementById(id).classList.add('open');
+  document.getElementById('backdrop').classList.add('show');
+}
+function closeAllPanels(){
+  document.querySelectorAll('.panel').forEach(function(p){p.classList.remove('open');});
+  document.getElementById('backdrop').classList.remove('show');
+}
+
+let dragEl = null;
+function attachDnD(){
+  document.querySelectorAll('#mainBlocks .block').forEach(function(el){
+    el.addEventListener('dragstart', function(){ dragEl = el; setTimeout(function(){ el.classList.add('dragging'); }, 0); });
+    el.addEventListener('dragend', function(){ el.classList.remove('dragging'); dragEl = null; });
+  });
+}
+document.getElementById('mainBlocks').addEventListener('dragover', function(e){
+  e.preventDefault();
+  if(!dragEl) return;
+  const target = e.target.closest('.block');
+  if(!target || target === dragEl) return;
+  const rect = target.getBoundingClientRect();
+  const before = (e.clientY - rect.top) < rect.height / 2;
+  this.insertBefore(dragEl, before ? target : target.nextSibling);
+});
+
+function saveAll(){
+  localStorage.setItem('fern_main_v1', document.getElementById('mainBlocks').innerHTML);
+  document.querySelectorAll('.panel').forEach(function(p){
+    const body = p.querySelector('.panel-body');
+    if(body) localStorage.setItem('fern_panel_v1_' + p.id, body.innerHTML);
+  });
+  alert('נשמר בדפדפן הזה ✓');
+}
+
+function resetAll(){
+  if(confirm('לאפס את כל השינויים שנשמרו בדפדפן הזה ולחזור לגרסה המקורית?')){
+    localStorage.removeItem('fern_main_v1');
+    document.querySelectorAll('.panel').forEach(function(p){ localStorage.removeItem('fern_panel_v1_' + p.id); });
+    location.reload();
+  }
+}
+
+window.addEventListener('DOMContentLoaded', function(){
+  const m = localStorage.getItem('fern_main_v1');
+  if(m) document.getElementById('mainBlocks').innerHTML = m;
+  document.querySelectorAll('.panel').forEach(function(p){
+    const saved = localStorage.getItem('fern_panel_v1_' + p.id);
+    if(saved){ const body = p.querySelector('.panel-body'); if(body) body.innerHTML = saved; }
+  });
+  attachDnD();
+});
+</script>
+</body>
+</html>
