@@ -1267,7 +1267,7 @@
     flex-direction:column;
     min-height:0;
   }
-  @media (max-width:1100px){
+  @media (max-width:680px){
     #chat-panel{display:none;}
   }
   .chat-header{
@@ -1666,6 +1666,7 @@
 &lt;button class=&quot;nav-item nav-panel&quot; data-open-panel=&quot;panel-fabric&quot;&gt;&lt;span&gt;Fabric&lt;/span&gt;&lt;span class=&quot;arrow&quot;&gt;↗&lt;/span&gt;&lt;/button&gt;
 &lt;button class=&quot;nav-item nav-panel&quot; data-open-panel=&quot;panel-passport&quot;&gt;&lt;span&gt;Passport&lt;/span&gt;&lt;span class=&quot;arrow&quot;&gt;↗&lt;/span&gt;&lt;/button&gt;
 &lt;button class=&quot;nav-item nav-panel&quot; data-open-panel=&quot;panel-asa&quot;&gt;&lt;span&gt;ASA&lt;/span&gt;&lt;span class=&quot;arrow&quot;&gt;↗&lt;/span&gt;&lt;/button&gt;
+&lt;button class=&quot;nav-item nav-panel&quot; data-open-panel=&quot;panel-fern&quot;&gt;&lt;span&gt;Fern&lt;/span&gt;&lt;span class=&quot;arrow&quot;&gt;↗&lt;/span&gt;&lt;/button&gt;
 &lt;button class=&quot;nav-item nav-panel&quot; data-open-panel=&quot;panel-database&quot;&gt;&lt;span&gt;DATABASE&lt;/span&gt;&lt;span class=&quot;arrow&quot;&gt;↗&lt;/span&gt;&lt;/button&gt;
 &lt;/nav&gt;
 &lt;main id=&quot;center-content&quot;&gt;
@@ -2042,6 +2043,38 @@ A few additional capabilities that can be relevant, depending on the customer's 
       &quot;ASA doesn't replace Postman's baseline security — it adds a layer of control, visibility, and control at the Enterprise level, for those who need to meet strict regulatory requirements.&quot;
     &lt;/div&gt;
 &lt;/div&gt;
+&lt;/div&gt;
+
+&lt;div class=&quot;side-panel&quot; id=&quot;panel-fern&quot;&gt;
+  &lt;div class=&quot;panel-header&quot;&gt;
+    &lt;span&gt;Fern&lt;/span&gt;
+    &lt;button class=&quot;panel-close&quot; data-close=&quot;panel-fern&quot;&gt;✕&lt;/button&gt;
+  &lt;/div&gt;
+  &lt;div class=&quot;panel-body&quot;&gt;
+    &lt;div class=&quot;fmt-group answer-fmt-group panel-toolbar&quot;&gt;
+      &lt;button type=&quot;button&quot; class=&quot;ptb-bold&quot; title=&quot;Bold (select text and click)&quot;&gt;B&lt;/button&gt;
+      &lt;button type=&quot;button&quot; class=&quot;ptb-italic&quot; title=&quot;Italic (select text and click)&quot;&gt;I&lt;/button&gt;
+      &lt;button class=&quot;swatch&quot; data-color=&quot;#1C1C1E&quot; style=&quot;background:#1C1C1E&quot; title=&quot;Black&quot;&gt;&lt;/button&gt;
+      &lt;button class=&quot;swatch&quot; data-color=&quot;#FF6C37&quot; style=&quot;background:#FF6C37&quot; title=&quot;Orange&quot;&gt;&lt;/button&gt;
+      &lt;button class=&quot;swatch&quot; data-color=&quot;#D64545&quot; style=&quot;background:#D64545&quot; title=&quot;Red&quot;&gt;&lt;/button&gt;
+      &lt;button class=&quot;swatch&quot; data-color=&quot;#2E7D5B&quot; style=&quot;background:#2E7D5B&quot; title=&quot;Green&quot;&gt;&lt;/button&gt;
+      &lt;button class=&quot;swatch&quot; data-color=&quot;#2F6FED&quot; style=&quot;background:#2F6FED&quot; title=&quot;Blue&quot;&gt;&lt;/button&gt;
+      &lt;button class=&quot;swatch&quot; data-color=&quot;#5B5F66&quot; style=&quot;background:#5B5F66&quot; title=&quot;Grey&quot;&gt;&lt;/button&gt;
+      &lt;button type=&quot;button&quot; class=&quot;ptb-save&quot; title=&quot;Save&quot;&gt;💾 Save&lt;/button&gt;
+    &lt;/div&gt;
+    &lt;p class=&quot;lead edit-unit&quot; contenteditable=&quot;false&quot;&gt;Fern — an API documentation and SDK-generation platform, acquired by Postman in January 2026. Sold and run as its own standalone product (not a Postman plan add-on).&lt;/p&gt;
+    &lt;ul class=&quot;panel-list&quot;&gt;
+      &lt;li&gt;&lt;b&gt;What it actually does&lt;/b&gt; — from one API definition (OpenAPI / AsyncAPI / gRPC), Fern generates SDKs in major languages (TypeScript, Python, Go, Java, C#, PHP, Ruby, Swift, Rust) and a hosted API reference/docs site - so docs and SDKs never drift out of sync.&lt;/li&gt;
+      &lt;li&gt;&lt;b&gt;When to bring it up&lt;/b&gt; — external API consumers/partners, hand-maintained SDKs, or docs that are chronically out of date.&lt;/li&gt;
+      &lt;li&gt;&lt;b&gt;How it differs from API Catalog / Passport / Fabric&lt;/b&gt; — Catalog answers &quot;what APIs exist,&quot; Passport answers &quot;who gets access,&quot; Fabric answers &quot;how do we control AI Agents,&quot; and Fern answers &quot;how does a developer actually consume the API.&quot;&lt;/li&gt;
+      &lt;li&gt;&lt;b&gt;Pricing&lt;/b&gt; — custom, based on complexity/scale, through Sales (not a flat per-user price like Passport/ASA).&lt;/li&gt;
+    &lt;/ul&gt;
+    &lt;div class=&quot;say edit-unit&quot; contenteditable=&quot;false&quot;&gt;
+&lt;b class=&quot;tag&quot;&gt;Summary line&lt;/b&gt;
+      &quot;Postman helps you build and manage the API. Fern takes that same API and upgrades it into a full Developer Experience - documentation, SDKs, CLI and MCP - so both external developers and AI Agents can consume it easily.&quot;
+    &lt;/div&gt;
+    &lt;p style=&quot;margin-top:14px;&quot;&gt;&lt;a href=&quot;fern-explainer.html&quot; target=&quot;_blank&quot; style=&quot;display:inline-block;background:#FFF6EE;border:1px solid #FFD9C7;color:#E15A28;font-size:13px;font-weight:700;padding:8px 14px;border-radius:20px;text-decoration:none;&quot;&gt;↗ Full Fern call script &amp;amp; objections (Hebrew page)&lt;/a&gt;&lt;/p&gt;
+  &lt;/div&gt;
 &lt;/div&gt;
 
 &lt;div class=&quot;side-panel&quot; id=&quot;panel-database&quot;&gt;
@@ -3213,7 +3246,7 @@ A few additional capabilities that can be relevant, depending on the customer's 
   const BLOCK_CONTAINERS = [
     '#sec-opening', '#sec-process', '#sec-ai', '#sec-stages',
     '#panel-fabric .panel-body', '#panel-passport .panel-body',
-    '#panel-asa .panel-body', '#panel-database .panel-body'
+    '#panel-asa .panel-body', '#panel-fern .panel-body', '#panel-database .panel-body'
   ];
   const SKIP_SELECTOR = '.fmt-group, .panel-toolbar, .panel-header, .add-block-btn, .add-card-btn, .offer-grid';
 
@@ -3820,7 +3853,7 @@ A few additional capabilities that can be relevant, depending on the customer's 
     flex-direction:column;
     min-height:0;
   }
-  @media (max-width:1100px){
+  @media (max-width:680px){
     #chat-panel{display:none;}
   }
   .chat-header{
@@ -4214,6 +4247,7 @@ A few additional capabilities that can be relevant, depending on the customer's 
 &lt;button class=&quot;nav-item nav-panel&quot; data-open-panel=&quot;panel-fabric&quot;&gt;&lt;span&gt;Fabric&lt;/span&gt;&lt;span class=&quot;arrow&quot;&gt;↗&lt;/span&gt;&lt;/button&gt;
 &lt;button class=&quot;nav-item nav-panel&quot; data-open-panel=&quot;panel-passport&quot;&gt;&lt;span&gt;Passport&lt;/span&gt;&lt;span class=&quot;arrow&quot;&gt;↗&lt;/span&gt;&lt;/button&gt;
 &lt;button class=&quot;nav-item nav-panel&quot; data-open-panel=&quot;panel-asa&quot;&gt;&lt;span&gt;ASA&lt;/span&gt;&lt;span class=&quot;arrow&quot;&gt;↗&lt;/span&gt;&lt;/button&gt;
+&lt;button class=&quot;nav-item nav-panel&quot; data-open-panel=&quot;panel-fern&quot;&gt;&lt;span&gt;Fern&lt;/span&gt;&lt;span class=&quot;arrow&quot;&gt;↗&lt;/span&gt;&lt;/button&gt;
 &lt;button class=&quot;nav-item nav-panel&quot; data-open-panel=&quot;panel-database&quot;&gt;&lt;span&gt;DATABASE&lt;/span&gt;&lt;span class=&quot;arrow&quot;&gt;↗&lt;/span&gt;&lt;/button&gt;
 &lt;/nav&gt;
 &lt;main id=&quot;center-content&quot;&gt;
@@ -4592,6 +4626,38 @@ A few additional capabilities that can be relevant, depending on the customer's 
 &lt;/div&gt;
 &lt;/div&gt;
 
+&lt;div class=&quot;side-panel&quot; id=&quot;panel-fern&quot;&gt;
+  &lt;div class=&quot;panel-header&quot;&gt;
+    &lt;span&gt;Fern&lt;/span&gt;
+    &lt;button class=&quot;panel-close&quot; data-close=&quot;panel-fern&quot;&gt;✕&lt;/button&gt;
+  &lt;/div&gt;
+  &lt;div class=&quot;panel-body&quot;&gt;
+    &lt;div class=&quot;fmt-group answer-fmt-group panel-toolbar&quot;&gt;
+      &lt;button type=&quot;button&quot; class=&quot;ptb-bold&quot; title=&quot;הדגשה (סמן טקסט ולחץ)&quot;&gt;B&lt;/button&gt;
+      &lt;button type=&quot;button&quot; class=&quot;ptb-italic&quot; title=&quot;נטוי (סמן טקסט ולחץ)&quot;&gt;I&lt;/button&gt;
+      &lt;button class=&quot;swatch&quot; data-color=&quot;#1C1C1E&quot; style=&quot;background:#1C1C1E&quot; title=&quot;שחור&quot;&gt;&lt;/button&gt;
+      &lt;button class=&quot;swatch&quot; data-color=&quot;#FF6C37&quot; style=&quot;background:#FF6C37&quot; title=&quot;כתום&quot;&gt;&lt;/button&gt;
+      &lt;button class=&quot;swatch&quot; data-color=&quot;#D64545&quot; style=&quot;background:#D64545&quot; title=&quot;אדום&quot;&gt;&lt;/button&gt;
+      &lt;button class=&quot;swatch&quot; data-color=&quot;#2E7D5B&quot; style=&quot;background:#2E7D5B&quot; title=&quot;ירוק&quot;&gt;&lt;/button&gt;
+      &lt;button class=&quot;swatch&quot; data-color=&quot;#2F6FED&quot; style=&quot;background:#2F6FED&quot; title=&quot;כחול&quot;&gt;&lt;/button&gt;
+      &lt;button class=&quot;swatch&quot; data-color=&quot;#5B5F66&quot; style=&quot;background:#5B5F66&quot; title=&quot;אפור&quot;&gt;&lt;/button&gt;
+      &lt;button type=&quot;button&quot; class=&quot;ptb-save&quot; title=&quot;שמור&quot;&gt;💾 שמור&lt;/button&gt;
+    &lt;/div&gt;
+    &lt;p class=&quot;lead edit-unit&quot; contenteditable=&quot;false&quot;&gt;Fern — פלטפורמת תיעוד API וייצור SDKs, שנרכשה על ידי Postman בינואר 2026. נמכרת ומנוהלת כמוצר עצמאי משלה (לא Add-on לחבילת Postman).&lt;/p&gt;
+    &lt;ul class=&quot;panel-list&quot;&gt;
+      &lt;li&gt;&lt;b&gt;מה זה בפועל&lt;/b&gt; — מהגדרת API אחת (OpenAPI / AsyncAPI / gRPC), Fern מייצרת SDKs בשפות מרכזיות (TypeScript, Python, Go, Java, C#, PHP, Ruby, Swift, Rust) ואתר תיעוד/API Reference מארח - כך שה-Docs וה-SDKs לא יוצאים מסונכרון.&lt;/li&gt;
+      &lt;li&gt;&lt;b&gt;מתי להזכיר&lt;/b&gt; — יש API חיצוני/שותפים שצריכים להתחבר, מתחזקים SDKs ביד, או שהתיעוד כרונית לא מעודכן.&lt;/li&gt;
+      &lt;li&gt;&lt;b&gt;איך זה שונה מ-API Catalog / Passport / Fabric&lt;/b&gt; — Catalog עונה &quot;אילו APIs יש&quot;, Passport עונה &quot;מי מקבל גישה&quot;, Fabric עונה &quot;איך שולטים ב-AI Agents&quot;, ו-Fern עונה &quot;איך מפתח בפועל צורך את ה-API&quot;.&lt;/li&gt;
+      &lt;li&gt;&lt;b&gt;תמחור&lt;/b&gt; — Custom, לפי מורכבות/סקאלה, דרך Sales (לא מחיר קבוע למשתמש כמו Passport/ASA).&lt;/li&gt;
+    &lt;/ul&gt;
+    &lt;div class=&quot;say edit-unit&quot; contenteditable=&quot;false&quot;&gt;
+&lt;b class=&quot;tag&quot;&gt;משפט סיכום&lt;/b&gt;
+      &quot;Postman עוזר לך לבנות ולנהל את ה-API. Fern לוקח את אותו API ועושה לו שידרוג ל-Developer Experience מלא - תיעוד, SDKs, CLI ו-MCP - כך שגם מפתחים חיצוניים וגם AI Agents יכולים לצרוך אותו בקלות.&quot;
+    &lt;/div&gt;
+    &lt;p style=&quot;margin-top:14px;&quot;&gt;&lt;a href=&quot;fern-explainer.html&quot; target=&quot;_blank&quot; style=&quot;display:inline-block;background:#FFF6EE;border:1px solid #FFD9C7;color:#E15A28;font-size:13px;font-weight:700;padding:8px 14px;border-radius:20px;text-decoration:none;&quot;&gt;↗ תרחיש שיחה מלא + התנגדויות על Fern&lt;/a&gt;&lt;/p&gt;
+  &lt;/div&gt;
+&lt;/div&gt;
+
 &lt;div class=&quot;side-panel&quot; id=&quot;panel-database&quot;&gt;
   &lt;div class=&quot;panel-header&quot;&gt;
     &lt;span&gt;DATABASE — השוואה, תמחור ו-Discovery&lt;/span&gt;
@@ -4770,8 +4836,6 @@ A few additional capabilities that can be relevant, depending on the customer's 
 &lt;div class=&quot;a edit-unit&quot; contenteditable=&quot;false&quot;&gt;&quot;אין חבילה עם הגבלה אינסופית, אבל בכל חבילה יש בסיס שרוב המשתמשים לא מגיעים אליו, ותמחור לפי צריכה נכנס לתמונה רק מעל לזה - זה שסתום ביטחון, לא חוויית ברירת המחדל, והמנהל בוחר אם חיוב חריגה מופעל בכלל.&quot; &lt;br/&gt;&lt;b&gt;מספרים:&lt;/b&gt; Free 50 / Solo ו-Team 400 / Enterprise 800 (pooled), הכל לחודש למשתמש; חריגה: Solo $0.05, Team $0.04, Enterprise $0.035 לקרדיט (ב-Free חייבים לשדרג).&lt;/div&gt;
 &lt;/div&gt;
 
-&lt;/div&gt;
-&lt;/div&gt;
 &lt;div class=&quot;obj&quot;&gt;
 &lt;div class=&quot;q edit-unit&quot; contenteditable=&quot;false&quot;&gt;&quot;מה Postman מוסיף מעבר ל-WAF, DDoS ו-Authentication שיש לנו?&quot;&lt;/div&gt;
 &lt;div class=&quot;a edit-unit&quot; contenteditable=&quot;false&quot;&gt;&quot;Postman לא מתחרה ב-WAF/DDoS/authentication — הוא מוסיף שכבת אבטחה שממוקדת ב-API lifecycle: Secret Scanner שמאתר סודות ומפתחות שדלפו בקוד ובקולקציות, security scorecards ב-API Catalog, וגישת shift-left testing.&quot; &lt;br/&gt;&lt;b&gt;לזכור:&lt;/b&gt; לא להתווכח עם ה-stack הקיים. לברר איפה יש gaps ב-lifecycle, Governance, secrets ו-testing.&lt;/div&gt;
@@ -5773,7 +5837,7 @@ A few additional capabilities that can be relevant, depending on the customer's 
   const BLOCK_CONTAINERS = [
     '#sec-opening', '#sec-process', '#sec-ai', '#sec-stages',
     '#panel-fabric .panel-body', '#panel-passport .panel-body',
-    '#panel-asa .panel-body', '#panel-database .panel-body'
+    '#panel-asa .panel-body', '#panel-fern .panel-body', '#panel-database .panel-body'
   ];
   const SKIP_SELECTOR = '.fmt-group, .panel-toolbar, .panel-header, .add-block-btn, .add-card-btn, .offer-grid';
 
