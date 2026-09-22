@@ -1244,7 +1244,12 @@
   .nav-reorder-item{display:flex;align-items:center;gap:2px;}
   .nav-reorder-item &gt; .nav-item, .nav-reorder-item &gt; .nav-item-row{flex:1;min-width:0;}
   .nav-reorder-item .nav-item-row{display:flex;align-items:center;gap:2px;flex:1;min-width:0;}
-  .nav-reorder-item .nav-item-row .nav-item{width:auto;flex:1;min-width:0;}
+  .nav-reorder-item .nav-item-row .nav-item{
+    width:auto;flex:1;min-width:0;
+    white-space:nowrap;overflow:hidden;text-overflow:ellipsis;
+    padding-right:6px;padding-left:2px;
+  }
+  .nav-reorder-item .nav-item-row .chevron-btn{padding:6px 2px;flex-shrink:0;}
   .reorder-arrows{display:flex;flex-direction:column;flex-shrink:0;}
   .reorder-up, .reorder-down{
     border:none;background:transparent;color:var(--grey);cursor:pointer;
@@ -3206,14 +3211,23 @@ A few additional capabilities that can be relevant, depending on the customer's 
           const temp = document.createElement('div');
           temp.innerHTML = cardHTML;
           const cardEl = temp.firstElementChild;
-          if(cardEl) container.appendChild(cardEl);
+          if(cardEl){
+            cardEl.querySelectorAll('.drag-grip, .card-delete-btn').forEach(n =&gt; n.remove());
+            cardEl.removeAttribute('data-wired');
+            container.appendChild(cardEl);
+          }
         });
       }
     }catch(e){}
 
     function saveSnapshot(){
       const current = Array.from(container.querySelectorAll(cardSelector));
-      const htmlList = current.map(c =&gt; c.outerHTML);
+      const htmlList = current.map(c =&gt; {
+        const clone = c.cloneNode(true);
+        clone.querySelectorAll('.drag-grip, .card-delete-btn').forEach(n =&gt; n.remove());
+        clone.removeAttribute('data-wired');
+        return clone.outerHTML;
+      });
       try{ localStorage.setItem(storageKey, JSON.stringify(htmlList)); }catch(e){}
     }
 
@@ -3361,6 +3375,8 @@ A few additional capabilities that can be relevant, depending on the customer's 
           temp.innerHTML = htmlStr;
           const el = temp.firstElementChild;
           if(el){
+            el.querySelectorAll('.block-drag-grip, .block-delete-btn').forEach(n =&gt; n.remove());
+            el.removeAttribute('data-block-wired');
             if(addBtn) container.insertBefore(el, addBtn);
             else container.appendChild(el);
           }
@@ -3370,7 +3386,12 @@ A few additional capabilities that can be relevant, depending on the customer's 
 
     function saveSnapshot(){
       const blocks = Array.from(container.children).filter(c =&gt; c.classList.contains('draggable-block'));
-      const htmlList = blocks.map(b =&gt; b.outerHTML);
+      const htmlList = blocks.map(b =&gt; {
+        const clone = b.cloneNode(true);
+        clone.querySelectorAll('.block-drag-grip, .block-delete-btn').forEach(n =&gt; n.remove());
+        clone.removeAttribute('data-block-wired');
+        return clone.outerHTML;
+      });
       try{ localStorage.setItem(storageKey, JSON.stringify(htmlList)); }catch(e){}
     }
 
@@ -4003,7 +4024,12 @@ document.addEventListener('keydown', (e)=&gt;{
   .nav-reorder-item{display:flex;align-items:center;gap:2px;}
   .nav-reorder-item &gt; .nav-item, .nav-reorder-item &gt; .nav-item-row{flex:1;min-width:0;}
   .nav-reorder-item .nav-item-row{display:flex;align-items:center;gap:2px;flex:1;min-width:0;}
-  .nav-reorder-item .nav-item-row .nav-item{width:auto;flex:1;min-width:0;}
+  .nav-reorder-item .nav-item-row .nav-item{
+    width:auto;flex:1;min-width:0;
+    white-space:nowrap;overflow:hidden;text-overflow:ellipsis;
+    padding-right:6px;padding-left:2px;
+  }
+  .nav-reorder-item .nav-item-row .chevron-btn{padding:6px 2px;flex-shrink:0;}
   .reorder-arrows{display:flex;flex-direction:column;flex-shrink:0;}
   .reorder-up, .reorder-down{
     border:none;background:transparent;color:var(--grey);cursor:pointer;
@@ -5969,14 +5995,30 @@ document.addEventListener('keydown', (e)=&gt;{
           const temp = document.createElement('div');
           temp.innerHTML = cardHTML;
           const cardEl = temp.firstElementChild;
-          if(cardEl) container.appendChild(cardEl);
+          if(cardEl){
+            // Defensive cleanup for snapshots saved before this cleanup
+            // existed: strip any stale grip/delete buttons and wired-flag
+            // baked into an older save, so this card is wired fresh below.
+            cardEl.querySelectorAll('.drag-grip, .card-delete-btn').forEach(n =&gt; n.remove());
+            cardEl.removeAttribute('data-wired');
+            container.appendChild(cardEl);
+          }
         });
       }
     }catch(e){}
 
     function saveSnapshot(){
       const current = Array.from(container.querySelectorAll(cardSelector));
-      const htmlList = current.map(c =&gt; c.outerHTML);
+      // Strip the injected grip/delete buttons and the &quot;already wired&quot; flag
+      // before saving — otherwise a restored card looks pre-wired but its
+      // actual click/drag listeners (which don't survive serialization)
+      // are gone, leaving dead buttons after every reload.
+      const htmlList = current.map(c =&gt; {
+        const clone = c.cloneNode(true);
+        clone.querySelectorAll('.drag-grip, .card-delete-btn').forEach(n =&gt; n.remove());
+        clone.removeAttribute('data-wired');
+        return clone.outerHTML;
+      });
       try{ localStorage.setItem(storageKey, JSON.stringify(htmlList)); }catch(e){}
     }
 
@@ -6124,6 +6166,11 @@ document.addEventListener('keydown', (e)=&gt;{
           temp.innerHTML = htmlStr;
           const el = temp.firstElementChild;
           if(el){
+            // Defensive cleanup for snapshots saved before this cleanup
+            // existed — strip stale grip/delete buttons and wired-flag so
+            // this block gets wired fresh (with real listeners) below.
+            el.querySelectorAll('.block-drag-grip, .block-delete-btn').forEach(n =&gt; n.remove());
+            el.removeAttribute('data-block-wired');
             if(addBtn) container.insertBefore(el, addBtn);
             else container.appendChild(el);
           }
@@ -6133,7 +6180,15 @@ document.addEventListener('keydown', (e)=&gt;{
 
     function saveSnapshot(){
       const blocks = Array.from(container.children).filter(c =&gt; c.classList.contains('draggable-block'));
-      const htmlList = blocks.map(b =&gt; b.outerHTML);
+      // Same cleanup as the card version: strip injected grip/delete
+      // buttons and the &quot;already wired&quot; flag before saving, so a restored
+      // block gets its listeners freshly (and really) re-attached.
+      const htmlList = blocks.map(b =&gt; {
+        const clone = b.cloneNode(true);
+        clone.querySelectorAll('.block-drag-grip, .block-delete-btn').forEach(n =&gt; n.remove());
+        clone.removeAttribute('data-block-wired');
+        return clone.outerHTML;
+      });
       try{ localStorage.setItem(storageKey, JSON.stringify(htmlList)); }catch(e){}
     }
 
