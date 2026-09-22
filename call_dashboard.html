@@ -985,25 +985,32 @@
   /* Draggable reordering — grab the top-right handle and drag up/down within the same list */
   .reorderable-card{position:relative;cursor:default;}
   .reorderable-card .drag-grip{
-    position:absolute;top:8px;left:8px;
-    width:22px;height:22px;
+    position:absolute;top:6px;left:6px;
+    width:30px;height:30px;
     display:flex;align-items:center;justify-content:center;
-    border-radius:5px;background:rgba(0,0,0,0.04);
-    cursor:grab;font-size:13px;color:var(--grey);
+    border-radius:6px;background:rgba(0,0,0,0.08);
+    cursor:grab;font-size:16px;color:var(--grey);
     user-select:none;
+    touch-action:none;
   }
   .reorderable-card .drag-grip:hover{background:var(--orange);color:#fff;}
+  .reorderable-card .drag-grip:active{cursor:grabbing;}
   .reorderable-card.dragging{opacity:0.4;}
   .reorderable-card.drag-over-top{box-shadow:0 -3px 0 var(--orange) inset;}
   .reorderable-card.drag-over-bottom{box-shadow:0 3px 0 var(--orange) inset;}
   .card-delete-btn{
-    position:absolute;top:8px;left:36px;
-    width:22px;height:22px;
+    position:absolute;top:6px;left:40px;
+    width:30px;height:30px;
     display:flex;align-items:center;justify-content:center;
-    border:none;border-radius:5px;background:rgba(0,0,0,0.04);
-    cursor:pointer;font-size:12px;color:var(--grey);
+    border:none;border-radius:6px;background:rgba(0,0,0,0.08);
+    cursor:pointer;font-size:14px;color:var(--grey);
   }
   .card-delete-btn:hover{background:#D64545;color:#fff;}
+  .reorderable-card.is-empty-block .card-delete-btn{
+    display:flex !important;
+    background:#D64545;color:#fff;
+    animation:emptyBlockPulse 1.6s ease-in-out infinite;
+  }
   .add-card-btn{
     display:block;width:100%;
     margin-top:6px;padding:10px;
@@ -1016,22 +1023,30 @@
   .draggable-block{position:relative;}
   .draggable-block.dragging{opacity:0.4;}
   .block-drag-grip{
-    position:absolute;top:6px;right:4px;
-    width:20px;height:20px;
+    position:absolute;top:4px;right:4px;
+    width:30px;height:30px;
     display:flex;align-items:center;justify-content:center;
-    border-radius:5px;background:rgba(0,0,0,0.05);
-    cursor:grab;font-size:12px;color:var(--grey);
+    border-radius:6px;background:rgba(0,0,0,0.08);
+    cursor:grab;font-size:16px;color:var(--grey);
     user-select:none;
+    touch-action:none;
   }
   .block-drag-grip:hover{background:var(--orange);color:#fff;}
+  .block-drag-grip:active{cursor:grabbing;}
   .block-delete-btn{
-    position:absolute;top:6px;right:28px;
-    width:20px;height:20px;
+    position:absolute;top:4px;right:38px;
+    width:30px;height:30px;
     display:flex;align-items:center;justify-content:center;
-    border:none;border-radius:5px;background:rgba(0,0,0,0.05);
-    cursor:pointer;font-size:11px;color:var(--grey);
+    border:none;border-radius:6px;background:rgba(0,0,0,0.08);
+    cursor:pointer;font-size:14px;color:var(--grey);
   }
   .block-delete-btn:hover{background:#D64545;color:#fff;}
+  .draggable-block.is-empty-block .block-delete-btn{
+    display:flex !important;
+    background:#D64545;color:#fff;
+    animation:emptyBlockPulse 1.6s ease-in-out infinite;
+  }
+  @keyframes emptyBlockPulse{0%,100%{opacity:1;}50%{opacity:.55;}}
   .add-block-btn{
     display:block;width:100%;
     margin-top:10px;padding:12px;
@@ -3142,7 +3157,10 @@ A few additional capabilities that can be relevant, depending on the customer's 
     const cards = [...container.querySelectorAll(cardSelector + ':not(.dragging)')];
     return cards.reduce((closest, card)=&gt;{
       const box = card.getBoundingClientRect();
-      const offset = y - box.top - box.height / 2;
+      // Swap as soon as the cursor crosses into the TOP quarter of the next
+      // box, not its full center — a light touch is enough, no need to
+      // fully overlap it.
+      const offset = y - box.top - box.height * 0.25;
       if(offset &lt; 0 &amp;&amp; offset &gt; closest.offset){
         return { offset, element: card };
       } else {
@@ -3184,37 +3202,46 @@ A few additional capabilities that can be relevant, depending on the customer's 
     }
 
     function wireCard(card){
-      if(card.dataset.wired) return;
-      card.dataset.wired = '1';
-      card.classList.add('reorderable-card');
-      card.style.position = card.style.position || 'relative';
-      card.setAttribute('draggable', 'true');
+      if(!card.dataset.wired){
+        card.dataset.wired = '1';
+        card.classList.add('reorderable-card');
+        card.style.position = card.style.position || 'relative';
+        card.setAttribute('draggable', 'true');
 
-      if(!card.querySelector('.drag-grip')){
-        const grip = document.createElement('div');
-        grip.className = 'drag-grip';
-        grip.title = 'Drag to reorder';
-        grip.textContent = '⠿';
-        card.appendChild(grip);
-      }
-      if(!card.querySelector('.card-delete-btn')){
-        const del = document.createElement('button');
-        del.className = 'card-delete-btn';
-        del.title = 'Delete this card';
-        del.type = 'button';
-        del.textContent = '🗑';
-        del.addEventListener('click', (e)=&gt;{
-          e.stopPropagation();
-          if(window.confirm('Delete this card?')){
-            card.remove();
-            saveSnapshot();
-          }
-        });
-        card.appendChild(del);
-      }
+        if(!card.querySelector('.drag-grip')){
+          const grip = document.createElement('div');
+          grip.className = 'drag-grip';
+          grip.title = 'Drag to reorder';
+          grip.textContent = '⠿';
+          card.appendChild(grip);
+        }
+        if(!card.querySelector('.card-delete-btn')){
+          const del = document.createElement('button');
+          del.className = 'card-delete-btn';
+          del.title = 'Delete this card';
+          del.type = 'button';
+          del.textContent = '🗑';
+          del.addEventListener('click', (e)=&gt;{
+            e.stopPropagation();
+            if(window.confirm('Delete this card?')){
+              card.remove();
+              saveSnapshot();
+            }
+          });
+          card.appendChild(del);
+        }
 
-      card.addEventListener('dragstart', ()=&gt;{ card.classList.add('dragging'); });
-      card.addEventListener('dragend', ()=&gt;{ card.classList.remove('dragging'); saveSnapshot(); });
+        card.addEventListener('dragstart', ()=&gt;{ card.classList.add('dragging'); });
+        card.addEventListener('dragend', ()=&gt;{ card.classList.remove('dragging'); saveSnapshot(); });
+      }
+      checkEmptyCard(card);
+    }
+
+    function checkEmptyCard(card){
+      const clone = card.cloneNode(true);
+      clone.querySelectorAll('.drag-grip, .card-delete-btn').forEach(n=&gt;n.remove());
+      const isEmpty = clone.textContent.replace(/\s|\u200b/g, '') === '';
+      card.classList.toggle('is-empty-block', isEmpty);
     }
 
     container.querySelectorAll(cardSelector).forEach(wireCard);
@@ -3236,7 +3263,9 @@ A few additional capabilities that can be relevant, depending on the customer's 
     // is captured in the snapshot too, not just structure/order.
     let saveTimer;
     container.addEventListener('input', (e)=&gt;{
-      if(!e.target.closest(cardSelector)) return;
+      const card = e.target.closest(cardSelector);
+      if(!card) return;
+      checkEmptyCard(card);
       clearTimeout(saveTimer);
       saveTimer = setTimeout(saveSnapshot, 600);
     });
@@ -3281,7 +3310,9 @@ A few additional capabilities that can be relevant, depending on the customer's 
     const blocks = [...container.querySelectorAll(':scope &gt; .draggable-block:not(.dragging)')];
     return blocks.reduce((closest, el)=&gt;{
       const box = el.getBoundingClientRect();
-      const offset = y - box.top - box.height / 2;
+      // Same lighter touch as the card version: crossing the top quarter
+      // of the next block is enough to trigger the swap.
+      const offset = y - box.top - box.height * 0.25;
       if(offset &lt; 0 &amp;&amp; offset &gt; closest.offset){
         return { offset, element: el };
       } else {
@@ -3328,33 +3359,42 @@ A few additional capabilities that can be relevant, depending on the customer's 
     }
 
     function wireBlock(el){
-      if(el.dataset.blockWired) return;
-      el.dataset.blockWired = '1';
-      el.classList.add('draggable-block');
-      el.setAttribute('draggable', 'true');
+      if(!el.dataset.blockWired){
+        el.dataset.blockWired = '1';
+        el.classList.add('draggable-block');
+        el.setAttribute('draggable', 'true');
 
-      const grip = document.createElement('span');
-      grip.className = 'block-drag-grip';
-      grip.title = 'Drag to move';
-      grip.textContent = '⠿';
-      el.appendChild(grip);
+        const grip = document.createElement('span');
+        grip.className = 'block-drag-grip';
+        grip.title = 'Drag to move';
+        grip.textContent = '⠿';
+        el.appendChild(grip);
 
-      const del = document.createElement('button');
-      del.type = 'button';
-      del.className = 'block-delete-btn';
-      del.title = 'Delete this block';
-      del.textContent = '🗑';
-      del.addEventListener('click', (e)=&gt;{
-        e.stopPropagation();
-        if(window.confirm('Delete this block?')){
-          el.remove();
-          saveSnapshot();
-        }
-      });
-      el.appendChild(del);
+        const del = document.createElement('button');
+        del.type = 'button';
+        del.className = 'block-delete-btn';
+        del.title = 'Delete this block';
+        del.textContent = '🗑';
+        del.addEventListener('click', (e)=&gt;{
+          e.stopPropagation();
+          if(window.confirm('Delete this block?')){
+            el.remove();
+            saveSnapshot();
+          }
+        });
+        el.appendChild(del);
 
-      el.addEventListener('dragstart', ()=&gt;{ el.classList.add('dragging'); });
-      el.addEventListener('dragend', ()=&gt;{ el.classList.remove('dragging'); saveSnapshot(); });
+        el.addEventListener('dragstart', ()=&gt;{ el.classList.add('dragging'); });
+        el.addEventListener('dragend', ()=&gt;{ el.classList.remove('dragging'); saveSnapshot(); });
+      }
+      checkEmptyBlock(el);
+    }
+
+    function checkEmptyBlock(el){
+      const clone = el.cloneNode(true);
+      clone.querySelectorAll('.block-drag-grip, .block-delete-btn').forEach(n=&gt;n.remove());
+      const isEmpty = clone.textContent.replace(/\s|\u200b/g, '') === '';
+      el.classList.toggle('is-empty-block', isEmpty);
     }
 
     Array.from(container.children).forEach(el=&gt;{
@@ -3377,7 +3417,9 @@ A few additional capabilities that can be relevant, depending on the customer's 
 
     let saveTimer;
     container.addEventListener('input', (e)=&gt;{
-      if(!e.target.closest('.draggable-block')) return;
+      const block = e.target.closest('.draggable-block');
+      if(!block) return;
+      checkEmptyBlock(block);
       clearTimeout(saveTimer);
       saveTimer = setTimeout(saveSnapshot, 600);
     });
@@ -3677,25 +3719,32 @@ document.addEventListener('keydown', (e)=&gt;{
   /* Draggable reordering — grab the top-right handle and drag up/down within the same list */
   .reorderable-card{position:relative;cursor:default;}
   .reorderable-card .drag-grip{
-    position:absolute;top:8px;left:8px;
-    width:22px;height:22px;
+    position:absolute;top:6px;left:6px;
+    width:30px;height:30px;
     display:flex;align-items:center;justify-content:center;
-    border-radius:5px;background:rgba(0,0,0,0.04);
-    cursor:grab;font-size:13px;color:var(--grey);
+    border-radius:6px;background:rgba(0,0,0,0.08);
+    cursor:grab;font-size:16px;color:var(--grey);
     user-select:none;
+    touch-action:none;
   }
   .reorderable-card .drag-grip:hover{background:var(--orange);color:#fff;}
+  .reorderable-card .drag-grip:active{cursor:grabbing;}
   .reorderable-card.dragging{opacity:0.4;}
   .reorderable-card.drag-over-top{box-shadow:0 -3px 0 var(--orange) inset;}
   .reorderable-card.drag-over-bottom{box-shadow:0 3px 0 var(--orange) inset;}
   .card-delete-btn{
-    position:absolute;top:8px;left:36px;
-    width:22px;height:22px;
+    position:absolute;top:6px;left:40px;
+    width:30px;height:30px;
     display:flex;align-items:center;justify-content:center;
-    border:none;border-radius:5px;background:rgba(0,0,0,0.04);
-    cursor:pointer;font-size:12px;color:var(--grey);
+    border:none;border-radius:6px;background:rgba(0,0,0,0.08);
+    cursor:pointer;font-size:14px;color:var(--grey);
   }
   .card-delete-btn:hover{background:#D64545;color:#fff;}
+  .reorderable-card.is-empty-block .card-delete-btn{
+    display:flex !important;
+    background:#D64545;color:#fff;
+    animation:emptyBlockPulse 1.6s ease-in-out infinite;
+  }
   .add-card-btn{
     display:block;width:100%;
     margin-top:6px;padding:10px;
@@ -3708,22 +3757,32 @@ document.addEventListener('keydown', (e)=&gt;{
   .draggable-block{position:relative;}
   .draggable-block.dragging{opacity:0.4;}
   .block-drag-grip{
-    position:absolute;top:6px;right:4px;
-    width:20px;height:20px;
+    position:absolute;top:4px;right:4px;
+    width:30px;height:30px;
     display:flex;align-items:center;justify-content:center;
-    border-radius:5px;background:rgba(0,0,0,0.05);
-    cursor:grab;font-size:12px;color:var(--grey);
+    border-radius:6px;background:rgba(0,0,0,0.08);
+    cursor:grab;font-size:16px;color:var(--grey);
     user-select:none;
+    touch-action:none;
   }
   .block-drag-grip:hover{background:var(--orange);color:#fff;}
+  .block-drag-grip:active{cursor:grabbing;}
   .block-delete-btn{
-    position:absolute;top:6px;right:28px;
-    width:20px;height:20px;
+    position:absolute;top:4px;right:38px;
+    width:30px;height:30px;
     display:flex;align-items:center;justify-content:center;
-    border:none;border-radius:5px;background:rgba(0,0,0,0.05);
-    cursor:pointer;font-size:11px;color:var(--grey);
+    border:none;border-radius:6px;background:rgba(0,0,0,0.08);
+    cursor:pointer;font-size:14px;color:var(--grey);
   }
   .block-delete-btn:hover{background:#D64545;color:#fff;}
+  /* An emptied-out block always shows its delete button, even outside
+     move/delete tools mode — otherwise there's no way to get rid of it. */
+  .draggable-block.is-empty-block .block-delete-btn{
+    display:flex !important;
+    background:#D64545;color:#fff;
+    animation:emptyBlockPulse 1.6s ease-in-out infinite;
+  }
+  @keyframes emptyBlockPulse{0%,100%{opacity:1;}50%{opacity:.55;}}
   .add-block-btn{
     display:block;width:100%;
     margin-top:10px;padding:12px;
@@ -5838,7 +5897,10 @@ document.addEventListener('keydown', (e)=&gt;{
     const cards = [...container.querySelectorAll(cardSelector + ':not(.dragging)')];
     return cards.reduce((closest, card)=&gt;{
       const box = card.getBoundingClientRect();
-      const offset = y - box.top - box.height / 2;
+      // Swap as soon as the cursor crosses into the TOP quarter of the next
+      // box, not its full center — a light touch is enough, no need to
+      // fully overlap it.
+      const offset = y - box.top - box.height * 0.25;
       if(offset &lt; 0 &amp;&amp; offset &gt; closest.offset){
         return { offset, element: card };
       } else {
@@ -5880,37 +5942,46 @@ document.addEventListener('keydown', (e)=&gt;{
     }
 
     function wireCard(card){
-      if(card.dataset.wired) return;
-      card.dataset.wired = '1';
-      card.classList.add('reorderable-card');
-      card.style.position = card.style.position || 'relative';
-      card.setAttribute('draggable', 'true');
+      if(!card.dataset.wired){
+        card.dataset.wired = '1';
+        card.classList.add('reorderable-card');
+        card.style.position = card.style.position || 'relative';
+        card.setAttribute('draggable', 'true');
 
-      if(!card.querySelector('.drag-grip')){
-        const grip = document.createElement('div');
-        grip.className = 'drag-grip';
-        grip.title = 'גרור כדי לשנות סדר';
-        grip.textContent = '⠿';
-        card.appendChild(grip);
-      }
-      if(!card.querySelector('.card-delete-btn')){
-        const del = document.createElement('button');
-        del.className = 'card-delete-btn';
-        del.title = 'מחק כרטיס זה';
-        del.type = 'button';
-        del.textContent = '🗑';
-        del.addEventListener('click', (e)=&gt;{
-          e.stopPropagation();
-          if(window.confirm('למחוק את הכרטיס הזה?')){
-            card.remove();
-            saveSnapshot();
-          }
-        });
-        card.appendChild(del);
-      }
+        if(!card.querySelector('.drag-grip')){
+          const grip = document.createElement('div');
+          grip.className = 'drag-grip';
+          grip.title = 'גרור כדי לשנות סדר';
+          grip.textContent = '⠿';
+          card.appendChild(grip);
+        }
+        if(!card.querySelector('.card-delete-btn')){
+          const del = document.createElement('button');
+          del.className = 'card-delete-btn';
+          del.title = 'מחק כרטיס זה';
+          del.type = 'button';
+          del.textContent = '🗑';
+          del.addEventListener('click', (e)=&gt;{
+            e.stopPropagation();
+            if(window.confirm('למחוק את הכרטיס הזה?')){
+              card.remove();
+              saveSnapshot();
+            }
+          });
+          card.appendChild(del);
+        }
 
-      card.addEventListener('dragstart', ()=&gt;{ card.classList.add('dragging'); });
-      card.addEventListener('dragend', ()=&gt;{ card.classList.remove('dragging'); saveSnapshot(); });
+        card.addEventListener('dragstart', ()=&gt;{ card.classList.add('dragging'); });
+        card.addEventListener('dragend', ()=&gt;{ card.classList.remove('dragging'); saveSnapshot(); });
+      }
+      checkEmptyCard(card);
+    }
+
+    function checkEmptyCard(card){
+      const clone = card.cloneNode(true);
+      clone.querySelectorAll('.drag-grip, .card-delete-btn').forEach(n=&gt;n.remove());
+      const isEmpty = clone.textContent.replace(/\s|\u200b/g, '') === '';
+      card.classList.toggle('is-empty-block', isEmpty);
     }
 
     container.querySelectorAll(cardSelector).forEach(wireCard);
@@ -5932,7 +6003,9 @@ document.addEventListener('keydown', (e)=&gt;{
     // is captured in the snapshot too, not just structure/order.
     let saveTimer;
     container.addEventListener('input', (e)=&gt;{
-      if(!e.target.closest(cardSelector)) return;
+      const card = e.target.closest(cardSelector);
+      if(!card) return;
+      checkEmptyCard(card);
       clearTimeout(saveTimer);
       saveTimer = setTimeout(saveSnapshot, 600);
     });
@@ -5977,7 +6050,9 @@ document.addEventListener('keydown', (e)=&gt;{
     const blocks = [...container.querySelectorAll(':scope &gt; .draggable-block:not(.dragging)')];
     return blocks.reduce((closest, el)=&gt;{
       const box = el.getBoundingClientRect();
-      const offset = y - box.top - box.height / 2;
+      // Same lighter touch as the card version: crossing the top quarter
+      // of the next block is enough to trigger the swap.
+      const offset = y - box.top - box.height * 0.25;
       if(offset &lt; 0 &amp;&amp; offset &gt; closest.offset){
         return { offset, element: el };
       } else {
@@ -6024,33 +6099,48 @@ document.addEventListener('keydown', (e)=&gt;{
     }
 
     function wireBlock(el){
-      if(el.dataset.blockWired) return;
-      el.dataset.blockWired = '1';
-      el.classList.add('draggable-block');
-      el.setAttribute('draggable', 'true');
+      if(!el.dataset.blockWired){
+        el.dataset.blockWired = '1';
+        el.classList.add('draggable-block');
+        el.setAttribute('draggable', 'true');
 
-      const grip = document.createElement('span');
-      grip.className = 'block-drag-grip';
-      grip.title = 'גרור כדי להזיז';
-      grip.textContent = '⠿';
-      el.appendChild(grip);
+        const grip = document.createElement('span');
+        grip.className = 'block-drag-grip';
+        grip.title = 'גרור כדי להזיז';
+        grip.textContent = '⠿';
+        el.appendChild(grip);
 
-      const del = document.createElement('button');
-      del.type = 'button';
-      del.className = 'block-delete-btn';
-      del.title = 'מחק בלוק זה';
-      del.textContent = '🗑';
-      del.addEventListener('click', (e)=&gt;{
-        e.stopPropagation();
-        if(window.confirm('למחוק את הבלוק הזה?')){
-          el.remove();
-          saveSnapshot();
-        }
-      });
-      el.appendChild(del);
+        const del = document.createElement('button');
+        del.type = 'button';
+        del.className = 'block-delete-btn';
+        del.title = 'מחק בלוק זה';
+        del.textContent = '🗑';
+        del.addEventListener('click', (e)=&gt;{
+          e.stopPropagation();
+          if(window.confirm('למחוק את הבלוק הזה?')){
+            el.remove();
+            saveSnapshot();
+          }
+        });
+        el.appendChild(del);
 
-      el.addEventListener('dragstart', ()=&gt;{ el.classList.add('dragging'); });
-      el.addEventListener('dragend', ()=&gt;{ el.classList.remove('dragging'); saveSnapshot(); });
+        el.addEventListener('dragstart', ()=&gt;{ el.classList.add('dragging'); });
+        el.addEventListener('dragend', ()=&gt;{ el.classList.remove('dragging'); saveSnapshot(); });
+      }
+      // Always re-check emptiness — even for a block restored from a saved
+      // snapshot that was already wired (and already empty) in a past
+      // session, so a stale ghost block never survives a reload silently.
+      checkEmptyBlock(el);
+    }
+
+    // A block whose visible text has been fully deleted always shows its
+    // delete (X) button, even when move/delete tools mode is off — otherwise
+    // there'd be no way to get rid of an accidentally-emptied block.
+    function checkEmptyBlock(el){
+      const clone = el.cloneNode(true);
+      clone.querySelectorAll('.block-drag-grip, .block-delete-btn').forEach(n=&gt;n.remove());
+      const isEmpty = clone.textContent.replace(/\s|\u200b/g, '') === '';
+      el.classList.toggle('is-empty-block', isEmpty);
     }
 
     Array.from(container.children).forEach(el=&gt;{
@@ -6073,7 +6163,9 @@ document.addEventListener('keydown', (e)=&gt;{
 
     let saveTimer;
     container.addEventListener('input', (e)=&gt;{
-      if(!e.target.closest('.draggable-block')) return;
+      const block = e.target.closest('.draggable-block');
+      if(!block) return;
+      checkEmptyBlock(block);
       clearTimeout(saveTimer);
       saveTimer = setTimeout(saveSnapshot, 600);
     });
@@ -6707,11 +6799,17 @@ document.addEventListener('keydown', (e)=&gt;{
     const panel = document.getElementById('panel-' + tabName);
     const iframe = panel ? panel.querySelector('iframe') : null;
     if(!iframe) return;
-    requestAnimationFrame(()=>{
+    const resize = ()=>{
       const top = iframe.getBoundingClientRect().top;
       const h = Math.max(300, window.innerHeight - top - 8);
       iframe.style.height = h + 'px';
-    });
+    };
+    // A single requestAnimationFrame can still land before late layout
+    // shifts (web fonts, the sticky tab bar syncing its own offset) settle,
+    // so re-measure a couple more times shortly after too.
+    requestAnimationFrame(resize);
+    setTimeout(resize, 150);
+    setTimeout(resize, 500);
   }
   window.addEventListener('resize', ()=>{
     const activeBtn = document.querySelector('.tab-btn.active');
