@@ -599,7 +599,7 @@
   </div>
   <div class="header-right">
     <h1 class="header-client-name" id="clientNameTag">Global-E</h1>
-    <span id="clock">15:55:26</span>
+    <span id="clock">16:35:37</span>
     <button class="hbtn" id="editToggle" onclick="toggleEditMode()">✏️ Edit</button>
     <button class="hbtn" onclick="resetAllContent()" title="Wipe saved edits/notes in this browser and reload Claude's latest text">↺ Reset</button>
     <button class="hbtn primary" onclick="downloadCopy()">⬇ Save copy</button>
@@ -608,8 +608,8 @@
 
 <nav class="tabs" id="tabNav" style="top: 57px;" data-drag-bound="1">
   <button class="tab-btn" data-tab="discovery"><span class="icon">🔍</span>Discovery</button>
-  <button class="tab-btn active" data-tab="explaineren"><span class="icon">📘</span>Explainer (EN)</button>
-  <button class="tab-btn" data-tab="explainerhe"><span class="icon">📗</span>Explainer (HE)</button>
+  <button class="tab-btn" data-tab="explaineren"><span class="icon">📘</span>Explainer (EN)</button>
+  <button class="tab-btn active" data-tab="explainerhe"><span class="icon">📗</span>Explainer (HE)</button>
   <button class="tab-btn" data-tab="objections"><span class="icon">🛡️</span>Objections &amp; Battlecards</button>
   <button class="tab-btn" data-tab="plans"><span class="icon">📊</span>Enterprise + ASA</button>
   <button class="tab-btn" data-tab="wiki"><span class="icon">📖</span>Plans &amp; Products</button>
@@ -923,7 +923,7 @@
   </section>
 
   <!-- ================= PITCH TAB ================= -->
-  <section class="panel active" id="panel-explaineren" data-sortable-bound="1">
+  <section class="panel" id="panel-explaineren" data-sortable-bound="1">
     <div class="full-width" style="padding:0;">
       <iframe style="width:100%;height:calc(100vh - 200px);border:none;" srcdoc="&lt;!DOCTYPE html&gt;
 
@@ -1456,7 +1456,7 @@
   }
 
   /* --- slide-in side panels (objections / Fabric / Passport / ASA) ---
-     position:absolute here (not fixed) so they&#x27;re contained inside
+     position:absolute here (not fixed) so they're contained inside
      #app-frame — which is the nearest positioned ancestor — instead of
      the raw browser viewport. */
   #panel-backdrop{
@@ -1475,11 +1475,11 @@
      two values. */
   .side-panel{
     position:absolute;
-    top:20px;
-    left:40px;
-    width:480px;
-    height:calc(100% - 40px);
-    max-width:92%;
+    top:10px;
+    left:calc(50% - 450px);
+    width:900px;
+    height:calc(100% - 20px);
+    max-width:95%;
     background:#fff;
     border-radius:12px;
     box-shadow:0 20px 50px rgba(0,0,0,0.28);
@@ -1682,7 +1682,7 @@
       At that stage, organizations typically run into the same problems: &lt;b&gt;no visibility into what already exists, inconsistent documentation and testing, duplicated work across teams, and Governance and security requirements that keep growing.&lt;/b&gt;&lt;br/&gt;
       Recently, AI initiatives have exposed these problems even more, because AI applications depend on APIs that are discoverable, reliable, and properly documented.&lt;br/&gt;
 &lt;span style=&quot;color: rgb(29, 27, 27);&quot;&gt;&lt;span style=&quot;color: rgb(197, 27, 27);&quot;&gt;&lt;b&gt;&lt;span style=&quot;color: rgb(241, 168, 9);&quot;&gt;&lt;span style=&quot;color: rgb(197, 143, 27);&quot;&gt;&lt;span style=&quot;color: rgb(197, 18, 253);&quot;&gt;This is exactly where Postman comes into the picture&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;/b&gt;&lt;/span&gt;&lt;/span&gt;. &lt;b&gt;Postman is a comprehensive platform where teams can design, test, document, discover, and govern APIs&lt;/b&gt; — instead of managing all of that across fragmented tools and processes.&lt;br/&gt;
-      Whether you&#x27;re at the prototype stage for an idea, or scaling a system that&#x27;s already in production — Postman gives you the tools you need at every stage of the API lifecycle.&lt;br/&gt;
+      Whether you're at the prototype stage for an idea, or scaling a system that's already in production — Postman gives you the tools you need at every stage of the API lifecycle.&lt;br/&gt;
       So yes — our solution is far more than just sending requests. We support the entire API lifecycle, from design and documentation through to monitoring, automation, and Governance.&quot;
     &lt;/div&gt;
 &lt;/section&gt;
@@ -1727,32 +1727,32 @@
 
 &lt;div class=&quot;group-title edit-unit&quot; contenteditable=&quot;false&quot;&gt;2. Governance and Managing APIs at Scale&lt;/div&gt;
 &lt;div class=&quot;cross-box edit-unit&quot; contenteditable=&quot;false&quot;&gt;
-In large organizations, we often see different teams using Postman independently — through personal accounts alongside organizational ones — with no centralized management of users, permissions, workflows, APIs, or security. Over time, this creates a situation where every team works a bit differently, there&#x27;s no central picture of all the APIs and the activity around them, and it&#x27;s hard to know who&#x27;s using what and who holds access to which APIs and systems — especially as activity spreads across users, teams, accounts, and increasingly AI tools and AI Agents. This is usually where topics like API Governance, standardization, and security start coming up.
+In large organizations, we often see different teams using Postman independently — through personal accounts alongside organizational ones — with no centralized management of users, permissions, workflows, APIs, or security. Over time, this creates a situation where every team works a bit differently, there's no central picture of all the APIs and the activity around them, and it's hard to know who's using what and who holds access to which APIs and systems — especially as activity spreads across users, teams, accounts, and increasingly AI tools and AI Agents. This is usually where topics like API Governance, standardization, and security start coming up.
 &lt;/div&gt;
 &lt;div class=&quot;say edit-unit&quot; contenteditable=&quot;false&quot;&gt;
 &lt;b class=&quot;tag&quot;&gt;How I frame this&lt;/b&gt;
-&quot;Our platform isn&#x27;t meant to replace your API Gateway — unless you want it to — the value is in creating a layer of visibility, discovery, security, and Governance around your APIs, and managing their entire lifecycle more efficiently.&quot;
+&quot;Our platform isn't meant to replace your API Gateway — unless you want it to — the value is in creating a layer of visibility, discovery, security, and Governance around your APIs, and managing their entire lifecycle more efficiently.&quot;
 &lt;/div&gt;
 &lt;div class=&quot;cross-box edit-unit&quot; contenteditable=&quot;false&quot;&gt;
-As we discussed, Postman provides end-to-end coverage across the whole API lifecycle through a waterfall-style architecture, where each stage builds on what was defined in the previous one — and enforces it automatically. In Design, teams define the API contract, apply Governance rules, and use AI to create and refine specs, while frontend teams can work against Mock APIs before the backend is ready. In Development, Postman continuously checks that the code stays aligned with the defined API contract, catching breaking changes early. In Testing, you can generate and run tests automatically, use AI to fix failing tests, and run load tests on your APIs. In Deployment &amp;amp; Monitoring, automated checks keep verifying that internal and external APIs meet the defined standards, while Insights identifies gaps based on real traffic. At the same time, Agent Mode and AI Engineer provide context-aware AI capabilities that can take automatic or guided action across these stages — Agent Mode works with APIs, tests, and Governance workflows, while AI Engineer works with code and Git history to identify, for example, old or unused APIs, and to review changes before they&#x27;re merged. You can even build the Governance rules themselves with AI, and Postman then enforces them consistently across every project.
+As we discussed, Postman provides end-to-end coverage across the whole API lifecycle through a waterfall-style architecture, where each stage builds on what was defined in the previous one — and enforces it automatically. In Design, teams define the API contract, apply Governance rules, and use AI to create and refine specs, while frontend teams can work against Mock APIs before the backend is ready. In Development, Postman continuously checks that the code stays aligned with the defined API contract, catching breaking changes early. In Testing, you can generate and run tests automatically, use AI to fix failing tests, and run load tests on your APIs. In Deployment &amp;amp; Monitoring, automated checks keep verifying that internal and external APIs meet the defined standards, while Insights identifies gaps based on real traffic. At the same time, Agent Mode and AI Engineer provide context-aware AI capabilities that can take automatic or guided action across these stages — Agent Mode works with APIs, tests, and Governance workflows, while AI Engineer works with code and Git history to identify, for example, old or unused APIs, and to review changes before they're merged. You can even build the Governance rules themselves with AI, and Postman then enforces them consistently across every project.
 &lt;/div&gt;
 
-&lt;div class=&quot;group-title edit-unit&quot; contenteditable=&quot;false&quot;&gt;What&#x27;s Included in Postman Enterprise&lt;/div&gt;
+&lt;div class=&quot;group-title edit-unit&quot; contenteditable=&quot;false&quot;&gt;What's Included in Postman Enterprise&lt;/div&gt;
 &lt;div class=&quot;cross-box edit-unit&quot; contenteditable=&quot;false&quot;&gt;
 The Enterprise plan is built for organizations managing APIs at broad scale — organization-wide Governance, security controls, and full visibility, including automatic rule enforcement across every team, centralized secrets management, and a unified view of every API being built across the organization. At scale, fragmented tools and manual processes become a real risk, especially given growing security and compliance requirements.
 &lt;/div&gt;
 &lt;ul class=&quot;panel-list&quot;&gt;
-&lt;li&gt;&lt;b&gt;API Catalog&lt;/b&gt; — a central place to see and manage every API, including ones still in development, not just what&#x27;s already in production.&lt;/li&gt;
+&lt;li&gt;&lt;b&gt;API Catalog&lt;/b&gt; — a central place to see and manage every API, including ones still in development, not just what's already in production.&lt;/li&gt;
 &lt;li&gt;&lt;b&gt;API Governance&lt;/b&gt; — defining standards and rules for APIs and enforcing them throughout development and CI/CD.&lt;/li&gt;
 &lt;li&gt;&lt;b&gt;Private API Network&lt;/b&gt; — an internal catalog that lets developers easily find and consume approved organizational APIs.&lt;/li&gt;
 &lt;li&gt;&lt;b&gt;Advanced RBAC and organizational controls&lt;/b&gt; — precise control over who can view, edit, publish, and access APIs and data.&lt;/li&gt;
 &lt;li&gt;&lt;b&gt;Audit Logs, Reporting, and API usage visibility&lt;/b&gt; — full transparency into who did what, when, and how APIs are used.&lt;/li&gt;
-&lt;li&gt;&lt;b&gt;Private Test and Flows Runners&lt;/b&gt; — running tests and Flows inside the organization&#x27;s private environment, without sending data externally.&lt;/li&gt;
+&lt;li&gt;&lt;b&gt;Private Test and Flows Runners&lt;/b&gt; — running tests and Flows inside the organization's private environment, without sending data externally.&lt;/li&gt;
 &lt;li&gt;&lt;b&gt;Insights&lt;/b&gt; — a clear picture of API activity, usage, traffic, and patterns.&lt;/li&gt;
-&lt;li&gt;&lt;b&gt;800 pooled AI credits per user/month&lt;/b&gt; — monthly credits for Postman&#x27;s AI capabilities, shared across the organization.&lt;/li&gt;
+&lt;li&gt;&lt;b&gt;800 pooled AI credits per user/month&lt;/b&gt; — monthly credits for Postman's AI capabilities, shared across the organization.&lt;/li&gt;
 &lt;/ul&gt;
 &lt;div class=&quot;cross-box edit-unit&quot; contenteditable=&quot;false&quot;&gt;
-A few additional capabilities that can be relevant, depending on the customer&#x27;s needs:
+A few additional capabilities that can be relevant, depending on the customer's needs:
 &lt;br/&gt;&lt;br/&gt;
 &lt;b&gt;Advanced Security Administration (ASA)&lt;/b&gt; — an add-on that adds an extra layer of security and control: Domain Capture, Account Discovery and Control, org-wide visibility into Secret Scanner, integration with Azure Key Vault, AWS Secrets Manager, and HashiCorp Vault, and BYOK.
 &lt;br/&gt;&lt;br/&gt;
@@ -1772,15 +1772,15 @@ A few additional capabilities that can be relevant, depending on the customer&#x
 &lt;div class=&quot;h edit-unit&quot; contenteditable=&quot;false&quot;&gt;Speed vs. Quality&lt;/div&gt;
 &lt;p class=&quot;edit-unit&quot; contenteditable=&quot;false&quot;&gt;&quot;Your developers are already using tools like Copilot or Cursor to write code — and that’s great for speed. The problem is that testing throughput doesn’t grow at the same pace. You get more code, but not more verification that it’s correct. And that’s exactly the gap that causes the spike in bugs reaching production.&quot;&lt;/p&gt;
 &lt;div class=&quot;h edit-unit&quot; contenteditable=&quot;false&quot;&gt;APIs Built for Humans, Not AI Agents&lt;/div&gt;
-&lt;p class=&quot;edit-unit&quot; contenteditable=&quot;false&quot;&gt;&quot;Here&#x27;s a point most companies don&#x27;t think about at all: when an AI agent is the one consuming your API instead of a human developer, it needs a different kind of spec. An AI agent doesn&#x27;t &#x27;understand from context&#x27; like a developer does — it needs to be told explicitly which actions are possible and what their constraints are. If your API isn&#x27;t written that way, the agent will simply misuse it — and you won&#x27;t know until it happens in production.&quot;&lt;/p&gt;
+&lt;p class=&quot;edit-unit&quot; contenteditable=&quot;false&quot;&gt;&quot;Here's a point most companies don't think about at all: when an AI agent is the one consuming your API instead of a human developer, it needs a different kind of spec. An AI agent doesn't 'understand from context' like a developer does — it needs to be told explicitly which actions are possible and what their constraints are. If your API isn't written that way, the agent will simply misuse it — and you won't know until it happens in production.&quot;&lt;/p&gt;
 &lt;div class=&quot;h edit-unit&quot; contenteditable=&quot;false&quot;&gt;Governance as the Bottleneck&lt;/div&gt;
-&lt;p class=&quot;edit-unit&quot; contenteditable=&quot;false&quot;&gt;&quot;And when everything runs faster, Governance and security become the organization&#x27;s bottleneck. Audit evidence documentation turns from an ongoing process into a manual scramble once a quarter. And nobody wants to do that under pressure.&quot;&lt;/p&gt;
+&lt;p class=&quot;edit-unit&quot; contenteditable=&quot;false&quot;&gt;&quot;And when everything runs faster, Governance and security become the organization's bottleneck. Audit evidence documentation turns from an ongoing process into a manual scramble once a quarter. And nobody wants to do that under pressure.&quot;&lt;/p&gt;
 &lt;div class=&quot;h edit-unit&quot; contenteditable=&quot;false&quot;&gt;A Stat I Open With&lt;/div&gt;
-&lt;p class=&quot;edit-unit&quot; contenteditable=&quot;false&quot;&gt;&quot;89 percent of developers already use AI to write code. Only 24 percent of them even design their API so that an AI agent will know how to use it correctly. That&#x27;s the gap we close.&quot;&lt;/p&gt;
+&lt;p class=&quot;edit-unit&quot; contenteditable=&quot;false&quot;&gt;&quot;89 percent of developers already use AI to write code. Only 24 percent of them even design their API so that an AI agent will know how to use it correctly. That's the gap we close.&quot;&lt;/p&gt;
 &lt;/div&gt;
 &lt;div class=&quot;say edit-unit&quot; contenteditable=&quot;false&quot;&gt;
 &lt;b class=&quot;tag&quot;&gt;How I continue into the AI part of our own product&lt;/b&gt;
-      &quot;And that brings me to the point our customers love the most: the AI inside Postman isn&#x27;t like a general ChatGPT. We call it &lt;b&gt;Agent Mode&lt;/b&gt;, and it&#x27;s built specifically for the API world. &lt;div&gt;It runs inside your Postman environment, knows all the projects, tests, and alerts you already have, and doesn&#x27;t just answer questions but actually takes action: writes new contracts, fixes broken tests, and detects when a new version breaks a promise you made to someone in the past.&lt;/div&gt;&lt;div&gt;&lt;br/&gt;&lt;/div&gt;&lt;div&gt;There&#x27;s also &lt;b&gt;AI Engineer&lt;/b&gt;, which connects to wherever all your code and its history is kept (Git) and does more independent work.&lt;/div&gt;&lt;div&gt;For example, going through all your APIs and flagging which ones should be deprecated because they&#x27;re old or unused, or automatically checking every new code change a developer pushes to the system, before it&#x27;s merged. &lt;/div&gt;&lt;div&gt;And you can also build the Governance rules themselves with the help of AI — write them in Claude or ChatGPT, and Postman is what actually enforces them automatically, across every project, all the time. &lt;/div&gt;&lt;div&gt;And that&#x27;s really the real difference: &lt;b&gt;you could do some of this yourselves, or buy several separate tools — but we put it all under one roof.&quot;
+      &quot;And that brings me to the point our customers love the most: the AI inside Postman isn't like a general ChatGPT. We call it &lt;b&gt;Agent Mode&lt;/b&gt;, and it's built specifically for the API world. &lt;div&gt;It runs inside your Postman environment, knows all the projects, tests, and alerts you already have, and doesn't just answer questions but actually takes action: writes new contracts, fixes broken tests, and detects when a new version breaks a promise you made to someone in the past.&lt;/div&gt;&lt;div&gt;&lt;br/&gt;&lt;/div&gt;&lt;div&gt;There's also &lt;b&gt;AI Engineer&lt;/b&gt;, which connects to wherever all your code and its history is kept (Git) and does more independent work.&lt;/div&gt;&lt;div&gt;For example, going through all your APIs and flagging which ones should be deprecated because they're old or unused, or automatically checking every new code change a developer pushes to the system, before it's merged. &lt;/div&gt;&lt;div&gt;And you can also build the Governance rules themselves with the help of AI — write them in Claude or ChatGPT, and Postman is what actually enforces them automatically, across every project, all the time. &lt;/div&gt;&lt;div&gt;And that's really the real difference: &lt;b&gt;you could do some of this yourselves, or buy several separate tools — but we put it all under one roof.&quot;
     &lt;/b&gt;&lt;/div&gt;
 &lt;/div&gt;&lt;/section&gt;
 &lt;!-- SECTION 3: WHAT POSTMAN OFFERS PER STAGE --&gt;
@@ -1931,7 +1931,7 @@ A few additional capabilities that can be relevant, depending on the customer&#x
     &lt;/div&gt;
 &lt;div class=&quot;say edit-unit&quot; contenteditable=&quot;false&quot;&gt;
 &lt;b class=&quot;tag&quot;&gt;Summary line&lt;/b&gt;
-      &quot;Fabric is the central control layer that connects the organization&#x27;s AI, Agents, MCP servers, and APIs — and gives you control over traffic, security, permissions, costs, and Audit, instead of each of them being managed separately.&quot;
+      &quot;Fabric is the central control layer that connects the organization's AI, Agents, MCP servers, and APIs — and gives you control over traffic, security, permissions, costs, and Audit, instead of each of them being managed separately.&quot;
     &lt;/div&gt;
 &lt;/div&gt;
 &lt;/div&gt;
@@ -1995,7 +1995,7 @@ A few additional capabilities that can be relevant, depending on the customer&#x
     &lt;/div&gt;
 &lt;div class=&quot;say edit-unit&quot; contenteditable=&quot;false&quot;&gt;
 &lt;b class=&quot;tag&quot;&gt;Summary line&lt;/b&gt;
-      &quot;ASA doesn&#x27;t replace Postman&#x27;s baseline security — it adds a layer of control, visibility, and control at the Enterprise level, for those who need to meet strict regulatory requirements.&quot;
+      &quot;ASA doesn't replace Postman's baseline security — it adds a layer of control, visibility, and control at the Enterprise level, for those who need to meet strict regulatory requirements.&quot;
     &lt;/div&gt;
 &lt;/div&gt;
 &lt;/div&gt;
@@ -2112,32 +2112,32 @@ A few additional capabilities that can be relevant, depending on the customer&#x
 
 &lt;div class=&quot;obj&quot;&gt;
 &lt;div class=&quot;q edit-unit&quot; contenteditable=&quot;false&quot;&gt;&quot;Is Postman a Gateway, or does it sit in the middle as one?&quot;&lt;/div&gt;
-&lt;div class=&quot;a edit-unit&quot; contenteditable=&quot;false&quot;&gt;&quot;No. Postman isn&#x27;t meant to replace your API Gateway. It connects to existing Gateways and pulls information from them, plus there&#x27;s an agent that listens to activity in the environment.&quot; &lt;br/&gt;&lt;b&gt;Remember:&lt;/b&gt; keep the distinction clear — the Gateway handles traffic; Postman manages the API lifecycle around it.&lt;/div&gt;
+&lt;div class=&quot;a edit-unit&quot; contenteditable=&quot;false&quot;&gt;&quot;No. Postman isn't meant to replace your API Gateway. It connects to existing Gateways and pulls information from them, plus there's an agent that listens to activity in the environment.&quot; &lt;br/&gt;&lt;b&gt;Remember:&lt;/b&gt; keep the distinction clear — the Gateway handles traffic; Postman manages the API lifecycle around it.&lt;/div&gt;
 &lt;/div&gt;
 
 &lt;div class=&quot;obj&quot;&gt;
-&lt;div class=&quot;q edit-unit&quot; contenteditable=&quot;false&quot;&gt;&quot;How do you find APIs that we ourselves don&#x27;t know about?&quot;&lt;/div&gt;
+&lt;div class=&quot;q edit-unit&quot; contenteditable=&quot;false&quot;&gt;&quot;How do you find APIs that we ourselves don't know about?&quot;&lt;/div&gt;
 &lt;div class=&quot;a edit-unit&quot; contenteditable=&quot;false&quot;&gt;&quot;A few discovery mechanisms: integration with gateways and cloud providers, an agent that identifies APIs from network traffic (Postman Insights), and service discovery in Kubernetes (Cluster Watcher). The goal is a broad picture of your entire API landscape.&quot; &lt;br/&gt;&lt;b&gt;Remember:&lt;/b&gt; this connects directly to the &quot;unknown APIs&quot; problem and the API Catalog.&lt;/div&gt;
 &lt;/div&gt;
 
 &lt;div class=&quot;obj&quot;&gt;
 &lt;div class=&quot;q edit-unit&quot; contenteditable=&quot;false&quot;&gt;&quot;To monitor APIs, do you have to intercept traffic?&quot;&lt;/div&gt;
-&lt;div class=&quot;a edit-unit&quot; contenteditable=&quot;false&quot;&gt;&quot;Not necessarily. With a Gateway integration, Postman gets information directly from the Gateway. There&#x27;s also an agent option that listens to the environment and identifies which APIs are being called.&quot; &lt;br/&gt;&lt;b&gt;Remember:&lt;/b&gt; don&#x27;t go too deep into the technology — there are a few methods depending on the customer&#x27;s architecture.&lt;/div&gt;
+&lt;div class=&quot;a edit-unit&quot; contenteditable=&quot;false&quot;&gt;&quot;Not necessarily. With a Gateway integration, Postman gets information directly from the Gateway. There's also an agent option that listens to the environment and identifies which APIs are being called.&quot; &lt;br/&gt;&lt;b&gt;Remember:&lt;/b&gt; don't go too deep into the technology — there are a few methods depending on the customer's architecture.&lt;/div&gt;
 &lt;/div&gt;
 
 &lt;div class=&quot;obj&quot;&gt;
 &lt;div class=&quot;q edit-unit&quot; contenteditable=&quot;false&quot;&gt;&quot;What is an API Catalog, and why do we need it if we have API Management?&quot;&lt;/div&gt;
-&lt;div class=&quot;a edit-unit&quot; contenteditable=&quot;false&quot;&gt;&quot;API Catalog is a central registry giving you a single pane of glass over every API in the organization — what exists, who owns it, and what state it&#x27;s in (linked to source control, CI/CD, and production). API Management handles real-time traffic; the Catalog gives you the visibility and ownership picture above it.&quot; &lt;br/&gt;&lt;b&gt;Remember:&lt;/b&gt; don&#x27;t present the Catalog as &quot;just another list&quot; — it&#x27;s visibility and ownership over a distributed API landscape.&lt;/div&gt;
+&lt;div class=&quot;a edit-unit&quot; contenteditable=&quot;false&quot;&gt;&quot;API Catalog is a central registry giving you a single pane of glass over every API in the organization — what exists, who owns it, and what state it's in (linked to source control, CI/CD, and production). API Management handles real-time traffic; the Catalog gives you the visibility and ownership picture above it.&quot; &lt;br/&gt;&lt;b&gt;Remember:&lt;/b&gt; don't present the Catalog as &quot;just another list&quot; — it's visibility and ownership over a distributed API landscape.&lt;/div&gt;
 &lt;/div&gt;
 
 &lt;div class=&quot;obj&quot;&gt;
 &lt;div class=&quot;q edit-unit&quot; contenteditable=&quot;false&quot;&gt;&quot;Do you work with source code and repositories?&quot;&lt;/div&gt;
-&lt;div class=&quot;a edit-unit&quot; contenteditable=&quot;false&quot;&gt;&quot;Yes. There&#x27;s a GitHub connection that links source code to APIs, and you can also turn existing code into Postman collections.&quot; &lt;br/&gt;&lt;b&gt;Remember:&lt;/b&gt; especially relevant for Git-based organizations.&lt;/div&gt;
+&lt;div class=&quot;a edit-unit&quot; contenteditable=&quot;false&quot;&gt;&quot;Yes. There's a GitHub connection that links source code to APIs, and you can also turn existing code into Postman collections.&quot; &lt;br/&gt;&lt;b&gt;Remember:&lt;/b&gt; especially relevant for Git-based organizations.&lt;/div&gt;
 &lt;/div&gt;
 
 &lt;div class=&quot;obj&quot;&gt;
 &lt;div class=&quot;q edit-unit&quot; contenteditable=&quot;false&quot;&gt;&quot;We work a lot with AI and Agents — how does Postman fit in?&quot;&lt;/div&gt;
-&lt;div class=&quot;a edit-unit&quot; contenteditable=&quot;false&quot;&gt;&quot;Postman includes built-in AI capabilities (Postman AI and Agent Mode) that automate API development work — generating tests, docs, and workflows. Beyond that, as more AI/agent workflows consume APIs, the need grows for APIs that are discoverable, reliable, and well-documented, and for Governance once AI is part of the process.&quot; &lt;br/&gt;&lt;b&gt;Remember:&lt;/b&gt; first understand the customer&#x27;s AI workflow, only then connect it to the relevant product.&lt;/div&gt;
+&lt;div class=&quot;a edit-unit&quot; contenteditable=&quot;false&quot;&gt;&quot;Postman includes built-in AI capabilities (Postman AI and Agent Mode) that automate API development work — generating tests, docs, and workflows. Beyond that, as more AI/agent workflows consume APIs, the need grows for APIs that are discoverable, reliable, and well-documented, and for Governance once AI is part of the process.&quot; &lt;br/&gt;&lt;b&gt;Remember:&lt;/b&gt; first understand the customer's AI workflow, only then connect it to the relevant product.&lt;/div&gt;
 &lt;/div&gt;
 
 &lt;div class=&quot;obj&quot;&gt;
@@ -2147,27 +2147,27 @@ A few additional capabilities that can be relevant, depending on the customer&#x
 
 &lt;div class=&quot;obj&quot;&gt;
 &lt;div class=&quot;q edit-unit&quot; contenteditable=&quot;false&quot;&gt;&quot;What does Postman add beyond the WAF, DDoS, and Authentication we already have?&quot;&lt;/div&gt;
-&lt;div class=&quot;a edit-unit&quot; contenteditable=&quot;false&quot;&gt;&quot;Postman doesn&#x27;t compete with WAF/DDoS/authentication — it adds a security layer focused on the API lifecycle itself: Secret Scanner, which finds leaked secrets and keys in code and collections, security scorecards in the API Catalog, and a shift-left testing approach.&quot; &lt;br/&gt;&lt;b&gt;Remember:&lt;/b&gt; don&#x27;t argue with the existing stack. Find out where the gaps actually are — lifecycle, Governance, secrets, and testing.&lt;/div&gt;
+&lt;div class=&quot;a edit-unit&quot; contenteditable=&quot;false&quot;&gt;&quot;Postman doesn't compete with WAF/DDoS/authentication — it adds a security layer focused on the API lifecycle itself: Secret Scanner, which finds leaked secrets and keys in code and collections, security scorecards in the API Catalog, and a shift-left testing approach.&quot; &lt;br/&gt;&lt;b&gt;Remember:&lt;/b&gt; don't argue with the existing stack. Find out where the gaps actually are — lifecycle, Governance, secrets, and testing.&lt;/div&gt;
 &lt;/div&gt;
 
 &lt;div class=&quot;obj&quot;&gt;
 &lt;div class=&quot;q edit-unit&quot; contenteditable=&quot;false&quot;&gt;&quot;We work with MuleSoft — where does Postman fit in?&quot;&lt;/div&gt;
-&lt;div class=&quot;a edit-unit&quot; contenteditable=&quot;false&quot;&gt;&quot;Postman doesn&#x27;t replace MuleSoft as an integration platform — MuleSoft/Anypoint is its own integration platform with its own Catalog. The relevant angle is self-service API publishing from Postman, with Governance and an approval flow, which fills the gap of long waits to create new APIs. A direct, specific technical integration with MuleSoft hasn&#x27;t been fully confirmed yet.&quot; &lt;br/&gt;&lt;b&gt;Remember:&lt;/b&gt; never promise a capability that hasn&#x27;t actually been demonstrated — set up a technical follow-up with an SE.&lt;/div&gt;
+&lt;div class=&quot;a edit-unit&quot; contenteditable=&quot;false&quot;&gt;&quot;Postman doesn't replace MuleSoft as an integration platform — MuleSoft/Anypoint is its own integration platform with its own Catalog. The relevant angle is self-service API publishing from Postman, with Governance and an approval flow, which fills the gap of long waits to create new APIs. A direct, specific technical integration with MuleSoft hasn't been fully confirmed yet.&quot; &lt;br/&gt;&lt;b&gt;Remember:&lt;/b&gt; never promise a capability that hasn't actually been demonstrated — set up a technical follow-up with an SE.&lt;/div&gt;
 &lt;/div&gt;
 
 &lt;div class=&quot;obj&quot;&gt;
 &lt;div class=&quot;q edit-unit&quot; contenteditable=&quot;false&quot;&gt;&quot;We already use Postman for testing — what else do we get?&quot;&lt;/div&gt;
-&lt;div class=&quot;a edit-unit&quot; contenteditable=&quot;false&quot;&gt;&quot;Enterprise expands a point-solution use of testing into the full API lifecycle: design, Governance, and organization-wide visibility into every API in the company — not just the ones already being tested.&quot; &lt;br/&gt;&lt;b&gt;Remember:&lt;/b&gt; start from what they&#x27;re already doing with Postman, then identify what&#x27;s missing around it.&lt;/div&gt;
+&lt;div class=&quot;a edit-unit&quot; contenteditable=&quot;false&quot;&gt;&quot;Enterprise expands a point-solution use of testing into the full API lifecycle: design, Governance, and organization-wide visibility into every API in the company — not just the ones already being tested.&quot; &lt;br/&gt;&lt;b&gt;Remember:&lt;/b&gt; start from what they're already doing with Postman, then identify what's missing around it.&lt;/div&gt;
 &lt;/div&gt;
 
 &lt;div class=&quot;group-title edit-unit&quot; contenteditable=&quot;false&quot;&gt;10 Questions You Should Be Ready For in Every First Call&lt;/div&gt;
 &lt;ul class=&quot;panel-list&quot;&gt;
-&lt;li&gt;I&#x27;m already on Free — why Enterprise?&lt;/li&gt;
+&lt;li&gt;I'm already on Free — why Enterprise?&lt;/li&gt;
 &lt;li&gt;Do you replace the API Gateway?&lt;/li&gt;
 &lt;li&gt;Do you connect to API Management / Cloud / GitHub?&lt;/li&gt;
-&lt;li&gt;How do you discover APIs I don&#x27;t even know exist?&lt;/li&gt;
+&lt;li&gt;How do you discover APIs I don't even know exist?&lt;/li&gt;
 &lt;li&gt;Do you sit in the middle of the traffic?&lt;/li&gt;
-&lt;li&gt;What&#x27;s the difference between API Catalog and API Management?&lt;/li&gt;
+&lt;li&gt;What's the difference between API Catalog and API Management?&lt;/li&gt;
 &lt;li&gt;How do you enforce OpenAPI / Governance?&lt;/li&gt;
 &lt;li&gt;What do you add beyond WAF / DDoS / Security tools?&lt;/li&gt;
 &lt;li&gt;How do you prove ROI?&lt;/li&gt;
@@ -2220,7 +2220,7 @@ A few additional capabilities that can be relevant, depending on the customer&#x
   &lt;button id=&quot;saved-questions-btn&quot;&gt;📌 Saved questions &lt;span id=&quot;saved-questions-count&quot;&gt;&lt;/span&gt; &lt;span class=&quot;sq-arrow&quot;&gt;▾&lt;/span&gt;&lt;/button&gt;
   &lt;div id=&quot;sync-status&quot;&gt;&lt;/div&gt;
   &lt;div id=&quot;saved-questions-menu&quot;&gt;
-    &lt;div class=&quot;sq-empty&quot;&gt;You haven&#x27;t saved any questions yet — click ⭐ next to any answer to save it.&lt;/div&gt;
+    &lt;div class=&quot;sq-empty&quot;&gt;You haven't saved any questions yet — click ⭐ next to any answer to save it.&lt;/div&gt;
   &lt;/div&gt;
 &lt;/div&gt;
 &lt;div id=&quot;chat-log&quot;&gt;
@@ -2236,35 +2236,35 @@ A few additional capabilities that can be relevant, depending on the customer&#x
 &lt;/div&gt;
 &lt;script&gt;
 (function(){
-  const root = document.getElementById(&#x27;editable-root&#x27;);
-  const undoBtn = document.getElementById(&#x27;undo-btn&#x27;);
-  const toggleBtn = document.getElementById(&#x27;toggle-btn&#x27;);
-  const downloadBtn = document.getElementById(&#x27;download-btn&#x27;);
-  const statusEl = document.getElementById(&#x27;save-status&#x27;);
+  const root = document.getElementById('editable-root');
+  const undoBtn = document.getElementById('undo-btn');
+  const toggleBtn = document.getElementById('toggle-btn');
+  const downloadBtn = document.getElementById('download-btn');
+  const statusEl = document.getElementById('save-status');
 
   // --- Turn only specific text-bearing elements into editable &quot;units&quot; ---
   // Card / grid / row containers (.stage, .offer, .prod, .obj, .stage-row,
-  // .offer-grid, ul) are deliberately left OUT of this list. That&#x27;s the fix
+  // .offer-grid, ul) are deliberately left OUT of this list. That's the fix
   // for &quot;deleting a line makes everything jump up&quot;: since those structural
-  // wrappers are never contenteditable themselves, the browser can&#x27;t merge
+  // wrappers are never contenteditable themselves, the browser can't merge
   // or remove them when you backspace inside the text — only the text
   // inside the specific line changes, the card/grid box stays put.
   const EDITABLE_SELECTORS = [
-    &#x27;header.top h1&#x27;, &#x27;header.top p&#x27;,
-    &#x27;h2&#x27;, &#x27;.lead&#x27;,
-    &#x27;.stage .t&#x27;, &#x27;.stage .who&#x27;, &#x27;.stage .d&#x27;,
-    &#x27;.say&#x27;, &#x27;.ai-box .h&#x27;, &#x27;.ai-box p&#x27;,
-    &#x27;.offer .t&#x27;, &#x27;.offer p&#x27;,
-    &#x27;.cross-box&#x27;, &#x27;.group-title&#x27;,
-    &#x27;.prod .name&#x27;, &#x27;.prod .pitch&#x27;,
-    &#x27;.obj .q&#x27;, &#x27;.obj .a&#x27;,
-    &#x27;.final &gt; p&#x27;, &#x27;.final li&#x27;,
-    &#x27;.pitch-open&#x27;,
-    &#x27;.panel-list li&#x27;
+    'header.top h1', 'header.top p',
+    'h2', '.lead',
+    '.stage .t', '.stage .who', '.stage .d',
+    '.say', '.ai-box .h', '.ai-box p',
+    '.offer .t', '.offer p',
+    '.cross-box', '.group-title',
+    '.prod .name', '.prod .pitch',
+    '.obj .q', '.obj .a',
+    '.final &gt; p', '.final li',
+    '.pitch-open',
+    '.panel-list li'
   ];
   const units = new Set();
   EDITABLE_SELECTORS.forEach(sel =&gt; root.querySelectorAll(sel).forEach(el =&gt; units.add(el)));
-  units.forEach(el =&gt; { el.classList.add(&#x27;edit-unit&#x27;); el.setAttribute(&#x27;contenteditable&#x27;, &#x27;true&#x27;); });
+  units.forEach(el =&gt; { el.classList.add('edit-unit'); el.setAttribute('contenteditable', 'true'); });
 
   let editingLocked = false;
   let undoStack = [];
@@ -2272,12 +2272,12 @@ A few additional capabilities that can be relevant, depending on the customer&#x
   let burstSnapshot = null;      // state of the document BEFORE the current typing burst
   let debounceTimer = null;
   const DEBOUNCE_MS = 700;       // pause in typing that counts as &quot;one step&quot; ending
-  let savedRange = null;         // selection kept alive across the color picker&#x27;s native dialog
+  let savedRange = null;         // selection kept alive across the color picker's native dialog
 
   function setStatus(text){
     statusEl.textContent = text;
     clearTimeout(statusEl._t);
-    statusEl._t = setTimeout(()=&gt;{ statusEl.textContent = &#x27;&#x27;; }, 2500);
+    statusEl._t = setTimeout(()=&gt;{ statusEl.textContent = ''; }, 2500);
   }
 
   function updateUndoButton(){
@@ -2304,7 +2304,7 @@ A few additional capabilities that can be relevant, depending on the customer&#x
     burstSnapshot = null;
   }
 
-  root.addEventListener(&#x27;beforeinput&#x27;, ()=&gt;{
+  root.addEventListener('beforeinput', ()=&gt;{
     if(editingLocked) return;
     if(burstSnapshot === null){
       burstSnapshot = root.innerHTML;
@@ -2313,10 +2313,10 @@ A few additional capabilities that can be relevant, depending on the customer&#x
     debounceTimer = setTimeout(commitBurst, DEBOUNCE_MS);
   });
 
-  root.addEventListener(&#x27;focusout&#x27;, commitBurst);
+  root.addEventListener('focusout', commitBurst);
 
-  undoBtn.addEventListener(&#x27;click&#x27;, ()=&gt;{
-    commitBurst(); // flush any typing that hasn&#x27;t been committed as a step yet
+  undoBtn.addEventListener('click', ()=&gt;{
+    commitBurst(); // flush any typing that hasn't been committed as a step yet
     if(undoStack.length === 0) return;
     const prev = undoStack.pop();
     root.innerHTML = prev;
@@ -2324,37 +2324,37 @@ A few additional capabilities that can be relevant, depending on the customer&#x
     // put them back on the restored content.
     units.clear();
     EDITABLE_SELECTORS.forEach(sel =&gt; root.querySelectorAll(sel).forEach(el =&gt; units.add(el)));
-    units.forEach(el =&gt; { el.classList.add(&#x27;edit-unit&#x27;); el.setAttribute(&#x27;contenteditable&#x27;, editingLocked ? &#x27;false&#x27; : &#x27;true&#x27;); });
+    units.forEach(el =&gt; { el.classList.add('edit-unit'); el.setAttribute('contenteditable', editingLocked ? 'false' : 'true'); });
     updateUndoButton();
-    setStatus(&#x27;Last change undone&#x27;);
+    setStatus('Last change undone');
   });
 
-  toggleBtn.addEventListener(&#x27;click&#x27;, ()=&gt;{
+  toggleBtn.addEventListener('click', ()=&gt;{
     commitBurst();
     editingLocked = !editingLocked;
-    units.forEach(el =&gt; el.setAttribute(&#x27;contenteditable&#x27;, editingLocked ? &#x27;false&#x27; : &#x27;true&#x27;));
-    toggleBtn.textContent = editingLocked ? &#x27;✏️ Editing active&#x27; : &#x27;🔒 Lock editing&#x27;;
+    units.forEach(el =&gt; el.setAttribute('contenteditable', editingLocked ? 'false' : 'true'));
+    toggleBtn.textContent = editingLocked ? '✏️ Editing active' : '🔒 Lock editing';
   });
 
-  const blockToolsToggle = document.getElementById(&#x27;block-tools-toggle&#x27;);
-  blockToolsToggle.addEventListener(&#x27;click&#x27;, ()=&gt;{
-    const active = document.body.classList.toggle(&#x27;block-tools-active&#x27;);
-    blockToolsToggle.classList.toggle(&#x27;active&#x27;, active);
+  const blockToolsToggle = document.getElementById('block-tools-toggle');
+  blockToolsToggle.addEventListener('click', ()=&gt;{
+    const active = document.body.classList.toggle('block-tools-active');
+    blockToolsToggle.classList.toggle('active', active);
   });
 
-  downloadBtn.addEventListener(&#x27;click&#x27;, ()=&gt;{
+  downloadBtn.addEventListener('click', ()=&gt;{
     commitBurst();
-    const htmlContent = &#x27;&lt;!DOCTYPE html&gt;\n&#x27; + document.documentElement.outerHTML;
-    const blob = new Blob([htmlContent], {type:&#x27;text/html;charset=utf-8&#x27;});
+    const htmlContent = '&lt;!DOCTYPE html&gt;\n' + document.documentElement.outerHTML;
+    const blob = new Blob([htmlContent], {type:'text/html;charset=utf-8'});
     const url = URL.createObjectURL(blob);
-    const a = document.createElement(&#x27;a&#x27;);
+    const a = document.createElement('a');
     a.href = url;
-    a.download = &#x27;postman-explainer-edited.html&#x27;;
+    a.download = 'postman-explainer-edited.html';
     document.body.appendChild(a);
     a.click();
     document.body.removeChild(a);
     URL.revokeObjectURL(url);
-    setStatus(&#x27;File downloaded ✓&#x27;);
+    setStatus('File downloaded ✓');
   });
 
   // ---- formatting toolbar: each click is its own single undo step ----
@@ -2372,7 +2372,7 @@ A few additional capabilities that can be relevant, depending on the customer&#x
     if(editingLocked) return;
     const sel = window.getSelection();
     if(!sel || sel.rangeCount === 0 || sel.isCollapsed || !root.contains(sel.getRangeAt(0).commonAncestorContainer)){
-      setStatus(&#x27;Select text first&#x27;);
+      setStatus('Select text first');
       return;
       return;
     }
@@ -2384,22 +2384,22 @@ A few additional capabilities that can be relevant, depending on the customer&#x
     if(isSizeDelta){
       const refNode = range.startContainer.nodeType === 3 ? range.startContainer.parentElement : range.startContainer;
       const currentSize = parseFloat(window.getComputedStyle(refNode).fontSize) || 15;
-      value = Math.max(10, Math.min(40, currentSize + valueOrDelta)) + &#x27;px&#x27;;
+      value = Math.max(10, Math.min(40, currentSize + valueOrDelta)) + 'px';
     }
 
-    const span = document.createElement(&#x27;span&#x27;);
+    const span = document.createElement('span');
     span.style[styleProp] = value;
     span.appendChild(range.extractContents());
     range.insertNode(span);
 
     // Fix: a nested tag like &lt;b&gt; can have its OWN color set by a CSS class
     // rule (e.g. &quot;.cross-box b{color:orange}&quot;). That rule targets the &lt;b&gt;
-    // element directly, so it wins over the wrapping span&#x27;s colour no matter
+    // element directly, so it wins over the wrapping span's colour no matter
     // what we set on the span — inheritance only applies when nothing
     // targets the element itself. So when recoloring, also stamp the new
     // color directly onto every element inside the selection.
-    if(styleProp === &#x27;color&#x27;){
-      span.querySelectorAll(&#x27;*&#x27;).forEach(node =&gt; { node.style.color = value; });
+    if(styleProp === 'color'){
+      span.querySelectorAll('*').forEach(node =&gt; { node.style.color = value; });
     }
 
     sel.removeAllRanges();
@@ -2411,36 +2411,36 @@ A few additional capabilities that can be relevant, depending on the customer&#x
     if(after !== before) pushUndo(before);
   }
 
-  document.querySelectorAll(&#x27;.swatch&#x27;).forEach(btn=&gt;{
-    btn.addEventListener(&#x27;mousedown&#x27;, e=&gt;e.preventDefault());
-    btn.addEventListener(&#x27;click&#x27;, ()=&gt; wrapSelection(&#x27;color&#x27;, btn.dataset.color, false));
+  document.querySelectorAll('.swatch').forEach(btn=&gt;{
+    btn.addEventListener('mousedown', e=&gt;e.preventDefault());
+    btn.addEventListener('click', ()=&gt; wrapSelection('color', btn.dataset.color, false));
   });
 
-  document.getElementById(&#x27;bold-btn&#x27;).addEventListener(&#x27;mousedown&#x27;, e=&gt;e.preventDefault());
-  document.getElementById(&#x27;bold-btn&#x27;).addEventListener(&#x27;click&#x27;, ()=&gt; runCommand(&#x27;bold&#x27;));
+  document.getElementById('bold-btn').addEventListener('mousedown', e=&gt;e.preventDefault());
+  document.getElementById('bold-btn').addEventListener('click', ()=&gt; runCommand('bold'));
 
-  document.getElementById(&#x27;italic-btn&#x27;).addEventListener(&#x27;mousedown&#x27;, e=&gt;e.preventDefault());
-  document.getElementById(&#x27;italic-btn&#x27;).addEventListener(&#x27;click&#x27;, ()=&gt; runCommand(&#x27;italic&#x27;));
+  document.getElementById('italic-btn').addEventListener('mousedown', e=&gt;e.preventDefault());
+  document.getElementById('italic-btn').addEventListener('click', ()=&gt; runCommand('italic'));
 
-  document.getElementById(&#x27;inc-font-btn&#x27;).addEventListener(&#x27;mousedown&#x27;, e=&gt;e.preventDefault());
-  document.getElementById(&#x27;inc-font-btn&#x27;).addEventListener(&#x27;click&#x27;, ()=&gt; wrapSelection(&#x27;fontSize&#x27;, 2, true));
+  document.getElementById('inc-font-btn').addEventListener('mousedown', e=&gt;e.preventDefault());
+  document.getElementById('inc-font-btn').addEventListener('click', ()=&gt; wrapSelection('fontSize', 2, true));
 
-  document.getElementById(&#x27;dec-font-btn&#x27;).addEventListener(&#x27;mousedown&#x27;, e=&gt;e.preventDefault());
-  document.getElementById(&#x27;dec-font-btn&#x27;).addEventListener(&#x27;click&#x27;, ()=&gt; wrapSelection(&#x27;fontSize&#x27;, -2, true));
+  document.getElementById('dec-font-btn').addEventListener('mousedown', e=&gt;e.preventDefault());
+  document.getElementById('dec-font-btn').addEventListener('click', ()=&gt; wrapSelection('fontSize', -2, true));
 
-  const colorInput = document.getElementById(&#x27;color-input&#x27;);
-  colorInput.addEventListener(&#x27;mousedown&#x27;, ()=&gt;{
+  const colorInput = document.getElementById('color-input');
+  colorInput.addEventListener('mousedown', ()=&gt;{
     const sel = window.getSelection();
     savedRange = (sel &amp;&amp; sel.rangeCount &gt; 0 &amp;&amp; !sel.isCollapsed &amp;&amp; root.contains(sel.getRangeAt(0).commonAncestorContainer))
       ? sel.getRangeAt(0).cloneRange()
       : null;
   });
-  colorInput.addEventListener(&#x27;input&#x27;, (e)=&gt;{
-    if(!savedRange){ setStatus(&#x27;Select text first&#x27;); return; }
+  colorInput.addEventListener('input', (e)=&gt;{
+    if(!savedRange){ setStatus('Select text first'); return; }
     const sel = window.getSelection();
     sel.removeAllRanges();
     sel.addRange(savedRange);
-    wrapSelection(&#x27;color&#x27;, e.target.value, false);
+    wrapSelection('color', e.target.value, false);
   });
 
   updateUndoButton();
@@ -2448,55 +2448,55 @@ A few additional capabilities that can be relevant, depending on the customer&#x
 
 // --- left nav: scroll-to for sections, open for side panels ---
 (function(){
-  const backdrop = document.getElementById(&#x27;panel-backdrop&#x27;);
-  const centerContent = document.getElementById(&#x27;center-content&#x27;);
+  const backdrop = document.getElementById('panel-backdrop');
+  const centerContent = document.getElementById('center-content');
 
   function openPanel(id){
     const panel = document.getElementById(id);
     if(!panel) return;
-    document.querySelectorAll(&#x27;.side-panel.open&#x27;).forEach(p =&gt; p.classList.remove(&#x27;open&#x27;));
-    panel.classList.add(&#x27;open&#x27;);
-    backdrop.classList.add(&#x27;open&#x27;);
+    document.querySelectorAll('.side-panel.open').forEach(p =&gt; p.classList.remove('open'));
+    panel.classList.add('open');
+    backdrop.classList.add('open');
   }
   function closeAllPanels(){
-    document.querySelectorAll(&#x27;.side-panel.open&#x27;).forEach(p =&gt; p.classList.remove(&#x27;open&#x27;));
-    backdrop.classList.remove(&#x27;open&#x27;);
+    document.querySelectorAll('.side-panel.open').forEach(p =&gt; p.classList.remove('open'));
+    backdrop.classList.remove('open');
   }
   // exposed so the chat script (a separate IIFE below) can open the
   // floating answer window without needing its own backdrop/open-panel logic
   window.openSidePanel = openPanel;
 
-  document.querySelectorAll(&#x27;[data-open-panel]&#x27;).forEach(btn=&gt;{
-    btn.addEventListener(&#x27;click&#x27;, ()=&gt; openPanel(btn.dataset.openPanel));
+  document.querySelectorAll('[data-open-panel]').forEach(btn=&gt;{
+    btn.addEventListener('click', ()=&gt; openPanel(btn.dataset.openPanel));
   });
-  document.querySelectorAll(&#x27;.panel-close&#x27;).forEach(btn=&gt;{
-    btn.addEventListener(&#x27;click&#x27;, closeAllPanels);
+  document.querySelectorAll('.panel-close').forEach(btn=&gt;{
+    btn.addEventListener('click', closeAllPanels);
   });
-  backdrop.addEventListener(&#x27;click&#x27;, closeAllPanels);
-  document.addEventListener(&#x27;keydown&#x27;, (e)=&gt;{
-    if(e.key === &#x27;Escape&#x27;) closeAllPanels();
+  backdrop.addEventListener('click', closeAllPanels);
+  document.addEventListener('keydown', (e)=&gt;{
+    if(e.key === 'Escape') closeAllPanels();
   });
 
   // Make each panel draggable by its header. Clicking the ✕ inside the
   // header must NOT start a drag — checked via closest() below.
-  document.querySelectorAll(&#x27;.side-panel&#x27;).forEach(panel=&gt;{
-    const header = panel.querySelector(&#x27;.panel-header&#x27;);
+  document.querySelectorAll('.side-panel').forEach(panel=&gt;{
+    const header = panel.querySelector('.panel-header');
     if(!header) return;
-    const frame = document.getElementById(&#x27;app-frame&#x27;);
+    const frame = document.getElementById('app-frame');
 
-    header.addEventListener(&#x27;mousedown&#x27;, (e)=&gt;{
-      if(e.target.closest(&#x27;.panel-close&#x27;)) return;
+    header.addEventListener('mousedown', (e)=&gt;{
+      if(e.target.closest('.panel-close')) return;
       e.preventDefault();
 
       const panelRect = panel.getBoundingClientRect();
       const frameRect = frame.getBoundingClientRect();
-      // Lock in the panel&#x27;s current on-screen spot as explicit left/top
-      // (in case it&#x27;s still sitting at its default CSS position), then
+      // Lock in the panel's current on-screen spot as explicit left/top
+      // (in case it's still sitting at its default CSS position), then
       // drag from there.
       const startLeft = panelRect.left - frameRect.left;
       const startTop = panelRect.top - frameRect.top;
-      panel.style.left = startLeft + &#x27;px&#x27;;
-      panel.style.top = startTop + &#x27;px&#x27;;
+      panel.style.left = startLeft + 'px';
+      panel.style.top = startTop + 'px';
 
       const startX = e.clientX;
       const startY = e.clientY;
@@ -2506,15 +2506,15 @@ A few additional capabilities that can be relevant, depending on the customer&#x
         const newTop = startTop + (ev.clientY - startY);
         const maxLeft = Math.max(0, frame.clientWidth - panel.offsetWidth);
         const maxTop = Math.max(0, frame.clientHeight - panel.offsetHeight);
-        panel.style.left = Math.min(Math.max(0, newLeft), maxLeft) + &#x27;px&#x27;;
-        panel.style.top = Math.min(Math.max(0, newTop), maxTop) + &#x27;px&#x27;;
+        panel.style.left = Math.min(Math.max(0, newLeft), maxLeft) + 'px';
+        panel.style.top = Math.min(Math.max(0, newTop), maxTop) + 'px';
       }
       function onUp(){
-        document.removeEventListener(&#x27;mousemove&#x27;, onMove);
-        document.removeEventListener(&#x27;mouseup&#x27;, onUp);
+        document.removeEventListener('mousemove', onMove);
+        document.removeEventListener('mouseup', onUp);
       }
-      document.addEventListener(&#x27;mousemove&#x27;, onMove);
-      document.addEventListener(&#x27;mouseup&#x27;, onUp);
+      document.addEventListener('mousemove', onMove);
+      document.addEventListener('mouseup', onUp);
     });
   });
 
@@ -2529,21 +2529,21 @@ A few additional capabilities that can be relevant, depending on the customer&#x
   // without it staying loud/distracting.
   function flashTarget(el){
     if(!el) return;
-    el.style.transition = &#x27;background-color .9s ease, box-shadow .9s ease&#x27;;
-    el.style.backgroundColor = &#x27;#FFF1E6&#x27;;
-    el.style.boxShadow = &#x27;0 0 0 2px rgba(255,108,55,0.35)&#x27;;
+    el.style.transition = 'background-color .9s ease, box-shadow .9s ease';
+    el.style.backgroundColor = '#FFF1E6';
+    el.style.boxShadow = '0 0 0 2px rgba(255,108,55,0.35)';
     setTimeout(()=&gt;{
-      el.style.backgroundColor = &#x27;&#x27;;
-      el.style.boxShadow = &#x27;&#x27;;
+      el.style.backgroundColor = '';
+      el.style.boxShadow = '';
     }, 1100);
   }
 
-  const scrollButtons = document.querySelectorAll(&#x27;.nav-item[data-scroll]&#x27;);
+  const scrollButtons = document.querySelectorAll('.nav-item[data-scroll]');
   scrollButtons.forEach(btn=&gt;{
-    btn.addEventListener(&#x27;click&#x27;, ()=&gt;{
+    btn.addEventListener('click', ()=&gt;{
       const target = document.getElementById(btn.dataset.scroll);
       if(target){
-        target.scrollIntoView({ behavior: &#x27;smooth&#x27;, block: &#x27;start&#x27; });
+        target.scrollIntoView({ behavior: 'smooth', block: 'start' });
         flashTarget(target);
       }
     });
@@ -2552,20 +2552,20 @@ A few additional capabilities that can be relevant, depending on the customer&#x
   // Product submenu: the chevron only toggles the list open/closed and does
   // NOT scroll — the &quot;Core Products&quot; button next to it keeps scrolling to the
   // section exactly as before. Each product inside the list scrolls to that
-  // specific product&#x27;s own card.
-  document.querySelectorAll(&#x27;.chevron-btn[data-toggle]&#x27;).forEach(btn=&gt;{
-    btn.addEventListener(&#x27;click&#x27;, ()=&gt;{
+  // specific product's own card.
+  document.querySelectorAll('.chevron-btn[data-toggle]').forEach(btn=&gt;{
+    btn.addEventListener('click', ()=&gt;{
       const submenu = document.getElementById(btn.dataset.toggle);
       if(!submenu) return;
-      submenu.classList.toggle(&#x27;open&#x27;);
-      btn.classList.toggle(&#x27;open&#x27;);
+      submenu.classList.toggle('open');
+      btn.classList.toggle('open');
     });
   });
-  document.querySelectorAll(&#x27;.nav-subitem[data-scroll]&#x27;).forEach(btn=&gt;{
-    btn.addEventListener(&#x27;click&#x27;, ()=&gt;{
+  document.querySelectorAll('.nav-subitem[data-scroll]').forEach(btn=&gt;{
+    btn.addEventListener('click', ()=&gt;{
       const target = document.getElementById(btn.dataset.scroll);
       if(target){
-        target.scrollIntoView({ behavior: &#x27;smooth&#x27;, block: &#x27;start&#x27; });
+        target.scrollIntoView({ behavior: 'smooth', block: 'start' });
         flashTarget(target);
       }
     });
@@ -2582,27 +2582,27 @@ A few additional capabilities that can be relevant, depending on the customer&#x
       }
     }
     scrollButtons.forEach(btn=&gt;{
-      btn.classList.toggle(&#x27;active&#x27;, btn.dataset.scroll === currentId);
+      btn.classList.toggle('active', btn.dataset.scroll === currentId);
     });
   }
-  centerContent.addEventListener(&#x27;scroll&#x27;, updateActive);
+  centerContent.addEventListener('scroll', updateActive);
   updateActive();
 })();
 
-// --- docked chat panel: multi-turn, answers only from the document&#x27;s own current text ---
+// --- docked chat panel: multi-turn, answers only from the document's own current text ---
 (function(){
   // Works as-is inside Claude.ai (calls Anthropic directly — that only
   // works in this sandbox). Once you host this file elsewhere (GitHub
   // Pages, etc.), deploy anthropic-proxy-worker.js to Cloudflare Workers
-  // and replace the line below with your Worker&#x27;s URL, e.g.
-  // &#x27;https://postman-bot-relay.your-subdomain.workers.dev&#x27; — nothing
+  // and replace the line below with your Worker's URL, e.g.
+  // 'https://postman-bot-relay.your-subdomain.workers.dev' — nothing
   // else in this file needs to change.
-  const API_ENDPOINT = &#x27;https://yanivdash.ygabay1978.workers.dev&#x27;;
+  const API_ENDPOINT = 'https://yanivdash.ygabay1978.workers.dev';
 
-  const logEl = document.getElementById(&#x27;chat-log&#x27;);
-  const questionEl = document.getElementById(&#x27;chat-question&#x27;);
-  const sendBtn = document.getElementById(&#x27;chat-send&#x27;);
-  const root = document.getElementById(&#x27;editable-root&#x27;);
+  const logEl = document.getElementById('chat-log');
+  const questionEl = document.getElementById('chat-question');
+  const sendBtn = document.getElementById('chat-send');
+  const root = document.getElementById('editable-root');
   let placeholderRemoved = false;
 
   // The actual fix for &quot;give me another follow-up question&quot; losing the
@@ -2616,15 +2616,15 @@ A few additional capabilities that can be relevant, depending on the customer&#x
   const MAX_HISTORY_MESSAGES = 16; // keep the first (doc-bearing) turn + recent ones
 
   // ---- floating answer window ----
-  const answerPanel = document.getElementById(&#x27;answer-panel&#x27;);
-  const answerQuestionEl = document.getElementById(&#x27;answer-question&#x27;);
-  const answerContentEl = document.getElementById(&#x27;answer-content&#x27;);
-  const SAVED_ANSWERS_KEY = &#x27;postman-explainer-saved-answers-en&#x27;;
+  const answerPanel = document.getElementById('answer-panel');
+  const answerQuestionEl = document.getElementById('answer-question');
+  const answerContentEl = document.getElementById('answer-content');
+  const SAVED_ANSWERS_KEY = 'postman-explainer-saved-answers-en';
   let currentAnswerKey = null;
   let currentAnswerOriginal = null;
 
   function normalizeQuestion(q){
-    return q.trim().toLowerCase().replace(/\s+/g, &#x27; &#x27;);
+    return q.trim().toLowerCase().replace(/\s+/g, ' ');
   }
   function loadSavedAnswers(){
     let answers;
@@ -2636,7 +2636,7 @@ A few additional capabilities that can be relevant, depending on the customer&#x
     // visible question text, just the ✕ delete button.
     let migrated = false;
     Object.keys(answers).forEach(key=&gt;{
-      if(typeof answers[key] === &#x27;string&#x27;){
+      if(typeof answers[key] === 'string'){
         answers[key] = { q: key, a: answers[key] };
         migrated = true;
       }
@@ -2666,132 +2666,132 @@ A few additional capabilities that can be relevant, depending on the customer&#x
   }
 
   // Cross-language sync: saving here also translates and writes into the
-  // Hebrew version&#x27;s own storage key (shared localStorage, same domain).
+  // Hebrew version's own storage key (shared localStorage, same domain).
   // Visible status here (not just console.error) so a failed sync is
   // actually noticeable instead of silently not happening.
-  const OTHER_LANG_KEY = &#x27;postman-explainer-saved-answers-he&#x27;;
-  const syncStatusEl = document.getElementById(&#x27;sync-status&#x27;);
+  const OTHER_LANG_KEY = 'postman-explainer-saved-answers-he';
+  const syncStatusEl = document.getElementById('sync-status');
   function flashSyncStatus(text, ok){
     syncStatusEl.textContent = text;
-    syncStatusEl.classList.remove(&#x27;ok&#x27;, &#x27;err&#x27;);
-    syncStatusEl.classList.add(ok ? &#x27;ok&#x27; : &#x27;err&#x27;);
-    setTimeout(()=&gt;{ syncStatusEl.textContent = &#x27;&#x27;; syncStatusEl.classList.remove(&#x27;ok&#x27;,&#x27;err&#x27;); }, 4000);
+    syncStatusEl.classList.remove('ok', 'err');
+    syncStatusEl.classList.add(ok ? 'ok' : 'err');
+    setTimeout(()=&gt;{ syncStatusEl.textContent = ''; syncStatusEl.classList.remove('ok','err'); }, 4000);
   }
   async function translateAndSyncToOtherLanguage(question, answerHTML){
-    flashSyncStatus(&#x27;Translating to Hebrew…&#x27;, true);
+    flashSyncStatus('Translating to Hebrew…', true);
     try{
-      const prompt = &#x27;Translate the following English sales Q&amp;A into natural, professional Hebrew. This must be a COMPLETE, full-length, faithful translation — do not summarize, shorten, condense, or omit any part of the content. Match the original\&#x27;s length and level of detail exactly. Keep every HTML tag exactly as-is (e.g. &lt;b&gt;, &lt;span style=&quot;...&quot;&gt;) — translate ONLY the visible text between tags, never tag names or attributes. Respond with ONLY a single valid JSON object and nothing else — no markdown fences, no preamble — in exactly this shape: {&quot;q&quot;:&quot;&lt;translated question&gt;&quot;,&quot;a&quot;:&quot;&lt;translated answer, HTML preserved, properly escaped for JSON&gt;&quot;}\n\nEnglish question: &#x27; + question + &#x27;\nEnglish answer (HTML): &#x27; + answerHTML;
+      const prompt = 'Translate the following English sales Q&amp;A into natural, professional Hebrew. This must be a COMPLETE, full-length, faithful translation — do not summarize, shorten, condense, or omit any part of the content. Match the original\'s length and level of detail exactly. Keep every HTML tag exactly as-is (e.g. &lt;b&gt;, &lt;span style=&quot;...&quot;&gt;) — translate ONLY the visible text between tags, never tag names or attributes. Respond with ONLY a single valid JSON object and nothing else — no markdown fences, no preamble — in exactly this shape: {&quot;q&quot;:&quot;&lt;translated question&gt;&quot;,&quot;a&quot;:&quot;&lt;translated answer, HTML preserved, properly escaped for JSON&gt;&quot;}\n\nEnglish question: ' + question + '\nEnglish answer (HTML): ' + answerHTML;
       const response = await fetch(API_ENDPOINT, {
-        method: &#x27;POST&#x27;,
-        headers: { &#x27;Content-Type&#x27;: &#x27;application/json&#x27; },
-        body: JSON.stringify({ model: &#x27;claude-sonnet-4-6&#x27;, max_tokens: 2000, messages: [{ role: &#x27;user&#x27;, content: prompt }] })
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ model: 'claude-sonnet-4-6', max_tokens: 2000, messages: [{ role: 'user', content: prompt }] })
       });
-      if(!response.ok) throw new Error(&#x27;bad response &#x27; + response.status);
+      if(!response.ok) throw new Error('bad response ' + response.status);
       const data = await response.json();
-      const text = (data.content || []).filter(b =&gt; b.type === &#x27;text&#x27;).map(b =&gt; b.text).join(&#x27;&#x27;).trim();
+      const text = (data.content || []).filter(b =&gt; b.type === 'text').map(b =&gt; b.text).join('').trim();
       const jsonMatch = text.match(/\{[\s\S]*\}/);
-      if(!jsonMatch) throw new Error(&#x27;no JSON found in translation response&#x27;);
+      if(!jsonMatch) throw new Error('no JSON found in translation response');
       const parsed = JSON.parse(jsonMatch[0]);
-      if(!parsed.q || !parsed.a) throw new Error(&#x27;translation JSON missing q/a&#x27;);
+      if(!parsed.q || !parsed.a) throw new Error('translation JSON missing q/a');
       let otherAnswers = {};
       try{ otherAnswers = JSON.parse(localStorage.getItem(OTHER_LANG_KEY)) || {}; }catch(e){}
-      otherAnswers[parsed.q.trim().toLowerCase().replace(/\s+/g, &#x27; &#x27;)] = { q: parsed.q, a: parsed.a };
+      otherAnswers[parsed.q.trim().toLowerCase().replace(/\s+/g, ' ')] = { q: parsed.q, a: parsed.a };
       localStorage.setItem(OTHER_LANG_KEY, JSON.stringify(otherAnswers));
-      flashSyncStatus(&#x27;✓ Synced to Hebrew too&#x27;, true);
+      flashSyncStatus('✓ Synced to Hebrew too', true);
     }catch(e){
-      console.error(&#x27;cross-language sync failed&#x27;, e);
-      flashSyncStatus(&#x27;⚠ Sync to Hebrew failed — try saving again&#x27;, false);
+      console.error('cross-language sync failed', e);
+      flashSyncStatus('⚠ Sync to Hebrew failed — try saving again', false);
     }
   }
 
   function saveCurrentAnswer(){
     if(!currentAnswerKey) return;
     saveQA(currentAnswerOriginal, answerContentEl.innerHTML);
-    const saveBtn = document.getElementById(&#x27;ans-save-btn&#x27;);
+    const saveBtn = document.getElementById('ans-save-btn');
     const original = saveBtn.textContent;
-    saveBtn.textContent = &#x27;Saved ✓&#x27;;
+    saveBtn.textContent = 'Saved ✓';
     setTimeout(()=&gt;{ saveBtn.textContent = original; }, 1500);
   }
-  document.getElementById(&#x27;ans-save-btn&#x27;).addEventListener(&#x27;click&#x27;, saveCurrentAnswer);
+  document.getElementById('ans-save-btn').addEventListener('click', saveCurrentAnswer);
 
   function openAnswerPanel(question){
     currentAnswerKey = normalizeQuestion(question);
     currentAnswerOriginal = question;
     answerQuestionEl.textContent = question;
-    if(window.openSidePanel) window.openSidePanel(&#x27;answer-panel&#x27;);
-    else answerPanel.classList.add(&#x27;open&#x27;);
+    if(window.openSidePanel) window.openSidePanel('answer-panel');
+    else answerPanel.classList.add('open');
   }
 
   // ---- ⭐ quick-save star on each bot bubble ----
   function addStarToBubble(botMsgEl, question){
-    const star = document.createElement(&#x27;button&#x27;);
-    star.className = &#x27;msg-star-btn&#x27;;
-    star.title = &#x27;Save this question and answer to your saved-questions list&#x27;;
-    star.textContent = &#x27;☆&#x27;;
-    if(getSavedAnswer(question) !== null) { star.textContent = &#x27;⭐&#x27;; star.classList.add(&#x27;saved&#x27;); }
-    star.addEventListener(&#x27;click&#x27;, ()=&gt;{
+    const star = document.createElement('button');
+    star.className = 'msg-star-btn';
+    star.title = 'Save this question and answer to your saved-questions list';
+    star.textContent = '☆';
+    if(getSavedAnswer(question) !== null) { star.textContent = '⭐'; star.classList.add('saved'); }
+    star.addEventListener('click', ()=&gt;{
       saveQA(question, botMsgEl.textContent);
-      star.textContent = &#x27;⭐&#x27;;
-      star.classList.add(&#x27;saved&#x27;);
+      star.textContent = '⭐';
+      star.classList.add('saved');
     });
     botMsgEl.appendChild(star);
   }
 
   // ---- saved-questions dropdown ----
-  const savedBtn = document.getElementById(&#x27;saved-questions-btn&#x27;);
-  const savedMenu = document.getElementById(&#x27;saved-questions-menu&#x27;);
-  const savedCountEl = document.getElementById(&#x27;saved-questions-count&#x27;);
+  const savedBtn = document.getElementById('saved-questions-btn');
+  const savedMenu = document.getElementById('saved-questions-menu');
+  const savedCountEl = document.getElementById('saved-questions-count');
   function renderSavedQuestionsMenu(){
     const answers = loadSavedAnswers();
     const keys = Object.keys(answers);
-    savedCountEl.textContent = keys.length ? String(keys.length) : &#x27;&#x27;;
+    savedCountEl.textContent = keys.length ? String(keys.length) : '';
     if(keys.length === 0){
-      savedMenu.innerHTML = &#x27;&lt;div class=&quot;sq-empty&quot;&gt;You haven\&#x27;t saved any questions yet — click ⭐ next to any answer to save it.&lt;/div&gt;&#x27;;
+      savedMenu.innerHTML = '&lt;div class=&quot;sq-empty&quot;&gt;You haven\'t saved any questions yet — click ⭐ next to any answer to save it.&lt;/div&gt;';
       return;
     }
-    savedMenu.innerHTML = &#x27;&#x27;;
+    savedMenu.innerHTML = '';
     keys.forEach(key=&gt;{
       const entry = answers[key];
-      const item = document.createElement(&#x27;div&#x27;);
-      item.className = &#x27;sq-item&#x27;;
-      const textSpan = document.createElement(&#x27;span&#x27;);
-      textSpan.className = &#x27;sq-text&#x27;;
+      const item = document.createElement('div');
+      item.className = 'sq-item';
+      const textSpan = document.createElement('span');
+      textSpan.className = 'sq-text';
       textSpan.textContent = entry.q;
-      const delBtn = document.createElement(&#x27;button&#x27;);
-      delBtn.className = &#x27;sq-delete&#x27;;
-      delBtn.title = &#x27;Remove from list&#x27;;
-      delBtn.textContent = &#x27;✕&#x27;;
+      const delBtn = document.createElement('button');
+      delBtn.className = 'sq-delete';
+      delBtn.title = 'Remove from list';
+      delBtn.textContent = '✕';
       item.appendChild(textSpan);
       item.appendChild(delBtn);
-      textSpan.addEventListener(&#x27;click&#x27;, ()=&gt;{
-        savedMenu.classList.remove(&#x27;open&#x27;);
+      textSpan.addEventListener('click', ()=&gt;{
+        savedMenu.classList.remove('open');
         ask(entry.q);
       });
-      delBtn.addEventListener(&#x27;click&#x27;, (e)=&gt;{
+      delBtn.addEventListener('click', (e)=&gt;{
         e.stopPropagation();
         deleteSavedQA(key);
       });
       savedMenu.appendChild(item);
     });
   }
-  savedBtn.addEventListener(&#x27;click&#x27;, (e)=&gt;{
+  savedBtn.addEventListener('click', (e)=&gt;{
     e.stopPropagation();
-    savedMenu.classList.toggle(&#x27;open&#x27;);
+    savedMenu.classList.toggle('open');
   });
-  document.addEventListener(&#x27;click&#x27;, (e)=&gt;{
-    if(!document.getElementById(&#x27;saved-questions-wrap&#x27;).contains(e.target)){
-      savedMenu.classList.remove(&#x27;open&#x27;);
+  document.addEventListener('click', (e)=&gt;{
+    if(!document.getElementById('saved-questions-wrap').contains(e.target)){
+      savedMenu.classList.remove('open');
     }
   });
   renderSavedQuestionsMenu();
 
   function addMessage(role, text){
     if(!placeholderRemoved){
-      logEl.innerHTML = &#x27;&#x27;;
+      logEl.innerHTML = '';
       placeholderRemoved = true;
     }
-    const div = document.createElement(&#x27;div&#x27;);
-    div.className = &#x27;chat-msg &#x27; + role;
+    const div = document.createElement('div');
+    div.className = 'chat-msg ' + role;
     div.textContent = text;
     logEl.appendChild(div);
     logEl.scrollTop = logEl.scrollHeight;
@@ -2809,51 +2809,51 @@ A few additional capabilities that can be relevant, depending on the customer&#x
   async function ask(question){
     if(!question) return;
     sendBtn.disabled = true;
-    addMessage(&#x27;user&#x27;, question);
+    addMessage('user', question);
 
     openAnswerPanel(question);
-    answerContentEl.setAttribute(&#x27;contenteditable&#x27;, &#x27;false&#x27;);
+    answerContentEl.setAttribute('contenteditable', 'false');
 
     // If this exact question was already asked and edited/saved before,
     // show the saved version instead of calling the API again.
     const saved = getSavedAnswer(question);
     if(saved !== null){
-      answerContentEl.classList.remove(&#x27;loading&#x27;);
+      answerContentEl.classList.remove('loading');
       answerContentEl.innerHTML = saved;
-      answerContentEl.setAttribute(&#x27;contenteditable&#x27;, &#x27;true&#x27;);
-      const botMsg = addMessage(&#x27;bot&#x27;, answerContentEl.innerText);
+      answerContentEl.setAttribute('contenteditable', 'true');
+      const botMsg = addMessage('bot', answerContentEl.innerText);
       addStarToBubble(botMsg, question);
-      conversationHistory.push({ role: &#x27;user&#x27;, content: question });
-      conversationHistory.push({ role: &#x27;assistant&#x27;, content: answerContentEl.innerText });
+      conversationHistory.push({ role: 'user', content: question });
+      conversationHistory.push({ role: 'assistant', content: answerContentEl.innerText });
       trimHistory();
       sendBtn.disabled = false;
       return;
     }
 
-    answerContentEl.classList.add(&#x27;loading&#x27;);
-    answerContentEl.textContent = &#x27;Searching the document…&#x27;;
-    const botMsg = addMessage(&#x27;bot loading&#x27;, &#x27;Searching the document…&#x27;);
+    answerContentEl.classList.add('loading');
+    answerContentEl.textContent = 'Searching the document…';
+    const botMsg = addMessage('bot loading', 'Searching the document…');
 
     let userTurnContent;
     if(conversationHistory.length === 0){
       const documentText = root.innerText;
-      userTurnContent = &#x27;Below is a Postman sales training document, in English. Answer the following questions based only on the information written in this document (including the content of the side panels — Positioning &amp; Objections, Fabric, Passport, ASA, DATABASE). If the answer doesn\&#x27;t appear in the document, say so clearly and don\&#x27;t make up information. You are answering a salesperson who is in the middle of a live sales call with the customer on the line — give a short, direct answer, 2-3 sentences at most, in English, with no preamble.\n\nAlso: if the question fits a case where it would help to send the customer a clarifying or counter-question (Reverse Question) — add a separate line at the end that starts exactly with &quot;🔄 Suggested follow-up question:&quot; followed by one concrete question. If the situation doesn\&#x27;t fit that, don\&#x27;t add this line at all.\n\nThis will be an ongoing conversation with several questions in a row. If a follow-up question is general or briefly phrased (e.g. &quot;give me another one&quot;, &quot;what else?&quot;, &quot;explain more&quot;), treat it as a continuation of the topic we were just discussing — unless it\&#x27;s clearly phrased as switching to a different topic.\n\n&lt;document&gt;\n&#x27; + documentText + &#x27;\n&lt;/document&gt;\n\nFirst question: &#x27; + question;
+      userTurnContent = 'Below is a Postman sales training document, in English. Answer the following questions based only on the information written in this document (including the content of the side panels — Positioning &amp; Objections, Fabric, Passport, ASA, DATABASE). If the answer doesn\'t appear in the document, say so clearly and don\'t make up information. You are answering a salesperson who is in the middle of a live sales call with the customer on the line — give a short, direct answer, 2-3 sentences at most, in English, with no preamble.\n\nAlso: if the question fits a case where it would help to send the customer a clarifying or counter-question (Reverse Question) — add a separate line at the end that starts exactly with &quot;🔄 Suggested follow-up question:&quot; followed by one concrete question. If the situation doesn\'t fit that, don\'t add this line at all.\n\nThis will be an ongoing conversation with several questions in a row. If a follow-up question is general or briefly phrased (e.g. &quot;give me another one&quot;, &quot;what else?&quot;, &quot;explain more&quot;), treat it as a continuation of the topic we were just discussing — unless it\'s clearly phrased as switching to a different topic.\n\n&lt;document&gt;\n' + documentText + '\n&lt;/document&gt;\n\nFirst question: ' + question;
     } else {
       userTurnContent = question;
     }
 
-    conversationHistory.push({ role: &#x27;user&#x27;, content: userTurnContent });
+    conversationHistory.push({ role: 'user', content: userTurnContent });
     trimHistory();
 
-    let accumulated = &#x27;&#x27;;
+    let accumulated = '';
     let firstTokenReceived = false;
 
     try{
       const response = await fetch(API_ENDPOINT, {
-        method: &#x27;POST&#x27;,
-        headers: { &#x27;Content-Type&#x27;: &#x27;application/json&#x27; },
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
-          model: &#x27;claude-sonnet-4-6&#x27;,
+          model: 'claude-sonnet-4-6',
           max_tokens: 300,
           stream: true,
           messages: conversationHistory
@@ -2861,35 +2861,35 @@ A few additional capabilities that can be relevant, depending on the customer&#x
       });
 
       if(!response.ok || !response.body){
-        throw new Error(&#x27;bad response: &#x27; + response.status);
+        throw new Error('bad response: ' + response.status);
       }
 
-      // Stream the answer in as it&#x27;s generated — feels close to instant
+      // Stream the answer in as it's generated — feels close to instant
       // since text starts appearing right away instead of after the whole
       // answer is ready.
       const reader = response.body.getReader();
       const decoder = new TextDecoder();
-      let buffer = &#x27;&#x27;;
+      let buffer = '';
 
       while(true){
         const { value, done } = await reader.read();
         if(done) break;
         buffer += decoder.decode(value, { stream: true });
-        const lines = buffer.split(&#x27;\n&#x27;);
+        const lines = buffer.split('\n');
         buffer = lines.pop();
 
         for(const line of lines){
-          if(!line.startsWith(&#x27;data:&#x27;)) continue;
+          if(!line.startsWith('data:')) continue;
           const jsonStr = line.slice(5).trim();
-          if(!jsonStr || jsonStr === &#x27;[DONE]&#x27;) continue;
+          if(!jsonStr || jsonStr === '[DONE]') continue;
           try{
             const evt = JSON.parse(jsonStr);
-            if(evt.type === &#x27;content_block_delta&#x27; &amp;&amp; evt.delta &amp;&amp; evt.delta.type === &#x27;text_delta&#x27;){
+            if(evt.type === 'content_block_delta' &amp;&amp; evt.delta &amp;&amp; evt.delta.type === 'text_delta'){
               if(!firstTokenReceived){
-                botMsg.textContent = &#x27;&#x27;;
-                botMsg.classList.remove(&#x27;loading&#x27;);
-                answerContentEl.classList.remove(&#x27;loading&#x27;);
-                answerContentEl.textContent = &#x27;&#x27;;
+                botMsg.textContent = '';
+                botMsg.classList.remove('loading');
+                answerContentEl.classList.remove('loading');
+                answerContentEl.textContent = '';
                 firstTokenReceived = true;
               }
               accumulated += evt.delta.text;
@@ -2902,24 +2902,24 @@ A few additional capabilities that can be relevant, depending on the customer&#x
       }
 
       if(!accumulated){
-        botMsg.classList.remove(&#x27;loading&#x27;);
-        botMsg.textContent = &#x27;No response received from the system.&#x27;;
-        answerContentEl.classList.remove(&#x27;loading&#x27;);
-        answerContentEl.textContent = &#x27;No response received from the system.&#x27;;
-        conversationHistory.pop(); // failed turn — don&#x27;t poison history with an empty reply
+        botMsg.classList.remove('loading');
+        botMsg.textContent = 'No response received from the system.';
+        answerContentEl.classList.remove('loading');
+        answerContentEl.textContent = 'No response received from the system.';
+        conversationHistory.pop(); // failed turn — don't poison history with an empty reply
       } else {
-        conversationHistory.push({ role: &#x27;assistant&#x27;, content: accumulated });
-        answerContentEl.setAttribute(&#x27;contenteditable&#x27;, &#x27;true&#x27;);
+        conversationHistory.push({ role: 'assistant', content: accumulated });
+        answerContentEl.setAttribute('contenteditable', 'true');
         addStarToBubble(botMsg, question);
       }
     }catch(err){
-      botMsg.classList.remove(&#x27;loading&#x27;);
-      botMsg.classList.add(&#x27;err&#x27;);
-      botMsg.textContent = &#x27;Something went wrong with the request. Try again.&#x27;;
-      answerContentEl.classList.remove(&#x27;loading&#x27;);
-      answerContentEl.textContent = &#x27;Something went wrong with the request. Try again.&#x27;;
+      botMsg.classList.remove('loading');
+      botMsg.classList.add('err');
+      botMsg.textContent = 'Something went wrong with the request. Try again.';
+      answerContentEl.classList.remove('loading');
+      answerContentEl.textContent = 'Something went wrong with the request. Try again.';
       conversationHistory.pop(); // failed turn — remove the dangling user message too
-      console.error(&#x27;ai question failed&#x27;, err);
+      console.error('ai question failed', err);
     }finally{
       sendBtn.disabled = false;
     }
@@ -2928,19 +2928,19 @@ A few additional capabilities that can be relevant, depending on the customer&#x
   function sendCurrentInput(){
     const question = questionEl.value.trim();
     if(!question) return;
-    questionEl.value = &#x27;&#x27;;
+    questionEl.value = '';
     ask(question);
   }
 
-  sendBtn.addEventListener(&#x27;click&#x27;, sendCurrentInput);
-  questionEl.addEventListener(&#x27;keydown&#x27;, (e)=&gt;{
-    if(e.key === &#x27;Enter&#x27; &amp;&amp; !e.shiftKey){
+  sendBtn.addEventListener('click', sendCurrentInput);
+  questionEl.addEventListener('keydown', (e)=&gt;{
+    if(e.key === 'Enter' &amp;&amp; !e.shiftKey){
       e.preventDefault();
       sendCurrentInput();
     }
   });
-  document.querySelectorAll(&#x27;.chat-quick-btn&#x27;).forEach(btn=&gt;{
-    btn.addEventListener(&#x27;click&#x27;, ()=&gt; ask(btn.dataset.prompt));
+  document.querySelectorAll('.chat-quick-btn').forEach(btn=&gt;{
+    btn.addEventListener('click', ()=&gt; ask(btn.dataset.prompt));
   });
 
   // ---- formatting toolbar inside the floating answer window ----
@@ -2956,14 +2956,14 @@ A few additional capabilities that can be relevant, depending on the customer&#x
     if(isSizeDelta){
       const refNode = range.startContainer.nodeType === 3 ? range.startContainer.parentElement : range.startContainer;
       const currentSize = parseFloat(window.getComputedStyle(refNode).fontSize) || 14;
-      value = Math.max(10, Math.min(40, currentSize + valueOrDelta)) + &#x27;px&#x27;;
+      value = Math.max(10, Math.min(40, currentSize + valueOrDelta)) + 'px';
     }
-    const span = document.createElement(&#x27;span&#x27;);
+    const span = document.createElement('span');
     span.style[styleProp] = value;
     span.appendChild(range.extractContents());
     range.insertNode(span);
-    if(styleProp === &#x27;color&#x27;){
-      span.querySelectorAll(&#x27;*&#x27;).forEach(node =&gt; { node.style.color = value; });
+    if(styleProp === 'color'){
+      span.querySelectorAll('*').forEach(node =&gt; { node.style.color = value; });
     }
     sel.removeAllRanges();
     const newRange = document.createRange();
@@ -2975,30 +2975,30 @@ A few additional capabilities that can be relevant, depending on the customer&#x
     if(!sel || sel.rangeCount === 0 || !answerContentEl.contains(sel.getRangeAt(0).commonAncestorContainer)) return;
     document.execCommand(cmd, false, null);
   }
-  [&#x27;ans-bold-btn&#x27;,&#x27;ans-italic-btn&#x27;,&#x27;ans-dec-font-btn&#x27;,&#x27;ans-inc-font-btn&#x27;].forEach(id=&gt;{
-    document.getElementById(id).addEventListener(&#x27;mousedown&#x27;, e=&gt;e.preventDefault());
+  ['ans-bold-btn','ans-italic-btn','ans-dec-font-btn','ans-inc-font-btn'].forEach(id=&gt;{
+    document.getElementById(id).addEventListener('mousedown', e=&gt;e.preventDefault());
   });
-  document.getElementById(&#x27;ans-bold-btn&#x27;).addEventListener(&#x27;click&#x27;, ()=&gt; ansRunCommand(&#x27;bold&#x27;));
-  document.getElementById(&#x27;ans-italic-btn&#x27;).addEventListener(&#x27;click&#x27;, ()=&gt; ansRunCommand(&#x27;italic&#x27;));
-  document.getElementById(&#x27;ans-inc-font-btn&#x27;).addEventListener(&#x27;click&#x27;, ()=&gt; ansWrapSelection(&#x27;fontSize&#x27;, 2, true));
-  document.getElementById(&#x27;ans-dec-font-btn&#x27;).addEventListener(&#x27;click&#x27;, ()=&gt; ansWrapSelection(&#x27;fontSize&#x27;, -2, true));
-  document.querySelectorAll(&#x27;.ans-swatch&#x27;).forEach(btn=&gt;{
-    btn.addEventListener(&#x27;mousedown&#x27;, e=&gt;e.preventDefault());
-    btn.addEventListener(&#x27;click&#x27;, ()=&gt; ansWrapSelection(&#x27;color&#x27;, btn.dataset.color, false));
+  document.getElementById('ans-bold-btn').addEventListener('click', ()=&gt; ansRunCommand('bold'));
+  document.getElementById('ans-italic-btn').addEventListener('click', ()=&gt; ansRunCommand('italic'));
+  document.getElementById('ans-inc-font-btn').addEventListener('click', ()=&gt; ansWrapSelection('fontSize', 2, true));
+  document.getElementById('ans-dec-font-btn').addEventListener('click', ()=&gt; ansWrapSelection('fontSize', -2, true));
+  document.querySelectorAll('.ans-swatch').forEach(btn=&gt;{
+    btn.addEventListener('mousedown', e=&gt;e.preventDefault());
+    btn.addEventListener('click', ()=&gt; ansWrapSelection('color', btn.dataset.color, false));
   });
 })();
 
 // --- drag-to-reorder + add/delete cards for Core Products and Objections ---
 (function(){
   const CARD_GROUPS = [
-    { containerSelector: &#x27;#sec-products&#x27;, cardSelector: &#x27;.prod&#x27;, storageKey: &#x27;cards:products&#x27;,
-      newCardHTML: &#x27;&lt;div class=&quot;name edit-unit&quot; contenteditable=&quot;false&quot;&gt;Product name&lt;/div&gt;&lt;div class=&quot;pitch edit-unit&quot; contenteditable=&quot;false&quot;&gt;Product description...&lt;/div&gt;&#x27; },
-    { containerSelector: &#x27;#panel-objections .panel-body&#x27;, cardSelector: &#x27;.obj&#x27;, storageKey: &#x27;cards:objections&#x27;,
-      newCardHTML: &#x27;&lt;div class=&quot;q edit-unit&quot; contenteditable=&quot;false&quot;&gt;&quot;Customer question/objection?&quot;&lt;/div&gt;&lt;div class=&quot;a edit-unit&quot; contenteditable=&quot;false&quot;&gt;&quot;My answer...&quot;&lt;/div&gt;&#x27; }
+    { containerSelector: '#sec-products', cardSelector: '.prod', storageKey: 'cards:products',
+      newCardHTML: '&lt;div class=&quot;name edit-unit&quot; contenteditable=&quot;false&quot;&gt;Product name&lt;/div&gt;&lt;div class=&quot;pitch edit-unit&quot; contenteditable=&quot;false&quot;&gt;Product description...&lt;/div&gt;' },
+    { containerSelector: '#panel-objections .panel-body', cardSelector: '.obj', storageKey: 'cards:objections',
+      newCardHTML: '&lt;div class=&quot;q edit-unit&quot; contenteditable=&quot;false&quot;&gt;&quot;Customer question/objection?&quot;&lt;/div&gt;&lt;div class=&quot;a edit-unit&quot; contenteditable=&quot;false&quot;&gt;&quot;My answer...&quot;&lt;/div&gt;' }
   ];
 
   function getDragAfterElement(container, y, cardSelector){
-    const cards = [...container.querySelectorAll(cardSelector + &#x27;:not(.dragging)&#x27;)];
+    const cards = [...container.querySelectorAll(cardSelector + ':not(.dragging)')];
     return cards.reduce((closest, card)=&gt;{
       const box = card.getBoundingClientRect();
       const offset = y - box.top - box.height / 2;
@@ -3015,7 +3015,7 @@ A few additional capabilities that can be relevant, depending on the customer&#x
     if(!container) return;
     const tagClass = cardSelector.slice(1);
 
-    // A full snapshot (each card&#x27;s complete outerHTML, in order) captures
+    // A full snapshot (each card's complete outerHTML, in order) captures
     // reordering, added cards, deleted cards, and text edits all at once —
     // simpler and more robust than tracking them as separate operations.
     try{
@@ -3023,7 +3023,7 @@ A few additional capabilities that can be relevant, depending on the customer&#x
       if(saved &amp;&amp; saved.length){
         container.querySelectorAll(cardSelector).forEach(c =&gt; c.remove());
         saved.forEach(cardHTML=&gt;{
-          const temp = document.createElement(&#x27;div&#x27;);
+          const temp = document.createElement('div');
           temp.innerHTML = cardHTML;
           const cardEl = temp.firstElementChild;
           if(cardEl) container.appendChild(cardEl);
@@ -3038,33 +3038,33 @@ A few additional capabilities that can be relevant, depending on the customer&#x
     }
 
     function currentEditableState(){
-      const sample = container.querySelector(cardSelector + &#x27; .edit-unit&#x27;);
-      return sample ? sample.getAttribute(&#x27;contenteditable&#x27;) : &#x27;true&#x27;;
+      const sample = container.querySelector(cardSelector + ' .edit-unit');
+      return sample ? sample.getAttribute('contenteditable') : 'true';
     }
 
     function wireCard(card){
       if(card.dataset.wired) return;
-      card.dataset.wired = &#x27;1&#x27;;
-      card.classList.add(&#x27;reorderable-card&#x27;);
-      card.style.position = card.style.position || &#x27;relative&#x27;;
-      card.setAttribute(&#x27;draggable&#x27;, &#x27;true&#x27;);
+      card.dataset.wired = '1';
+      card.classList.add('reorderable-card');
+      card.style.position = card.style.position || 'relative';
+      card.setAttribute('draggable', 'true');
 
-      if(!card.querySelector(&#x27;.drag-grip&#x27;)){
-        const grip = document.createElement(&#x27;div&#x27;);
-        grip.className = &#x27;drag-grip&#x27;;
-        grip.title = &#x27;Drag to reorder&#x27;;
-        grip.textContent = &#x27;⠿&#x27;;
+      if(!card.querySelector('.drag-grip')){
+        const grip = document.createElement('div');
+        grip.className = 'drag-grip';
+        grip.title = 'Drag to reorder';
+        grip.textContent = '⠿';
         card.appendChild(grip);
       }
-      if(!card.querySelector(&#x27;.card-delete-btn&#x27;)){
-        const del = document.createElement(&#x27;button&#x27;);
-        del.className = &#x27;card-delete-btn&#x27;;
-        del.title = &#x27;Delete this card&#x27;;
-        del.type = &#x27;button&#x27;;
-        del.textContent = &#x27;🗑&#x27;;
-        del.addEventListener(&#x27;click&#x27;, (e)=&gt;{
+      if(!card.querySelector('.card-delete-btn')){
+        const del = document.createElement('button');
+        del.className = 'card-delete-btn';
+        del.title = 'Delete this card';
+        del.type = 'button';
+        del.textContent = '🗑';
+        del.addEventListener('click', (e)=&gt;{
           e.stopPropagation();
-          if(window.confirm(&#x27;Delete this card?&#x27;)){
+          if(window.confirm('Delete this card?')){
             card.remove();
             saveSnapshot();
           }
@@ -3072,17 +3072,17 @@ A few additional capabilities that can be relevant, depending on the customer&#x
         card.appendChild(del);
       }
 
-      card.addEventListener(&#x27;dragstart&#x27;, ()=&gt;{ card.classList.add(&#x27;dragging&#x27;); });
-      card.addEventListener(&#x27;dragend&#x27;, ()=&gt;{ card.classList.remove(&#x27;dragging&#x27;); saveSnapshot(); });
+      card.addEventListener('dragstart', ()=&gt;{ card.classList.add('dragging'); });
+      card.addEventListener('dragend', ()=&gt;{ card.classList.remove('dragging'); saveSnapshot(); });
     }
 
     container.querySelectorAll(cardSelector).forEach(wireCard);
 
-    container.addEventListener(&#x27;dragover&#x27;, (e)=&gt;{
+    container.addEventListener('dragover', (e)=&gt;{
       e.preventDefault();
-      const dragging = container.querySelector(cardSelector + &#x27;.dragging&#x27;);
+      const dragging = container.querySelector(cardSelector + '.dragging');
       if(!dragging) return;
-      const addBtn = container.querySelector(&#x27;.add-card-btn&#x27;);
+      const addBtn = container.querySelector('.add-card-btn');
       const afterElement = getDragAfterElement(container, e.clientY, cardSelector);
       if(afterElement == null){
         if(addBtn) container.insertBefore(dragging, addBtn); else container.appendChild(dragging);
@@ -3094,32 +3094,32 @@ A few additional capabilities that can be relevant, depending on the customer&#x
     // Re-save (debounced) on any text edit within a card, so edited wording
     // is captured in the snapshot too, not just structure/order.
     let saveTimer;
-    container.addEventListener(&#x27;input&#x27;, (e)=&gt;{
+    container.addEventListener('input', (e)=&gt;{
       if(!e.target.closest(cardSelector)) return;
       clearTimeout(saveTimer);
       saveTimer = setTimeout(saveSnapshot, 600);
     });
 
     // &quot;+ add card&quot; control, always pinned at the end of the list.
-    let addBtn = container.querySelector(&#x27;.add-card-btn&#x27;);
+    let addBtn = container.querySelector('.add-card-btn');
     if(!addBtn){
-      addBtn = document.createElement(&#x27;button&#x27;);
-      addBtn.type = &#x27;button&#x27;;
-      addBtn.className = &#x27;add-card-btn&#x27;;
-      addBtn.textContent = &#x27;+ Add card&#x27;;
+      addBtn = document.createElement('button');
+      addBtn.type = 'button';
+      addBtn.className = 'add-card-btn';
+      addBtn.textContent = '+ Add card';
       container.appendChild(addBtn);
     }
-    addBtn.addEventListener(&#x27;click&#x27;, ()=&gt;{
-      const card = document.createElement(&#x27;div&#x27;);
+    addBtn.addEventListener('click', ()=&gt;{
+      const card = document.createElement('div');
       card.className = tagClass;
       card.innerHTML = newCardHTML;
       const editState = currentEditableState();
-      card.querySelectorAll(&#x27;.edit-unit&#x27;).forEach(u =&gt; u.setAttribute(&#x27;contenteditable&#x27;, editState));
+      card.querySelectorAll('.edit-unit').forEach(u =&gt; u.setAttribute('contenteditable', editState));
       container.insertBefore(card, addBtn);
       wireCard(card);
       saveSnapshot();
-      const firstEditable = card.querySelector(&#x27;.edit-unit&#x27;);
-      if(firstEditable &amp;&amp; editState === &#x27;true&#x27;) firstEditable.focus();
+      const firstEditable = card.querySelector('.edit-unit');
+      if(firstEditable &amp;&amp; editState === 'true') firstEditable.focus();
     });
   });
 })();
@@ -3130,14 +3130,14 @@ A few additional capabilities that can be relevant, depending on the customer&#x
 // lists, etc. inside each section or reference panel.)
 (function(){
   const BLOCK_CONTAINERS = [
-    &#x27;#sec-opening&#x27;, &#x27;#sec-process&#x27;, &#x27;#sec-ai&#x27;, &#x27;#sec-stages&#x27;,
-    &#x27;#panel-fabric .panel-body&#x27;, &#x27;#panel-passport .panel-body&#x27;,
-    &#x27;#panel-asa .panel-body&#x27;, &#x27;#panel-database .panel-body&#x27;
+    '#sec-opening', '#sec-process', '#sec-ai', '#sec-stages',
+    '#panel-fabric .panel-body', '#panel-passport .panel-body',
+    '#panel-asa .panel-body', '#panel-database .panel-body'
   ];
-  const SKIP_SELECTOR = &#x27;.fmt-group, .panel-toolbar, .panel-header, .add-block-btn, .add-card-btn, .offer-grid&#x27;;
+  const SKIP_SELECTOR = '.fmt-group, .panel-toolbar, .panel-header, .add-block-btn, .add-card-btn, .offer-grid';
 
   function getDragAfterElement(container, y){
-    const blocks = [...container.querySelectorAll(&#x27;:scope &gt; .draggable-block:not(.dragging)&#x27;)];
+    const blocks = [...container.querySelectorAll(':scope &gt; .draggable-block:not(.dragging)')];
     return blocks.reduce((closest, el)=&gt;{
       const box = el.getBoundingClientRect();
       const offset = y - box.top - box.height / 2;
@@ -3152,9 +3152,9 @@ A few additional capabilities that can be relevant, depending on the customer&#x
   BLOCK_CONTAINERS.forEach(containerSelector=&gt;{
     const container = document.querySelector(containerSelector);
     if(!container) return;
-    const storageKey = &#x27;blocks:&#x27; + containerSelector;
+    const storageKey = 'blocks:' + containerSelector;
 
-    // A full snapshot of every block&#x27;s outerHTML, in order — captures
+    // A full snapshot of every block's outerHTML, in order — captures
     // reordering, added blocks, deleted blocks, and text edits all at once.
     try{
       const saved = JSON.parse(localStorage.getItem(storageKey));
@@ -3162,9 +3162,9 @@ A few additional capabilities that can be relevant, depending on the customer&#x
         Array.from(container.children).forEach(c=&gt;{
           if(!c.matches(SKIP_SELECTOR)) c.remove();
         });
-        const addBtn = container.querySelector(&#x27;.add-block-btn&#x27;);
+        const addBtn = container.querySelector('.add-block-btn');
         saved.forEach(htmlStr=&gt;{
-          const temp = document.createElement(&#x27;div&#x27;);
+          const temp = document.createElement('div');
           temp.innerHTML = htmlStr;
           const el = temp.firstElementChild;
           if(el){
@@ -3176,44 +3176,44 @@ A few additional capabilities that can be relevant, depending on the customer&#x
     }catch(e){}
 
     function saveSnapshot(){
-      const blocks = Array.from(container.children).filter(c =&gt; c.classList.contains(&#x27;draggable-block&#x27;));
+      const blocks = Array.from(container.children).filter(c =&gt; c.classList.contains('draggable-block'));
       const htmlList = blocks.map(b =&gt; b.outerHTML);
       try{ localStorage.setItem(storageKey, JSON.stringify(htmlList)); }catch(e){}
     }
 
     function currentEditableState(){
-      const sample = container.querySelector(&#x27;.edit-unit&#x27;);
-      return sample ? sample.getAttribute(&#x27;contenteditable&#x27;) : &#x27;true&#x27;;
+      const sample = container.querySelector('.edit-unit');
+      return sample ? sample.getAttribute('contenteditable') : 'true';
     }
 
     function wireBlock(el){
       if(el.dataset.blockWired) return;
-      el.dataset.blockWired = &#x27;1&#x27;;
-      el.classList.add(&#x27;draggable-block&#x27;);
-      el.setAttribute(&#x27;draggable&#x27;, &#x27;true&#x27;);
+      el.dataset.blockWired = '1';
+      el.classList.add('draggable-block');
+      el.setAttribute('draggable', 'true');
 
-      const grip = document.createElement(&#x27;span&#x27;);
-      grip.className = &#x27;block-drag-grip&#x27;;
-      grip.title = &#x27;Drag to move&#x27;;
-      grip.textContent = &#x27;⠿&#x27;;
+      const grip = document.createElement('span');
+      grip.className = 'block-drag-grip';
+      grip.title = 'Drag to move';
+      grip.textContent = '⠿';
       el.appendChild(grip);
 
-      const del = document.createElement(&#x27;button&#x27;);
-      del.type = &#x27;button&#x27;;
-      del.className = &#x27;block-delete-btn&#x27;;
-      del.title = &#x27;Delete this block&#x27;;
-      del.textContent = &#x27;🗑&#x27;;
-      del.addEventListener(&#x27;click&#x27;, (e)=&gt;{
+      const del = document.createElement('button');
+      del.type = 'button';
+      del.className = 'block-delete-btn';
+      del.title = 'Delete this block';
+      del.textContent = '🗑';
+      del.addEventListener('click', (e)=&gt;{
         e.stopPropagation();
-        if(window.confirm(&#x27;Delete this block?&#x27;)){
+        if(window.confirm('Delete this block?')){
           el.remove();
           saveSnapshot();
         }
       });
       el.appendChild(del);
 
-      el.addEventListener(&#x27;dragstart&#x27;, ()=&gt;{ el.classList.add(&#x27;dragging&#x27;); });
-      el.addEventListener(&#x27;dragend&#x27;, ()=&gt;{ el.classList.remove(&#x27;dragging&#x27;); saveSnapshot(); });
+      el.addEventListener('dragstart', ()=&gt;{ el.classList.add('dragging'); });
+      el.addEventListener('dragend', ()=&gt;{ el.classList.remove('dragging'); saveSnapshot(); });
     }
 
     Array.from(container.children).forEach(el=&gt;{
@@ -3221,11 +3221,11 @@ A few additional capabilities that can be relevant, depending on the customer&#x
       wireBlock(el);
     });
 
-    container.addEventListener(&#x27;dragover&#x27;, (e)=&gt;{
-      const dragging = container.querySelector(&#x27;:scope &gt; .dragging&#x27;);
+    container.addEventListener('dragover', (e)=&gt;{
+      const dragging = container.querySelector(':scope &gt; .dragging');
       if(!dragging) return;
       e.preventDefault();
-      const addBtn = container.querySelector(&#x27;.add-block-btn&#x27;);
+      const addBtn = container.querySelector('.add-block-btn');
       const afterEl = getDragAfterElement(container, e.clientY);
       if(afterEl == null){
         if(addBtn) container.insertBefore(dragging, addBtn); else container.appendChild(dragging);
@@ -3235,29 +3235,29 @@ A few additional capabilities that can be relevant, depending on the customer&#x
     });
 
     let saveTimer;
-    container.addEventListener(&#x27;input&#x27;, (e)=&gt;{
-      if(!e.target.closest(&#x27;.draggable-block&#x27;)) return;
+    container.addEventListener('input', (e)=&gt;{
+      if(!e.target.closest('.draggable-block')) return;
       clearTimeout(saveTimer);
       saveTimer = setTimeout(saveSnapshot, 600);
     });
 
-    let addBtn = container.querySelector(&#x27;.add-block-btn&#x27;);
+    let addBtn = container.querySelector('.add-block-btn');
     if(!addBtn){
-      addBtn = document.createElement(&#x27;button&#x27;);
-      addBtn.type = &#x27;button&#x27;;
-      addBtn.className = &#x27;add-block-btn&#x27;;
-      addBtn.textContent = &#x27;+ Add text block&#x27;;
+      addBtn = document.createElement('button');
+      addBtn.type = 'button';
+      addBtn.className = 'add-block-btn';
+      addBtn.textContent = '+ Add text block';
       container.appendChild(addBtn);
     }
-    addBtn.addEventListener(&#x27;click&#x27;, ()=&gt;{
-      const el = document.createElement(&#x27;div&#x27;);
-      el.className = &#x27;cross-box edit-unit&#x27;;
-      el.setAttribute(&#x27;contenteditable&#x27;, currentEditableState());
-      el.textContent = &#x27;New text...&#x27;;
+    addBtn.addEventListener('click', ()=&gt;{
+      const el = document.createElement('div');
+      el.className = 'cross-box edit-unit';
+      el.setAttribute('contenteditable', currentEditableState());
+      el.textContent = 'New text...';
       container.insertBefore(el, addBtn);
       wireBlock(el);
       saveSnapshot();
-      if(el.getAttribute(&#x27;contenteditable&#x27;) === &#x27;true&#x27;) el.focus();
+      if(el.getAttribute('contenteditable') === 'true') el.focus();
     });
   });
 })();
@@ -3265,27 +3265,27 @@ A few additional capabilities that can be relevant, depending on the customer&#x
 // --- generic content persistence + cross-language sync (for edit-units
 // OUTSIDE the reorderable card groups, which have their own snapshot system) ---
 (function(){
-  const LANG = &#x27;en&#x27;;
-  const OTHER_LANG = &#x27;he&#x27;;
-  const STORAGE_PREFIX = &#x27;content-edit:&#x27; + LANG + &#x27;:&#x27;;
-  const DIRTY_KEY = &#x27;content-edit-dirty:&#x27; + LANG;
-  const root = document.getElementById(&#x27;editable-root&#x27;);
+  const LANG = 'en';
+  const OTHER_LANG = 'he';
+  const STORAGE_PREFIX = 'content-edit:' + LANG + ':';
+  const DIRTY_KEY = 'content-edit-dirty:' + LANG;
+  const root = document.getElementById('editable-root');
   if(!root) return;
 
   function isInCardGroup(el){
     return !!(
-      el.closest(&#x27;.prod&#x27;) || el.closest(&#x27;.obj&#x27;) ||
-      el.closest(&#x27;#sec-opening&#x27;) || el.closest(&#x27;#sec-process&#x27;) ||
-      el.closest(&#x27;#sec-ai&#x27;) || el.closest(&#x27;#sec-stages&#x27;) ||
-      el.closest(&#x27;#panel-fabric .panel-body&#x27;) || el.closest(&#x27;#panel-passport .panel-body&#x27;) ||
-      el.closest(&#x27;#panel-asa .panel-body&#x27;) || el.closest(&#x27;#panel-database .panel-body&#x27;)
+      el.closest('.prod') || el.closest('.obj') ||
+      el.closest('#sec-opening') || el.closest('#sec-process') ||
+      el.closest('#sec-ai') || el.closest('#sec-stages') ||
+      el.closest('#panel-fabric .panel-body') || el.closest('#panel-passport .panel-body') ||
+      el.closest('#panel-asa .panel-body') || el.closest('#panel-database .panel-body')
     );
   }
 
   let counter = 0;
-  const units = Array.from(root.querySelectorAll(&#x27;.edit-unit&#x27;)).filter(el =&gt; !isInCardGroup(el));
+  const units = Array.from(root.querySelectorAll('.edit-unit')).filter(el =&gt; !isInCardGroup(el));
   units.forEach(el=&gt;{
-    if(!el.dataset.ceid) el.dataset.ceid = &#x27;ce&#x27; + (counter++);
+    if(!el.dataset.ceid) el.dataset.ceid = 'ce' + (counter++);
   });
 
   units.forEach(el=&gt;{
@@ -3303,8 +3303,8 @@ A few additional capabilities that can be relevant, depending on the customer&#x
   }
 
   const timers = {};
-  root.addEventListener(&#x27;input&#x27;, (e)=&gt;{
-    const el = e.target.closest(&#x27;.edit-unit&#x27;);
+  root.addEventListener('input', (e)=&gt;{
+    const el = e.target.closest('.edit-unit');
     if(!el || isInCardGroup(el) || !el.dataset.ceid) return;
     const ceid = el.dataset.ceid;
     clearTimeout(timers[ceid]);
@@ -3315,52 +3315,52 @@ A few additional capabilities that can be relevant, depending on the customer&#x
   });
 
   async function translateHTML(htmlSnippet){
-    const prompt = &#x27;Translate the following English HTML snippet into natural, professional Hebrew. Keep every HTML tag exactly as-is (e.g. &lt;b&gt;, &lt;span style=&quot;...&quot;&gt;) — translate ONLY the visible text between tags, never tag names or attributes. Respond with ONLY the translated HTML snippet and nothing else — no markdown fences, no preamble, no explanation.\n\n&#x27; + htmlSnippet;
+    const prompt = 'Translate the following English HTML snippet into natural, professional Hebrew. Keep every HTML tag exactly as-is (e.g. &lt;b&gt;, &lt;span style=&quot;...&quot;&gt;) — translate ONLY the visible text between tags, never tag names or attributes. Respond with ONLY the translated HTML snippet and nothing else — no markdown fences, no preamble, no explanation.\n\n' + htmlSnippet;
     const response = await fetch(API_ENDPOINT, {
-      method: &#x27;POST&#x27;,
-      headers: { &#x27;Content-Type&#x27;: &#x27;application/json&#x27; },
-      body: JSON.stringify({ model: &#x27;claude-sonnet-4-6&#x27;, max_tokens: 1500, messages: [{ role: &#x27;user&#x27;, content: prompt }] })
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ model: 'claude-sonnet-4-6', max_tokens: 1500, messages: [{ role: 'user', content: prompt }] })
     });
-    if(!response.ok) throw new Error(&#x27;bad response &#x27; + response.status);
+    if(!response.ok) throw new Error('bad response ' + response.status);
     const data = await response.json();
-    const text = (data.content || []).filter(b =&gt; b.type === &#x27;text&#x27;).map(b =&gt; b.text).join(&#x27;&#x27;).trim();
-    if(!text) throw new Error(&#x27;empty translation&#x27;);
+    const text = (data.content || []).filter(b =&gt; b.type === 'text').map(b =&gt; b.text).join('').trim();
+    if(!text) throw new Error('empty translation');
     return text;
   }
 
   window.saveAndSyncContent = async function(){
     let dirty = [];
     try{ dirty = JSON.parse(localStorage.getItem(DIRTY_KEY)) || []; }catch(e){}
-    const btn = document.getElementById(&#x27;save-sync-btn&#x27;);
+    const btn = document.getElementById('save-sync-btn');
     if(!dirty.length){
       if(btn){
         const orig = btn.textContent;
-        btn.textContent = &#x27;No new changes&#x27;;
+        btn.textContent = 'No new changes';
         setTimeout(()=&gt;{ btn.textContent = orig; }, 1800);
       }
       return;
     }
-    if(btn){ btn.textContent = &#x27;Syncing... (0/&#x27; + dirty.length + &#x27;)&#x27;; btn.disabled = true; }
+    if(btn){ btn.textContent = 'Syncing... (0/' + dirty.length + ')'; btn.disabled = true; }
     let done = 0, failed = 0;
     for(const ceid of dirty){
-      const el = root.querySelector(&#x27;[data-ceid=&quot;&#x27; + ceid + &#x27;&quot;]&#x27;);
+      const el = root.querySelector('[data-ceid=&quot;' + ceid + '&quot;]');
       if(el){
         try{
           const translated = await translateHTML(el.innerHTML);
-          try{ localStorage.setItem(&#x27;content-edit:&#x27; + OTHER_LANG + &#x27;:&#x27; + ceid, translated); }catch(e){}
+          try{ localStorage.setItem('content-edit:' + OTHER_LANG + ':' + ceid, translated); }catch(e){}
         }catch(err){
           failed++;
-          console.error(&#x27;sync failed for&#x27;, ceid, err);
+          console.error('sync failed for', ceid, err);
         }
       }
       done++;
-      if(btn) btn.textContent = &#x27;Syncing... (&#x27; + done + &#x27;/&#x27; + dirty.length + &#x27;)&#x27;;
+      if(btn) btn.textContent = 'Syncing... (' + done + '/' + dirty.length + ')';
     }
     try{ localStorage.setItem(DIRTY_KEY, JSON.stringify([])); }catch(e){}
     if(btn){
-      btn.textContent = failed ? (&#x27;✓ Saved — &#x27; + failed + &#x27; not synced&#x27;) : &#x27;✓ Saved and synced to Hebrew&#x27;;
+      btn.textContent = failed ? ('✓ Saved — ' + failed + ' not synced') : '✓ Saved and synced to Hebrew';
       btn.disabled = false;
-      setTimeout(()=&gt;{ btn.textContent = &#x27;💾 Save &amp; translate to Hebrew&#x27;; }, 3000);
+      setTimeout(()=&gt;{ btn.textContent = '💾 Save &amp; translate to Hebrew'; }, 3000);
     }
   };
 })();
@@ -3371,14 +3371,14 @@ A few additional capabilities that can be relevant, depending on the customer&#x
     </div>
   </section>
 
-  <section class="panel" id="panel-explainerhe" data-sortable-bound="1">
+  <section class="panel active" id="panel-explainerhe" data-sortable-bound="1">
     <div class="full-width" style="padding:0;">
       <iframe style="width:100%;height:calc(100vh - 200px);border:none;" srcdoc="&lt;!DOCTYPE html&gt;
 
 &lt;html dir=&quot;rtl&quot; lang=&quot;he&quot;&gt;
 &lt;head&gt;
 &lt;meta charset=&quot;utf-8&quot;/&gt;
-&lt;title&gt;פיץ&#x27; ללקוח — מוצרי Postman&lt;/title&gt;
+&lt;title&gt;פיץ' ללקוח — מוצרי Postman&lt;/title&gt;
 &lt;style&gt;
   :root{
     --orange:#FF6C37;
@@ -3904,7 +3904,7 @@ A few additional capabilities that can be relevant, depending on the customer&#x
   }
 
   /* --- slide-in side panels (objections / Fabric / Passport / ASA) ---
-     position:absolute here (not fixed) so they&#x27;re contained inside
+     position:absolute here (not fixed) so they're contained inside
      #app-frame — which is the nearest positioned ancestor — instead of
      the raw browser viewport. */
   #panel-backdrop{
@@ -3923,11 +3923,11 @@ A few additional capabilities that can be relevant, depending on the customer&#x
      just rewriting these two values. */
   .side-panel{
     position:absolute;
-    top:20px;
-    left:calc(100% - 520px);
-    width:480px;
-    height:calc(100% - 40px);
-    max-width:92%;
+    top:10px;
+    left:calc(50% - 450px);
+    width:900px;
+    height:calc(100% - 20px);
+    max-width:95%;
     background:#fff;
     border-radius:12px;
     box-shadow:0 20px 50px rgba(0,0,0,0.28);
@@ -3942,15 +3942,9 @@ A few additional capabilities that can be relevant, depending on the customer&#x
   }
   .side-panel.open{opacity:1;visibility:visible;transform:scale(1);}
 
-  /* This one specifically opens centered over the main content area
-     instead of tucked near the right edge — that&#x27;s the spot marked in
-     the screenshot. It&#x27;s still just as draggable afterward. */
-  #chat-answer-window{
-    top:60px;
-    left:calc(50% - 240px);
-    width:480px;
-    height:calc(100% - 80px);
-  }
+  /* Every floating panel (Fabric / Passport / ASA / DATABASE / Objections /
+     the chat answer window) shares the .side-panel rule above, so they now
+     all open at this same large, centered size — no more per-panel override. */
   .panel-header{
     background:var(--ink);
     color:#fff;
@@ -4084,7 +4078,7 @@ A few additional capabilities that can be relevant, depending on the customer&#x
 &lt;div id=&quot;app-shell&quot;&gt;
 &lt;nav id=&quot;left-nav&quot;&gt;
 &lt;div class=&quot;nav-title&quot;&gt;נושאים&lt;/div&gt;
-&lt;button class=&quot;nav-item&quot; data-scroll=&quot;sec-pitch&quot;&gt;פיץ&#x27; פתיחה&lt;/button&gt;
+&lt;button class=&quot;nav-item&quot; data-scroll=&quot;sec-pitch&quot;&gt;פיץ' פתיחה&lt;/button&gt;
 &lt;button class=&quot;nav-item&quot; data-scroll=&quot;sec-process&quot;&gt;התהליך&lt;/button&gt;
 &lt;button class=&quot;nav-item&quot; data-scroll=&quot;sec-ai&quot;&gt;AI&lt;/button&gt;
 &lt;button class=&quot;nav-item&quot; data-scroll=&quot;sec-stages&quot;&gt;מה אנחנו מציעים&lt;/button&gt;
@@ -4124,7 +4118,7 @@ A few additional capabilities that can be relevant, depending on the customer&#x
 &lt;/header&gt;
 &lt;!-- SECTION 0: 30-SECOND OPENING PITCH --&gt;
 &lt;section id=&quot;sec-opening&quot;&gt;
-&lt;h2 class=&quot;edit-unit&quot; contenteditable=&quot;false&quot;&gt;&lt;span class=&quot;num&quot;&gt;&lt;br/&gt;&lt;/span&gt; פיץ&#x27; פתיחה — 30 שניות&lt;/h2&gt;
+&lt;h2 class=&quot;edit-unit&quot; contenteditable=&quot;false&quot;&gt;&lt;span class=&quot;num&quot;&gt;&lt;br/&gt;&lt;/span&gt; פיץ' פתיחה — 30 שניות&lt;/h2&gt;
 &lt;div class=&quot;pitch-open edit-unit&quot; contenteditable=&quot;false&quot;&gt;
 &lt;span class=&quot;tag&quot;&gt;&lt;span style=&quot;font-size: 15px; color: rgb(28, 28, 30);&quot;&gt;&quot;מצוין. תנו לי 30 שניות להסביר איך חברות מתמודדות עם זה היום.&lt;/span&gt;&lt;/span&gt;
       בניית APIs כבר לא באמת החלק הקשה. &lt;b&gt;האתגר מתחיל&lt;/b&gt; כשה-APIs גדלים על פני כמה צוותים, מוצרים וסביבות.&lt;br/&gt;
@@ -4221,7 +4215,7 @@ A few additional capabilities that can be relevant, depending on the customer&#x
 &lt;div class=&quot;h edit-unit&quot; contenteditable=&quot;false&quot;&gt;מהירות מול איכות&lt;/div&gt;
 &lt;p class=&quot;edit-unit&quot; contenteditable=&quot;false&quot;&gt;&quot;המפתחים שלכם כבר משתמשים בכלים כמו Copilot או Cursor לכתוב קוד — וזה מעולה למהירות. הבעיה היא שקצב הבדיקות לא גדל באותו הקצב. אתם מקבלים יותר קוד, אבל לא יותר וידוא שהוא תקין. וזה בדיוק הפער שגורם לזינוק בתקלות שמגיעות לפרודקשן.&quot;&lt;/p&gt;
 &lt;div class=&quot;h edit-unit&quot; contenteditable=&quot;false&quot;&gt;APIs שנבנו לבני אדם, לא לסוכני AI&lt;/div&gt;
-&lt;p class=&quot;edit-unit&quot; contenteditable=&quot;false&quot;&gt;&quot;יש נקודה שרוב החברות לא חושבות עליה בכלל: כשסוכן AI הוא זה שצורך את ה-API שלכם ולא מפתח אנושי, הוא צריך מפרט אחרת. סוכן AI לא &#x27;מבין לפי הקשר&#x27; כמו מפתח — הוא צריך שיוצהר לו במפורש אילו פעולות אפשריות ומה המגבלות שלהן. אם ה-API שלכם לא כתוב כך, הסוכן פשוט ישתמש בו לא נכון — ואתם לא תדעו את זה עד שזה יקרה בפרודקשן.&quot;&lt;/p&gt;
+&lt;p class=&quot;edit-unit&quot; contenteditable=&quot;false&quot;&gt;&quot;יש נקודה שרוב החברות לא חושבות עליה בכלל: כשסוכן AI הוא זה שצורך את ה-API שלכם ולא מפתח אנושי, הוא צריך מפרט אחרת. סוכן AI לא 'מבין לפי הקשר' כמו מפתח — הוא צריך שיוצהר לו במפורש אילו פעולות אפשריות ומה המגבלות שלהן. אם ה-API שלכם לא כתוב כך, הסוכן פשוט ישתמש בו לא נכון — ואתם לא תדעו את זה עד שזה יקרה בפרודקשן.&quot;&lt;/p&gt;
 &lt;div class=&quot;h edit-unit&quot; contenteditable=&quot;false&quot;&gt;Governance כבקבוק צוואר&lt;/div&gt;
 &lt;p class=&quot;edit-unit&quot; contenteditable=&quot;false&quot;&gt;&quot;וכשהכל רץ מהר יותר, Governance ואבטחה נהיים בקבוק הצוואר של הארגון. תיעוד ראיות לביקורת — audit evidence — הופך מתהליך שוטף לריצה ידנית פעם ברבעון. ואת זה אף אחד לא רוצה לעשות בלחץ.&quot;&lt;/p&gt;
 &lt;div class=&quot;h edit-unit&quot; contenteditable=&quot;false&quot;&gt;נתון שאני פותח איתו&lt;/div&gt;
@@ -4239,7 +4233,7 @@ A few additional capabilities that can be relevant, depending on the customer&#x
 &lt;div class=&quot;offer-grid&quot;&gt;
 &lt;div class=&quot;offer&quot;&gt;
 &lt;div class=&quot;t edit-unit&quot; contenteditable=&quot;false&quot;&gt;01 · עיצוב&lt;/div&gt;
-&lt;p class=&quot;edit-unit&quot; contenteditable=&quot;false&quot;&gt;&quot;אתם כותבים מראש מה ה-API אמור לעשות — כמו חוזה מסודר לפני שמתחילים לבנות בפועל — ויש AI שעוזר לכתוב ולתקן את החוזה הזה. אפשר גם להגדיר כלל כמו &#x27;כל בקשה חייבת אישור זהות&#x27;, וזה לא נשאר המלצה שמישהו צריך לזכור לבדוק — הוא נאכף אוטומטית. ובזמן שצוות ה-backend עדיין בונה את המערכת האמיתית, צוות ה-frontend יכול כבר להתחיל לעבוד מול גרסה מדומה שמתנהגת כמו ה-API האמיתי (Mock Server), כדי שלא יצטרכו לחכות.&quot;&lt;/p&gt;
+&lt;p class=&quot;edit-unit&quot; contenteditable=&quot;false&quot;&gt;&quot;אתם כותבים מראש מה ה-API אמור לעשות — כמו חוזה מסודר לפני שמתחילים לבנות בפועל — ויש AI שעוזר לכתוב ולתקן את החוזה הזה. אפשר גם להגדיר כלל כמו 'כל בקשה חייבת אישור זהות', וזה לא נשאר המלצה שמישהו צריך לזכור לבדוק — הוא נאכף אוטומטית. ובזמן שצוות ה-backend עדיין בונה את המערכת האמיתית, צוות ה-frontend יכול כבר להתחיל לעבוד מול גרסה מדומה שמתנהגת כמו ה-API האמיתי (Mock Server), כדי שלא יצטרכו לחכות.&quot;&lt;/p&gt;
 &lt;/div&gt;
 &lt;div class=&quot;offer&quot;&gt;
 &lt;div class=&quot;t edit-unit&quot; contenteditable=&quot;false&quot;&gt;02 · פיתוח&lt;/div&gt;
@@ -4298,7 +4292,7 @@ A few additional capabilities that can be relevant, depending on the customer&#x
 &lt;div class=&quot;group-title edit-unit&quot; contenteditable=&quot;false&quot;&gt;פיתוח ובדיקות&lt;/div&gt;
 &lt;div class=&quot;prod&quot; id=&quot;prod-agent-mode&quot;&gt;
 &lt;div class=&quot;name edit-unit&quot; contenteditable=&quot;false&quot;&gt;Agent Mode — עוזר AI מובנה&lt;/div&gt;
-&lt;div class=&quot;pitch edit-unit&quot; contenteditable=&quot;false&quot;&gt;&quot;זה לא עוזר כללי כמו ChatGPT — הוא בנוי במיוחד לעולם ה-API, ורץ בתוך הסביבה שלכם ב-Postman, ומכיר את כל הפרויקטים, הבדיקות וההתראות שכבר קיימים אצלכם. מפתח מבקש &#x27;תבדוק אם הגרסה הזו שוברת הבטחה שנתנו למישהו בגרסה הקודמת&#x27; — Agent Mode לא רק עונה, הוא בפועל מריץ את ההשוואה על הקוד האמיתי ומראה תוצאה.&quot;&lt;/div&gt;
+&lt;div class=&quot;pitch edit-unit&quot; contenteditable=&quot;false&quot;&gt;&quot;זה לא עוזר כללי כמו ChatGPT — הוא בנוי במיוחד לעולם ה-API, ורץ בתוך הסביבה שלכם ב-Postman, ומכיר את כל הפרויקטים, הבדיקות וההתראות שכבר קיימים אצלכם. מפתח מבקש 'תבדוק אם הגרסה הזו שוברת הבטחה שנתנו למישהו בגרסה הקודמת' — Agent Mode לא רק עונה, הוא בפועל מריץ את ההשוואה על הקוד האמיתי ומראה תוצאה.&quot;&lt;/div&gt;
 &lt;/div&gt;
 &lt;div class=&quot;prod&quot; id=&quot;prod-git-workflows&quot;&gt;
 &lt;div class=&quot;name edit-unit&quot; contenteditable=&quot;false&quot;&gt;Native Git Workflows — עבודה טבעית עם Git&lt;/div&gt;
@@ -4306,7 +4300,7 @@ A few additional capabilities that can be relevant, depending on the customer&#x
 &lt;/div&gt;
 &lt;div class=&quot;prod&quot; id=&quot;prod-cli-pipeline&quot;&gt;
 &lt;div class=&quot;name edit-unit&quot; contenteditable=&quot;false&quot;&gt;CLI ואינטגרציית Pipeline&lt;/div&gt;
-&lt;div class=&quot;pitch edit-unit&quot; contenteditable=&quot;false&quot;&gt;&quot;אלה ממש אותן הבדיקות שרצות גם כשמפתח בודק את זה ידנית על המחשב שלו, וגם כשהמערכת האוטומטית שמעלה את הקוד לייצור מריצה אותן שוב, בלי מגע ידיים (בעולם הטכני זה נקרא CI/CD). אז אין מצב של &#x27;עבד לי אצלי במחשב&#x27; ואז זה נשבר בשרת — זו בדיוק אותה בדיקה, פעמיים.&quot;&lt;/div&gt;
+&lt;div class=&quot;pitch edit-unit&quot; contenteditable=&quot;false&quot;&gt;&quot;אלה ממש אותן הבדיקות שרצות גם כשמפתח בודק את זה ידנית על המחשב שלו, וגם כשהמערכת האוטומטית שמעלה את הקוד לייצור מריצה אותן שוב, בלי מגע ידיים (בעולם הטכני זה נקרא CI/CD). אז אין מצב של 'עבד לי אצלי במחשב' ואז זה נשבר בשרת — זו בדיוק אותה בדיקה, פעמיים.&quot;&lt;/div&gt;
 &lt;/div&gt;
 &lt;div class=&quot;prod&quot; id=&quot;prod-mock-servers&quot;&gt;
 &lt;div class=&quot;name edit-unit&quot; contenteditable=&quot;false&quot;&gt;Mock Servers — שרתי דמה&lt;/div&gt;
@@ -4339,7 +4333,7 @@ A few additional capabilities that can be relevant, depending on the customer&#x
 &lt;div class=&quot;panel-body&quot;&gt;
 &lt;div class=&quot;obj&quot;&gt;
 &lt;div class=&quot;q edit-unit&quot; contenteditable=&quot;false&quot;&gt;&quot;זה נשמע כמו Waterfall — אנחנו עובדים Agile / CD.&quot;&lt;/div&gt;
-&lt;div class=&quot;a edit-unit&quot; contenteditable=&quot;false&quot;&gt;&quot;השלבים האלה לא שערים של Waterfall — הם פעילויות איכות שקורות כל הזמן. בארגון CD: כל PR הוא &#x27;עיצוב&#x27;, כל merge הוא &#x27;שער&#x27;, כל deploy ל-staging הוא &#x27;אימות&#x27;. השאלה היא לא אם השלבים קיימים אצלכם — השאלה היא אם הם מחוברים, או מפוצלים.&quot;&lt;/div&gt;
+&lt;div class=&quot;a edit-unit&quot; contenteditable=&quot;false&quot;&gt;&quot;השלבים האלה לא שערים של Waterfall — הם פעילויות איכות שקורות כל הזמן. בארגון CD: כל PR הוא 'עיצוב', כל merge הוא 'שער', כל deploy ל-staging הוא 'אימות'. השאלה היא לא אם השלבים קיימים אצלכם — השאלה היא אם הם מחוברים, או מפוצלים.&quot;&lt;/div&gt;
 &lt;/div&gt;
 &lt;div class=&quot;obj&quot;&gt;
 &lt;div class=&quot;q edit-unit&quot; contenteditable=&quot;false&quot;&gt;&quot;יש לנו כבר QE וכלים בשביל זה.&quot;&lt;/div&gt;
@@ -4404,7 +4398,7 @@ A few additional capabilities that can be relevant, depending on the customer&#x
 &lt;li&gt;&lt;b&gt;בקשת גישה מבוקרת&lt;/b&gt; — במקום לקבל את ה-Key האמיתי, מקבלים Reference של Passport.&lt;/li&gt;
 &lt;li&gt;&lt;b&gt;Secretless Consumption&lt;/b&gt; — ה-Credential האמיתי נשאר ב-Vault הקיים של הלקוח, ונפתר רק בזמן הקריאה בפועל ל-API — בלי שהמשתמש או ה-Agent רואים או מעתיקים אותו.&lt;/li&gt;
 &lt;li&gt;&lt;b&gt;Visibility מלא&lt;/b&gt; — מי ביקש גישה, מי אישר, ואיך בפועל משתמשים ב-API.&lt;/li&gt;
-&lt;li&gt;&lt;b&gt;עובד עם הכלים הקיימים&lt;/b&gt; — משלים HashiCorp, AWS Secrets Manager, 1Password וכו&#x27;, לא מחליף אותם.&lt;/li&gt;
+&lt;li&gt;&lt;b&gt;עובד עם הכלים הקיימים&lt;/b&gt; — משלים HashiCorp, AWS Secrets Manager, 1Password וכו', לא מחליף אותם.&lt;/li&gt;
 &lt;/ul&gt;
 &lt;div class=&quot;say edit-unit&quot; contenteditable=&quot;false&quot;&gt;
 &lt;b class=&quot;tag&quot;&gt;משפט סיכום&lt;/b&gt;
@@ -4416,7 +4410,7 @@ A few additional capabilities that can be relevant, depending on the customer&#x
 &lt;tr&gt;&lt;td&gt;המפתחים לא יודעים לאיזה APIs פנימיים או של שותפים הם אמורים לגשת&lt;/td&gt;&lt;td&gt;🟢 חזקה&lt;/td&gt;&lt;td&gt;API Network נותן מקום מרכזי ומבוקר לגילוי APIs מאושרים.&lt;/td&gt;&lt;/tr&gt;
 &lt;tr&gt;&lt;td&gt;גישה ל-API מתבצעת דרך Slack, Tickets, מייל או ידע שבטי&lt;/td&gt;&lt;td&gt;🟢🟢 חזקה מאוד&lt;/td&gt;&lt;td&gt;Passport מסדיר בקשות גישה, אישור, Scope, Audit וביטול גישה.&lt;/td&gt;&lt;/tr&gt;
 &lt;tr&gt;&lt;td&gt;אנחנו חוששים ש-API Keys יופיעו ב-Variables, Repos, Logs או קבצים מקומיים&lt;/td&gt;&lt;td&gt;🟢🟢 חזקה מאוד&lt;/td&gt;&lt;td&gt;Secretless Consumption מפחית את הצורך להפיץ את ה-API Keys עצמם.&lt;/td&gt;&lt;/tr&gt;
-&lt;tr&gt;&lt;td&gt;אנחנו משתמשים ב-HashiCorp / AWS Secrets Manager / 1Password / GitGuardian וכו&#x27;&lt;/td&gt;&lt;td&gt;🟢 חזקה&lt;/td&gt;&lt;td&gt;Passport משלים את הכלים הקיימים ומוסיף שכבת Access Governance.&lt;/td&gt;&lt;/tr&gt;
+&lt;tr&gt;&lt;td&gt;אנחנו משתמשים ב-HashiCorp / AWS Secrets Manager / 1Password / GitGuardian וכו'&lt;/td&gt;&lt;td&gt;🟢 חזקה&lt;/td&gt;&lt;td&gt;Passport משלים את הכלים הקיימים ומוסיף שכבת Access Governance.&lt;/td&gt;&lt;/tr&gt;
 &lt;tr&gt;&lt;td&gt;ל-AI Agents או לתהליכים אוטומטיים דרושה גישה ל-APIs אבל אנחנו לא יודעים איך לנהל אותה&lt;/td&gt;&lt;td&gt;🟢🟢 חזקה מאוד&lt;/td&gt;&lt;td&gt;זה אחד מתרחישי השימוש המרכזיים והמתפתחים של Passport.&lt;/td&gt;&lt;/tr&gt;
 &lt;/table&gt;
 &lt;/div&gt;
@@ -4457,7 +4451,7 @@ A few additional capabilities that can be relevant, depending on the customer&#x
   &lt;div class=&quot;panel-body&quot;&gt;
     &lt;p class=&quot;lead edit-unit&quot; contenteditable=&quot;false&quot;&gt;מסד ידע פנימי — לא סקריפט לקריאה, אלא חומר רקע שהבוט יכול לשלוף ממנו כשאתה שואל אותו שאלה על מתחרים, תמחור, או מתי לפתוח ב-Fabric.&lt;/p&gt;
 
-    &lt;div class=&quot;group-title edit-unit&quot; contenteditable=&quot;false&quot;&gt;השוואה למתחרים — הפיץ&#x27; לכל מתחרה&lt;/div&gt;
+    &lt;div class=&quot;group-title edit-unit&quot; contenteditable=&quot;false&quot;&gt;השוואה למתחרים — הפיץ' לכל מתחרה&lt;/div&gt;
 
     &lt;div class=&quot;prod&quot;&gt;
       &lt;div class=&quot;name edit-unit&quot; contenteditable=&quot;false&quot;&gt;cURL — כלי שורת פקודה (CLI)&lt;/div&gt;
@@ -4547,7 +4541,7 @@ A few additional capabilities that can be relevant, depending on the customer&#x
       &lt;tr&gt;&lt;td&gt;Credentials&lt;/td&gt;&lt;td&gt;הרבה API Keys ומידע רגיש&lt;/td&gt;&lt;td&gt;API Key אחד פשוט&lt;/td&gt;&lt;/tr&gt;
       &lt;tr&gt;&lt;td&gt;עלויות AI&lt;/td&gt;&lt;td&gt;צריך Visibility ושליטה בהוצאה&lt;/td&gt;&lt;td&gt;עלויות AI לא משמעותיות&lt;/td&gt;&lt;/tr&gt;
       &lt;tr&gt;&lt;td&gt;ארכיטקטורה&lt;/td&gt;&lt;td&gt;סביבת AI מבוזרת בין צוותים/מערכות&lt;/td&gt;&lt;td&gt;חיבור ישיר פשוט אחד&lt;/td&gt;&lt;/tr&gt;
-      &lt;tr&gt;&lt;td&gt;זווית API Gateway&lt;/td&gt;&lt;td&gt;מחפשים Governance אג&#x27;נטי לצד התשתית הקיימת&lt;/td&gt;&lt;td&gt;רק רוצים להחליף API Gateway מסורתי&lt;/td&gt;&lt;/tr&gt;
+      &lt;tr&gt;&lt;td&gt;זווית API Gateway&lt;/td&gt;&lt;td&gt;מחפשים Governance אג'נטי לצד התשתית הקיימת&lt;/td&gt;&lt;td&gt;רק רוצים להחליף API Gateway מסורתי&lt;/td&gt;&lt;/tr&gt;
     &lt;/table&gt;
     &lt;div class=&quot;cross-box edit-unit&quot; contenteditable=&quot;false&quot;&gt;
       &lt;b&gt;נקודת מיצוב:&lt;/b&gt; לא למכור את Fabric כתחליף ל-Kong/Apigee — זו שכבת Governance מותאמת AI שיושבת לצד תשתית ה-API הקיימת.
@@ -4684,35 +4678,35 @@ A few additional capabilities that can be relevant, depending on the customer&#x
 &lt;/div&gt;
 &lt;script&gt;
 (function(){
-  const root = document.getElementById(&#x27;editable-root&#x27;);
-  const undoBtn = document.getElementById(&#x27;undo-btn&#x27;);
-  const toggleBtn = document.getElementById(&#x27;toggle-btn&#x27;);
-  const downloadBtn = document.getElementById(&#x27;download-btn&#x27;);
-  const statusEl = document.getElementById(&#x27;save-status&#x27;);
+  const root = document.getElementById('editable-root');
+  const undoBtn = document.getElementById('undo-btn');
+  const toggleBtn = document.getElementById('toggle-btn');
+  const downloadBtn = document.getElementById('download-btn');
+  const statusEl = document.getElementById('save-status');
 
   // --- Turn only specific text-bearing elements into editable &quot;units&quot; ---
   // Card / grid / row containers (.stage, .offer, .prod, .obj, .stage-row,
-  // .offer-grid, ul) are deliberately left OUT of this list. That&#x27;s the fix
+  // .offer-grid, ul) are deliberately left OUT of this list. That's the fix
   // for &quot;deleting a line makes everything jump up&quot;: since those structural
-  // wrappers are never contenteditable themselves, the browser can&#x27;t merge
+  // wrappers are never contenteditable themselves, the browser can't merge
   // or remove them when you backspace inside the text — only the text
   // inside the specific line changes, the card/grid box stays put.
   const EDITABLE_SELECTORS = [
-    &#x27;header.top h1&#x27;, &#x27;header.top p&#x27;,
-    &#x27;h2&#x27;, &#x27;.lead&#x27;,
-    &#x27;.stage .t&#x27;, &#x27;.stage .who&#x27;, &#x27;.stage .d&#x27;,
-    &#x27;.say&#x27;, &#x27;.ai-box .h&#x27;, &#x27;.ai-box p&#x27;,
-    &#x27;.offer .t&#x27;, &#x27;.offer p&#x27;,
-    &#x27;.cross-box&#x27;, &#x27;.group-title&#x27;,
-    &#x27;.prod .name&#x27;, &#x27;.prod .pitch&#x27;,
-    &#x27;.obj .q&#x27;, &#x27;.obj .a&#x27;,
-    &#x27;.final &gt; p&#x27;, &#x27;.final li&#x27;,
-    &#x27;.pitch-open&#x27;,
-    &#x27;.panel-list li&#x27;
+    'header.top h1', 'header.top p',
+    'h2', '.lead',
+    '.stage .t', '.stage .who', '.stage .d',
+    '.say', '.ai-box .h', '.ai-box p',
+    '.offer .t', '.offer p',
+    '.cross-box', '.group-title',
+    '.prod .name', '.prod .pitch',
+    '.obj .q', '.obj .a',
+    '.final &gt; p', '.final li',
+    '.pitch-open',
+    '.panel-list li'
   ];
   const units = new Set();
   EDITABLE_SELECTORS.forEach(sel =&gt; root.querySelectorAll(sel).forEach(el =&gt; units.add(el)));
-  units.forEach(el =&gt; { el.classList.add(&#x27;edit-unit&#x27;); el.setAttribute(&#x27;contenteditable&#x27;, &#x27;true&#x27;); });
+  units.forEach(el =&gt; { el.classList.add('edit-unit'); el.setAttribute('contenteditable', 'true'); });
 
   let editingLocked = false;
   let undoStack = [];
@@ -4720,12 +4714,12 @@ A few additional capabilities that can be relevant, depending on the customer&#x
   let burstSnapshot = null;      // state of the document BEFORE the current typing burst
   let debounceTimer = null;
   const DEBOUNCE_MS = 700;       // pause in typing that counts as &quot;one step&quot; ending
-  let savedRange = null;         // selection kept alive across the color picker&#x27;s native dialog
+  let savedRange = null;         // selection kept alive across the color picker's native dialog
 
   function setStatus(text){
     statusEl.textContent = text;
     clearTimeout(statusEl._t);
-    statusEl._t = setTimeout(()=&gt;{ statusEl.textContent = &#x27;&#x27;; }, 2500);
+    statusEl._t = setTimeout(()=&gt;{ statusEl.textContent = ''; }, 2500);
   }
 
   function updateUndoButton(){
@@ -4752,7 +4746,7 @@ A few additional capabilities that can be relevant, depending on the customer&#x
     burstSnapshot = null;
   }
 
-  root.addEventListener(&#x27;beforeinput&#x27;, ()=&gt;{
+  root.addEventListener('beforeinput', ()=&gt;{
     if(editingLocked) return;
     if(burstSnapshot === null){
       burstSnapshot = root.innerHTML;
@@ -4761,10 +4755,10 @@ A few additional capabilities that can be relevant, depending on the customer&#x
     debounceTimer = setTimeout(commitBurst, DEBOUNCE_MS);
   });
 
-  root.addEventListener(&#x27;focusout&#x27;, commitBurst);
+  root.addEventListener('focusout', commitBurst);
 
-  undoBtn.addEventListener(&#x27;click&#x27;, ()=&gt;{
-    commitBurst(); // flush any typing that hasn&#x27;t been committed as a step yet
+  undoBtn.addEventListener('click', ()=&gt;{
+    commitBurst(); // flush any typing that hasn't been committed as a step yet
     if(undoStack.length === 0) return;
     const prev = undoStack.pop();
     root.innerHTML = prev;
@@ -4772,37 +4766,37 @@ A few additional capabilities that can be relevant, depending on the customer&#x
     // put them back on the restored content.
     units.clear();
     EDITABLE_SELECTORS.forEach(sel =&gt; root.querySelectorAll(sel).forEach(el =&gt; units.add(el)));
-    units.forEach(el =&gt; { el.classList.add(&#x27;edit-unit&#x27;); el.setAttribute(&#x27;contenteditable&#x27;, editingLocked ? &#x27;false&#x27; : &#x27;true&#x27;); });
+    units.forEach(el =&gt; { el.classList.add('edit-unit'); el.setAttribute('contenteditable', editingLocked ? 'false' : 'true'); });
     updateUndoButton();
-    setStatus(&#x27;שינוי אחרון בוטל&#x27;);
+    setStatus('שינוי אחרון בוטל');
   });
 
-  toggleBtn.addEventListener(&#x27;click&#x27;, ()=&gt;{
+  toggleBtn.addEventListener('click', ()=&gt;{
     commitBurst();
     editingLocked = !editingLocked;
-    units.forEach(el =&gt; el.setAttribute(&#x27;contenteditable&#x27;, editingLocked ? &#x27;false&#x27; : &#x27;true&#x27;));
-    toggleBtn.textContent = editingLocked ? &#x27;✏️ עריכה פעילה&#x27; : &#x27;🔒 נעילת עריכה&#x27;;
+    units.forEach(el =&gt; el.setAttribute('contenteditable', editingLocked ? 'false' : 'true'));
+    toggleBtn.textContent = editingLocked ? '✏️ עריכה פעילה' : '🔒 נעילת עריכה';
   });
 
-  const blockToolsToggle = document.getElementById(&#x27;block-tools-toggle&#x27;);
-  blockToolsToggle.addEventListener(&#x27;click&#x27;, ()=&gt;{
-    const active = document.body.classList.toggle(&#x27;block-tools-active&#x27;);
-    blockToolsToggle.classList.toggle(&#x27;active&#x27;, active);
+  const blockToolsToggle = document.getElementById('block-tools-toggle');
+  blockToolsToggle.addEventListener('click', ()=&gt;{
+    const active = document.body.classList.toggle('block-tools-active');
+    blockToolsToggle.classList.toggle('active', active);
   });
 
-  downloadBtn.addEventListener(&#x27;click&#x27;, ()=&gt;{
+  downloadBtn.addEventListener('click', ()=&gt;{
     commitBurst();
-    const htmlContent = &#x27;&lt;!DOCTYPE html&gt;\n&#x27; + document.documentElement.outerHTML;
-    const blob = new Blob([htmlContent], {type:&#x27;text/html;charset=utf-8&#x27;});
+    const htmlContent = '&lt;!DOCTYPE html&gt;\n' + document.documentElement.outerHTML;
+    const blob = new Blob([htmlContent], {type:'text/html;charset=utf-8'});
     const url = URL.createObjectURL(blob);
-    const a = document.createElement(&#x27;a&#x27;);
+    const a = document.createElement('a');
     a.href = url;
-    a.download = &#x27;postman-explainer-edited.html&#x27;;
+    a.download = 'postman-explainer-edited.html';
     document.body.appendChild(a);
     a.click();
     document.body.removeChild(a);
     URL.revokeObjectURL(url);
-    setStatus(&#x27;הקובץ הורד ✓&#x27;);
+    setStatus('הקובץ הורד ✓');
   });
 
   // ---- formatting toolbar: each click is its own single undo step ----
@@ -4820,7 +4814,7 @@ A few additional capabilities that can be relevant, depending on the customer&#x
     if(editingLocked) return;
     const sel = window.getSelection();
     if(!sel || sel.rangeCount === 0 || sel.isCollapsed || !root.contains(sel.getRangeAt(0).commonAncestorContainer)){
-      setStatus(&#x27;סמן טקסט קודם&#x27;);
+      setStatus('סמן טקסט קודם');
       return;
     }
     commitBurst();
@@ -4831,22 +4825,22 @@ A few additional capabilities that can be relevant, depending on the customer&#x
     if(isSizeDelta){
       const refNode = range.startContainer.nodeType === 3 ? range.startContainer.parentElement : range.startContainer;
       const currentSize = parseFloat(window.getComputedStyle(refNode).fontSize) || 15;
-      value = Math.max(10, Math.min(40, currentSize + valueOrDelta)) + &#x27;px&#x27;;
+      value = Math.max(10, Math.min(40, currentSize + valueOrDelta)) + 'px';
     }
 
-    const span = document.createElement(&#x27;span&#x27;);
+    const span = document.createElement('span');
     span.style[styleProp] = value;
     span.appendChild(range.extractContents());
     range.insertNode(span);
 
     // Fix: a nested tag like &lt;b&gt; can have its OWN color set by a CSS class
     // rule (e.g. &quot;.cross-box b{color:orange}&quot;). That rule targets the &lt;b&gt;
-    // element directly, so it wins over the wrapping span&#x27;s colour no matter
+    // element directly, so it wins over the wrapping span's colour no matter
     // what we set on the span — inheritance only applies when nothing
     // targets the element itself. So when recoloring, also stamp the new
     // color directly onto every element inside the selection.
-    if(styleProp === &#x27;color&#x27;){
-      span.querySelectorAll(&#x27;*&#x27;).forEach(node =&gt; { node.style.color = value; });
+    if(styleProp === 'color'){
+      span.querySelectorAll('*').forEach(node =&gt; { node.style.color = value; });
     }
 
     sel.removeAllRanges();
@@ -4858,45 +4852,45 @@ A few additional capabilities that can be relevant, depending on the customer&#x
     if(after !== before) pushUndo(before);
   }
 
-  // Exclude the answer window&#x27;s swatches — those are wired separately
+  // Exclude the answer window's swatches — those are wired separately
   // below to a self-contained color function scoped to that window only.
-  document.querySelectorAll(&#x27;.swatch&#x27;).forEach(btn=&gt;{
-    if(btn.closest(&#x27;#chat-answer-window&#x27;)) return;
-    btn.addEventListener(&#x27;mousedown&#x27;, e=&gt;e.preventDefault());
-    btn.addEventListener(&#x27;click&#x27;, ()=&gt; wrapSelection(&#x27;color&#x27;, btn.dataset.color, false));
+  document.querySelectorAll('.swatch').forEach(btn=&gt;{
+    if(btn.closest('#chat-answer-window')) return;
+    btn.addEventListener('mousedown', e=&gt;e.preventDefault());
+    btn.addEventListener('click', ()=&gt; wrapSelection('color', btn.dataset.color, false));
   });
 
-  document.getElementById(&#x27;bold-btn&#x27;).addEventListener(&#x27;mousedown&#x27;, e=&gt;e.preventDefault());
-  document.getElementById(&#x27;bold-btn&#x27;).addEventListener(&#x27;click&#x27;, ()=&gt; runCommand(&#x27;bold&#x27;));
+  document.getElementById('bold-btn').addEventListener('mousedown', e=&gt;e.preventDefault());
+  document.getElementById('bold-btn').addEventListener('click', ()=&gt; runCommand('bold'));
 
-  document.getElementById(&#x27;italic-btn&#x27;).addEventListener(&#x27;mousedown&#x27;, e=&gt;e.preventDefault());
-  document.getElementById(&#x27;italic-btn&#x27;).addEventListener(&#x27;click&#x27;, ()=&gt; runCommand(&#x27;italic&#x27;));
+  document.getElementById('italic-btn').addEventListener('mousedown', e=&gt;e.preventDefault());
+  document.getElementById('italic-btn').addEventListener('click', ()=&gt; runCommand('italic'));
 
-  document.getElementById(&#x27;inc-font-btn&#x27;).addEventListener(&#x27;mousedown&#x27;, e=&gt;e.preventDefault());
-  document.getElementById(&#x27;inc-font-btn&#x27;).addEventListener(&#x27;click&#x27;, ()=&gt; wrapSelection(&#x27;fontSize&#x27;, 2, true));
+  document.getElementById('inc-font-btn').addEventListener('mousedown', e=&gt;e.preventDefault());
+  document.getElementById('inc-font-btn').addEventListener('click', ()=&gt; wrapSelection('fontSize', 2, true));
 
-  document.getElementById(&#x27;dec-font-btn&#x27;).addEventListener(&#x27;mousedown&#x27;, e=&gt;e.preventDefault());
-  document.getElementById(&#x27;dec-font-btn&#x27;).addEventListener(&#x27;click&#x27;, ()=&gt; wrapSelection(&#x27;fontSize&#x27;, -2, true));
+  document.getElementById('dec-font-btn').addEventListener('mousedown', e=&gt;e.preventDefault());
+  document.getElementById('dec-font-btn').addEventListener('click', ()=&gt; wrapSelection('fontSize', -2, true));
 
-  // Note: the answer window&#x27;s own Bold/Italic/A-/A+/color buttons are
+  // Note: the answer window's own Bold/Italic/A-/A+/color buttons are
   // wired separately, in the chat IIFE below, to self-contained functions
   // scoped to that window only — NOT to runCommand/wrapSelection here.
   // (They used to be double-wired to both, which made formatting apply
   // twice — e.g. Bold would toggle on then immediately back off.)
 
-  const colorInput = document.getElementById(&#x27;color-input&#x27;);
-  colorInput.addEventListener(&#x27;mousedown&#x27;, ()=&gt;{
+  const colorInput = document.getElementById('color-input');
+  colorInput.addEventListener('mousedown', ()=&gt;{
     const sel = window.getSelection();
     savedRange = (sel &amp;&amp; sel.rangeCount &gt; 0 &amp;&amp; !sel.isCollapsed &amp;&amp; root.contains(sel.getRangeAt(0).commonAncestorContainer))
       ? sel.getRangeAt(0).cloneRange()
       : null;
   });
-  colorInput.addEventListener(&#x27;input&#x27;, (e)=&gt;{
-    if(!savedRange){ setStatus(&#x27;סמן טקסט קודם&#x27;); return; }
+  colorInput.addEventListener('input', (e)=&gt;{
+    if(!savedRange){ setStatus('סמן טקסט קודם'); return; }
     const sel = window.getSelection();
     sel.removeAllRanges();
     sel.addRange(savedRange);
-    wrapSelection(&#x27;color&#x27;, e.target.value, false);
+    wrapSelection('color', e.target.value, false);
   });
 
   updateUndoButton();
@@ -4904,52 +4898,52 @@ A few additional capabilities that can be relevant, depending on the customer&#x
 
 // --- left nav: scroll-to for sections, open for side panels ---
 (function(){
-  const backdrop = document.getElementById(&#x27;panel-backdrop&#x27;);
-  const centerContent = document.getElementById(&#x27;center-content&#x27;);
+  const backdrop = document.getElementById('panel-backdrop');
+  const centerContent = document.getElementById('center-content');
 
   function openPanel(id){
     const panel = document.getElementById(id);
     if(!panel) return;
-    document.querySelectorAll(&#x27;.side-panel.open&#x27;).forEach(p =&gt; p.classList.remove(&#x27;open&#x27;));
-    panel.classList.add(&#x27;open&#x27;);
-    backdrop.classList.add(&#x27;open&#x27;);
+    document.querySelectorAll('.side-panel.open').forEach(p =&gt; p.classList.remove('open'));
+    panel.classList.add('open');
+    backdrop.classList.add('open');
   }
   function closeAllPanels(){
-    document.querySelectorAll(&#x27;.side-panel.open&#x27;).forEach(p =&gt; p.classList.remove(&#x27;open&#x27;));
-    backdrop.classList.remove(&#x27;open&#x27;);
+    document.querySelectorAll('.side-panel.open').forEach(p =&gt; p.classList.remove('open'));
+    backdrop.classList.remove('open');
   }
 
-  document.querySelectorAll(&#x27;[data-open-panel]&#x27;).forEach(btn=&gt;{
-    btn.addEventListener(&#x27;click&#x27;, ()=&gt; openPanel(btn.dataset.openPanel));
+  document.querySelectorAll('[data-open-panel]').forEach(btn=&gt;{
+    btn.addEventListener('click', ()=&gt; openPanel(btn.dataset.openPanel));
   });
-  document.querySelectorAll(&#x27;.panel-close&#x27;).forEach(btn=&gt;{
-    btn.addEventListener(&#x27;click&#x27;, closeAllPanels);
+  document.querySelectorAll('.panel-close').forEach(btn=&gt;{
+    btn.addEventListener('click', closeAllPanels);
   });
-  backdrop.addEventListener(&#x27;click&#x27;, closeAllPanels);
-  document.addEventListener(&#x27;keydown&#x27;, (e)=&gt;{
-    if(e.key === &#x27;Escape&#x27;) closeAllPanels();
+  backdrop.addEventListener('click', closeAllPanels);
+  document.addEventListener('keydown', (e)=&gt;{
+    if(e.key === 'Escape') closeAllPanels();
   });
 
   // Make each panel draggable by its header. Clicking the ✕ inside the
   // header must NOT start a drag — checked via closest() below.
-  document.querySelectorAll(&#x27;.side-panel&#x27;).forEach(panel=&gt;{
-    const header = panel.querySelector(&#x27;.panel-header&#x27;);
+  document.querySelectorAll('.side-panel').forEach(panel=&gt;{
+    const header = panel.querySelector('.panel-header');
     if(!header) return;
-    const frame = document.getElementById(&#x27;app-frame&#x27;);
+    const frame = document.getElementById('app-frame');
 
-    header.addEventListener(&#x27;mousedown&#x27;, (e)=&gt;{
-      if(e.target.closest(&#x27;.panel-close&#x27;)) return;
+    header.addEventListener('mousedown', (e)=&gt;{
+      if(e.target.closest('.panel-close')) return;
       e.preventDefault();
 
       const panelRect = panel.getBoundingClientRect();
       const frameRect = frame.getBoundingClientRect();
-      // Lock in the panel&#x27;s current on-screen spot as explicit left/top
-      // (in case it&#x27;s still sitting at its default CSS position), then
+      // Lock in the panel's current on-screen spot as explicit left/top
+      // (in case it's still sitting at its default CSS position), then
       // drag from there.
       const startLeft = panelRect.left - frameRect.left;
       const startTop = panelRect.top - frameRect.top;
-      panel.style.left = startLeft + &#x27;px&#x27;;
-      panel.style.top = startTop + &#x27;px&#x27;;
+      panel.style.left = startLeft + 'px';
+      panel.style.top = startTop + 'px';
 
       const startX = e.clientX;
       const startY = e.clientY;
@@ -4959,15 +4953,15 @@ A few additional capabilities that can be relevant, depending on the customer&#x
         const newTop = startTop + (ev.clientY - startY);
         const maxLeft = Math.max(0, frame.clientWidth - panel.offsetWidth);
         const maxTop = Math.max(0, frame.clientHeight - panel.offsetHeight);
-        panel.style.left = Math.min(Math.max(0, newLeft), maxLeft) + &#x27;px&#x27;;
-        panel.style.top = Math.min(Math.max(0, newTop), maxTop) + &#x27;px&#x27;;
+        panel.style.left = Math.min(Math.max(0, newLeft), maxLeft) + 'px';
+        panel.style.top = Math.min(Math.max(0, newTop), maxTop) + 'px';
       }
       function onUp(){
-        document.removeEventListener(&#x27;mousemove&#x27;, onMove);
-        document.removeEventListener(&#x27;mouseup&#x27;, onUp);
+        document.removeEventListener('mousemove', onMove);
+        document.removeEventListener('mouseup', onUp);
       }
-      document.addEventListener(&#x27;mousemove&#x27;, onMove);
-      document.addEventListener(&#x27;mouseup&#x27;, onUp);
+      document.addEventListener('mousemove', onMove);
+      document.addEventListener('mouseup', onUp);
     });
   });
 
@@ -4982,21 +4976,21 @@ A few additional capabilities that can be relevant, depending on the customer&#x
   // without it staying loud/distracting.
   function flashTarget(el){
     if(!el) return;
-    el.style.transition = &#x27;background-color .9s ease, box-shadow .9s ease&#x27;;
-    el.style.backgroundColor = &#x27;#FFF1E6&#x27;;
-    el.style.boxShadow = &#x27;0 0 0 2px rgba(255,108,55,0.35)&#x27;;
+    el.style.transition = 'background-color .9s ease, box-shadow .9s ease';
+    el.style.backgroundColor = '#FFF1E6';
+    el.style.boxShadow = '0 0 0 2px rgba(255,108,55,0.35)';
     setTimeout(()=&gt;{
-      el.style.backgroundColor = &#x27;&#x27;;
-      el.style.boxShadow = &#x27;&#x27;;
+      el.style.backgroundColor = '';
+      el.style.boxShadow = '';
     }, 1100);
   }
 
-  const scrollButtons = document.querySelectorAll(&#x27;.nav-item[data-scroll]&#x27;);
+  const scrollButtons = document.querySelectorAll('.nav-item[data-scroll]');
   scrollButtons.forEach(btn=&gt;{
-    btn.addEventListener(&#x27;click&#x27;, ()=&gt;{
+    btn.addEventListener('click', ()=&gt;{
       const target = document.getElementById(btn.dataset.scroll);
       if(target){
-        target.scrollIntoView({ behavior: &#x27;smooth&#x27;, block: &#x27;start&#x27; });
+        target.scrollIntoView({ behavior: 'smooth', block: 'start' });
         flashTarget(target);
       }
     });
@@ -5005,20 +4999,20 @@ A few additional capabilities that can be relevant, depending on the customer&#x
   // Product submenu: the chevron only toggles the list open/closed and does
   // NOT scroll — the &quot;מוצרי הליבה&quot; button next to it keeps scrolling to the
   // section exactly as before. Each product inside the list scrolls to that
-  // specific product&#x27;s own card.
-  document.querySelectorAll(&#x27;.chevron-btn[data-toggle]&#x27;).forEach(btn=&gt;{
-    btn.addEventListener(&#x27;click&#x27;, ()=&gt;{
+  // specific product's own card.
+  document.querySelectorAll('.chevron-btn[data-toggle]').forEach(btn=&gt;{
+    btn.addEventListener('click', ()=&gt;{
       const submenu = document.getElementById(btn.dataset.toggle);
       if(!submenu) return;
-      submenu.classList.toggle(&#x27;open&#x27;);
-      btn.classList.toggle(&#x27;open&#x27;);
+      submenu.classList.toggle('open');
+      btn.classList.toggle('open');
     });
   });
-  document.querySelectorAll(&#x27;.nav-subitem[data-scroll]&#x27;).forEach(btn=&gt;{
-    btn.addEventListener(&#x27;click&#x27;, ()=&gt;{
+  document.querySelectorAll('.nav-subitem[data-scroll]').forEach(btn=&gt;{
+    btn.addEventListener('click', ()=&gt;{
       const target = document.getElementById(btn.dataset.scroll);
       if(target){
-        target.scrollIntoView({ behavior: &#x27;smooth&#x27;, block: &#x27;start&#x27; });
+        target.scrollIntoView({ behavior: 'smooth', block: 'start' });
         flashTarget(target);
       }
     });
@@ -5035,34 +5029,34 @@ A few additional capabilities that can be relevant, depending on the customer&#x
       }
     }
     scrollButtons.forEach(btn=&gt;{
-      btn.classList.toggle(&#x27;active&#x27;, btn.dataset.scroll === currentId);
+      btn.classList.toggle('active', btn.dataset.scroll === currentId);
     });
   }
-  centerContent.addEventListener(&#x27;scroll&#x27;, updateActive);
+  centerContent.addEventListener('scroll', updateActive);
   updateActive();
 })();
 
-// --- docked chat panel: multi-turn, answers only from the document&#x27;s own current text ---
+// --- docked chat panel: multi-turn, answers only from the document's own current text ---
 (function(){
   // Works as-is inside Claude.ai (calls Anthropic directly — that only
   // works in this sandbox). Once you host this file elsewhere (GitHub
   // Pages, etc.), deploy anthropic-proxy-worker.js to Cloudflare Workers
-  // and replace the line below with your Worker&#x27;s URL, e.g.
-  // &#x27;https://postman-bot-relay.your-subdomain.workers.dev&#x27; — nothing
+  // and replace the line below with your Worker's URL, e.g.
+  // 'https://postman-bot-relay.your-subdomain.workers.dev' — nothing
   // else in this file needs to change.
-  const API_ENDPOINT = &#x27;https://yanivdash.ygabay1978.workers.dev&#x27;;
+  const API_ENDPOINT = 'https://yanivdash.ygabay1978.workers.dev';
 
-  const logEl = document.getElementById(&#x27;chat-log&#x27;);
-  const questionEl = document.getElementById(&#x27;chat-question&#x27;);
-  const sendBtn = document.getElementById(&#x27;chat-send&#x27;);
-  const root = document.getElementById(&#x27;editable-root&#x27;);
-  const answerWindow = document.getElementById(&#x27;chat-answer-window&#x27;);
-  const answerContentEl = document.getElementById(&#x27;chat-answer-content&#x27;);
-  const saveEditBtn = document.getElementById(&#x27;save-answer-edit-btn&#x27;);
-  const backdrop = document.getElementById(&#x27;panel-backdrop&#x27;);
-  const savedBtn = document.getElementById(&#x27;saved-questions-btn&#x27;);
-  const savedMenu = document.getElementById(&#x27;saved-questions-menu&#x27;);
-  const savedCountEl = document.getElementById(&#x27;saved-questions-count&#x27;);
+  const logEl = document.getElementById('chat-log');
+  const questionEl = document.getElementById('chat-question');
+  const sendBtn = document.getElementById('chat-send');
+  const root = document.getElementById('editable-root');
+  const answerWindow = document.getElementById('chat-answer-window');
+  const answerContentEl = document.getElementById('chat-answer-content');
+  const saveEditBtn = document.getElementById('save-answer-edit-btn');
+  const backdrop = document.getElementById('panel-backdrop');
+  const savedBtn = document.getElementById('saved-questions-btn');
+  const savedMenu = document.getElementById('saved-questions-menu');
+  const savedCountEl = document.getElementById('saved-questions-count');
   let placeholderRemoved = false;
   let currentQuestionKey = null;
   let currentQuestionOriginal = null;
@@ -5070,10 +5064,10 @@ A few additional capabilities that can be relevant, depending on the customer&#x
   // Saved Q&amp;A pairs persist in localStorage — works once this is hosted for
   // real; inside this preview it may or may not persist across reloads,
   // but never breaks anything either way. Schema: { [normalizedKey]: { q, a } }
-  const SAVED_ANSWERS_KEY = &#x27;postman-explainer-saved-answers-he&#x27;;
+  const SAVED_ANSWERS_KEY = 'postman-explainer-saved-answers-he';
 
   function normalizeQuestion(q){
-    return q.trim().toLowerCase().replace(/\s+/g, &#x27; &#x27;);
+    return q.trim().toLowerCase().replace(/\s+/g, ' ');
   }
   function loadSavedAnswers(){
     let answers;
@@ -5085,7 +5079,7 @@ A few additional capabilities that can be relevant, depending on the customer&#x
     // visible question text, just the ✕ delete button.
     let migrated = false;
     Object.keys(answers).forEach(key=&gt;{
-      if(typeof answers[key] === &#x27;string&#x27;){
+      if(typeof answers[key] === 'string'){
         answers[key] = { q: key, a: answers[key] };
         migrated = true;
       }
@@ -5115,41 +5109,41 @@ A few additional capabilities that can be relevant, depending on the customer&#x
   }
 
   // Cross-language sync: saving here also translates and writes into the
-  // English version&#x27;s own storage key (shared localStorage, same domain).
+  // English version's own storage key (shared localStorage, same domain).
   // Visible status here (not just console.error) so a failed sync is
   // actually noticeable instead of silently not happening.
-  const OTHER_LANG_KEY = &#x27;postman-explainer-saved-answers-en&#x27;;
-  const syncStatusEl = document.getElementById(&#x27;sync-status&#x27;);
+  const OTHER_LANG_KEY = 'postman-explainer-saved-answers-en';
+  const syncStatusEl = document.getElementById('sync-status');
   function flashSyncStatus(text, ok){
     syncStatusEl.textContent = text;
-    syncStatusEl.classList.remove(&#x27;ok&#x27;, &#x27;err&#x27;);
-    syncStatusEl.classList.add(ok ? &#x27;ok&#x27; : &#x27;err&#x27;);
-    setTimeout(()=&gt;{ syncStatusEl.textContent = &#x27;&#x27;; syncStatusEl.classList.remove(&#x27;ok&#x27;,&#x27;err&#x27;); }, 4000);
+    syncStatusEl.classList.remove('ok', 'err');
+    syncStatusEl.classList.add(ok ? 'ok' : 'err');
+    setTimeout(()=&gt;{ syncStatusEl.textContent = ''; syncStatusEl.classList.remove('ok','err'); }, 4000);
   }
   async function translateAndSyncToOtherLanguage(question, answerHTML){
-    flashSyncStatus(&#x27;מתרגם לאנגלית…&#x27;, true);
+    flashSyncStatus('מתרגם לאנגלית…', true);
     try{
-      const prompt = &#x27;Translate the following Hebrew sales Q&amp;A into natural, professional English. This must be a COMPLETE, full-length, faithful translation — do not summarize, shorten, condense, or omit any part of the content. Match the original\&#x27;s length and level of detail exactly. Keep every HTML tag exactly as-is (e.g. &lt;b&gt;, &lt;span style=&quot;...&quot;&gt;) — translate ONLY the visible text between tags, never tag names or attributes. Respond with ONLY a single valid JSON object and nothing else — no markdown fences, no preamble — in exactly this shape: {&quot;q&quot;:&quot;&lt;translated question&gt;&quot;,&quot;a&quot;:&quot;&lt;translated answer, HTML preserved, properly escaped for JSON&gt;&quot;}\n\nHebrew question: &#x27; + question + &#x27;\nHebrew answer (HTML): &#x27; + answerHTML;
+      const prompt = 'Translate the following Hebrew sales Q&amp;A into natural, professional English. This must be a COMPLETE, full-length, faithful translation — do not summarize, shorten, condense, or omit any part of the content. Match the original\'s length and level of detail exactly. Keep every HTML tag exactly as-is (e.g. &lt;b&gt;, &lt;span style=&quot;...&quot;&gt;) — translate ONLY the visible text between tags, never tag names or attributes. Respond with ONLY a single valid JSON object and nothing else — no markdown fences, no preamble — in exactly this shape: {&quot;q&quot;:&quot;&lt;translated question&gt;&quot;,&quot;a&quot;:&quot;&lt;translated answer, HTML preserved, properly escaped for JSON&gt;&quot;}\n\nHebrew question: ' + question + '\nHebrew answer (HTML): ' + answerHTML;
       const response = await fetch(API_ENDPOINT, {
-        method: &#x27;POST&#x27;,
-        headers: { &#x27;Content-Type&#x27;: &#x27;application/json&#x27; },
-        body: JSON.stringify({ model: &#x27;claude-sonnet-4-6&#x27;, max_tokens: 2000, messages: [{ role: &#x27;user&#x27;, content: prompt }] })
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ model: 'claude-sonnet-4-6', max_tokens: 2000, messages: [{ role: 'user', content: prompt }] })
       });
-      if(!response.ok) throw new Error(&#x27;bad response &#x27; + response.status);
+      if(!response.ok) throw new Error('bad response ' + response.status);
       const data = await response.json();
-      const text = (data.content || []).filter(b =&gt; b.type === &#x27;text&#x27;).map(b =&gt; b.text).join(&#x27;&#x27;).trim();
+      const text = (data.content || []).filter(b =&gt; b.type === 'text').map(b =&gt; b.text).join('').trim();
       const jsonMatch = text.match(/\{[\s\S]*\}/);
-      if(!jsonMatch) throw new Error(&#x27;no JSON found in translation response&#x27;);
+      if(!jsonMatch) throw new Error('no JSON found in translation response');
       const parsed = JSON.parse(jsonMatch[0]);
-      if(!parsed.q || !parsed.a) throw new Error(&#x27;translation JSON missing q/a&#x27;);
+      if(!parsed.q || !parsed.a) throw new Error('translation JSON missing q/a');
       let otherAnswers = {};
       try{ otherAnswers = JSON.parse(localStorage.getItem(OTHER_LANG_KEY)) || {}; }catch(e){}
-      otherAnswers[parsed.q.trim().toLowerCase().replace(/\s+/g, &#x27; &#x27;)] = { q: parsed.q, a: parsed.a };
+      otherAnswers[parsed.q.trim().toLowerCase().replace(/\s+/g, ' ')] = { q: parsed.q, a: parsed.a };
       localStorage.setItem(OTHER_LANG_KEY, JSON.stringify(otherAnswers));
-      flashSyncStatus(&#x27;✓ סונכרן גם באנגלית&#x27;, true);
+      flashSyncStatus('✓ סונכרן גם באנגלית', true);
     }catch(e){
-      console.error(&#x27;cross-language sync failed&#x27;, e);
-      flashSyncStatus(&#x27;⚠ הסנכרון לאנגלית נכשל — נסה לשמור שוב&#x27;, false);
+      console.error('cross-language sync failed', e);
+      flashSyncStatus('⚠ הסנכרון לאנגלית נכשל — נסה לשמור שוב', false);
     }
   }
 
@@ -5158,36 +5152,36 @@ A few additional capabilities that can be relevant, depending on the customer&#x
     // innerHTML (not innerText) — this is the actual fix for edits not
     // sticking: innerText re-serializes the DOM and can normalize away an
     // in-progress edit in an RTL contenteditable region; innerHTML captures
-    // exactly what&#x27;s rendered, formatting included.
+    // exactly what's rendered, formatting included.
     saveQA(currentQuestionOriginal, answerContentEl.innerHTML);
     const original = saveEditBtn.textContent;
-    saveEditBtn.textContent = &#x27;נשמר ✓&#x27;;
+    saveEditBtn.textContent = 'נשמר ✓';
     setTimeout(()=&gt;{ saveEditBtn.textContent = original; }, 1500);
     // keep the log bubble in sync with the edited version too
-    const lastBotMsg = logEl.querySelector(&#x27;.chat-msg.bot:last-of-type&#x27;);
+    const lastBotMsg = logEl.querySelector('.chat-msg.bot:last-of-type');
     if(lastBotMsg) lastBotMsg.textContent = answerContentEl.innerText;
     questionEl.value = answerContentEl.innerText;
   }
-  saveEditBtn.addEventListener(&#x27;click&#x27;, saveCurrentAnswer);
+  saveEditBtn.addEventListener('click', saveCurrentAnswer);
 
   function openAnswerWindow(question){
     currentQuestionKey = normalizeQuestion(question);
     currentQuestionOriginal = question;
-    answerWindow.classList.add(&#x27;open&#x27;);
-    backdrop.classList.add(&#x27;open&#x27;);
+    answerWindow.classList.add('open');
+    backdrop.classList.add('open');
   }
 
   // ---- ⭐ quick-save star on each bot bubble ----
   function addStarToBubble(botMsgEl, question){
-    const star = document.createElement(&#x27;button&#x27;);
-    star.className = &#x27;msg-star-btn&#x27;;
-    star.title = &#x27;שמור שאלה ותשובה זו לרשימת השאלות השמורות&#x27;;
-    star.textContent = &#x27;☆&#x27;;
-    if(getSavedAnswer(question) !== null) { star.textContent = &#x27;⭐&#x27;; star.classList.add(&#x27;saved&#x27;); }
-    star.addEventListener(&#x27;click&#x27;, ()=&gt;{
+    const star = document.createElement('button');
+    star.className = 'msg-star-btn';
+    star.title = 'שמור שאלה ותשובה זו לרשימת השאלות השמורות';
+    star.textContent = '☆';
+    if(getSavedAnswer(question) !== null) { star.textContent = '⭐'; star.classList.add('saved'); }
+    star.addEventListener('click', ()=&gt;{
       saveQA(question, botMsgEl.textContent);
-      star.textContent = &#x27;⭐&#x27;;
-      star.classList.add(&#x27;saved&#x27;);
+      star.textContent = '⭐';
+      star.classList.add('saved');
     });
     botMsgEl.appendChild(star);
   }
@@ -5196,43 +5190,43 @@ A few additional capabilities that can be relevant, depending on the customer&#x
   function renderSavedQuestionsMenu(){
     const answers = loadSavedAnswers();
     const keys = Object.keys(answers);
-    savedCountEl.textContent = keys.length ? String(keys.length) : &#x27;&#x27;;
+    savedCountEl.textContent = keys.length ? String(keys.length) : '';
     if(keys.length === 0){
-      savedMenu.innerHTML = &#x27;&lt;div class=&quot;sq-empty&quot;&gt;עדיין לא שמרת שאלות — לחץ על ⭐ לצד כל תשובה כדי לשמור אותה.&lt;/div&gt;&#x27;;
+      savedMenu.innerHTML = '&lt;div class=&quot;sq-empty&quot;&gt;עדיין לא שמרת שאלות — לחץ על ⭐ לצד כל תשובה כדי לשמור אותה.&lt;/div&gt;';
       return;
     }
-    savedMenu.innerHTML = &#x27;&#x27;;
+    savedMenu.innerHTML = '';
     keys.forEach(key=&gt;{
       const entry = answers[key];
-      const item = document.createElement(&#x27;div&#x27;);
-      item.className = &#x27;sq-item&#x27;;
-      const textSpan = document.createElement(&#x27;span&#x27;);
-      textSpan.className = &#x27;sq-text&#x27;;
+      const item = document.createElement('div');
+      item.className = 'sq-item';
+      const textSpan = document.createElement('span');
+      textSpan.className = 'sq-text';
       textSpan.textContent = entry.q;
-      const delBtn = document.createElement(&#x27;button&#x27;);
-      delBtn.className = &#x27;sq-delete&#x27;;
-      delBtn.title = &#x27;הסר מהרשימה&#x27;;
-      delBtn.textContent = &#x27;✕&#x27;;
+      const delBtn = document.createElement('button');
+      delBtn.className = 'sq-delete';
+      delBtn.title = 'הסר מהרשימה';
+      delBtn.textContent = '✕';
       item.appendChild(textSpan);
       item.appendChild(delBtn);
-      textSpan.addEventListener(&#x27;click&#x27;, ()=&gt;{
-        savedMenu.classList.remove(&#x27;open&#x27;);
+      textSpan.addEventListener('click', ()=&gt;{
+        savedMenu.classList.remove('open');
         ask(entry.q);
       });
-      delBtn.addEventListener(&#x27;click&#x27;, (e)=&gt;{
+      delBtn.addEventListener('click', (e)=&gt;{
         e.stopPropagation();
         deleteSavedQA(key);
       });
       savedMenu.appendChild(item);
     });
   }
-  savedBtn.addEventListener(&#x27;click&#x27;, (e)=&gt;{
+  savedBtn.addEventListener('click', (e)=&gt;{
     e.stopPropagation();
-    savedMenu.classList.toggle(&#x27;open&#x27;);
+    savedMenu.classList.toggle('open');
   });
-  document.addEventListener(&#x27;click&#x27;, (e)=&gt;{
-    if(!document.getElementById(&#x27;saved-questions-wrap&#x27;).contains(e.target)){
-      savedMenu.classList.remove(&#x27;open&#x27;);
+  document.addEventListener('click', (e)=&gt;{
+    if(!document.getElementById('saved-questions-wrap').contains(e.target)){
+      savedMenu.classList.remove('open');
     }
   });
   renderSavedQuestionsMenu();
@@ -5246,11 +5240,11 @@ A few additional capabilities that can be relevant, depending on the customer&#x
 
   function addMessage(role, text){
     if(!placeholderRemoved){
-      logEl.innerHTML = &#x27;&#x27;;
+      logEl.innerHTML = '';
       placeholderRemoved = true;
     }
-    const div = document.createElement(&#x27;div&#x27;);
-    div.className = &#x27;chat-msg &#x27; + role;
+    const div = document.createElement('div');
+    div.className = 'chat-msg ' + role;
     div.textContent = text;
     logEl.appendChild(div);
     logEl.scrollTop = logEl.scrollHeight;
@@ -5266,54 +5260,54 @@ A few additional capabilities that can be relevant, depending on the customer&#x
   async function ask(question){
     if(!question) return;
     sendBtn.disabled = true;
-    addMessage(&#x27;user&#x27;, question);
+    addMessage('user', question);
 
     openAnswerWindow(question);
-    // Locked while loading/streaming — only unlocked once there&#x27;s a real
-    // answer to edit. Editing something that&#x27;s still being overwritten by
+    // Locked while loading/streaming — only unlocked once there's a real
+    // answer to edit. Editing something that's still being overwritten by
     // incoming stream chunks is exactly what was causing edits to not
     // stick reliably.
-    answerContentEl.setAttribute(&#x27;contenteditable&#x27;, &#x27;false&#x27;);
+    answerContentEl.setAttribute('contenteditable', 'false');
 
     // A saved correction for this exact question skips the model call
     // entirely — instant, and guaranteed to match what you approved.
     const saved = getSavedAnswer(question);
     if(saved !== null){
-      answerContentEl.classList.remove(&#x27;loading&#x27;);
+      answerContentEl.classList.remove('loading');
       answerContentEl.innerHTML = saved;
-      answerContentEl.setAttribute(&#x27;contenteditable&#x27;, &#x27;true&#x27;);
-      const botMsg = addMessage(&#x27;bot&#x27;, answerContentEl.innerText);
+      answerContentEl.setAttribute('contenteditable', 'true');
+      const botMsg = addMessage('bot', answerContentEl.innerText);
       addStarToBubble(botMsg, question);
-      conversationHistory.push({ role: &#x27;user&#x27;, content: question });
-      conversationHistory.push({ role: &#x27;assistant&#x27;, content: answerContentEl.innerText });
+      conversationHistory.push({ role: 'user', content: question });
+      conversationHistory.push({ role: 'assistant', content: answerContentEl.innerText });
       trimHistory();
       sendBtn.disabled = false;
       return;
     }
 
-    answerContentEl.classList.add(&#x27;loading&#x27;);
-    answerContentEl.textContent = &#x27;מחפש תשובה במסמך…&#x27;;
-    const botMsg = addMessage(&#x27;bot loading&#x27;, &#x27;מחפש תשובה במסמך…&#x27;);
+    answerContentEl.classList.add('loading');
+    answerContentEl.textContent = 'מחפש תשובה במסמך…';
+    const botMsg = addMessage('bot loading', 'מחפש תשובה במסמך…');
 
     let userTurnContent;
     if(conversationHistory.length === 0){
       const documentText = root.innerText;
-      userTurnContent = &#x27;להלן מסמך הדרכה למכירות של מוצרי Postman, בעברית. ענה על השאלות הבאות בהתבסס רק על המידע שכתוב במסמך הזה (כולל תוכן הפאנלים הצדדיים — מיצוב והתנגדויות, Fabric, Passport, ASA, DATABASE). אם התשובה לא מופיעה במסמך, אמור זאת בבירור ואל תמציא מידע. אתה עונה למוכר שנמצא באמצע שיחת מכירה חייה ועם הלקוח על הקו — תן תשובה קצרה וישירה, 2-3 משפטים לכל היותר, בעברית, בלי הקדמות.\n\nבנוסף: אם השאלה מתאימה למקרה שבו כדאי להחזיר ללקוח שאלת בירור או שאלת נגד (Reverse Question) — הוסף שורה נפרדת בסוף שמתחילה במדויק ב-&quot;🔄 שאלת המשך מומלצת:&quot; ולאחריה שאלה קונקרטית אחת. אם המצב לא מתאים לזה, אל תוסיף את השורה הזו בכלל.\n\nזו תהיה שיחה מתמשכת עם כמה שאלות ברצף. אם שאלה עוקבת היא כללית או מנוסחת בקצרה (למשל &quot;תן לי עוד אחת&quot;, &quot;ומה עוד?&quot;, &quot;תסביר יותר&quot;), התייחס אליה כהמשך של הנושא שדיברנו עליו לאחרונה — אלא אם היא מנוסחת בבירור כמעבר לנושא אחר.\n\n&lt;מסמך&gt;\n&#x27; + documentText + &#x27;\n&lt;/מסמך&gt;\n\nשאלה ראשונה: &#x27; + question;
+      userTurnContent = 'להלן מסמך הדרכה למכירות של מוצרי Postman, בעברית. ענה על השאלות הבאות בהתבסס רק על המידע שכתוב במסמך הזה (כולל תוכן הפאנלים הצדדיים — מיצוב והתנגדויות, Fabric, Passport, ASA, DATABASE). אם התשובה לא מופיעה במסמך, אמור זאת בבירור ואל תמציא מידע. אתה עונה למוכר שנמצא באמצע שיחת מכירה חייה ועם הלקוח על הקו — תן תשובה קצרה וישירה, 2-3 משפטים לכל היותר, בעברית, בלי הקדמות.\n\nבנוסף: אם השאלה מתאימה למקרה שבו כדאי להחזיר ללקוח שאלת בירור או שאלת נגד (Reverse Question) — הוסף שורה נפרדת בסוף שמתחילה במדויק ב-&quot;🔄 שאלת המשך מומלצת:&quot; ולאחריה שאלה קונקרטית אחת. אם המצב לא מתאים לזה, אל תוסיף את השורה הזו בכלל.\n\nזו תהיה שיחה מתמשכת עם כמה שאלות ברצף. אם שאלה עוקבת היא כללית או מנוסחת בקצרה (למשל &quot;תן לי עוד אחת&quot;, &quot;ומה עוד?&quot;, &quot;תסביר יותר&quot;), התייחס אליה כהמשך של הנושא שדיברנו עליו לאחרונה — אלא אם היא מנוסחת בבירור כמעבר לנושא אחר.\n\n&lt;מסמך&gt;\n' + documentText + '\n&lt;/מסמך&gt;\n\nשאלה ראשונה: ' + question;
     } else {
       userTurnContent = question;
     }
-    conversationHistory.push({ role: &#x27;user&#x27;, content: userTurnContent });
+    conversationHistory.push({ role: 'user', content: userTurnContent });
     trimHistory();
 
-    let accumulated = &#x27;&#x27;;
+    let accumulated = '';
     let firstTokenReceived = false;
 
     try{
       const response = await fetch(API_ENDPOINT, {
-        method: &#x27;POST&#x27;,
-        headers: { &#x27;Content-Type&#x27;: &#x27;application/json&#x27; },
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
-          model: &#x27;claude-sonnet-4-6&#x27;,
+          model: 'claude-sonnet-4-6',
           max_tokens: 300,
           stream: true,
           messages: conversationHistory
@@ -5321,32 +5315,32 @@ A few additional capabilities that can be relevant, depending on the customer&#x
       });
 
       if(!response.ok || !response.body){
-        throw new Error(&#x27;bad response: &#x27; + response.status);
+        throw new Error('bad response: ' + response.status);
       }
 
       const reader = response.body.getReader();
       const decoder = new TextDecoder();
-      let buffer = &#x27;&#x27;;
+      let buffer = '';
 
       while(true){
         const { value, done } = await reader.read();
         if(done) break;
         buffer += decoder.decode(value, { stream: true });
-        const lines = buffer.split(&#x27;\n&#x27;);
+        const lines = buffer.split('\n');
         buffer = lines.pop();
 
         for(const line of lines){
-          if(!line.startsWith(&#x27;data:&#x27;)) continue;
+          if(!line.startsWith('data:')) continue;
           const jsonStr = line.slice(5).trim();
-          if(!jsonStr || jsonStr === &#x27;[DONE]&#x27;) continue;
+          if(!jsonStr || jsonStr === '[DONE]') continue;
           try{
             const evt = JSON.parse(jsonStr);
-            if(evt.type === &#x27;content_block_delta&#x27; &amp;&amp; evt.delta &amp;&amp; evt.delta.type === &#x27;text_delta&#x27;){
+            if(evt.type === 'content_block_delta' &amp;&amp; evt.delta &amp;&amp; evt.delta.type === 'text_delta'){
               if(!firstTokenReceived){
-                botMsg.textContent = &#x27;&#x27;;
-                botMsg.classList.remove(&#x27;loading&#x27;);
-                answerContentEl.classList.remove(&#x27;loading&#x27;);
-                answerContentEl.textContent = &#x27;&#x27;;
+                botMsg.textContent = '';
+                botMsg.classList.remove('loading');
+                answerContentEl.classList.remove('loading');
+                answerContentEl.textContent = '';
                 firstTokenReceived = true;
               }
               accumulated += evt.delta.text;
@@ -5359,25 +5353,25 @@ A few additional capabilities that can be relevant, depending on the customer&#x
       }
 
       if(!accumulated){
-        botMsg.classList.remove(&#x27;loading&#x27;);
-        botMsg.textContent = &#x27;לא התקבלה תשובה מהמערכת.&#x27;;
-        answerContentEl.classList.remove(&#x27;loading&#x27;);
-        answerContentEl.textContent = &#x27;לא התקבלה תשובה מהמערכת.&#x27;;
+        botMsg.classList.remove('loading');
+        botMsg.textContent = 'לא התקבלה תשובה מהמערכת.';
+        answerContentEl.classList.remove('loading');
+        answerContentEl.textContent = 'לא התקבלה תשובה מהמערכת.';
         conversationHistory.pop();
       } else {
-        conversationHistory.push({ role: &#x27;assistant&#x27;, content: accumulated });
-        answerContentEl.setAttribute(&#x27;contenteditable&#x27;, &#x27;true&#x27;);
+        conversationHistory.push({ role: 'assistant', content: accumulated });
+        answerContentEl.setAttribute('contenteditable', 'true');
         questionEl.value = accumulated;
         addStarToBubble(botMsg, question);
       }
     }catch(err){
-      botMsg.classList.remove(&#x27;loading&#x27;);
-      botMsg.classList.add(&#x27;err&#x27;);
-      botMsg.textContent = &#x27;משהו נכשל בפנייה. נסה שוב.&#x27;;
-      answerContentEl.classList.remove(&#x27;loading&#x27;);
-      answerContentEl.textContent = &#x27;משהו נכשל בפנייה. נסה שוב.&#x27;;
+      botMsg.classList.remove('loading');
+      botMsg.classList.add('err');
+      botMsg.textContent = 'משהו נכשל בפנייה. נסה שוב.';
+      answerContentEl.classList.remove('loading');
+      answerContentEl.textContent = 'משהו נכשל בפנייה. נסה שוב.';
       conversationHistory.pop();
-      console.error(&#x27;ai question failed&#x27;, err);
+      console.error('ai question failed', err);
     }finally{
       sendBtn.disabled = false;
     }
@@ -5386,24 +5380,24 @@ A few additional capabilities that can be relevant, depending on the customer&#x
   function sendCurrentInput(){
     const question = questionEl.value.trim();
     if(!question) return;
-    questionEl.value = &#x27;&#x27;;
+    questionEl.value = '';
     ask(question);
   }
 
-  sendBtn.addEventListener(&#x27;click&#x27;, sendCurrentInput);
-  questionEl.addEventListener(&#x27;keydown&#x27;, (e)=&gt;{
-    if(e.key === &#x27;Enter&#x27; &amp;&amp; !e.shiftKey){
+  sendBtn.addEventListener('click', sendCurrentInput);
+  questionEl.addEventListener('keydown', (e)=&gt;{
+    if(e.key === 'Enter' &amp;&amp; !e.shiftKey){
       e.preventDefault();
       sendCurrentInput();
     }
   });
-  document.querySelectorAll(&#x27;.chat-quick-btn&#x27;).forEach(btn=&gt;{
-    btn.addEventListener(&#x27;click&#x27;, ()=&gt; ask(btn.dataset.prompt));
+  document.querySelectorAll('.chat-quick-btn').forEach(btn=&gt;{
+    btn.addEventListener('click', ()=&gt; ask(btn.dataset.prompt));
   });
 
   // ---- formatting toolbar inside the floating answer window ----
   // Self-contained (scoped to answerContentEl only, not the main
-  // document&#x27;s global formatting functions) — deliberately simple, no
+  // document's global formatting functions) — deliberately simple, no
   // undo stack, matching the proven English implementation.
   function ansWrapSelection(styleProp, valueOrDelta, isSizeDelta){
     const sel = window.getSelection();
@@ -5415,14 +5409,14 @@ A few additional capabilities that can be relevant, depending on the customer&#x
     if(isSizeDelta){
       const refNode = range.startContainer.nodeType === 3 ? range.startContainer.parentElement : range.startContainer;
       const currentSize = parseFloat(window.getComputedStyle(refNode).fontSize) || 14;
-      value = Math.max(10, Math.min(40, currentSize + valueOrDelta)) + &#x27;px&#x27;;
+      value = Math.max(10, Math.min(40, currentSize + valueOrDelta)) + 'px';
     }
-    const span = document.createElement(&#x27;span&#x27;);
+    const span = document.createElement('span');
     span.style[styleProp] = value;
     span.appendChild(range.extractContents());
     range.insertNode(span);
-    if(styleProp === &#x27;color&#x27;){
-      span.querySelectorAll(&#x27;*&#x27;).forEach(node =&gt; { node.style.color = value; });
+    if(styleProp === 'color'){
+      span.querySelectorAll('*').forEach(node =&gt; { node.style.color = value; });
     }
     sel.removeAllRanges();
     const newRange = document.createRange();
@@ -5434,30 +5428,30 @@ A few additional capabilities that can be relevant, depending on the customer&#x
     if(!sel || sel.rangeCount === 0 || !answerContentEl.contains(sel.getRangeAt(0).commonAncestorContainer)) return;
     document.execCommand(cmd, false, null);
   }
-  [&#x27;answer-bold-btn&#x27;,&#x27;answer-italic-btn&#x27;,&#x27;answer-dec-font-btn&#x27;,&#x27;answer-inc-font-btn&#x27;].forEach(id=&gt;{
-    document.getElementById(id).addEventListener(&#x27;mousedown&#x27;, e=&gt;e.preventDefault());
+  ['answer-bold-btn','answer-italic-btn','answer-dec-font-btn','answer-inc-font-btn'].forEach(id=&gt;{
+    document.getElementById(id).addEventListener('mousedown', e=&gt;e.preventDefault());
   });
-  document.getElementById(&#x27;answer-bold-btn&#x27;).addEventListener(&#x27;click&#x27;, ()=&gt; ansRunCommand(&#x27;bold&#x27;));
-  document.getElementById(&#x27;answer-italic-btn&#x27;).addEventListener(&#x27;click&#x27;, ()=&gt; ansRunCommand(&#x27;italic&#x27;));
-  document.getElementById(&#x27;answer-inc-font-btn&#x27;).addEventListener(&#x27;click&#x27;, ()=&gt; ansWrapSelection(&#x27;fontSize&#x27;, 2, true));
-  document.getElementById(&#x27;answer-dec-font-btn&#x27;).addEventListener(&#x27;click&#x27;, ()=&gt; ansWrapSelection(&#x27;fontSize&#x27;, -2, true));
-  document.querySelectorAll(&#x27;#chat-answer-window .swatch&#x27;).forEach(btn=&gt;{
-    btn.addEventListener(&#x27;mousedown&#x27;, e=&gt;e.preventDefault());
-    btn.addEventListener(&#x27;click&#x27;, ()=&gt; ansWrapSelection(&#x27;color&#x27;, btn.dataset.color, false));
+  document.getElementById('answer-bold-btn').addEventListener('click', ()=&gt; ansRunCommand('bold'));
+  document.getElementById('answer-italic-btn').addEventListener('click', ()=&gt; ansRunCommand('italic'));
+  document.getElementById('answer-inc-font-btn').addEventListener('click', ()=&gt; ansWrapSelection('fontSize', 2, true));
+  document.getElementById('answer-dec-font-btn').addEventListener('click', ()=&gt; ansWrapSelection('fontSize', -2, true));
+  document.querySelectorAll('#chat-answer-window .swatch').forEach(btn=&gt;{
+    btn.addEventListener('mousedown', e=&gt;e.preventDefault());
+    btn.addEventListener('click', ()=&gt; ansWrapSelection('color', btn.dataset.color, false));
   });
 })();
 
 // --- drag-to-reorder + add/delete cards for Core Products and Objections ---
 (function(){
   const CARD_GROUPS = [
-    { containerSelector: &#x27;#sec-products&#x27;, cardSelector: &#x27;.prod&#x27;, storageKey: &#x27;cards:products&#x27;,
-      newCardHTML: &#x27;&lt;div class=&quot;name edit-unit&quot; contenteditable=&quot;false&quot;&gt;שם המוצר&lt;/div&gt;&lt;div class=&quot;pitch edit-unit&quot; contenteditable=&quot;false&quot;&gt;תיאור המוצר...&lt;/div&gt;&#x27; },
-    { containerSelector: &#x27;#panel-objections .panel-body&#x27;, cardSelector: &#x27;.obj&#x27;, storageKey: &#x27;cards:objections&#x27;,
-      newCardHTML: &#x27;&lt;div class=&quot;q edit-unit&quot; contenteditable=&quot;false&quot;&gt;&quot;השאלה/התנגדות של הלקוח?&quot;&lt;/div&gt;&lt;div class=&quot;a edit-unit&quot; contenteditable=&quot;false&quot;&gt;&quot;התשובה שלי...&quot;&lt;/div&gt;&#x27; }
+    { containerSelector: '#sec-products', cardSelector: '.prod', storageKey: 'cards:products',
+      newCardHTML: '&lt;div class=&quot;name edit-unit&quot; contenteditable=&quot;false&quot;&gt;שם המוצר&lt;/div&gt;&lt;div class=&quot;pitch edit-unit&quot; contenteditable=&quot;false&quot;&gt;תיאור המוצר...&lt;/div&gt;' },
+    { containerSelector: '#panel-objections .panel-body', cardSelector: '.obj', storageKey: 'cards:objections',
+      newCardHTML: '&lt;div class=&quot;q edit-unit&quot; contenteditable=&quot;false&quot;&gt;&quot;השאלה/התנגדות של הלקוח?&quot;&lt;/div&gt;&lt;div class=&quot;a edit-unit&quot; contenteditable=&quot;false&quot;&gt;&quot;התשובה שלי...&quot;&lt;/div&gt;' }
   ];
 
   function getDragAfterElement(container, y, cardSelector){
-    const cards = [...container.querySelectorAll(cardSelector + &#x27;:not(.dragging)&#x27;)];
+    const cards = [...container.querySelectorAll(cardSelector + ':not(.dragging)')];
     return cards.reduce((closest, card)=&gt;{
       const box = card.getBoundingClientRect();
       const offset = y - box.top - box.height / 2;
@@ -5474,7 +5468,7 @@ A few additional capabilities that can be relevant, depending on the customer&#x
     if(!container) return;
     const tagClass = cardSelector.slice(1);
 
-    // A full snapshot (each card&#x27;s complete outerHTML, in order) captures
+    // A full snapshot (each card's complete outerHTML, in order) captures
     // reordering, added cards, deleted cards, and text edits all at once —
     // simpler and more robust than tracking them as separate operations.
     try{
@@ -5482,7 +5476,7 @@ A few additional capabilities that can be relevant, depending on the customer&#x
       if(saved &amp;&amp; saved.length){
         container.querySelectorAll(cardSelector).forEach(c =&gt; c.remove());
         saved.forEach(cardHTML=&gt;{
-          const temp = document.createElement(&#x27;div&#x27;);
+          const temp = document.createElement('div');
           temp.innerHTML = cardHTML;
           const cardEl = temp.firstElementChild;
           if(cardEl) container.appendChild(cardEl);
@@ -5497,33 +5491,33 @@ A few additional capabilities that can be relevant, depending on the customer&#x
     }
 
     function currentEditableState(){
-      const sample = container.querySelector(cardSelector + &#x27; .edit-unit&#x27;);
-      return sample ? sample.getAttribute(&#x27;contenteditable&#x27;) : &#x27;true&#x27;;
+      const sample = container.querySelector(cardSelector + ' .edit-unit');
+      return sample ? sample.getAttribute('contenteditable') : 'true';
     }
 
     function wireCard(card){
       if(card.dataset.wired) return;
-      card.dataset.wired = &#x27;1&#x27;;
-      card.classList.add(&#x27;reorderable-card&#x27;);
-      card.style.position = card.style.position || &#x27;relative&#x27;;
-      card.setAttribute(&#x27;draggable&#x27;, &#x27;true&#x27;);
+      card.dataset.wired = '1';
+      card.classList.add('reorderable-card');
+      card.style.position = card.style.position || 'relative';
+      card.setAttribute('draggable', 'true');
 
-      if(!card.querySelector(&#x27;.drag-grip&#x27;)){
-        const grip = document.createElement(&#x27;div&#x27;);
-        grip.className = &#x27;drag-grip&#x27;;
-        grip.title = &#x27;גרור כדי לשנות סדר&#x27;;
-        grip.textContent = &#x27;⠿&#x27;;
+      if(!card.querySelector('.drag-grip')){
+        const grip = document.createElement('div');
+        grip.className = 'drag-grip';
+        grip.title = 'גרור כדי לשנות סדר';
+        grip.textContent = '⠿';
         card.appendChild(grip);
       }
-      if(!card.querySelector(&#x27;.card-delete-btn&#x27;)){
-        const del = document.createElement(&#x27;button&#x27;);
-        del.className = &#x27;card-delete-btn&#x27;;
-        del.title = &#x27;מחק כרטיס זה&#x27;;
-        del.type = &#x27;button&#x27;;
-        del.textContent = &#x27;🗑&#x27;;
-        del.addEventListener(&#x27;click&#x27;, (e)=&gt;{
+      if(!card.querySelector('.card-delete-btn')){
+        const del = document.createElement('button');
+        del.className = 'card-delete-btn';
+        del.title = 'מחק כרטיס זה';
+        del.type = 'button';
+        del.textContent = '🗑';
+        del.addEventListener('click', (e)=&gt;{
           e.stopPropagation();
-          if(window.confirm(&#x27;למחוק את הכרטיס הזה?&#x27;)){
+          if(window.confirm('למחוק את הכרטיס הזה?')){
             card.remove();
             saveSnapshot();
           }
@@ -5531,17 +5525,17 @@ A few additional capabilities that can be relevant, depending on the customer&#x
         card.appendChild(del);
       }
 
-      card.addEventListener(&#x27;dragstart&#x27;, ()=&gt;{ card.classList.add(&#x27;dragging&#x27;); });
-      card.addEventListener(&#x27;dragend&#x27;, ()=&gt;{ card.classList.remove(&#x27;dragging&#x27;); saveSnapshot(); });
+      card.addEventListener('dragstart', ()=&gt;{ card.classList.add('dragging'); });
+      card.addEventListener('dragend', ()=&gt;{ card.classList.remove('dragging'); saveSnapshot(); });
     }
 
     container.querySelectorAll(cardSelector).forEach(wireCard);
 
-    container.addEventListener(&#x27;dragover&#x27;, (e)=&gt;{
+    container.addEventListener('dragover', (e)=&gt;{
       e.preventDefault();
-      const dragging = container.querySelector(cardSelector + &#x27;.dragging&#x27;);
+      const dragging = container.querySelector(cardSelector + '.dragging');
       if(!dragging) return;
-      const addBtn = container.querySelector(&#x27;.add-card-btn&#x27;);
+      const addBtn = container.querySelector('.add-card-btn');
       const afterElement = getDragAfterElement(container, e.clientY, cardSelector);
       if(afterElement == null){
         if(addBtn) container.insertBefore(dragging, addBtn); else container.appendChild(dragging);
@@ -5553,32 +5547,32 @@ A few additional capabilities that can be relevant, depending on the customer&#x
     // Re-save (debounced) on any text edit within a card, so edited wording
     // is captured in the snapshot too, not just structure/order.
     let saveTimer;
-    container.addEventListener(&#x27;input&#x27;, (e)=&gt;{
+    container.addEventListener('input', (e)=&gt;{
       if(!e.target.closest(cardSelector)) return;
       clearTimeout(saveTimer);
       saveTimer = setTimeout(saveSnapshot, 600);
     });
 
     // &quot;+ add card&quot; control, always pinned at the end of the list.
-    let addBtn = container.querySelector(&#x27;.add-card-btn&#x27;);
+    let addBtn = container.querySelector('.add-card-btn');
     if(!addBtn){
-      addBtn = document.createElement(&#x27;button&#x27;);
-      addBtn.type = &#x27;button&#x27;;
-      addBtn.className = &#x27;add-card-btn&#x27;;
-      addBtn.textContent = &#x27;+ הוסף כרטיס&#x27;;
+      addBtn = document.createElement('button');
+      addBtn.type = 'button';
+      addBtn.className = 'add-card-btn';
+      addBtn.textContent = '+ הוסף כרטיס';
       container.appendChild(addBtn);
     }
-    addBtn.addEventListener(&#x27;click&#x27;, ()=&gt;{
-      const card = document.createElement(&#x27;div&#x27;);
+    addBtn.addEventListener('click', ()=&gt;{
+      const card = document.createElement('div');
       card.className = tagClass;
       card.innerHTML = newCardHTML;
       const editState = currentEditableState();
-      card.querySelectorAll(&#x27;.edit-unit&#x27;).forEach(u =&gt; u.setAttribute(&#x27;contenteditable&#x27;, editState));
+      card.querySelectorAll('.edit-unit').forEach(u =&gt; u.setAttribute('contenteditable', editState));
       container.insertBefore(card, addBtn);
       wireCard(card);
       saveSnapshot();
-      const firstEditable = card.querySelector(&#x27;.edit-unit&#x27;);
-      if(firstEditable &amp;&amp; editState === &#x27;true&#x27;) firstEditable.focus();
+      const firstEditable = card.querySelector('.edit-unit');
+      if(firstEditable &amp;&amp; editState === 'true') firstEditable.focus();
     });
   });
 })();
@@ -5589,14 +5583,14 @@ A few additional capabilities that can be relevant, depending on the customer&#x
 // lists, etc. inside each section or reference panel.)
 (function(){
   const BLOCK_CONTAINERS = [
-    &#x27;#sec-opening&#x27;, &#x27;#sec-process&#x27;, &#x27;#sec-ai&#x27;, &#x27;#sec-stages&#x27;,
-    &#x27;#panel-fabric .panel-body&#x27;, &#x27;#panel-passport .panel-body&#x27;,
-    &#x27;#panel-asa .panel-body&#x27;, &#x27;#panel-database .panel-body&#x27;
+    '#sec-opening', '#sec-process', '#sec-ai', '#sec-stages',
+    '#panel-fabric .panel-body', '#panel-passport .panel-body',
+    '#panel-asa .panel-body', '#panel-database .panel-body'
   ];
-  const SKIP_SELECTOR = &#x27;.fmt-group, .panel-toolbar, .panel-header, .add-block-btn, .add-card-btn, .offer-grid&#x27;;
+  const SKIP_SELECTOR = '.fmt-group, .panel-toolbar, .panel-header, .add-block-btn, .add-card-btn, .offer-grid';
 
   function getDragAfterElement(container, y){
-    const blocks = [...container.querySelectorAll(&#x27;:scope &gt; .draggable-block:not(.dragging)&#x27;)];
+    const blocks = [...container.querySelectorAll(':scope &gt; .draggable-block:not(.dragging)')];
     return blocks.reduce((closest, el)=&gt;{
       const box = el.getBoundingClientRect();
       const offset = y - box.top - box.height / 2;
@@ -5611,9 +5605,9 @@ A few additional capabilities that can be relevant, depending on the customer&#x
   BLOCK_CONTAINERS.forEach(containerSelector=&gt;{
     const container = document.querySelector(containerSelector);
     if(!container) return;
-    const storageKey = &#x27;blocks:&#x27; + containerSelector;
+    const storageKey = 'blocks:' + containerSelector;
 
-    // A full snapshot of every block&#x27;s outerHTML, in order — captures
+    // A full snapshot of every block's outerHTML, in order — captures
     // reordering, added blocks, deleted blocks, and text edits all at once.
     try{
       const saved = JSON.parse(localStorage.getItem(storageKey));
@@ -5621,9 +5615,9 @@ A few additional capabilities that can be relevant, depending on the customer&#x
         Array.from(container.children).forEach(c=&gt;{
           if(!c.matches(SKIP_SELECTOR)) c.remove();
         });
-        const addBtn = container.querySelector(&#x27;.add-block-btn&#x27;);
+        const addBtn = container.querySelector('.add-block-btn');
         saved.forEach(htmlStr=&gt;{
-          const temp = document.createElement(&#x27;div&#x27;);
+          const temp = document.createElement('div');
           temp.innerHTML = htmlStr;
           const el = temp.firstElementChild;
           if(el){
@@ -5635,44 +5629,44 @@ A few additional capabilities that can be relevant, depending on the customer&#x
     }catch(e){}
 
     function saveSnapshot(){
-      const blocks = Array.from(container.children).filter(c =&gt; c.classList.contains(&#x27;draggable-block&#x27;));
+      const blocks = Array.from(container.children).filter(c =&gt; c.classList.contains('draggable-block'));
       const htmlList = blocks.map(b =&gt; b.outerHTML);
       try{ localStorage.setItem(storageKey, JSON.stringify(htmlList)); }catch(e){}
     }
 
     function currentEditableState(){
-      const sample = container.querySelector(&#x27;.edit-unit&#x27;);
-      return sample ? sample.getAttribute(&#x27;contenteditable&#x27;) : &#x27;true&#x27;;
+      const sample = container.querySelector('.edit-unit');
+      return sample ? sample.getAttribute('contenteditable') : 'true';
     }
 
     function wireBlock(el){
       if(el.dataset.blockWired) return;
-      el.dataset.blockWired = &#x27;1&#x27;;
-      el.classList.add(&#x27;draggable-block&#x27;);
-      el.setAttribute(&#x27;draggable&#x27;, &#x27;true&#x27;);
+      el.dataset.blockWired = '1';
+      el.classList.add('draggable-block');
+      el.setAttribute('draggable', 'true');
 
-      const grip = document.createElement(&#x27;span&#x27;);
-      grip.className = &#x27;block-drag-grip&#x27;;
-      grip.title = &#x27;גרור כדי להזיז&#x27;;
-      grip.textContent = &#x27;⠿&#x27;;
+      const grip = document.createElement('span');
+      grip.className = 'block-drag-grip';
+      grip.title = 'גרור כדי להזיז';
+      grip.textContent = '⠿';
       el.appendChild(grip);
 
-      const del = document.createElement(&#x27;button&#x27;);
-      del.type = &#x27;button&#x27;;
-      del.className = &#x27;block-delete-btn&#x27;;
-      del.title = &#x27;מחק בלוק זה&#x27;;
-      del.textContent = &#x27;🗑&#x27;;
-      del.addEventListener(&#x27;click&#x27;, (e)=&gt;{
+      const del = document.createElement('button');
+      del.type = 'button';
+      del.className = 'block-delete-btn';
+      del.title = 'מחק בלוק זה';
+      del.textContent = '🗑';
+      del.addEventListener('click', (e)=&gt;{
         e.stopPropagation();
-        if(window.confirm(&#x27;למחוק את הבלוק הזה?&#x27;)){
+        if(window.confirm('למחוק את הבלוק הזה?')){
           el.remove();
           saveSnapshot();
         }
       });
       el.appendChild(del);
 
-      el.addEventListener(&#x27;dragstart&#x27;, ()=&gt;{ el.classList.add(&#x27;dragging&#x27;); });
-      el.addEventListener(&#x27;dragend&#x27;, ()=&gt;{ el.classList.remove(&#x27;dragging&#x27;); saveSnapshot(); });
+      el.addEventListener('dragstart', ()=&gt;{ el.classList.add('dragging'); });
+      el.addEventListener('dragend', ()=&gt;{ el.classList.remove('dragging'); saveSnapshot(); });
     }
 
     Array.from(container.children).forEach(el=&gt;{
@@ -5680,11 +5674,11 @@ A few additional capabilities that can be relevant, depending on the customer&#x
       wireBlock(el);
     });
 
-    container.addEventListener(&#x27;dragover&#x27;, (e)=&gt;{
-      const dragging = container.querySelector(&#x27;:scope &gt; .dragging&#x27;);
+    container.addEventListener('dragover', (e)=&gt;{
+      const dragging = container.querySelector(':scope &gt; .dragging');
       if(!dragging) return;
       e.preventDefault();
-      const addBtn = container.querySelector(&#x27;.add-block-btn&#x27;);
+      const addBtn = container.querySelector('.add-block-btn');
       const afterEl = getDragAfterElement(container, e.clientY);
       if(afterEl == null){
         if(addBtn) container.insertBefore(dragging, addBtn); else container.appendChild(dragging);
@@ -5694,29 +5688,29 @@ A few additional capabilities that can be relevant, depending on the customer&#x
     });
 
     let saveTimer;
-    container.addEventListener(&#x27;input&#x27;, (e)=&gt;{
-      if(!e.target.closest(&#x27;.draggable-block&#x27;)) return;
+    container.addEventListener('input', (e)=&gt;{
+      if(!e.target.closest('.draggable-block')) return;
       clearTimeout(saveTimer);
       saveTimer = setTimeout(saveSnapshot, 600);
     });
 
-    let addBtn = container.querySelector(&#x27;.add-block-btn&#x27;);
+    let addBtn = container.querySelector('.add-block-btn');
     if(!addBtn){
-      addBtn = document.createElement(&#x27;button&#x27;);
-      addBtn.type = &#x27;button&#x27;;
-      addBtn.className = &#x27;add-block-btn&#x27;;
-      addBtn.textContent = &#x27;+ הוסף בלוק טקסט&#x27;;
+      addBtn = document.createElement('button');
+      addBtn.type = 'button';
+      addBtn.className = 'add-block-btn';
+      addBtn.textContent = '+ הוסף בלוק טקסט';
       container.appendChild(addBtn);
     }
-    addBtn.addEventListener(&#x27;click&#x27;, ()=&gt;{
-      const el = document.createElement(&#x27;div&#x27;);
-      el.className = &#x27;cross-box edit-unit&#x27;;
-      el.setAttribute(&#x27;contenteditable&#x27;, currentEditableState());
-      el.textContent = &#x27;טקסט חדש...&#x27;;
+    addBtn.addEventListener('click', ()=&gt;{
+      const el = document.createElement('div');
+      el.className = 'cross-box edit-unit';
+      el.setAttribute('contenteditable', currentEditableState());
+      el.textContent = 'טקסט חדש...';
       container.insertBefore(el, addBtn);
       wireBlock(el);
       saveSnapshot();
-      if(el.getAttribute(&#x27;contenteditable&#x27;) === &#x27;true&#x27;) el.focus();
+      if(el.getAttribute('contenteditable') === 'true') el.focus();
     });
   });
 })();
@@ -5724,30 +5718,30 @@ A few additional capabilities that can be relevant, depending on the customer&#x
 // --- generic content persistence + cross-language sync (for edit-units
 // OUTSIDE the reorderable card groups, which have their own snapshot system) ---
 (function(){
-  const LANG = &#x27;he&#x27;;
-  const OTHER_LANG = &#x27;en&#x27;;
-  const STORAGE_PREFIX = &#x27;content-edit:&#x27; + LANG + &#x27;:&#x27;;
-  const DIRTY_KEY = &#x27;content-edit-dirty:&#x27; + LANG;
-  const root = document.getElementById(&#x27;editable-root&#x27;);
+  const LANG = 'he';
+  const OTHER_LANG = 'en';
+  const STORAGE_PREFIX = 'content-edit:' + LANG + ':';
+  const DIRTY_KEY = 'content-edit-dirty:' + LANG;
+  const root = document.getElementById('editable-root');
   if(!root) return;
 
   function isInCardGroup(el){
     return !!(
-      el.closest(&#x27;.prod&#x27;) || el.closest(&#x27;.obj&#x27;) ||
-      el.closest(&#x27;#sec-opening&#x27;) || el.closest(&#x27;#sec-process&#x27;) ||
-      el.closest(&#x27;#sec-ai&#x27;) || el.closest(&#x27;#sec-stages&#x27;) ||
-      el.closest(&#x27;#panel-fabric .panel-body&#x27;) || el.closest(&#x27;#panel-passport .panel-body&#x27;) ||
-      el.closest(&#x27;#panel-asa .panel-body&#x27;) || el.closest(&#x27;#panel-database .panel-body&#x27;)
+      el.closest('.prod') || el.closest('.obj') ||
+      el.closest('#sec-opening') || el.closest('#sec-process') ||
+      el.closest('#sec-ai') || el.closest('#sec-stages') ||
+      el.closest('#panel-fabric .panel-body') || el.closest('#panel-passport .panel-body') ||
+      el.closest('#panel-asa .panel-body') || el.closest('#panel-database .panel-body')
     );
   }
 
   // Stable ids, assigned once in document order — skips anything inside a
-  // reorderable card group, since those persist as part of the card&#x27;s own
+  // reorderable card group, since those persist as part of the card's own
   // full-snapshot mechanism instead.
   let counter = 0;
-  const units = Array.from(root.querySelectorAll(&#x27;.edit-unit&#x27;)).filter(el =&gt; !isInCardGroup(el));
+  const units = Array.from(root.querySelectorAll('.edit-unit')).filter(el =&gt; !isInCardGroup(el));
   units.forEach(el=&gt;{
-    if(!el.dataset.ceid) el.dataset.ceid = &#x27;ce&#x27; + (counter++);
+    if(!el.dataset.ceid) el.dataset.ceid = 'ce' + (counter++);
   });
 
   // Restore any previously saved edits for this language.
@@ -5768,8 +5762,8 @@ A few additional capabilities that can be relevant, depending on the customer&#x
   // Auto-save on every edit — debounced per element — so content is never
   // lost even if you never click the Save button at all.
   const timers = {};
-  root.addEventListener(&#x27;input&#x27;, (e)=&gt;{
-    const el = e.target.closest(&#x27;.edit-unit&#x27;);
+  root.addEventListener('input', (e)=&gt;{
+    const el = e.target.closest('.edit-unit');
     if(!el || isInCardGroup(el) || !el.dataset.ceid) return;
     const ceid = el.dataset.ceid;
     clearTimeout(timers[ceid]);
@@ -5780,52 +5774,52 @@ A few additional capabilities that can be relevant, depending on the customer&#x
   });
 
   async function translateHTML(htmlSnippet){
-    const prompt = &#x27;Translate the following Hebrew HTML snippet into natural, professional English. Keep every HTML tag exactly as-is (e.g. &lt;b&gt;, &lt;span style=&quot;...&quot;&gt;) — translate ONLY the visible text between tags, never tag names or attributes. Respond with ONLY the translated HTML snippet and nothing else — no markdown fences, no preamble, no explanation.\n\n&#x27; + htmlSnippet;
+    const prompt = 'Translate the following Hebrew HTML snippet into natural, professional English. Keep every HTML tag exactly as-is (e.g. &lt;b&gt;, &lt;span style=&quot;...&quot;&gt;) — translate ONLY the visible text between tags, never tag names or attributes. Respond with ONLY the translated HTML snippet and nothing else — no markdown fences, no preamble, no explanation.\n\n' + htmlSnippet;
     const response = await fetch(API_ENDPOINT, {
-      method: &#x27;POST&#x27;,
-      headers: { &#x27;Content-Type&#x27;: &#x27;application/json&#x27; },
-      body: JSON.stringify({ model: &#x27;claude-sonnet-4-6&#x27;, max_tokens: 1500, messages: [{ role: &#x27;user&#x27;, content: prompt }] })
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ model: 'claude-sonnet-4-6', max_tokens: 1500, messages: [{ role: 'user', content: prompt }] })
     });
-    if(!response.ok) throw new Error(&#x27;bad response &#x27; + response.status);
+    if(!response.ok) throw new Error('bad response ' + response.status);
     const data = await response.json();
-    const text = (data.content || []).filter(b =&gt; b.type === &#x27;text&#x27;).map(b =&gt; b.text).join(&#x27;&#x27;).trim();
-    if(!text) throw new Error(&#x27;empty translation&#x27;);
+    const text = (data.content || []).filter(b =&gt; b.type === 'text').map(b =&gt; b.text).join('').trim();
+    if(!text) throw new Error('empty translation');
     return text;
   }
 
   window.saveAndSyncContent = async function(){
     let dirty = [];
     try{ dirty = JSON.parse(localStorage.getItem(DIRTY_KEY)) || []; }catch(e){}
-    const btn = document.getElementById(&#x27;save-sync-btn&#x27;);
+    const btn = document.getElementById('save-sync-btn');
     if(!dirty.length){
       if(btn){
         const orig = btn.textContent;
-        btn.textContent = &#x27;אין שינויים חדשים&#x27;;
+        btn.textContent = 'אין שינויים חדשים';
         setTimeout(()=&gt;{ btn.textContent = orig; }, 1800);
       }
       return;
     }
-    if(btn){ btn.textContent = &#x27;מסנכרן... (0/&#x27; + dirty.length + &#x27;)&#x27;; btn.disabled = true; }
+    if(btn){ btn.textContent = 'מסנכרן... (0/' + dirty.length + ')'; btn.disabled = true; }
     let done = 0, failed = 0;
     for(const ceid of dirty){
-      const el = root.querySelector(&#x27;[data-ceid=&quot;&#x27; + ceid + &#x27;&quot;]&#x27;);
+      const el = root.querySelector('[data-ceid=&quot;' + ceid + '&quot;]');
       if(el){
         try{
           const translated = await translateHTML(el.innerHTML);
-          try{ localStorage.setItem(&#x27;content-edit:&#x27; + OTHER_LANG + &#x27;:&#x27; + ceid, translated); }catch(e){}
+          try{ localStorage.setItem('content-edit:' + OTHER_LANG + ':' + ceid, translated); }catch(e){}
         }catch(err){
           failed++;
-          console.error(&#x27;sync failed for&#x27;, ceid, err);
+          console.error('sync failed for', ceid, err);
         }
       }
       done++;
-      if(btn) btn.textContent = &#x27;מסנכרן... (&#x27; + done + &#x27;/&#x27; + dirty.length + &#x27;)&#x27;;
+      if(btn) btn.textContent = 'מסנכרן... (' + done + '/' + dirty.length + ')';
     }
     try{ localStorage.setItem(DIRTY_KEY, JSON.stringify([])); }catch(e){}
     if(btn){
-      btn.textContent = failed ? (&#x27;✓ נשמר — &#x27; + failed + &#x27; לא סונכרנו&#x27;) : &#x27;✓ נשמר וסונכרן לאנגלית&#x27;;
+      btn.textContent = failed ? ('✓ נשמר — ' + failed + ' לא סונכרנו') : '✓ נשמר וסונכרן לאנגלית';
       btn.disabled = false;
-      setTimeout(()=&gt;{ btn.textContent = &#x27;💾 שמור ותרגם לאנגלית&#x27;; }, 3000);
+      setTimeout(()=&gt;{ btn.textContent = '💾 שמור ותרגם לאנגלית'; }, 3000);
     }
   };
 })();
