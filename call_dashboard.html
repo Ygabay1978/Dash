@@ -599,7 +599,7 @@
   </div>
   <div class="header-right">
     <h1 class="header-client-name" id="clientNameTag">Global-E</h1>
-    <span id="clock">16:35:37</span>
+    <span id="clock">19:18:48</span>
     <button class="hbtn" id="editToggle" onclick="toggleEditMode()">✏️ Edit</button>
     <button class="hbtn" onclick="resetAllContent()" title="Wipe saved edits/notes in this browser and reload Claude's latest text">↺ Reset</button>
     <button class="hbtn primary" onclick="downloadCopy()">⬇ Save copy</button>
@@ -3072,9 +3072,9 @@ A few additional capabilities that can be relevant, depending on the customer's 
 // --- drag-to-reorder + add/delete cards for Core Products and Objections ---
 (function(){
   const CARD_GROUPS = [
-    { containerSelector: '#sec-products', cardSelector: '.prod', storageKey: 'cards:products',
+    { containerSelector: '#sec-products', cardSelector: '.prod', storageKey: 'cards:en:products',
       newCardHTML: '&lt;div class=&quot;name edit-unit&quot; contenteditable=&quot;false&quot;&gt;Product name&lt;/div&gt;&lt;div class=&quot;pitch edit-unit&quot; contenteditable=&quot;false&quot;&gt;Product description...&lt;/div&gt;' },
-    { containerSelector: '#panel-objections .panel-body', cardSelector: '.obj', storageKey: 'cards:objections',
+    { containerSelector: '#panel-objections .panel-body', cardSelector: '.obj', storageKey: 'cards:en:objections',
       newCardHTML: '&lt;div class=&quot;q edit-unit&quot; contenteditable=&quot;false&quot;&gt;&quot;Customer question/objection?&quot;&lt;/div&gt;&lt;div class=&quot;a edit-unit&quot; contenteditable=&quot;false&quot;&gt;&quot;My answer...&quot;&lt;/div&gt;' }
   ];
 
@@ -3233,7 +3233,7 @@ A few additional capabilities that can be relevant, depending on the customer's 
   BLOCK_CONTAINERS.forEach(containerSelector=&gt;{
     const container = document.querySelector(containerSelector);
     if(!container) return;
-    const storageKey = 'blocks:' + containerSelector;
+    const storageKey = 'blocks:en:' + containerSelector;
 
     // A full snapshot of every block's outerHTML, in order — captures
     // reordering, added blocks, deleted blocks, and text edits all at once.
@@ -5632,9 +5632,9 @@ A few additional capabilities that can be relevant, depending on the customer's 
 // --- drag-to-reorder + add/delete cards for Core Products and Objections ---
 (function(){
   const CARD_GROUPS = [
-    { containerSelector: '#sec-products', cardSelector: '.prod', storageKey: 'cards:products',
+    { containerSelector: '#sec-products', cardSelector: '.prod', storageKey: 'cards:he:products',
       newCardHTML: '&lt;div class=&quot;name edit-unit&quot; contenteditable=&quot;false&quot;&gt;שם המוצר&lt;/div&gt;&lt;div class=&quot;pitch edit-unit&quot; contenteditable=&quot;false&quot;&gt;תיאור המוצר...&lt;/div&gt;' },
-    { containerSelector: '#panel-objections .panel-body', cardSelector: '.obj', storageKey: 'cards:objections',
+    { containerSelector: '#panel-objections .panel-body', cardSelector: '.obj', storageKey: 'cards:he:objections',
       newCardHTML: '&lt;div class=&quot;q edit-unit&quot; contenteditable=&quot;false&quot;&gt;&quot;השאלה/התנגדות של הלקוח?&quot;&lt;/div&gt;&lt;div class=&quot;a edit-unit&quot; contenteditable=&quot;false&quot;&gt;&quot;התשובה שלי...&quot;&lt;/div&gt;' }
   ];
 
@@ -5793,7 +5793,7 @@ A few additional capabilities that can be relevant, depending on the customer's 
   BLOCK_CONTAINERS.forEach(containerSelector=&gt;{
     const container = document.querySelector(containerSelector);
     if(!container) return;
-    const storageKey = 'blocks:' + containerSelector;
+    const storageKey = 'blocks:he:' + containerSelector;
 
     // A full snapshot of every block's outerHTML, in order — captures
     // reordering, added blocks, deleted blocks, and text edits all at once.
