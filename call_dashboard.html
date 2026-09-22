@@ -1207,7 +1207,8 @@
   #left-nav .nav-item.active{background:#FFF1E8;color:var(--orange);border-left:3px solid var(--orange);padding-left:7px;}
   .nav-reorder-item{display:flex;align-items:center;gap:2px;}
   .nav-reorder-item &gt; .nav-item, .nav-reorder-item &gt; .nav-item-row{flex:1;min-width:0;}
-  .nav-reorder-item .nav-item-row{display:flex;align-items:center;gap:2px;flex:1;}
+  .nav-reorder-item .nav-item-row{display:flex;align-items:center;gap:2px;flex:1;min-width:0;}
+  .nav-reorder-item .nav-item-row .nav-item{width:auto;flex:1;min-width:0;}
   .reorder-arrows{display:flex;flex-direction:column;flex-shrink:0;}
   .reorder-up, .reorder-down{
     border:none;background:transparent;color:var(--grey);cursor:pointer;
@@ -1662,7 +1663,7 @@
 &lt;div id=&quot;app-shell&quot;&gt;
 &lt;nav id=&quot;left-nav&quot;&gt;
 &lt;div class=&quot;nav-title&quot;&gt;Topics&lt;/div&gt;
-&lt;div class=&quot;nav-reorder-item&quot; data-reorder-id=&quot;pitch&quot;&gt;&lt;button class=&quot;nav-item&quot; data-scroll=&quot;sec-pitch&quot;&gt;Opening Pitch&lt;/button&gt;&lt;span class=&quot;reorder-arrows&quot;&gt;&lt;button class=&quot;reorder-up&quot; title=&quot;Move up&quot;&gt;▲&lt;/button&gt;&lt;button class=&quot;reorder-down&quot; title=&quot;Move down&quot;&gt;▼&lt;/button&gt;&lt;/span&gt;&lt;/div&gt;
+&lt;div class=&quot;nav-reorder-item&quot; data-reorder-id=&quot;pitch&quot;&gt;&lt;button class=&quot;nav-item&quot; data-scroll=&quot;sec-opening&quot;&gt;Opening Pitch&lt;/button&gt;&lt;span class=&quot;reorder-arrows&quot;&gt;&lt;button class=&quot;reorder-up&quot; title=&quot;Move up&quot;&gt;▲&lt;/button&gt;&lt;button class=&quot;reorder-down&quot; title=&quot;Move down&quot;&gt;▼&lt;/button&gt;&lt;/span&gt;&lt;/div&gt;
 &lt;div class=&quot;nav-reorder-item&quot; data-reorder-id=&quot;process&quot;&gt;&lt;button class=&quot;nav-item&quot; data-scroll=&quot;sec-process&quot;&gt;The Process&lt;/button&gt;&lt;span class=&quot;reorder-arrows&quot;&gt;&lt;button class=&quot;reorder-up&quot; title=&quot;Move up&quot;&gt;▲&lt;/button&gt;&lt;button class=&quot;reorder-down&quot; title=&quot;Move down&quot;&gt;▼&lt;/button&gt;&lt;/span&gt;&lt;/div&gt;
 &lt;div class=&quot;nav-reorder-item&quot; data-reorder-id=&quot;ai&quot;&gt;&lt;button class=&quot;nav-item&quot; data-scroll=&quot;sec-ai&quot;&gt;AI&lt;/button&gt;&lt;span class=&quot;reorder-arrows&quot;&gt;&lt;button class=&quot;reorder-up&quot; title=&quot;Move up&quot;&gt;▲&lt;/button&gt;&lt;button class=&quot;reorder-down&quot; title=&quot;Move down&quot;&gt;▼&lt;/button&gt;&lt;/span&gt;&lt;/div&gt;
 &lt;div class=&quot;nav-reorder-item&quot; data-reorder-id=&quot;stages&quot;&gt;&lt;button class=&quot;nav-item&quot; data-scroll=&quot;sec-stages&quot;&gt;What We Offer&lt;/button&gt;&lt;span class=&quot;reorder-arrows&quot;&gt;&lt;button class=&quot;reorder-up&quot; title=&quot;Move up&quot;&gt;▲&lt;/button&gt;&lt;button class=&quot;reorder-down&quot; title=&quot;Move down&quot;&gt;▼&lt;/button&gt;&lt;/span&gt;&lt;/div&gt;
@@ -1670,8 +1671,8 @@
 &lt;div class=&quot;nav-item-row&quot;&gt;
 &lt;button class=&quot;nav-item&quot; data-scroll=&quot;sec-products&quot;&gt;Core Products&lt;/button&gt;
 &lt;button class=&quot;chevron-btn&quot; data-toggle=&quot;submenu-products&quot; title=&quot;Show all products&quot;&gt;⌄&lt;/button&gt;
-&lt;span class=&quot;reorder-arrows&quot;&gt;&lt;button class=&quot;reorder-up&quot; title=&quot;Move up&quot;&gt;▲&lt;/button&gt;&lt;button class=&quot;reorder-down&quot; title=&quot;Move down&quot;&gt;▼&lt;/button&gt;&lt;/span&gt;
 &lt;/div&gt;
+&lt;span class=&quot;reorder-arrows&quot;&gt;&lt;button class=&quot;reorder-up&quot; title=&quot;Move up&quot;&gt;▲&lt;/button&gt;&lt;button class=&quot;reorder-down&quot; title=&quot;Move down&quot;&gt;▼&lt;/button&gt;&lt;/span&gt;
 &lt;div class=&quot;nav-submenu&quot; id=&quot;submenu-products&quot;&gt;
 &lt;button class=&quot;nav-subitem&quot; data-scroll=&quot;prod-organizations&quot;&gt;Organizations&lt;/button&gt;
 &lt;button class=&quot;nav-subitem&quot; data-scroll=&quot;prod-api-catalog&quot;&gt;API Catalog&lt;/button&gt;
@@ -1701,23 +1702,9 @@
 &lt;/nav&gt;
 &lt;main id=&quot;center-content&quot;&gt;
 &lt;div class=&quot;wrap&quot; id=&quot;editable-root&quot;&gt;
-&lt;header class=&quot;top&quot; id=&quot;sec-pitch&quot;&gt;
-&lt;h1 class=&quot;edit-unit&quot; contenteditable=&quot;false&quot;&gt;Customer Call Script — Postman Products&lt;/h1&gt;
-&lt;/header&gt;
 &lt;!-- SECTION 0: 30-SECOND OPENING PITCH --&gt;
 &lt;section id=&quot;sec-opening&quot;&gt;
 &lt;h2 class=&quot;edit-unit&quot; contenteditable=&quot;false&quot;&gt;&lt;span class=&quot;num&quot;&gt;&lt;br/&gt;&lt;/span&gt; Opening Pitch — 30 Seconds&lt;/h2&gt;
-&lt;div class=&quot;fmt-group answer-fmt-group panel-toolbar&quot; style=&quot;margin-bottom:10px;&quot;&gt;
-  &lt;button type=&quot;button&quot; class=&quot;ptb-bold&quot; title=&quot;Bold (select text and click)&quot;&gt;B&lt;/button&gt;
-  &lt;button type=&quot;button&quot; class=&quot;ptb-italic&quot; title=&quot;Italic (select text and click)&quot;&gt;I&lt;/button&gt;
-  &lt;button class=&quot;swatch&quot; data-color=&quot;#1C1C1E&quot; style=&quot;background:#1C1C1E&quot; title=&quot;Black&quot;&gt;&lt;/button&gt;
-  &lt;button class=&quot;swatch&quot; data-color=&quot;#FF6C37&quot; style=&quot;background:#FF6C37&quot; title=&quot;Orange&quot;&gt;&lt;/button&gt;
-  &lt;button class=&quot;swatch&quot; data-color=&quot;#D64545&quot; style=&quot;background:#D64545&quot; title=&quot;Red&quot;&gt;&lt;/button&gt;
-  &lt;button class=&quot;swatch&quot; data-color=&quot;#2E7D5B&quot; style=&quot;background:#2E7D5B&quot; title=&quot;Green&quot;&gt;&lt;/button&gt;
-  &lt;button class=&quot;swatch&quot; data-color=&quot;#2F6FED&quot; style=&quot;background:#2F6FED&quot; title=&quot;Blue&quot;&gt;&lt;/button&gt;
-  &lt;button class=&quot;swatch&quot; data-color=&quot;#5B5F66&quot; style=&quot;background:#5B5F66&quot; title=&quot;Grey&quot;&gt;&lt;/button&gt;
-  &lt;button type=&quot;button&quot; class=&quot;ptb-save&quot; title=&quot;Save&quot;&gt;💾 Save&lt;/button&gt;
-&lt;/div&gt;
 &lt;div class=&quot;pitch-open edit-unit&quot; contenteditable=&quot;false&quot;&gt;
 &lt;span class=&quot;tag&quot;&gt;&lt;span style=&quot;font-size: 15px; color: rgb(28, 28, 30);&quot;&gt;&quot;Great. Give me 30 seconds to explain how companies deal with this today.&lt;/span&gt;&lt;/span&gt;
       Building APIs is no longer really the hard part. &lt;b&gt;The challenge starts&lt;/b&gt; when APIs grow across multiple teams, products, and environments.&lt;br/&gt;
@@ -1731,17 +1718,6 @@
 &lt;!-- SECTION 1: THE PROCESS --&gt;
 &lt;section id=&quot;sec-process&quot;&gt;
 &lt;h2 class=&quot;edit-unit&quot; contenteditable=&quot;false&quot;&gt;&lt;span class=&quot;num&quot;&gt;1&lt;/span&gt; The Process: How Software Gets Built Today&lt;/h2&gt;
-&lt;div class=&quot;fmt-group answer-fmt-group panel-toolbar&quot; style=&quot;margin-bottom:10px;&quot;&gt;
-  &lt;button type=&quot;button&quot; class=&quot;ptb-bold&quot; title=&quot;Bold (select text and click)&quot;&gt;B&lt;/button&gt;
-  &lt;button type=&quot;button&quot; class=&quot;ptb-italic&quot; title=&quot;Italic (select text and click)&quot;&gt;I&lt;/button&gt;
-  &lt;button class=&quot;swatch&quot; data-color=&quot;#1C1C1E&quot; style=&quot;background:#1C1C1E&quot; title=&quot;Black&quot;&gt;&lt;/button&gt;
-  &lt;button class=&quot;swatch&quot; data-color=&quot;#FF6C37&quot; style=&quot;background:#FF6C37&quot; title=&quot;Orange&quot;&gt;&lt;/button&gt;
-  &lt;button class=&quot;swatch&quot; data-color=&quot;#D64545&quot; style=&quot;background:#D64545&quot; title=&quot;Red&quot;&gt;&lt;/button&gt;
-  &lt;button class=&quot;swatch&quot; data-color=&quot;#2E7D5B&quot; style=&quot;background:#2E7D5B&quot; title=&quot;Green&quot;&gt;&lt;/button&gt;
-  &lt;button class=&quot;swatch&quot; data-color=&quot;#2F6FED&quot; style=&quot;background:#2F6FED&quot; title=&quot;Blue&quot;&gt;&lt;/button&gt;
-  &lt;button class=&quot;swatch&quot; data-color=&quot;#5B5F66&quot; style=&quot;background:#5B5F66&quot; title=&quot;Grey&quot;&gt;&lt;/button&gt;
-  &lt;button type=&quot;button&quot; class=&quot;ptb-save&quot; title=&quot;Save&quot;&gt;💾 Save&lt;/button&gt;
-&lt;/div&gt;
 &lt;p class=&quot;lead edit-unit&quot; contenteditable=&quot;false&quot;&gt;Every development organization - Waterfall, Agile, or CI/CD - actually goes through these five stages. The only question is whether they’re connected or isolated.&lt;/p&gt;
 &lt;div class=&quot;stage-row&quot;&gt;
 &lt;div class=&quot;stage core&quot;&gt;
@@ -1818,17 +1794,6 @@ A few additional capabilities that can be relevant, depending on the customer's 
 &lt;!-- SECTION 2: AI SHIFT — EXPANDED --&gt;
 &lt;section id=&quot;sec-ai&quot;&gt;
 &lt;h2 class=&quot;edit-unit&quot; contenteditable=&quot;false&quot;&gt;&lt;span class=&quot;num&quot;&gt;2&lt;/span&gt; AI: The Topic Every Customer Wants to Talk About Today&lt;/h2&gt;
-&lt;div class=&quot;fmt-group answer-fmt-group panel-toolbar&quot; style=&quot;margin-bottom:10px;&quot;&gt;
-  &lt;button type=&quot;button&quot; class=&quot;ptb-bold&quot; title=&quot;Bold (select text and click)&quot;&gt;B&lt;/button&gt;
-  &lt;button type=&quot;button&quot; class=&quot;ptb-italic&quot; title=&quot;Italic (select text and click)&quot;&gt;I&lt;/button&gt;
-  &lt;button class=&quot;swatch&quot; data-color=&quot;#1C1C1E&quot; style=&quot;background:#1C1C1E&quot; title=&quot;Black&quot;&gt;&lt;/button&gt;
-  &lt;button class=&quot;swatch&quot; data-color=&quot;#FF6C37&quot; style=&quot;background:#FF6C37&quot; title=&quot;Orange&quot;&gt;&lt;/button&gt;
-  &lt;button class=&quot;swatch&quot; data-color=&quot;#D64545&quot; style=&quot;background:#D64545&quot; title=&quot;Red&quot;&gt;&lt;/button&gt;
-  &lt;button class=&quot;swatch&quot; data-color=&quot;#2E7D5B&quot; style=&quot;background:#2E7D5B&quot; title=&quot;Green&quot;&gt;&lt;/button&gt;
-  &lt;button class=&quot;swatch&quot; data-color=&quot;#2F6FED&quot; style=&quot;background:#2F6FED&quot; title=&quot;Blue&quot;&gt;&lt;/button&gt;
-  &lt;button class=&quot;swatch&quot; data-color=&quot;#5B5F66&quot; style=&quot;background:#5B5F66&quot; title=&quot;Grey&quot;&gt;&lt;/button&gt;
-  &lt;button type=&quot;button&quot; class=&quot;ptb-save&quot; title=&quot;Save&quot;&gt;💾 Save&lt;/button&gt;
-&lt;/div&gt;
 &lt;p class=&quot;lead edit-unit&quot; contenteditable=&quot;false&quot;&gt;&lt;i&gt;This is the part I give the most time to in the conversation — because it’s what’s on the mind of every CTO, VP Engineering, and CISO I meet in 2026.&lt;/i&gt;&lt;/p&gt;
 &lt;div class=&quot;say edit-unit&quot; contenteditable=&quot;false&quot;&gt;
 &lt;b class=&quot;tag&quot;&gt;&lt;br/&gt;&lt;span style=&quot;font-size: 14.5px; color: rgb(28, 28, 30);&quot;&gt;&quot;I want to pause for a moment and talk about AI, because today it’s really a turning point for almost every organization. AI doesn’t change these five stages — it just massively increases the speed at which you move through them. And when speed goes up, every crack that already existed gets bigger, and faster.&quot;&lt;/span&gt;&lt;/b&gt;&lt;/div&gt;
@@ -1850,17 +1815,6 @@ A few additional capabilities that can be relevant, depending on the customer's 
 &lt;!-- SECTION 3: WHAT POSTMAN OFFERS PER STAGE --&gt;
 &lt;section id=&quot;sec-stages&quot;&gt;
 &lt;h2 class=&quot;edit-unit&quot; contenteditable=&quot;false&quot;&gt;&lt;span class=&quot;num&quot;&gt;3&lt;/span&gt; What We Have to Offer - Stage by Stage&lt;/h2&gt;
-&lt;div class=&quot;fmt-group answer-fmt-group panel-toolbar&quot; style=&quot;margin-bottom:10px;&quot;&gt;
-  &lt;button type=&quot;button&quot; class=&quot;ptb-bold&quot; title=&quot;Bold (select text and click)&quot;&gt;B&lt;/button&gt;
-  &lt;button type=&quot;button&quot; class=&quot;ptb-italic&quot; title=&quot;Italic (select text and click)&quot;&gt;I&lt;/button&gt;
-  &lt;button class=&quot;swatch&quot; data-color=&quot;#1C1C1E&quot; style=&quot;background:#1C1C1E&quot; title=&quot;Black&quot;&gt;&lt;/button&gt;
-  &lt;button class=&quot;swatch&quot; data-color=&quot;#FF6C37&quot; style=&quot;background:#FF6C37&quot; title=&quot;Orange&quot;&gt;&lt;/button&gt;
-  &lt;button class=&quot;swatch&quot; data-color=&quot;#D64545&quot; style=&quot;background:#D64545&quot; title=&quot;Red&quot;&gt;&lt;/button&gt;
-  &lt;button class=&quot;swatch&quot; data-color=&quot;#2E7D5B&quot; style=&quot;background:#2E7D5B&quot; title=&quot;Green&quot;&gt;&lt;/button&gt;
-  &lt;button class=&quot;swatch&quot; data-color=&quot;#2F6FED&quot; style=&quot;background:#2F6FED&quot; title=&quot;Blue&quot;&gt;&lt;/button&gt;
-  &lt;button class=&quot;swatch&quot; data-color=&quot;#5B5F66&quot; style=&quot;background:#5B5F66&quot; title=&quot;Grey&quot;&gt;&lt;/button&gt;
-  &lt;button type=&quot;button&quot; class=&quot;ptb-save&quot; title=&quot;Save&quot;&gt;💾 Save&lt;/button&gt;
-&lt;/div&gt;
 &lt;p class=&quot;lead edit-unit&quot; contenteditable=&quot;false&quot;&gt;&lt;b&gt;&quot;This is what I call the golden path: at every stage there’s a tool that automatically enforces what we defined in the previous stage - so you’re not checking it again later.&quot;&lt;/b&gt;&lt;/p&gt;
 &lt;div class=&quot;offer-grid&quot;&gt;
 &lt;div class=&quot;offer&quot;&gt;
@@ -1887,17 +1841,6 @@ A few additional capabilities that can be relevant, depending on the customer's 
 &lt;!-- SECTION 4: CORE PRODUCTS --&gt;
 &lt;section id=&quot;sec-products&quot;&gt;
 &lt;h2 class=&quot;edit-unit&quot; contenteditable=&quot;false&quot;&gt;&lt;span class=&quot;num&quot;&gt;4&lt;/span&gt; Core Products — What I Say About Each One&lt;/h2&gt;
-&lt;div class=&quot;fmt-group answer-fmt-group panel-toolbar&quot; style=&quot;margin-bottom:10px;&quot;&gt;
-  &lt;button type=&quot;button&quot; class=&quot;ptb-bold&quot; title=&quot;Bold (select text and click)&quot;&gt;B&lt;/button&gt;
-  &lt;button type=&quot;button&quot; class=&quot;ptb-italic&quot; title=&quot;Italic (select text and click)&quot;&gt;I&lt;/button&gt;
-  &lt;button class=&quot;swatch&quot; data-color=&quot;#1C1C1E&quot; style=&quot;background:#1C1C1E&quot; title=&quot;Black&quot;&gt;&lt;/button&gt;
-  &lt;button class=&quot;swatch&quot; data-color=&quot;#FF6C37&quot; style=&quot;background:#FF6C37&quot; title=&quot;Orange&quot;&gt;&lt;/button&gt;
-  &lt;button class=&quot;swatch&quot; data-color=&quot;#D64545&quot; style=&quot;background:#D64545&quot; title=&quot;Red&quot;&gt;&lt;/button&gt;
-  &lt;button class=&quot;swatch&quot; data-color=&quot;#2E7D5B&quot; style=&quot;background:#2E7D5B&quot; title=&quot;Green&quot;&gt;&lt;/button&gt;
-  &lt;button class=&quot;swatch&quot; data-color=&quot;#2F6FED&quot; style=&quot;background:#2F6FED&quot; title=&quot;Blue&quot;&gt;&lt;/button&gt;
-  &lt;button class=&quot;swatch&quot; data-color=&quot;#5B5F66&quot; style=&quot;background:#5B5F66&quot; title=&quot;Grey&quot;&gt;&lt;/button&gt;
-  &lt;button type=&quot;button&quot; class=&quot;ptb-save&quot; title=&quot;Save&quot;&gt;💾 Save&lt;/button&gt;
-&lt;/div&gt;
 &lt;div class=&quot;group-title edit-unit&quot; contenteditable=&quot;false&quot;&gt;API &amp;amp; Service Management&lt;/div&gt;
 &lt;div class=&quot;prod&quot; id=&quot;prod-organizations&quot;&gt;
 &lt;div class=&quot;name edit-unit&quot; contenteditable=&quot;false&quot;&gt;Organizations — Organizational Management&lt;/div&gt;
@@ -3956,7 +3899,8 @@ document.addEventListener('keydown', (e)=&gt;{
   #left-nav .nav-item.active{background:#FFF1E8;color:var(--orange);border-right:3px solid var(--orange);padding-right:7px;}
   .nav-reorder-item{display:flex;align-items:center;gap:2px;}
   .nav-reorder-item &gt; .nav-item, .nav-reorder-item &gt; .nav-item-row{flex:1;min-width:0;}
-  .nav-reorder-item .nav-item-row{display:flex;align-items:center;gap:2px;flex:1;}
+  .nav-reorder-item .nav-item-row{display:flex;align-items:center;gap:2px;flex:1;min-width:0;}
+  .nav-reorder-item .nav-item-row .nav-item{width:auto;flex:1;min-width:0;}
   .reorder-arrows{display:flex;flex-direction:column;flex-shrink:0;}
   .reorder-up, .reorder-down{
     border:none;background:transparent;color:var(--grey);cursor:pointer;
@@ -4405,7 +4349,7 @@ document.addEventListener('keydown', (e)=&gt;{
 &lt;div id=&quot;app-shell&quot;&gt;
 &lt;nav id=&quot;left-nav&quot;&gt;
 &lt;div class=&quot;nav-title&quot;&gt;נושאים&lt;/div&gt;
-&lt;div class=&quot;nav-reorder-item&quot; data-reorder-id=&quot;pitch&quot;&gt;&lt;button class=&quot;nav-item&quot; data-scroll=&quot;sec-pitch&quot;&gt;פיץ' פתיחה&lt;/button&gt;&lt;span class=&quot;reorder-arrows&quot;&gt;&lt;button class=&quot;reorder-up&quot; title=&quot;הזז מעלה&quot;&gt;▲&lt;/button&gt;&lt;button class=&quot;reorder-down&quot; title=&quot;הזז מטה&quot;&gt;▼&lt;/button&gt;&lt;/span&gt;&lt;/div&gt;
+&lt;div class=&quot;nav-reorder-item&quot; data-reorder-id=&quot;pitch&quot;&gt;&lt;button class=&quot;nav-item&quot; data-scroll=&quot;sec-opening&quot;&gt;פיץ' פתיחה&lt;/button&gt;&lt;span class=&quot;reorder-arrows&quot;&gt;&lt;button class=&quot;reorder-up&quot; title=&quot;הזז מעלה&quot;&gt;▲&lt;/button&gt;&lt;button class=&quot;reorder-down&quot; title=&quot;הזז מטה&quot;&gt;▼&lt;/button&gt;&lt;/span&gt;&lt;/div&gt;
 &lt;div class=&quot;nav-reorder-item&quot; data-reorder-id=&quot;process&quot;&gt;&lt;button class=&quot;nav-item&quot; data-scroll=&quot;sec-process&quot;&gt;התהליך&lt;/button&gt;&lt;span class=&quot;reorder-arrows&quot;&gt;&lt;button class=&quot;reorder-up&quot; title=&quot;הזז מעלה&quot;&gt;▲&lt;/button&gt;&lt;button class=&quot;reorder-down&quot; title=&quot;הזז מטה&quot;&gt;▼&lt;/button&gt;&lt;/span&gt;&lt;/div&gt;
 &lt;div class=&quot;nav-reorder-item&quot; data-reorder-id=&quot;ai&quot;&gt;&lt;button class=&quot;nav-item&quot; data-scroll=&quot;sec-ai&quot;&gt;AI&lt;/button&gt;&lt;span class=&quot;reorder-arrows&quot;&gt;&lt;button class=&quot;reorder-up&quot; title=&quot;הזז מעלה&quot;&gt;▲&lt;/button&gt;&lt;button class=&quot;reorder-down&quot; title=&quot;הזז מטה&quot;&gt;▼&lt;/button&gt;&lt;/span&gt;&lt;/div&gt;
 &lt;div class=&quot;nav-reorder-item&quot; data-reorder-id=&quot;stages&quot;&gt;&lt;button class=&quot;nav-item&quot; data-scroll=&quot;sec-stages&quot;&gt;מה אנחנו מציעים&lt;/button&gt;&lt;span class=&quot;reorder-arrows&quot;&gt;&lt;button class=&quot;reorder-up&quot; title=&quot;הזז מעלה&quot;&gt;▲&lt;/button&gt;&lt;button class=&quot;reorder-down&quot; title=&quot;הזז מטה&quot;&gt;▼&lt;/button&gt;&lt;/span&gt;&lt;/div&gt;
@@ -4413,8 +4357,8 @@ document.addEventListener('keydown', (e)=&gt;{
 &lt;div class=&quot;nav-item-row&quot;&gt;
 &lt;button class=&quot;nav-item&quot; data-scroll=&quot;sec-products&quot;&gt;מוצרי הליבה&lt;/button&gt;
 &lt;button class=&quot;chevron-btn&quot; data-toggle=&quot;submenu-products&quot; title=&quot;הצג את כל המוצרים&quot;&gt;⌄&lt;/button&gt;
-&lt;span class=&quot;reorder-arrows&quot;&gt;&lt;button class=&quot;reorder-up&quot; title=&quot;הזז מעלה&quot;&gt;▲&lt;/button&gt;&lt;button class=&quot;reorder-down&quot; title=&quot;הזז מטה&quot;&gt;▼&lt;/button&gt;&lt;/span&gt;
 &lt;/div&gt;
+&lt;span class=&quot;reorder-arrows&quot;&gt;&lt;button class=&quot;reorder-up&quot; title=&quot;הזז מעלה&quot;&gt;▲&lt;/button&gt;&lt;button class=&quot;reorder-down&quot; title=&quot;הזז מטה&quot;&gt;▼&lt;/button&gt;&lt;/span&gt;
 &lt;div class=&quot;nav-submenu&quot; id=&quot;submenu-products&quot;&gt;
 &lt;button class=&quot;nav-subitem&quot; data-scroll=&quot;prod-organizations&quot;&gt;Organizations&lt;/button&gt;
 &lt;button class=&quot;nav-subitem&quot; data-scroll=&quot;prod-api-catalog&quot;&gt;API Catalog&lt;/button&gt;
@@ -4444,23 +4388,9 @@ document.addEventListener('keydown', (e)=&gt;{
 &lt;/nav&gt;
 &lt;main id=&quot;center-content&quot;&gt;
 &lt;div class=&quot;wrap&quot; id=&quot;editable-root&quot;&gt;
-&lt;header class=&quot;top&quot; id=&quot;sec-pitch&quot;&gt;
-&lt;h1 class=&quot;edit-unit&quot; contenteditable=&quot;false&quot;&gt;סקריפט לשיחת לקוח — מוצרי Postman&lt;/h1&gt;
-&lt;/header&gt;
 &lt;!-- SECTION 0: 30-SECOND OPENING PITCH --&gt;
 &lt;section id=&quot;sec-opening&quot;&gt;
 &lt;h2 class=&quot;edit-unit&quot; contenteditable=&quot;false&quot;&gt;&lt;span class=&quot;num&quot;&gt;&lt;br/&gt;&lt;/span&gt; פיץ' פתיחה — 30 שניות&lt;/h2&gt;
-&lt;div class=&quot;fmt-group answer-fmt-group panel-toolbar&quot; style=&quot;margin-bottom:10px;&quot;&gt;
-  &lt;button type=&quot;button&quot; class=&quot;ptb-bold&quot; title=&quot;הדגשה (סמן טקסט ולחץ)&quot;&gt;B&lt;/button&gt;
-  &lt;button type=&quot;button&quot; class=&quot;ptb-italic&quot; title=&quot;נטוי (סמן טקסט ולחץ)&quot;&gt;I&lt;/button&gt;
-  &lt;button class=&quot;swatch&quot; data-color=&quot;#1C1C1E&quot; style=&quot;background:#1C1C1E&quot; title=&quot;שחור&quot;&gt;&lt;/button&gt;
-  &lt;button class=&quot;swatch&quot; data-color=&quot;#FF6C37&quot; style=&quot;background:#FF6C37&quot; title=&quot;כתום&quot;&gt;&lt;/button&gt;
-  &lt;button class=&quot;swatch&quot; data-color=&quot;#D64545&quot; style=&quot;background:#D64545&quot; title=&quot;אדום&quot;&gt;&lt;/button&gt;
-  &lt;button class=&quot;swatch&quot; data-color=&quot;#2E7D5B&quot; style=&quot;background:#2E7D5B&quot; title=&quot;ירוק&quot;&gt;&lt;/button&gt;
-  &lt;button class=&quot;swatch&quot; data-color=&quot;#2F6FED&quot; style=&quot;background:#2F6FED&quot; title=&quot;כחול&quot;&gt;&lt;/button&gt;
-  &lt;button class=&quot;swatch&quot; data-color=&quot;#5B5F66&quot; style=&quot;background:#5B5F66&quot; title=&quot;אפור&quot;&gt;&lt;/button&gt;
-  &lt;button type=&quot;button&quot; class=&quot;ptb-save&quot; title=&quot;שמור&quot;&gt;💾 שמור&lt;/button&gt;
-&lt;/div&gt;
 &lt;div class=&quot;pitch-open edit-unit&quot; contenteditable=&quot;false&quot;&gt;
 &lt;span class=&quot;tag&quot;&gt;&lt;span style=&quot;font-size: 15px; color: rgb(28, 28, 30);&quot;&gt;&quot;מצוין. תנו לי 30 שניות להסביר איך חברות מתמודדות עם זה היום.&lt;/span&gt;&lt;/span&gt;
       בניית APIs כבר לא באמת החלק הקשה. &lt;b&gt;האתגר מתחיל&lt;/b&gt; כשה-APIs גדלים על פני כמה צוותים, מוצרים וסביבות.&lt;br/&gt;
@@ -4474,17 +4404,6 @@ document.addEventListener('keydown', (e)=&gt;{
 &lt;!-- SECTION 1: THE PROCESS --&gt;
 &lt;section id=&quot;sec-process&quot;&gt;
 &lt;h2 class=&quot;edit-unit&quot; contenteditable=&quot;false&quot;&gt;&lt;span class=&quot;num&quot;&gt;1&lt;/span&gt; התהליך: איך תוכנה נבנית היום&lt;/h2&gt;
-&lt;div class=&quot;fmt-group answer-fmt-group panel-toolbar&quot; style=&quot;margin-bottom:10px;&quot;&gt;
-  &lt;button type=&quot;button&quot; class=&quot;ptb-bold&quot; title=&quot;הדגשה (סמן טקסט ולחץ)&quot;&gt;B&lt;/button&gt;
-  &lt;button type=&quot;button&quot; class=&quot;ptb-italic&quot; title=&quot;נטוי (סמן טקסט ולחץ)&quot;&gt;I&lt;/button&gt;
-  &lt;button class=&quot;swatch&quot; data-color=&quot;#1C1C1E&quot; style=&quot;background:#1C1C1E&quot; title=&quot;שחור&quot;&gt;&lt;/button&gt;
-  &lt;button class=&quot;swatch&quot; data-color=&quot;#FF6C37&quot; style=&quot;background:#FF6C37&quot; title=&quot;כתום&quot;&gt;&lt;/button&gt;
-  &lt;button class=&quot;swatch&quot; data-color=&quot;#D64545&quot; style=&quot;background:#D64545&quot; title=&quot;אדום&quot;&gt;&lt;/button&gt;
-  &lt;button class=&quot;swatch&quot; data-color=&quot;#2E7D5B&quot; style=&quot;background:#2E7D5B&quot; title=&quot;ירוק&quot;&gt;&lt;/button&gt;
-  &lt;button class=&quot;swatch&quot; data-color=&quot;#2F6FED&quot; style=&quot;background:#2F6FED&quot; title=&quot;כחול&quot;&gt;&lt;/button&gt;
-  &lt;button class=&quot;swatch&quot; data-color=&quot;#5B5F66&quot; style=&quot;background:#5B5F66&quot; title=&quot;אפור&quot;&gt;&lt;/button&gt;
-  &lt;button type=&quot;button&quot; class=&quot;ptb-save&quot; title=&quot;שמור&quot;&gt;💾 שמור&lt;/button&gt;
-&lt;/div&gt;
 &lt;p class=&quot;lead edit-unit&quot; contenteditable=&quot;false&quot;&gt;כל ארגון פיתוח - Waterfall, Agile, או CI/CD - עובר בפועל את חמשת השלבים האלה. השאלה היחידה היא אם הם מחוברים או מבודדים.&lt;/p&gt;
 &lt;div class=&quot;stage-row&quot;&gt;
 &lt;div class=&quot;stage core&quot;&gt;
@@ -4561,17 +4480,6 @@ document.addEventListener('keydown', (e)=&gt;{
 &lt;!-- SECTION 2: AI SHIFT — EXPANDED --&gt;
 &lt;section id=&quot;sec-ai&quot;&gt;
 &lt;h2 class=&quot;edit-unit&quot; contenteditable=&quot;false&quot;&gt;&lt;span class=&quot;num&quot;&gt;2&lt;/span&gt; ה-AI: הנקודה שכל לקוח היום רוצה לדבר עליה&lt;/h2&gt;
-&lt;div class=&quot;fmt-group answer-fmt-group panel-toolbar&quot; style=&quot;margin-bottom:10px;&quot;&gt;
-  &lt;button type=&quot;button&quot; class=&quot;ptb-bold&quot; title=&quot;הדגשה (סמן טקסט ולחץ)&quot;&gt;B&lt;/button&gt;
-  &lt;button type=&quot;button&quot; class=&quot;ptb-italic&quot; title=&quot;נטוי (סמן טקסט ולחץ)&quot;&gt;I&lt;/button&gt;
-  &lt;button class=&quot;swatch&quot; data-color=&quot;#1C1C1E&quot; style=&quot;background:#1C1C1E&quot; title=&quot;שחור&quot;&gt;&lt;/button&gt;
-  &lt;button class=&quot;swatch&quot; data-color=&quot;#FF6C37&quot; style=&quot;background:#FF6C37&quot; title=&quot;כתום&quot;&gt;&lt;/button&gt;
-  &lt;button class=&quot;swatch&quot; data-color=&quot;#D64545&quot; style=&quot;background:#D64545&quot; title=&quot;אדום&quot;&gt;&lt;/button&gt;
-  &lt;button class=&quot;swatch&quot; data-color=&quot;#2E7D5B&quot; style=&quot;background:#2E7D5B&quot; title=&quot;ירוק&quot;&gt;&lt;/button&gt;
-  &lt;button class=&quot;swatch&quot; data-color=&quot;#2F6FED&quot; style=&quot;background:#2F6FED&quot; title=&quot;כחול&quot;&gt;&lt;/button&gt;
-  &lt;button class=&quot;swatch&quot; data-color=&quot;#5B5F66&quot; style=&quot;background:#5B5F66&quot; title=&quot;אפור&quot;&gt;&lt;/button&gt;
-  &lt;button type=&quot;button&quot; class=&quot;ptb-save&quot; title=&quot;שמור&quot;&gt;💾 שמור&lt;/button&gt;
-&lt;/div&gt;
 &lt;p class=&quot;lead edit-unit&quot; contenteditable=&quot;false&quot;&gt;&lt;i&gt;זה החלק שאני נותן לו הכי הרבה זמן בשיחה — כי זה מה שמעסיק כל CTO, VP Engineering ו-CISO שאני נפגש איתו ב-2026.&lt;/i&gt;&lt;/p&gt;
 &lt;div class=&quot;say edit-unit&quot; contenteditable=&quot;false&quot;&gt;
 &lt;b class=&quot;tag&quot;&gt;&lt;br/&gt;&lt;span style=&quot;font-size: 14.5px; color: rgb(28, 28, 30);&quot;&gt;&quot;אני רוצה לעצור רגע על ולדבר על ה-AI, כי זה בעצם זאת נקודה מכרעת היום כמעט לכל ארגון. ה-AI לא משנה את חמשת השלבים האלה, אלא רק מגדיל בטירוף את המהירות שעוברים בהם. וכשהמהירות עולה, כל סדק שהיה קיים אצלכם גם קודם, נהיה גדול יותר, ומהר יותר.&quot;&lt;/span&gt;&lt;/b&gt;&lt;/div&gt;
@@ -4593,17 +4501,6 @@ document.addEventListener('keydown', (e)=&gt;{
 &lt;!-- SECTION 3: WHAT POSTMAN OFFERS PER STAGE --&gt;
 &lt;section id=&quot;sec-stages&quot;&gt;
 &lt;h2 class=&quot;edit-unit&quot; contenteditable=&quot;false&quot;&gt;&lt;span class=&quot;num&quot;&gt;3&lt;/span&gt; מה יש לנו להציע - שלב-שלב&lt;/h2&gt;
-&lt;div class=&quot;fmt-group answer-fmt-group panel-toolbar&quot; style=&quot;margin-bottom:10px;&quot;&gt;
-  &lt;button type=&quot;button&quot; class=&quot;ptb-bold&quot; title=&quot;הדגשה (סמן טקסט ולחץ)&quot;&gt;B&lt;/button&gt;
-  &lt;button type=&quot;button&quot; class=&quot;ptb-italic&quot; title=&quot;נטוי (סמן טקסט ולחץ)&quot;&gt;I&lt;/button&gt;
-  &lt;button class=&quot;swatch&quot; data-color=&quot;#1C1C1E&quot; style=&quot;background:#1C1C1E&quot; title=&quot;שחור&quot;&gt;&lt;/button&gt;
-  &lt;button class=&quot;swatch&quot; data-color=&quot;#FF6C37&quot; style=&quot;background:#FF6C37&quot; title=&quot;כתום&quot;&gt;&lt;/button&gt;
-  &lt;button class=&quot;swatch&quot; data-color=&quot;#D64545&quot; style=&quot;background:#D64545&quot; title=&quot;אדום&quot;&gt;&lt;/button&gt;
-  &lt;button class=&quot;swatch&quot; data-color=&quot;#2E7D5B&quot; style=&quot;background:#2E7D5B&quot; title=&quot;ירוק&quot;&gt;&lt;/button&gt;
-  &lt;button class=&quot;swatch&quot; data-color=&quot;#2F6FED&quot; style=&quot;background:#2F6FED&quot; title=&quot;כחול&quot;&gt;&lt;/button&gt;
-  &lt;button class=&quot;swatch&quot; data-color=&quot;#5B5F66&quot; style=&quot;background:#5B5F66&quot; title=&quot;אפור&quot;&gt;&lt;/button&gt;
-  &lt;button type=&quot;button&quot; class=&quot;ptb-save&quot; title=&quot;שמור&quot;&gt;💾 שמור&lt;/button&gt;
-&lt;/div&gt;
 &lt;p class=&quot;lead edit-unit&quot; contenteditable=&quot;false&quot;&gt;&lt;b&gt;&quot;זה מה שאני קורא ה-golden path: בכל שלב יש כלי שאוכף אוטומטית את מה שהגדרנו בשלב הקודם - כך שאתם לא בודקים את זה שוב מאוחר יותר.&quot;&lt;/b&gt;&lt;/p&gt;
 &lt;div class=&quot;offer-grid&quot;&gt;
 &lt;div class=&quot;offer&quot;&gt;
@@ -4630,17 +4527,6 @@ document.addEventListener('keydown', (e)=&gt;{
 &lt;!-- SECTION 4: CORE PRODUCTS --&gt;
 &lt;section id=&quot;sec-products&quot;&gt;
 &lt;h2 class=&quot;edit-unit&quot; contenteditable=&quot;false&quot;&gt;&lt;span class=&quot;num&quot;&gt;4&lt;/span&gt; מוצרי הליבה — מה אני אומר על כל אחד&lt;/h2&gt;
-&lt;div class=&quot;fmt-group answer-fmt-group panel-toolbar&quot; style=&quot;margin-bottom:10px;&quot;&gt;
-  &lt;button type=&quot;button&quot; class=&quot;ptb-bold&quot; title=&quot;הדגשה (סמן טקסט ולחץ)&quot;&gt;B&lt;/button&gt;
-  &lt;button type=&quot;button&quot; class=&quot;ptb-italic&quot; title=&quot;נטוי (סמן טקסט ולחץ)&quot;&gt;I&lt;/button&gt;
-  &lt;button class=&quot;swatch&quot; data-color=&quot;#1C1C1E&quot; style=&quot;background:#1C1C1E&quot; title=&quot;שחור&quot;&gt;&lt;/button&gt;
-  &lt;button class=&quot;swatch&quot; data-color=&quot;#FF6C37&quot; style=&quot;background:#FF6C37&quot; title=&quot;כתום&quot;&gt;&lt;/button&gt;
-  &lt;button class=&quot;swatch&quot; data-color=&quot;#D64545&quot; style=&quot;background:#D64545&quot; title=&quot;אדום&quot;&gt;&lt;/button&gt;
-  &lt;button class=&quot;swatch&quot; data-color=&quot;#2E7D5B&quot; style=&quot;background:#2E7D5B&quot; title=&quot;ירוק&quot;&gt;&lt;/button&gt;
-  &lt;button class=&quot;swatch&quot; data-color=&quot;#2F6FED&quot; style=&quot;background:#2F6FED&quot; title=&quot;כחול&quot;&gt;&lt;/button&gt;
-  &lt;button class=&quot;swatch&quot; data-color=&quot;#5B5F66&quot; style=&quot;background:#5B5F66&quot; title=&quot;אפור&quot;&gt;&lt;/button&gt;
-  &lt;button type=&quot;button&quot; class=&quot;ptb-save&quot; title=&quot;שמור&quot;&gt;💾 שמור&lt;/button&gt;
-&lt;/div&gt;
 &lt;div class=&quot;group-title edit-unit&quot; contenteditable=&quot;false&quot;&gt;ניהול API ושירותים&lt;/div&gt;
 &lt;div class=&quot;prod&quot; id=&quot;prod-organizations&quot;&gt;
 &lt;div class=&quot;name edit-unit&quot; contenteditable=&quot;false&quot;&gt;Organizations — ניהול ארגוני&lt;/div&gt;
