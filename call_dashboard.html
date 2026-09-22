@@ -6810,6 +6810,28 @@ document.addEventListener('keydown', (e)=&gt;{
 </div>
 
 <script>
+  // ---------- Explainer tabs: fill exact remaining space, no leftover
+  // gap/footer showing below the page — it should feel like a full page,
+  // not a boxed-in frame with dead space under it. ----------
+  function adjustExplainerLayout(tabName){
+    const footer = document.querySelector('footer');
+    const isExplainer = (tabName === 'explaineren' || tabName === 'explainerhe');
+    if(footer) footer.style.display = isExplainer ? 'none' : '';
+    if(!isExplainer) return;
+    const panel = document.getElementById('panel-' + tabName);
+    const iframe = panel ? panel.querySelector('iframe') : null;
+    if(!iframe) return;
+    requestAnimationFrame(()=>{
+      const top = iframe.getBoundingClientRect().top;
+      const h = Math.max(300, window.innerHeight - top - 8);
+      iframe.style.height = h + 'px';
+    });
+  }
+  window.addEventListener('resize', ()=>{
+    const activeBtn = document.querySelector('.tab-btn.active');
+    if(activeBtn) adjustExplainerLayout(activeBtn.dataset.tab);
+  });
+
   // ---------- Tab switching (suppressed right after a drag-reorder) ----------
   let tabWasDragged = false;
   document.querySelectorAll('.tab-btn').forEach(btn=>{
@@ -6827,8 +6849,12 @@ document.addEventListener('keydown', (e)=&gt;{
       const sidePanel = document.getElementById('sidePanel');
       if(sideTab) sideTab.style.display = (btn.dataset.tab === 'discovery') ? '' : 'none';
       if(sidePanel && btn.dataset.tab !== 'discovery') sidePanel.classList.remove('open');
+      adjustExplainerLayout(btn.dataset.tab);
     });
   });
+  // Run once on load for whichever tab starts active (explainerhe by default).
+  adjustExplainerLayout(document.querySelector('.tab-btn.active')?.dataset.tab);
+
 
   // ---------- Tab drag-to-reorder ----------
   const TAB_ORDER_KEY = 'postman_call_dashboard_tab_order';
