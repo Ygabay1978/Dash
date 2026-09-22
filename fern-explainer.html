@@ -444,28 +444,28 @@ document.getElementById('mainBlocks').addEventListener('dragover', function(e){
 });
 
 function saveAll(){
-  localStorage.setItem('fern_main_v1', document.getElementById('mainBlocks').innerHTML);
+  localStorage.setItem('fern_main_v1_he', document.getElementById('mainBlocks').innerHTML);
   document.querySelectorAll('.panel').forEach(function(p){
     const body = p.querySelector('.panel-body');
-    if(body) localStorage.setItem('fern_panel_v1_' + p.id, body.innerHTML);
+    if(body) localStorage.setItem('fern_panel_v1_he_' + p.id, body.innerHTML);
   });
   alert('נשמר בדפדפן הזה ✓');
 }
 
 function resetAll(){
   if(confirm('לאפס את כל השינויים שנשמרו בדפדפן הזה ולחזור לגרסה המקורית?')){
-    localStorage.removeItem('fern_main_v1');
-    document.querySelectorAll('.panel').forEach(function(p){ localStorage.removeItem('fern_panel_v1_' + p.id); });
+    localStorage.removeItem('fern_main_v1_he');
+    document.querySelectorAll('.panel').forEach(function(p){ localStorage.removeItem('fern_panel_v1_he_' + p.id); });
     location.reload();
   }
 }
 
 window.addEventListener('DOMContentLoaded', function(){
-  const m = localStorage.getItem('fern_main_v1');
-  if(m) document.getElementById('mainBlocks').innerHTML = m;
+  const m = localStorage.getItem('fern_main_v1_he');
+  if(m && m.replace(/<[^>]*>/g,'').trim() !== '') document.getElementById('mainBlocks').innerHTML = m;
   document.querySelectorAll('.panel').forEach(function(p){
-    const saved = localStorage.getItem('fern_panel_v1_' + p.id);
-    if(saved){ const body = p.querySelector('.panel-body'); if(body) body.innerHTML = saved; }
+    const saved = localStorage.getItem('fern_panel_v1_he_' + p.id);
+    if(saved && saved.replace(/<[^>]*>/g,'').trim() !== ''){ const body = p.querySelector('.panel-body'); if(body) body.innerHTML = saved; }
   });
   attachDnD();
 });

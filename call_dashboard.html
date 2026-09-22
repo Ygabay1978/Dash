@@ -1205,6 +1205,17 @@
   }
   #left-nav .nav-item:hover{background:#FFF6F1;color:var(--orange);}
   #left-nav .nav-item.active{background:#FFF1E8;color:var(--orange);border-left:3px solid var(--orange);padding-left:7px;}
+  .nav-reorder-item{display:flex;align-items:center;gap:2px;}
+  .nav-reorder-item &gt; .nav-item, .nav-reorder-item &gt; .nav-item-row{flex:1;min-width:0;}
+  .nav-reorder-item .nav-item-row{display:flex;align-items:center;gap:2px;flex:1;}
+  .reorder-arrows{display:flex;flex-direction:column;flex-shrink:0;}
+  .reorder-up, .reorder-down{
+    border:none;background:transparent;color:var(--grey);cursor:pointer;
+    font-size:9px;line-height:1;padding:1px 3px;border-radius:3px;
+  }
+  .reorder-up:hover, .reorder-down:hover{background:#FFF1E8;color:var(--orange);}
+  .reorder-up:disabled, .reorder-down:disabled{opacity:.25;cursor:default;}
+  .reorder-up:disabled:hover, .reorder-down:disabled:hover{background:transparent;color:var(--grey);}
   #left-nav .nav-sep{height:1px;background:var(--line);margin:10px 4px;}
   #left-nav .nav-panel .arrow{color:var(--orange);font-size:12px;}
   #left-nav .nav-item.active .arrow{color:var(--orange);}
@@ -1300,6 +1311,14 @@
     cursor:pointer;
   }
   .chat-quick-btn:hover{border-color:var(--orange);color:var(--orange);}
+  .chat-quick-item{display:flex;align-items:center;gap:4px;}
+  .chat-quick-item .chat-quick-btn{flex:1;}
+  .chat-quick-remove{
+    flex-shrink:0;width:20px;height:20px;border-radius:50%;border:1px solid var(--line);
+    background:#fff;color:var(--grey);font-size:11px;cursor:pointer;display:flex;
+    align-items:center;justify-content:center;padding:0;
+  }
+  .chat-quick-remove:hover{background:#FDECEC;color:#D64545;border-color:#D64545;}
 
   #saved-questions-wrap{
     position:relative;
@@ -1635,13 +1654,15 @@
 &lt;div id=&quot;app-shell&quot;&gt;
 &lt;nav id=&quot;left-nav&quot;&gt;
 &lt;div class=&quot;nav-title&quot;&gt;Topics&lt;/div&gt;
-&lt;button class=&quot;nav-item&quot; data-scroll=&quot;sec-pitch&quot;&gt;Opening Pitch&lt;/button&gt;
-&lt;button class=&quot;nav-item&quot; data-scroll=&quot;sec-process&quot;&gt;The Process&lt;/button&gt;
-&lt;button class=&quot;nav-item&quot; data-scroll=&quot;sec-ai&quot;&gt;AI&lt;/button&gt;
-&lt;button class=&quot;nav-item&quot; data-scroll=&quot;sec-stages&quot;&gt;What We Offer&lt;/button&gt;
+&lt;div class=&quot;nav-reorder-item&quot; data-reorder-id=&quot;pitch&quot;&gt;&lt;button class=&quot;nav-item&quot; data-scroll=&quot;sec-pitch&quot;&gt;Opening Pitch&lt;/button&gt;&lt;span class=&quot;reorder-arrows&quot;&gt;&lt;button class=&quot;reorder-up&quot; title=&quot;Move up&quot;&gt;▲&lt;/button&gt;&lt;button class=&quot;reorder-down&quot; title=&quot;Move down&quot;&gt;▼&lt;/button&gt;&lt;/span&gt;&lt;/div&gt;
+&lt;div class=&quot;nav-reorder-item&quot; data-reorder-id=&quot;process&quot;&gt;&lt;button class=&quot;nav-item&quot; data-scroll=&quot;sec-process&quot;&gt;The Process&lt;/button&gt;&lt;span class=&quot;reorder-arrows&quot;&gt;&lt;button class=&quot;reorder-up&quot; title=&quot;Move up&quot;&gt;▲&lt;/button&gt;&lt;button class=&quot;reorder-down&quot; title=&quot;Move down&quot;&gt;▼&lt;/button&gt;&lt;/span&gt;&lt;/div&gt;
+&lt;div class=&quot;nav-reorder-item&quot; data-reorder-id=&quot;ai&quot;&gt;&lt;button class=&quot;nav-item&quot; data-scroll=&quot;sec-ai&quot;&gt;AI&lt;/button&gt;&lt;span class=&quot;reorder-arrows&quot;&gt;&lt;button class=&quot;reorder-up&quot; title=&quot;Move up&quot;&gt;▲&lt;/button&gt;&lt;button class=&quot;reorder-down&quot; title=&quot;Move down&quot;&gt;▼&lt;/button&gt;&lt;/span&gt;&lt;/div&gt;
+&lt;div class=&quot;nav-reorder-item&quot; data-reorder-id=&quot;stages&quot;&gt;&lt;button class=&quot;nav-item&quot; data-scroll=&quot;sec-stages&quot;&gt;What We Offer&lt;/button&gt;&lt;span class=&quot;reorder-arrows&quot;&gt;&lt;button class=&quot;reorder-up&quot; title=&quot;Move up&quot;&gt;▲&lt;/button&gt;&lt;button class=&quot;reorder-down&quot; title=&quot;Move down&quot;&gt;▼&lt;/button&gt;&lt;/span&gt;&lt;/div&gt;
+&lt;div class=&quot;nav-reorder-item&quot; data-reorder-id=&quot;products&quot;&gt;
 &lt;div class=&quot;nav-item-row&quot;&gt;
 &lt;button class=&quot;nav-item&quot; data-scroll=&quot;sec-products&quot;&gt;Core Products&lt;/button&gt;
 &lt;button class=&quot;chevron-btn&quot; data-toggle=&quot;submenu-products&quot; title=&quot;Show all products&quot;&gt;⌄&lt;/button&gt;
+&lt;span class=&quot;reorder-arrows&quot;&gt;&lt;button class=&quot;reorder-up&quot; title=&quot;Move up&quot;&gt;▲&lt;/button&gt;&lt;button class=&quot;reorder-down&quot; title=&quot;Move down&quot;&gt;▼&lt;/button&gt;&lt;/span&gt;
 &lt;/div&gt;
 &lt;div class=&quot;nav-submenu&quot; id=&quot;submenu-products&quot;&gt;
 &lt;button class=&quot;nav-subitem&quot; data-scroll=&quot;prod-organizations&quot;&gt;Organizations&lt;/button&gt;
@@ -1661,13 +1682,14 @@
 &lt;button class=&quot;nav-subitem&quot; data-scroll=&quot;prod-fabric-inline&quot;&gt;Fabric&lt;/button&gt;
 &lt;button class=&quot;nav-subitem&quot; data-scroll=&quot;prod-passport-inline&quot;&gt;Passport&lt;/button&gt;
 &lt;/div&gt;
+&lt;/div&gt;
 &lt;div class=&quot;nav-sep&quot;&gt;&lt;/div&gt;
-&lt;button class=&quot;nav-item nav-panel&quot; data-open-panel=&quot;panel-objections&quot;&gt;&lt;span&gt;Positioning &amp;amp; Objections&lt;/span&gt;&lt;span class=&quot;arrow&quot;&gt;↗&lt;/span&gt;&lt;/button&gt;
-&lt;button class=&quot;nav-item nav-panel&quot; data-open-panel=&quot;panel-fabric&quot;&gt;&lt;span&gt;Fabric&lt;/span&gt;&lt;span class=&quot;arrow&quot;&gt;↗&lt;/span&gt;&lt;/button&gt;
-&lt;button class=&quot;nav-item nav-panel&quot; data-open-panel=&quot;panel-passport&quot;&gt;&lt;span&gt;Passport&lt;/span&gt;&lt;span class=&quot;arrow&quot;&gt;↗&lt;/span&gt;&lt;/button&gt;
-&lt;button class=&quot;nav-item nav-panel&quot; data-open-panel=&quot;panel-asa&quot;&gt;&lt;span&gt;ASA&lt;/span&gt;&lt;span class=&quot;arrow&quot;&gt;↗&lt;/span&gt;&lt;/button&gt;
-&lt;button class=&quot;nav-item nav-panel&quot; data-open-panel=&quot;panel-fern&quot;&gt;&lt;span&gt;Fern&lt;/span&gt;&lt;span class=&quot;arrow&quot;&gt;↗&lt;/span&gt;&lt;/button&gt;
-&lt;button class=&quot;nav-item nav-panel&quot; data-open-panel=&quot;panel-database&quot;&gt;&lt;span&gt;DATABASE&lt;/span&gt;&lt;span class=&quot;arrow&quot;&gt;↗&lt;/span&gt;&lt;/button&gt;
+&lt;div class=&quot;nav-reorder-item&quot; data-reorder-id=&quot;panel-objections&quot;&gt;&lt;button class=&quot;nav-item nav-panel&quot; data-open-panel=&quot;panel-objections&quot;&gt;&lt;span&gt;Positioning &amp;amp; Objections&lt;/span&gt;&lt;span class=&quot;arrow&quot;&gt;↗&lt;/span&gt;&lt;/button&gt;&lt;span class=&quot;reorder-arrows&quot;&gt;&lt;button class=&quot;reorder-up&quot; title=&quot;Move up&quot;&gt;▲&lt;/button&gt;&lt;button class=&quot;reorder-down&quot; title=&quot;Move down&quot;&gt;▼&lt;/button&gt;&lt;/span&gt;&lt;/div&gt;
+&lt;div class=&quot;nav-reorder-item&quot; data-reorder-id=&quot;panel-fabric&quot;&gt;&lt;button class=&quot;nav-item nav-panel&quot; data-open-panel=&quot;panel-fabric&quot;&gt;&lt;span&gt;Fabric&lt;/span&gt;&lt;span class=&quot;arrow&quot;&gt;↗&lt;/span&gt;&lt;/button&gt;&lt;span class=&quot;reorder-arrows&quot;&gt;&lt;button class=&quot;reorder-up&quot; title=&quot;Move up&quot;&gt;▲&lt;/button&gt;&lt;button class=&quot;reorder-down&quot; title=&quot;Move down&quot;&gt;▼&lt;/button&gt;&lt;/span&gt;&lt;/div&gt;
+&lt;div class=&quot;nav-reorder-item&quot; data-reorder-id=&quot;panel-passport&quot;&gt;&lt;button class=&quot;nav-item nav-panel&quot; data-open-panel=&quot;panel-passport&quot;&gt;&lt;span&gt;Passport&lt;/span&gt;&lt;span class=&quot;arrow&quot;&gt;↗&lt;/span&gt;&lt;/button&gt;&lt;span class=&quot;reorder-arrows&quot;&gt;&lt;button class=&quot;reorder-up&quot; title=&quot;Move up&quot;&gt;▲&lt;/button&gt;&lt;button class=&quot;reorder-down&quot; title=&quot;Move down&quot;&gt;▼&lt;/button&gt;&lt;/span&gt;&lt;/div&gt;
+&lt;div class=&quot;nav-reorder-item&quot; data-reorder-id=&quot;panel-asa&quot;&gt;&lt;button class=&quot;nav-item nav-panel&quot; data-open-panel=&quot;panel-asa&quot;&gt;&lt;span&gt;ASA&lt;/span&gt;&lt;span class=&quot;arrow&quot;&gt;↗&lt;/span&gt;&lt;/button&gt;&lt;span class=&quot;reorder-arrows&quot;&gt;&lt;button class=&quot;reorder-up&quot; title=&quot;Move up&quot;&gt;▲&lt;/button&gt;&lt;button class=&quot;reorder-down&quot; title=&quot;Move down&quot;&gt;▼&lt;/button&gt;&lt;/span&gt;&lt;/div&gt;
+&lt;div class=&quot;nav-reorder-item&quot; data-reorder-id=&quot;panel-fern&quot;&gt;&lt;button class=&quot;nav-item nav-panel&quot; data-open-panel=&quot;panel-fern&quot;&gt;&lt;span&gt;Fern&lt;/span&gt;&lt;span class=&quot;arrow&quot;&gt;↗&lt;/span&gt;&lt;/button&gt;&lt;span class=&quot;reorder-arrows&quot;&gt;&lt;button class=&quot;reorder-up&quot; title=&quot;Move up&quot;&gt;▲&lt;/button&gt;&lt;button class=&quot;reorder-down&quot; title=&quot;Move down&quot;&gt;▼&lt;/button&gt;&lt;/span&gt;&lt;/div&gt;
+&lt;div class=&quot;nav-reorder-item&quot; data-reorder-id=&quot;panel-database&quot;&gt;&lt;button class=&quot;nav-item nav-panel&quot; data-open-panel=&quot;panel-database&quot;&gt;&lt;span&gt;DATABASE&lt;/span&gt;&lt;span class=&quot;arrow&quot;&gt;↗&lt;/span&gt;&lt;/button&gt;&lt;span class=&quot;reorder-arrows&quot;&gt;&lt;button class=&quot;reorder-up&quot; title=&quot;Move up&quot;&gt;▲&lt;/button&gt;&lt;button class=&quot;reorder-down&quot; title=&quot;Move down&quot;&gt;▼&lt;/button&gt;&lt;/span&gt;&lt;/div&gt;
 &lt;/nav&gt;
 &lt;main id=&quot;center-content&quot;&gt;
 &lt;div class=&quot;wrap&quot; id=&quot;editable-root&quot;&gt;
@@ -2050,30 +2072,8 @@ A few additional capabilities that can be relevant, depending on the customer's 
     &lt;span&gt;Fern&lt;/span&gt;
     &lt;button class=&quot;panel-close&quot; data-close=&quot;panel-fern&quot;&gt;✕&lt;/button&gt;
   &lt;/div&gt;
-  &lt;div class=&quot;panel-body&quot;&gt;
-    &lt;div class=&quot;fmt-group answer-fmt-group panel-toolbar&quot;&gt;
-      &lt;button type=&quot;button&quot; class=&quot;ptb-bold&quot; title=&quot;Bold (select text and click)&quot;&gt;B&lt;/button&gt;
-      &lt;button type=&quot;button&quot; class=&quot;ptb-italic&quot; title=&quot;Italic (select text and click)&quot;&gt;I&lt;/button&gt;
-      &lt;button class=&quot;swatch&quot; data-color=&quot;#1C1C1E&quot; style=&quot;background:#1C1C1E&quot; title=&quot;Black&quot;&gt;&lt;/button&gt;
-      &lt;button class=&quot;swatch&quot; data-color=&quot;#FF6C37&quot; style=&quot;background:#FF6C37&quot; title=&quot;Orange&quot;&gt;&lt;/button&gt;
-      &lt;button class=&quot;swatch&quot; data-color=&quot;#D64545&quot; style=&quot;background:#D64545&quot; title=&quot;Red&quot;&gt;&lt;/button&gt;
-      &lt;button class=&quot;swatch&quot; data-color=&quot;#2E7D5B&quot; style=&quot;background:#2E7D5B&quot; title=&quot;Green&quot;&gt;&lt;/button&gt;
-      &lt;button class=&quot;swatch&quot; data-color=&quot;#2F6FED&quot; style=&quot;background:#2F6FED&quot; title=&quot;Blue&quot;&gt;&lt;/button&gt;
-      &lt;button class=&quot;swatch&quot; data-color=&quot;#5B5F66&quot; style=&quot;background:#5B5F66&quot; title=&quot;Grey&quot;&gt;&lt;/button&gt;
-      &lt;button type=&quot;button&quot; class=&quot;ptb-save&quot; title=&quot;Save&quot;&gt;💾 Save&lt;/button&gt;
-    &lt;/div&gt;
-    &lt;p class=&quot;lead edit-unit&quot; contenteditable=&quot;false&quot;&gt;Fern — an API documentation and SDK-generation platform, acquired by Postman in January 2026. Sold and run as its own standalone product (not a Postman plan add-on).&lt;/p&gt;
-    &lt;ul class=&quot;panel-list&quot;&gt;
-      &lt;li&gt;&lt;b&gt;What it actually does&lt;/b&gt; — from one API definition (OpenAPI / AsyncAPI / gRPC), Fern generates SDKs in major languages (TypeScript, Python, Go, Java, C#, PHP, Ruby, Swift, Rust) and a hosted API reference/docs site - so docs and SDKs never drift out of sync.&lt;/li&gt;
-      &lt;li&gt;&lt;b&gt;When to bring it up&lt;/b&gt; — external API consumers/partners, hand-maintained SDKs, or docs that are chronically out of date.&lt;/li&gt;
-      &lt;li&gt;&lt;b&gt;How it differs from API Catalog / Passport / Fabric&lt;/b&gt; — Catalog answers &quot;what APIs exist,&quot; Passport answers &quot;who gets access,&quot; Fabric answers &quot;how do we control AI Agents,&quot; and Fern answers &quot;how does a developer actually consume the API.&quot;&lt;/li&gt;
-      &lt;li&gt;&lt;b&gt;Pricing&lt;/b&gt; — custom, based on complexity/scale, through Sales (not a flat per-user price like Passport/ASA).&lt;/li&gt;
-    &lt;/ul&gt;
-    &lt;div class=&quot;say edit-unit&quot; contenteditable=&quot;false&quot;&gt;
-&lt;b class=&quot;tag&quot;&gt;Summary line&lt;/b&gt;
-      &quot;Postman helps you build and manage the API. Fern takes that same API and upgrades it into a full Developer Experience - documentation, SDKs, CLI and MCP - so both external developers and AI Agents can consume it easily.&quot;
-    &lt;/div&gt;
-    &lt;p style=&quot;margin-top:14px;&quot;&gt;&lt;a href=&quot;fern-explainer.html&quot; target=&quot;_blank&quot; style=&quot;display:inline-block;background:#FFF6EE;border:1px solid #FFD9C7;color:#E15A28;font-size:13px;font-weight:700;padding:8px 14px;border-radius:20px;text-decoration:none;&quot;&gt;↗ Full Fern call script &amp;amp; objections (Hebrew page)&lt;/a&gt;&lt;/p&gt;
+  &lt;div class=&quot;panel-body&quot; style=&quot;padding:0;overflow:hidden;&quot;&gt;
+    &lt;iframe src=&quot;fern-explainer-en.html&quot; style=&quot;width:100%;height:100%;border:none;display:block;&quot;&gt;&lt;/iframe&gt;
   &lt;/div&gt;
 &lt;/div&gt;
 
@@ -2319,16 +2319,16 @@ A few additional capabilities that can be relevant, depending on the customer's 
 &lt;span class=&quot;chat-header-title&quot;&gt;Ask About the Material&lt;/span&gt;
 &lt;/div&gt;
 &lt;div class=&quot;chat-quick&quot;&gt;
-&lt;button class=&quot;chat-quick-btn&quot; data-prompt=&quot;What’s the difference between Fabric and Passport?&quot;&gt;What’s the difference between Fabric and Passport?&lt;/button&gt;
-&lt;button class=&quot;chat-quick-btn&quot; data-prompt=&quot;The customer objects to the price, how do I respond?&quot;&gt;The customer objects to the price, how do I respond?&lt;/button&gt;
-&lt;button class=&quot;chat-quick-btn&quot; data-prompt=&quot;What is ASA and why is it an Add-on?&quot;&gt;What is ASA and why is it an Add-on?&lt;/button&gt;
-&lt;button class=&quot;chat-quick-btn&quot; data-prompt=&quot;The customer uses Kong, how do I respond?&quot;&gt;The customer uses Kong, how do I respond?&lt;/button&gt;
-&lt;button class=&quot;chat-quick-btn&quot; data-prompt=&quot;Do you replace the API Gateway?&quot;&gt;Do you replace the API Gateway?&lt;/button&gt;
-&lt;button class=&quot;chat-quick-btn&quot; data-prompt=&quot;What do you add beyond WAF / DDoS / Security tools?&quot;&gt;What do you add beyond WAF / DDoS?&lt;/button&gt;
-&lt;button class=&quot;chat-quick-btn&quot; data-prompt=&quot;Why is Free only 1 user now?&quot;&gt;Why is Free only 1 user now?&lt;/button&gt;
-&lt;button class=&quot;chat-quick-btn&quot; data-prompt=&quot;What's the real difference between Team RBAC and Enterprise RBAC?&quot;&gt;Team RBAC vs Enterprise RBAC?&lt;/button&gt;
-&lt;button class=&quot;chat-quick-btn&quot; data-prompt=&quot;Why did add-ons mostly go away?&quot;&gt;Why did add-ons mostly go away?&lt;/button&gt;
-&lt;button class=&quot;chat-quick-btn&quot; data-prompt=&quot;Are AI credits really unlimited?&quot;&gt;Are AI credits really unlimited?&lt;/button&gt;
+&lt;div class=&quot;chat-quick-item&quot;&gt;&lt;button class=&quot;chat-quick-btn&quot; data-prompt=&quot;What’s the difference between Fabric and Passport?&quot;&gt;What’s the difference between Fabric and Passport?&lt;/button&gt;&lt;button class=&quot;chat-quick-remove&quot; title=&quot;Remove this question&quot;&gt;✕&lt;/button&gt;&lt;/div&gt;
+&lt;div class=&quot;chat-quick-item&quot;&gt;&lt;button class=&quot;chat-quick-btn&quot; data-prompt=&quot;The customer objects to the price, how do I respond?&quot;&gt;The customer objects to the price, how do I respond?&lt;/button&gt;&lt;button class=&quot;chat-quick-remove&quot; title=&quot;Remove this question&quot;&gt;✕&lt;/button&gt;&lt;/div&gt;
+&lt;div class=&quot;chat-quick-item&quot;&gt;&lt;button class=&quot;chat-quick-btn&quot; data-prompt=&quot;What is ASA and why is it an Add-on?&quot;&gt;What is ASA and why is it an Add-on?&lt;/button&gt;&lt;button class=&quot;chat-quick-remove&quot; title=&quot;Remove this question&quot;&gt;✕&lt;/button&gt;&lt;/div&gt;
+&lt;div class=&quot;chat-quick-item&quot;&gt;&lt;button class=&quot;chat-quick-btn&quot; data-prompt=&quot;The customer uses Kong, how do I respond?&quot;&gt;The customer uses Kong, how do I respond?&lt;/button&gt;&lt;button class=&quot;chat-quick-remove&quot; title=&quot;Remove this question&quot;&gt;✕&lt;/button&gt;&lt;/div&gt;
+&lt;div class=&quot;chat-quick-item&quot;&gt;&lt;button class=&quot;chat-quick-btn&quot; data-prompt=&quot;Do you replace the API Gateway?&quot;&gt;Do you replace the API Gateway?&lt;/button&gt;&lt;button class=&quot;chat-quick-remove&quot; title=&quot;Remove this question&quot;&gt;✕&lt;/button&gt;&lt;/div&gt;
+&lt;div class=&quot;chat-quick-item&quot;&gt;&lt;button class=&quot;chat-quick-btn&quot; data-prompt=&quot;What do you add beyond WAF / DDoS / Security tools?&quot;&gt;What do you add beyond WAF / DDoS?&lt;/button&gt;&lt;button class=&quot;chat-quick-remove&quot; title=&quot;Remove this question&quot;&gt;✕&lt;/button&gt;&lt;/div&gt;
+&lt;div class=&quot;chat-quick-item&quot;&gt;&lt;button class=&quot;chat-quick-btn&quot; data-prompt=&quot;Why is Free only 1 user now?&quot;&gt;Why is Free only 1 user now?&lt;/button&gt;&lt;button class=&quot;chat-quick-remove&quot; title=&quot;Remove this question&quot;&gt;✕&lt;/button&gt;&lt;/div&gt;
+&lt;div class=&quot;chat-quick-item&quot;&gt;&lt;button class=&quot;chat-quick-btn&quot; data-prompt=&quot;What's the real difference between Team RBAC and Enterprise RBAC?&quot;&gt;Team RBAC vs Enterprise RBAC?&lt;/button&gt;&lt;button class=&quot;chat-quick-remove&quot; title=&quot;Remove this question&quot;&gt;✕&lt;/button&gt;&lt;/div&gt;
+&lt;div class=&quot;chat-quick-item&quot;&gt;&lt;button class=&quot;chat-quick-btn&quot; data-prompt=&quot;Why did add-ons mostly go away?&quot;&gt;Why did add-ons mostly go away?&lt;/button&gt;&lt;button class=&quot;chat-quick-remove&quot; title=&quot;Remove this question&quot;&gt;✕&lt;/button&gt;&lt;/div&gt;
+&lt;div class=&quot;chat-quick-item&quot;&gt;&lt;button class=&quot;chat-quick-btn&quot; data-prompt=&quot;Are AI credits really unlimited?&quot;&gt;Are AI credits really unlimited?&lt;/button&gt;&lt;button class=&quot;chat-quick-remove&quot; title=&quot;Remove this question&quot;&gt;✕&lt;/button&gt;&lt;/div&gt;
 &lt;/div&gt;
 &lt;div id=&quot;saved-questions-wrap&quot;&gt;
   &lt;button id=&quot;saved-questions-btn&quot;&gt;📌 Saved questions &lt;span id=&quot;saved-questions-count&quot;&gt;&lt;/span&gt; &lt;span class=&quot;sq-arrow&quot;&gt;▾&lt;/span&gt;&lt;/button&gt;
@@ -3057,6 +3057,27 @@ A few additional capabilities that can be relevant, depending on the customer's 
     btn.addEventListener('click', ()=&gt; ask(btn.dataset.prompt));
   });
 
+  // ---- remove/hide irrelevant quick-question buttons (persisted per browser) ----
+  const REMOVED_QUICK_KEY = 'removed-quick-questions:en';
+  let removedQuick = [];
+  try{ removedQuick = JSON.parse(localStorage.getItem(REMOVED_QUICK_KEY)) || []; }catch(e){}
+  document.querySelectorAll('.chat-quick-item').forEach(item=&gt;{
+    const prompt = item.querySelector('.chat-quick-btn')?.dataset.prompt;
+    if(prompt &amp;&amp; removedQuick.includes(prompt)) item.remove();
+  });
+  document.querySelectorAll('.chat-quick-remove').forEach(x=&gt;{
+    x.addEventListener('click', (e)=&gt;{
+      e.stopPropagation();
+      const item = x.closest('.chat-quick-item');
+      const prompt = item?.querySelector('.chat-quick-btn')?.dataset.prompt;
+      if(prompt &amp;&amp; !removedQuick.includes(prompt)){
+        removedQuick.push(prompt);
+        try{ localStorage.setItem(REMOVED_QUICK_KEY, JSON.stringify(removedQuick)); }catch(e){}
+      }
+      item?.remove();
+    });
+  });
+
   // ---- formatting toolbar inside the floating answer window ----
   // Self-contained and deliberately simple (no undo stack) — this is a
   // small edit surface, not the main document.
@@ -3246,7 +3267,7 @@ A few additional capabilities that can be relevant, depending on the customer's 
   const BLOCK_CONTAINERS = [
     '#sec-opening', '#sec-process', '#sec-ai', '#sec-stages',
     '#panel-fabric .panel-body', '#panel-passport .panel-body',
-    '#panel-asa .panel-body', '#panel-fern .panel-body', '#panel-database .panel-body'
+    '#panel-asa .panel-body', '#panel-database .panel-body'
   ];
   const SKIP_SELECTOR = '.fmt-group, .panel-toolbar, .panel-header, .add-block-btn, .add-card-btn, .offer-grid';
 
@@ -3402,10 +3423,13 @@ A few additional capabilities that can be relevant, depending on the customer's 
     if(!el.dataset.ceid) el.dataset.ceid = 'ce' + (counter++);
   });
 
+  // Guard: an override that is empty/whitespace-only is treated as no
+  // override at all, so a page can never load blank just because a stray
+  // cached edit (e.g. an accidental full-select-delete) got saved once.
   units.forEach(el=&gt;{
     try{
       const saved = localStorage.getItem(STORAGE_PREFIX + el.dataset.ceid);
-      if(saved !== null) el.innerHTML = saved;
+      if(saved !== null &amp;&amp; saved.replace(/&lt;[^&gt;]*&gt;/g,'').trim() !== '') el.innerHTML = saved;
     }catch(e){}
   });
 
@@ -3502,6 +3526,82 @@ A few additional capabilities that can be relevant, depending on the customer's 
       setTimeout(()=&gt;{ saveBtn.textContent = original; }, 1800);
     }
   });
+})();
+// --- Enter key inside any editable text: always a plain line break, never
+// carries over bold/italic/color/font-size from wherever the cursor is.
+// (Requested rule: pressing Enter should just go to a new line — nothing else.)
+document.addEventListener('keydown', (e)=&gt;{
+  if(e.key !== 'Enter' || e.shiftKey) return;
+  const el = e.target.closest('[contenteditable=&quot;true&quot;]');
+  if(!el) return;
+  e.preventDefault();
+  const sel = window.getSelection();
+  if(!sel || !sel.rangeCount) return;
+  const range = sel.getRangeAt(0);
+  range.deleteContents();
+  const br = document.createElement('br');
+  range.insertNode(br);
+  range.setStartAfter(br);
+  range.setEndAfter(br);
+  sel.removeAllRanges();
+  sel.addRange(range);
+});
+// --- reorder the topics nav (up/down arrows), persisted per browser ---
+(function(){
+  const NAV_ORDER_KEY = 'nav-order:en';
+  const nav = document.getElementById('left-nav');
+  if(!nav) return;
+
+  function currentItems(){ return Array.from(nav.querySelectorAll(':scope &gt; .nav-reorder-item')); }
+
+  function refreshDisabled(){
+    const items = currentItems();
+    items.forEach((item, i)=&gt;{
+      item.querySelector('.reorder-up').disabled = (i === 0);
+      item.querySelector('.reorder-down').disabled = (i === items.length - 1);
+    });
+  }
+
+  function saveOrder(){
+    try{ localStorage.setItem(NAV_ORDER_KEY, JSON.stringify(currentItems().map(i=&gt;i.dataset.reorderId))); }catch(e){}
+  }
+
+  try{
+    const savedOrder = JSON.parse(localStorage.getItem(NAV_ORDER_KEY));
+    if(savedOrder &amp;&amp; savedOrder.length){
+      const byId = {};
+      currentItems().forEach(i=&gt;{ byId[i.dataset.reorderId] = i; });
+      const navTitle = nav.querySelector('.nav-title');
+      let anchor = navTitle;
+      savedOrder.forEach(id=&gt;{
+        const el = byId[id];
+        if(el){ anchor.after(el); anchor = el; }
+      });
+    }
+  }catch(e){}
+
+  nav.addEventListener('click', (e)=&gt;{
+    const upBtn = e.target.closest('.reorder-up');
+    const downBtn = e.target.closest('.reorder-down');
+    if(!upBtn &amp;&amp; !downBtn) return;
+    e.preventDefault();
+    e.stopPropagation();
+    const item = e.target.closest('.nav-reorder-item');
+    if(!item) return;
+    if(upBtn){
+      let target = item.previousElementSibling;
+      if(target &amp;&amp; !target.classList.contains('nav-reorder-item')) target = target.previousElementSibling;
+      if(target) target.before(item);
+    } else if(downBtn &amp;&amp; item.nextElementSibling){
+      let target = item.nextElementSibling;
+      if(target &amp;&amp; !target.classList.contains('nav-reorder-item')) target = target.nextElementSibling;
+      if(target) target.after(item);
+    }
+    refreshDisabled();
+    saveOrder();
+  });
+
+  refreshDisabled();
 })();
 &lt;/script&gt;
 &lt;/body&gt;
@@ -3791,7 +3891,17 @@ A few additional capabilities that can be relevant, depending on the customer's 
   }
   #left-nav .nav-item:hover{background:#FFF6F1;color:var(--orange);}
   #left-nav .nav-item.active{background:#FFF1E8;color:var(--orange);border-right:3px solid var(--orange);padding-right:7px;}
-  #left-nav .nav-sep{height:1px;background:var(--line);margin:10px 4px;}
+  .nav-reorder-item{display:flex;align-items:center;gap:2px;}
+  .nav-reorder-item &gt; .nav-item, .nav-reorder-item &gt; .nav-item-row{flex:1;min-width:0;}
+  .nav-reorder-item .nav-item-row{display:flex;align-items:center;gap:2px;flex:1;}
+  .reorder-arrows{display:flex;flex-direction:column;flex-shrink:0;}
+  .reorder-up, .reorder-down{
+    border:none;background:transparent;color:var(--grey);cursor:pointer;
+    font-size:9px;line-height:1;padding:1px 3px;border-radius:3px;
+  }
+  .reorder-up:hover, .reorder-down:hover{background:#FFF1E8;color:var(--orange);}
+  .reorder-up:disabled, .reorder-down:disabled{opacity:.25;cursor:default;}
+  .reorder-up:disabled:hover, .reorder-down:disabled:hover{background:transparent;color:var(--grey);}  #left-nav .nav-sep{height:1px;background:var(--line);margin:10px 4px;}
   #left-nav .nav-panel .arrow{color:var(--orange);font-size:12px;}
   #left-nav .nav-item.active .arrow{color:var(--orange);}
   .nav-item-row{display:flex;align-items:center;gap:2px;}
@@ -3886,6 +3996,14 @@ A few additional capabilities that can be relevant, depending on the customer's 
     cursor:pointer;
   }
   .chat-quick-btn:hover{border-color:var(--orange);color:var(--orange);}
+  .chat-quick-item{display:flex;align-items:center;gap:4px;}
+  .chat-quick-item .chat-quick-btn{flex:1;}
+  .chat-quick-remove{
+    flex-shrink:0;width:20px;height:20px;border-radius:50%;border:1px solid var(--line);
+    background:#fff;color:var(--grey);font-size:11px;cursor:pointer;display:flex;
+    align-items:center;justify-content:center;padding:0;
+  }
+  .chat-quick-remove:hover{background:#FDECEC;color:#D64545;border-color:#D64545;}
 
   #saved-questions-wrap{
     position:relative;
@@ -4216,13 +4334,15 @@ A few additional capabilities that can be relevant, depending on the customer's 
 &lt;div id=&quot;app-shell&quot;&gt;
 &lt;nav id=&quot;left-nav&quot;&gt;
 &lt;div class=&quot;nav-title&quot;&gt;נושאים&lt;/div&gt;
-&lt;button class=&quot;nav-item&quot; data-scroll=&quot;sec-pitch&quot;&gt;פיץ' פתיחה&lt;/button&gt;
-&lt;button class=&quot;nav-item&quot; data-scroll=&quot;sec-process&quot;&gt;התהליך&lt;/button&gt;
-&lt;button class=&quot;nav-item&quot; data-scroll=&quot;sec-ai&quot;&gt;AI&lt;/button&gt;
-&lt;button class=&quot;nav-item&quot; data-scroll=&quot;sec-stages&quot;&gt;מה אנחנו מציעים&lt;/button&gt;
+&lt;div class=&quot;nav-reorder-item&quot; data-reorder-id=&quot;pitch&quot;&gt;&lt;button class=&quot;nav-item&quot; data-scroll=&quot;sec-pitch&quot;&gt;פיץ' פתיחה&lt;/button&gt;&lt;span class=&quot;reorder-arrows&quot;&gt;&lt;button class=&quot;reorder-up&quot; title=&quot;הזז מעלה&quot;&gt;▲&lt;/button&gt;&lt;button class=&quot;reorder-down&quot; title=&quot;הזז מטה&quot;&gt;▼&lt;/button&gt;&lt;/span&gt;&lt;/div&gt;
+&lt;div class=&quot;nav-reorder-item&quot; data-reorder-id=&quot;process&quot;&gt;&lt;button class=&quot;nav-item&quot; data-scroll=&quot;sec-process&quot;&gt;התהליך&lt;/button&gt;&lt;span class=&quot;reorder-arrows&quot;&gt;&lt;button class=&quot;reorder-up&quot; title=&quot;הזז מעלה&quot;&gt;▲&lt;/button&gt;&lt;button class=&quot;reorder-down&quot; title=&quot;הזז מטה&quot;&gt;▼&lt;/button&gt;&lt;/span&gt;&lt;/div&gt;
+&lt;div class=&quot;nav-reorder-item&quot; data-reorder-id=&quot;ai&quot;&gt;&lt;button class=&quot;nav-item&quot; data-scroll=&quot;sec-ai&quot;&gt;AI&lt;/button&gt;&lt;span class=&quot;reorder-arrows&quot;&gt;&lt;button class=&quot;reorder-up&quot; title=&quot;הזז מעלה&quot;&gt;▲&lt;/button&gt;&lt;button class=&quot;reorder-down&quot; title=&quot;הזז מטה&quot;&gt;▼&lt;/button&gt;&lt;/span&gt;&lt;/div&gt;
+&lt;div class=&quot;nav-reorder-item&quot; data-reorder-id=&quot;stages&quot;&gt;&lt;button class=&quot;nav-item&quot; data-scroll=&quot;sec-stages&quot;&gt;מה אנחנו מציעים&lt;/button&gt;&lt;span class=&quot;reorder-arrows&quot;&gt;&lt;button class=&quot;reorder-up&quot; title=&quot;הזז מעלה&quot;&gt;▲&lt;/button&gt;&lt;button class=&quot;reorder-down&quot; title=&quot;הזז מטה&quot;&gt;▼&lt;/button&gt;&lt;/span&gt;&lt;/div&gt;
+&lt;div class=&quot;nav-reorder-item&quot; data-reorder-id=&quot;products&quot;&gt;
 &lt;div class=&quot;nav-item-row&quot;&gt;
 &lt;button class=&quot;nav-item&quot; data-scroll=&quot;sec-products&quot;&gt;מוצרי הליבה&lt;/button&gt;
 &lt;button class=&quot;chevron-btn&quot; data-toggle=&quot;submenu-products&quot; title=&quot;הצג את כל המוצרים&quot;&gt;⌄&lt;/button&gt;
+&lt;span class=&quot;reorder-arrows&quot;&gt;&lt;button class=&quot;reorder-up&quot; title=&quot;הזז מעלה&quot;&gt;▲&lt;/button&gt;&lt;button class=&quot;reorder-down&quot; title=&quot;הזז מטה&quot;&gt;▼&lt;/button&gt;&lt;/span&gt;
 &lt;/div&gt;
 &lt;div class=&quot;nav-submenu&quot; id=&quot;submenu-products&quot;&gt;
 &lt;button class=&quot;nav-subitem&quot; data-scroll=&quot;prod-organizations&quot;&gt;Organizations&lt;/button&gt;
@@ -4242,13 +4362,14 @@ A few additional capabilities that can be relevant, depending on the customer's 
 &lt;button class=&quot;nav-subitem&quot; data-scroll=&quot;prod-fabric-inline&quot;&gt;Fabric&lt;/button&gt;
 &lt;button class=&quot;nav-subitem&quot; data-scroll=&quot;prod-passport-inline&quot;&gt;Passport&lt;/button&gt;
 &lt;/div&gt;
+&lt;/div&gt;
 &lt;div class=&quot;nav-sep&quot;&gt;&lt;/div&gt;
-&lt;button class=&quot;nav-item nav-panel&quot; data-open-panel=&quot;panel-objections&quot;&gt;&lt;span&gt;מיצוב והתנגדויות&lt;/span&gt;&lt;span class=&quot;arrow&quot;&gt;↗&lt;/span&gt;&lt;/button&gt;
-&lt;button class=&quot;nav-item nav-panel&quot; data-open-panel=&quot;panel-fabric&quot;&gt;&lt;span&gt;Fabric&lt;/span&gt;&lt;span class=&quot;arrow&quot;&gt;↗&lt;/span&gt;&lt;/button&gt;
-&lt;button class=&quot;nav-item nav-panel&quot; data-open-panel=&quot;panel-passport&quot;&gt;&lt;span&gt;Passport&lt;/span&gt;&lt;span class=&quot;arrow&quot;&gt;↗&lt;/span&gt;&lt;/button&gt;
-&lt;button class=&quot;nav-item nav-panel&quot; data-open-panel=&quot;panel-asa&quot;&gt;&lt;span&gt;ASA&lt;/span&gt;&lt;span class=&quot;arrow&quot;&gt;↗&lt;/span&gt;&lt;/button&gt;
-&lt;button class=&quot;nav-item nav-panel&quot; data-open-panel=&quot;panel-fern&quot;&gt;&lt;span&gt;Fern&lt;/span&gt;&lt;span class=&quot;arrow&quot;&gt;↗&lt;/span&gt;&lt;/button&gt;
-&lt;button class=&quot;nav-item nav-panel&quot; data-open-panel=&quot;panel-database&quot;&gt;&lt;span&gt;DATABASE&lt;/span&gt;&lt;span class=&quot;arrow&quot;&gt;↗&lt;/span&gt;&lt;/button&gt;
+&lt;div class=&quot;nav-reorder-item&quot; data-reorder-id=&quot;panel-objections&quot;&gt;&lt;button class=&quot;nav-item nav-panel&quot; data-open-panel=&quot;panel-objections&quot;&gt;&lt;span&gt;מיצוב והתנגדויות&lt;/span&gt;&lt;span class=&quot;arrow&quot;&gt;↗&lt;/span&gt;&lt;/button&gt;&lt;span class=&quot;reorder-arrows&quot;&gt;&lt;button class=&quot;reorder-up&quot; title=&quot;הזז מעלה&quot;&gt;▲&lt;/button&gt;&lt;button class=&quot;reorder-down&quot; title=&quot;הזז מטה&quot;&gt;▼&lt;/button&gt;&lt;/span&gt;&lt;/div&gt;
+&lt;div class=&quot;nav-reorder-item&quot; data-reorder-id=&quot;panel-fabric&quot;&gt;&lt;button class=&quot;nav-item nav-panel&quot; data-open-panel=&quot;panel-fabric&quot;&gt;&lt;span&gt;Fabric&lt;/span&gt;&lt;span class=&quot;arrow&quot;&gt;↗&lt;/span&gt;&lt;/button&gt;&lt;span class=&quot;reorder-arrows&quot;&gt;&lt;button class=&quot;reorder-up&quot; title=&quot;הזז מעלה&quot;&gt;▲&lt;/button&gt;&lt;button class=&quot;reorder-down&quot; title=&quot;הזז מטה&quot;&gt;▼&lt;/button&gt;&lt;/span&gt;&lt;/div&gt;
+&lt;div class=&quot;nav-reorder-item&quot; data-reorder-id=&quot;panel-passport&quot;&gt;&lt;button class=&quot;nav-item nav-panel&quot; data-open-panel=&quot;panel-passport&quot;&gt;&lt;span&gt;Passport&lt;/span&gt;&lt;span class=&quot;arrow&quot;&gt;↗&lt;/span&gt;&lt;/button&gt;&lt;span class=&quot;reorder-arrows&quot;&gt;&lt;button class=&quot;reorder-up&quot; title=&quot;הזז מעלה&quot;&gt;▲&lt;/button&gt;&lt;button class=&quot;reorder-down&quot; title=&quot;הזז מטה&quot;&gt;▼&lt;/button&gt;&lt;/span&gt;&lt;/div&gt;
+&lt;div class=&quot;nav-reorder-item&quot; data-reorder-id=&quot;panel-asa&quot;&gt;&lt;button class=&quot;nav-item nav-panel&quot; data-open-panel=&quot;panel-asa&quot;&gt;&lt;span&gt;ASA&lt;/span&gt;&lt;span class=&quot;arrow&quot;&gt;↗&lt;/span&gt;&lt;/button&gt;&lt;span class=&quot;reorder-arrows&quot;&gt;&lt;button class=&quot;reorder-up&quot; title=&quot;הזז מעלה&quot;&gt;▲&lt;/button&gt;&lt;button class=&quot;reorder-down&quot; title=&quot;הזז מטה&quot;&gt;▼&lt;/button&gt;&lt;/span&gt;&lt;/div&gt;
+&lt;div class=&quot;nav-reorder-item&quot; data-reorder-id=&quot;panel-fern&quot;&gt;&lt;button class=&quot;nav-item nav-panel&quot; data-open-panel=&quot;panel-fern&quot;&gt;&lt;span&gt;Fern&lt;/span&gt;&lt;span class=&quot;arrow&quot;&gt;↗&lt;/span&gt;&lt;/button&gt;&lt;span class=&quot;reorder-arrows&quot;&gt;&lt;button class=&quot;reorder-up&quot; title=&quot;הזז מעלה&quot;&gt;▲&lt;/button&gt;&lt;button class=&quot;reorder-down&quot; title=&quot;הזז מטה&quot;&gt;▼&lt;/button&gt;&lt;/span&gt;&lt;/div&gt;
+&lt;div class=&quot;nav-reorder-item&quot; data-reorder-id=&quot;panel-database&quot;&gt;&lt;button class=&quot;nav-item nav-panel&quot; data-open-panel=&quot;panel-database&quot;&gt;&lt;span&gt;DATABASE&lt;/span&gt;&lt;span class=&quot;arrow&quot;&gt;↗&lt;/span&gt;&lt;/button&gt;&lt;span class=&quot;reorder-arrows&quot;&gt;&lt;button class=&quot;reorder-up&quot; title=&quot;הזז מעלה&quot;&gt;▲&lt;/button&gt;&lt;button class=&quot;reorder-down&quot; title=&quot;הזז מטה&quot;&gt;▼&lt;/button&gt;&lt;/span&gt;&lt;/div&gt;
 &lt;/nav&gt;
 &lt;main id=&quot;center-content&quot;&gt;
 &lt;div class=&quot;wrap&quot; id=&quot;editable-root&quot;&gt;
@@ -4631,30 +4752,8 @@ A few additional capabilities that can be relevant, depending on the customer's 
     &lt;span&gt;Fern&lt;/span&gt;
     &lt;button class=&quot;panel-close&quot; data-close=&quot;panel-fern&quot;&gt;✕&lt;/button&gt;
   &lt;/div&gt;
-  &lt;div class=&quot;panel-body&quot;&gt;
-    &lt;div class=&quot;fmt-group answer-fmt-group panel-toolbar&quot;&gt;
-      &lt;button type=&quot;button&quot; class=&quot;ptb-bold&quot; title=&quot;הדגשה (סמן טקסט ולחץ)&quot;&gt;B&lt;/button&gt;
-      &lt;button type=&quot;button&quot; class=&quot;ptb-italic&quot; title=&quot;נטוי (סמן טקסט ולחץ)&quot;&gt;I&lt;/button&gt;
-      &lt;button class=&quot;swatch&quot; data-color=&quot;#1C1C1E&quot; style=&quot;background:#1C1C1E&quot; title=&quot;שחור&quot;&gt;&lt;/button&gt;
-      &lt;button class=&quot;swatch&quot; data-color=&quot;#FF6C37&quot; style=&quot;background:#FF6C37&quot; title=&quot;כתום&quot;&gt;&lt;/button&gt;
-      &lt;button class=&quot;swatch&quot; data-color=&quot;#D64545&quot; style=&quot;background:#D64545&quot; title=&quot;אדום&quot;&gt;&lt;/button&gt;
-      &lt;button class=&quot;swatch&quot; data-color=&quot;#2E7D5B&quot; style=&quot;background:#2E7D5B&quot; title=&quot;ירוק&quot;&gt;&lt;/button&gt;
-      &lt;button class=&quot;swatch&quot; data-color=&quot;#2F6FED&quot; style=&quot;background:#2F6FED&quot; title=&quot;כחול&quot;&gt;&lt;/button&gt;
-      &lt;button class=&quot;swatch&quot; data-color=&quot;#5B5F66&quot; style=&quot;background:#5B5F66&quot; title=&quot;אפור&quot;&gt;&lt;/button&gt;
-      &lt;button type=&quot;button&quot; class=&quot;ptb-save&quot; title=&quot;שמור&quot;&gt;💾 שמור&lt;/button&gt;
-    &lt;/div&gt;
-    &lt;p class=&quot;lead edit-unit&quot; contenteditable=&quot;false&quot;&gt;Fern — פלטפורמת תיעוד API וייצור SDKs, שנרכשה על ידי Postman בינואר 2026. נמכרת ומנוהלת כמוצר עצמאי משלה (לא Add-on לחבילת Postman).&lt;/p&gt;
-    &lt;ul class=&quot;panel-list&quot;&gt;
-      &lt;li&gt;&lt;b&gt;מה זה בפועל&lt;/b&gt; — מהגדרת API אחת (OpenAPI / AsyncAPI / gRPC), Fern מייצרת SDKs בשפות מרכזיות (TypeScript, Python, Go, Java, C#, PHP, Ruby, Swift, Rust) ואתר תיעוד/API Reference מארח - כך שה-Docs וה-SDKs לא יוצאים מסונכרון.&lt;/li&gt;
-      &lt;li&gt;&lt;b&gt;מתי להזכיר&lt;/b&gt; — יש API חיצוני/שותפים שצריכים להתחבר, מתחזקים SDKs ביד, או שהתיעוד כרונית לא מעודכן.&lt;/li&gt;
-      &lt;li&gt;&lt;b&gt;איך זה שונה מ-API Catalog / Passport / Fabric&lt;/b&gt; — Catalog עונה &quot;אילו APIs יש&quot;, Passport עונה &quot;מי מקבל גישה&quot;, Fabric עונה &quot;איך שולטים ב-AI Agents&quot;, ו-Fern עונה &quot;איך מפתח בפועל צורך את ה-API&quot;.&lt;/li&gt;
-      &lt;li&gt;&lt;b&gt;תמחור&lt;/b&gt; — Custom, לפי מורכבות/סקאלה, דרך Sales (לא מחיר קבוע למשתמש כמו Passport/ASA).&lt;/li&gt;
-    &lt;/ul&gt;
-    &lt;div class=&quot;say edit-unit&quot; contenteditable=&quot;false&quot;&gt;
-&lt;b class=&quot;tag&quot;&gt;משפט סיכום&lt;/b&gt;
-      &quot;Postman עוזר לך לבנות ולנהל את ה-API. Fern לוקח את אותו API ועושה לו שידרוג ל-Developer Experience מלא - תיעוד, SDKs, CLI ו-MCP - כך שגם מפתחים חיצוניים וגם AI Agents יכולים לצרוך אותו בקלות.&quot;
-    &lt;/div&gt;
-    &lt;p style=&quot;margin-top:14px;&quot;&gt;&lt;a href=&quot;fern-explainer.html&quot; target=&quot;_blank&quot; style=&quot;display:inline-block;background:#FFF6EE;border:1px solid #FFD9C7;color:#E15A28;font-size:13px;font-weight:700;padding:8px 14px;border-radius:20px;text-decoration:none;&quot;&gt;↗ תרחיש שיחה מלא + התנגדויות על Fern&lt;/a&gt;&lt;/p&gt;
+  &lt;div class=&quot;panel-body&quot; style=&quot;padding:0;overflow:hidden;&quot;&gt;
+    &lt;iframe src=&quot;fern-explainer.html&quot; style=&quot;width:100%;height:100%;border:none;display:block;&quot;&gt;&lt;/iframe&gt;
   &lt;/div&gt;
 &lt;/div&gt;
 
@@ -4899,16 +4998,16 @@ A few additional capabilities that can be relevant, depending on the customer's 
 &lt;span class=&quot;chat-header-title&quot;&gt;שאל על החומר&lt;/span&gt;
 &lt;/div&gt;
 &lt;div class=&quot;chat-quick&quot;&gt;
-&lt;button class=&quot;chat-quick-btn&quot; data-prompt=&quot;מה ההבדל בין Fabric ל-Passport?&quot;&gt;מה ההבדל בין Fabric ל-Passport?&lt;/button&gt;
-&lt;button class=&quot;chat-quick-btn&quot; data-prompt=&quot;הלקוח מתנגד למחיר, איך אני עונה?&quot;&gt;הלקוח מתנגד למחיר, איך אני עונה?&lt;/button&gt;
-&lt;button class=&quot;chat-quick-btn&quot; data-prompt=&quot;מה זה ASA ולמה זה Add-on?&quot;&gt;מה זה ASA ולמה זה Add-on?&lt;/button&gt;
-&lt;button class=&quot;chat-quick-btn&quot; data-prompt=&quot;הלקוח משתמש ב-Kong, איך אני עונה?&quot;&gt;הלקוח משתמש ב-Kong, איך אני עונה?&lt;/button&gt;
-&lt;button class=&quot;chat-quick-btn&quot; data-prompt=&quot;האם אתם מחליפים את ה-API Gateway?&quot;&gt;האם אתם מחליפים את ה-API Gateway?&lt;/button&gt;
-&lt;button class=&quot;chat-quick-btn&quot; data-prompt=&quot;מה אתם מוסיפים מעבר ל-WAF / DDoS / Security tools?&quot;&gt;מה אתם מוסיפים מעבר ל-WAF / DDoS?&lt;/button&gt;
-&lt;button class=&quot;chat-quick-btn&quot; data-prompt=&quot;למה Free זה רק משתמש אחד עכשיו?&quot;&gt;למה Free זה רק משתמש אחד עכשיו?&lt;/button&gt;
-&lt;button class=&quot;chat-quick-btn&quot; data-prompt=&quot;מה ההבדל האמיתי בין RBAC ב-Team ל-RBAC ב-Enterprise?&quot;&gt;מה ההבדל בין RBAC ב-Team ל-Enterprise?&lt;/button&gt;
-&lt;button class=&quot;chat-quick-btn&quot; data-prompt=&quot;למה רוב ה-Add-ons נעלמו?&quot;&gt;למה רוב ה-Add-ons נעלמו?&lt;/button&gt;
-&lt;button class=&quot;chat-quick-btn&quot; data-prompt=&quot;קרדיטי ה-AI באמת ללא הגבלה?&quot;&gt;קרדיטי ה-AI באמת ללא הגבלה?&lt;/button&gt;
+&lt;div class=&quot;chat-quick-item&quot;&gt;&lt;button class=&quot;chat-quick-btn&quot; data-prompt=&quot;מה ההבדל בין Fabric ל-Passport?&quot;&gt;מה ההבדל בין Fabric ל-Passport?&lt;/button&gt;&lt;button class=&quot;chat-quick-remove&quot; title=&quot;הסר שאלה זו&quot;&gt;✕&lt;/button&gt;&lt;/div&gt;
+&lt;div class=&quot;chat-quick-item&quot;&gt;&lt;button class=&quot;chat-quick-btn&quot; data-prompt=&quot;הלקוח מתנגד למחיר, איך אני עונה?&quot;&gt;הלקוח מתנגד למחיר, איך אני עונה?&lt;/button&gt;&lt;button class=&quot;chat-quick-remove&quot; title=&quot;הסר שאלה זו&quot;&gt;✕&lt;/button&gt;&lt;/div&gt;
+&lt;div class=&quot;chat-quick-item&quot;&gt;&lt;button class=&quot;chat-quick-btn&quot; data-prompt=&quot;מה זה ASA ולמה זה Add-on?&quot;&gt;מה זה ASA ולמה זה Add-on?&lt;/button&gt;&lt;button class=&quot;chat-quick-remove&quot; title=&quot;הסר שאלה זו&quot;&gt;✕&lt;/button&gt;&lt;/div&gt;
+&lt;div class=&quot;chat-quick-item&quot;&gt;&lt;button class=&quot;chat-quick-btn&quot; data-prompt=&quot;הלקוח משתמש ב-Kong, איך אני עונה?&quot;&gt;הלקוח משתמש ב-Kong, איך אני עונה?&lt;/button&gt;&lt;button class=&quot;chat-quick-remove&quot; title=&quot;הסר שאלה זו&quot;&gt;✕&lt;/button&gt;&lt;/div&gt;
+&lt;div class=&quot;chat-quick-item&quot;&gt;&lt;button class=&quot;chat-quick-btn&quot; data-prompt=&quot;האם אתם מחליפים את ה-API Gateway?&quot;&gt;האם אתם מחליפים את ה-API Gateway?&lt;/button&gt;&lt;button class=&quot;chat-quick-remove&quot; title=&quot;הסר שאלה זו&quot;&gt;✕&lt;/button&gt;&lt;/div&gt;
+&lt;div class=&quot;chat-quick-item&quot;&gt;&lt;button class=&quot;chat-quick-btn&quot; data-prompt=&quot;מה אתם מוסיפים מעבר ל-WAF / DDoS / Security tools?&quot;&gt;מה אתם מוסיפים מעבר ל-WAF / DDoS?&lt;/button&gt;&lt;button class=&quot;chat-quick-remove&quot; title=&quot;הסר שאלה זו&quot;&gt;✕&lt;/button&gt;&lt;/div&gt;
+&lt;div class=&quot;chat-quick-item&quot;&gt;&lt;button class=&quot;chat-quick-btn&quot; data-prompt=&quot;למה Free זה רק משתמש אחד עכשיו?&quot;&gt;למה Free זה רק משתמש אחד עכשיו?&lt;/button&gt;&lt;button class=&quot;chat-quick-remove&quot; title=&quot;הסר שאלה זו&quot;&gt;✕&lt;/button&gt;&lt;/div&gt;
+&lt;div class=&quot;chat-quick-item&quot;&gt;&lt;button class=&quot;chat-quick-btn&quot; data-prompt=&quot;מה ההבדל האמיתי בין RBAC ב-Team ל-RBAC ב-Enterprise?&quot;&gt;מה ההבדל בין RBAC ב-Team ל-Enterprise?&lt;/button&gt;&lt;button class=&quot;chat-quick-remove&quot; title=&quot;הסר שאלה זו&quot;&gt;✕&lt;/button&gt;&lt;/div&gt;
+&lt;div class=&quot;chat-quick-item&quot;&gt;&lt;button class=&quot;chat-quick-btn&quot; data-prompt=&quot;למה רוב ה-Add-ons נעלמו?&quot;&gt;למה רוב ה-Add-ons נעלמו?&lt;/button&gt;&lt;button class=&quot;chat-quick-remove&quot; title=&quot;הסר שאלה זו&quot;&gt;✕&lt;/button&gt;&lt;/div&gt;
+&lt;div class=&quot;chat-quick-item&quot;&gt;&lt;button class=&quot;chat-quick-btn&quot; data-prompt=&quot;קרדיטי ה-AI באמת ללא הגבלה?&quot;&gt;קרדיטי ה-AI באמת ללא הגבלה?&lt;/button&gt;&lt;button class=&quot;chat-quick-remove&quot; title=&quot;הסר שאלה זו&quot;&gt;✕&lt;/button&gt;&lt;/div&gt;
 &lt;/div&gt;
 &lt;div id=&quot;saved-questions-wrap&quot;&gt;
   &lt;button id=&quot;saved-questions-btn&quot;&gt;📌 שאלות שמורות &lt;span id=&quot;saved-questions-count&quot;&gt;&lt;/span&gt; &lt;span class=&quot;sq-arrow&quot;&gt;▾&lt;/span&gt;&lt;/button&gt;
@@ -5647,6 +5746,27 @@ A few additional capabilities that can be relevant, depending on the customer's 
     btn.addEventListener('click', ()=&gt; ask(btn.dataset.prompt));
   });
 
+  // ---- remove/hide irrelevant quick-question buttons (persisted per browser) ----
+  const REMOVED_QUICK_KEY = 'removed-quick-questions:he';
+  let removedQuick = [];
+  try{ removedQuick = JSON.parse(localStorage.getItem(REMOVED_QUICK_KEY)) || []; }catch(e){}
+  document.querySelectorAll('.chat-quick-item').forEach(item=&gt;{
+    const prompt = item.querySelector('.chat-quick-btn')?.dataset.prompt;
+    if(prompt &amp;&amp; removedQuick.includes(prompt)) item.remove();
+  });
+  document.querySelectorAll('.chat-quick-remove').forEach(x=&gt;{
+    x.addEventListener('click', (e)=&gt;{
+      e.stopPropagation();
+      const item = x.closest('.chat-quick-item');
+      const prompt = item?.querySelector('.chat-quick-btn')?.dataset.prompt;
+      if(prompt &amp;&amp; !removedQuick.includes(prompt)){
+        removedQuick.push(prompt);
+        try{ localStorage.setItem(REMOVED_QUICK_KEY, JSON.stringify(removedQuick)); }catch(e){}
+      }
+      item?.remove();
+    });
+  });
+
   // ---- formatting toolbar inside the floating answer window ----
   // Self-contained (scoped to answerContentEl only, not the main
   // document's global formatting functions) — deliberately simple, no
@@ -5837,7 +5957,7 @@ A few additional capabilities that can be relevant, depending on the customer's 
   const BLOCK_CONTAINERS = [
     '#sec-opening', '#sec-process', '#sec-ai', '#sec-stages',
     '#panel-fabric .panel-body', '#panel-passport .panel-body',
-    '#panel-asa .panel-body', '#panel-fern .panel-body', '#panel-database .panel-body'
+    '#panel-asa .panel-body', '#panel-database .panel-body'
   ];
   const SKIP_SELECTOR = '.fmt-group, .panel-toolbar, .panel-header, .add-block-btn, .add-card-btn, .offer-grid';
 
@@ -5997,10 +6117,13 @@ A few additional capabilities that can be relevant, depending on the customer's 
   });
 
   // Restore any previously saved edits for this language.
+  // Guard: an override that is empty/whitespace-only is treated as no
+  // override at all, so a page can never load blank just because a stray
+  // cached edit (e.g. an accidental full-select-delete) got saved once.
   units.forEach(el=&gt;{
     try{
       const saved = localStorage.getItem(STORAGE_PREFIX + el.dataset.ceid);
-      if(saved !== null) el.innerHTML = saved;
+      if(saved !== null &amp;&amp; saved.replace(/&lt;[^&gt;]*&gt;/g,'').trim() !== '') el.innerHTML = saved;
     }catch(e){}
   });
 
@@ -6099,6 +6222,84 @@ A few additional capabilities that can be relevant, depending on the customer's 
       setTimeout(()=&gt;{ saveBtn.textContent = original; }, 1800);
     }
   });
+})();
+// --- Enter key inside any editable text: always a plain line break, never
+// carries over bold/italic/color/font-size from wherever the cursor is.
+// (Requested rule: pressing Enter should just go to a new line — nothing else.)
+document.addEventListener('keydown', (e)=&gt;{
+  if(e.key !== 'Enter' || e.shiftKey) return;
+  const el = e.target.closest('[contenteditable=&quot;true&quot;]');
+  if(!el) return;
+  e.preventDefault();
+  const sel = window.getSelection();
+  if(!sel || !sel.rangeCount) return;
+  const range = sel.getRangeAt(0);
+  range.deleteContents();
+  const br = document.createElement('br');
+  range.insertNode(br);
+  range.setStartAfter(br);
+  range.setEndAfter(br);
+  sel.removeAllRanges();
+  sel.addRange(range);
+});
+// --- reorder the topics nav (up/down arrows), persisted per browser ---
+(function(){
+  const NAV_ORDER_KEY = 'nav-order:he';
+  const nav = document.getElementById('left-nav');
+  if(!nav) return;
+
+  function currentItems(){ return Array.from(nav.querySelectorAll(':scope &gt; .nav-reorder-item')); }
+
+  function refreshDisabled(){
+    const items = currentItems();
+    items.forEach((item, i)=&gt;{
+      item.querySelector('.reorder-up').disabled = (i === 0);
+      item.querySelector('.reorder-down').disabled = (i === items.length - 1);
+    });
+  }
+
+  function saveOrder(){
+    try{ localStorage.setItem(NAV_ORDER_KEY, JSON.stringify(currentItems().map(i=&gt;i.dataset.reorderId))); }catch(e){}
+  }
+
+  // Apply a previously saved order, if any (anchored right after nav-title).
+  try{
+    const savedOrder = JSON.parse(localStorage.getItem(NAV_ORDER_KEY));
+    if(savedOrder &amp;&amp; savedOrder.length){
+      const byId = {};
+      currentItems().forEach(i=&gt;{ byId[i.dataset.reorderId] = i; });
+      const navTitle = nav.querySelector('.nav-title');
+      let anchor = navTitle;
+      savedOrder.forEach(id=&gt;{
+        const el = byId[id];
+        if(el){ anchor.after(el); anchor = el; }
+      });
+    }
+  }catch(e){}
+
+  nav.addEventListener('click', (e)=&gt;{
+    const upBtn = e.target.closest('.reorder-up');
+    const downBtn = e.target.closest('.reorder-down');
+    if(!upBtn &amp;&amp; !downBtn) return;
+    e.preventDefault();
+    e.stopPropagation();
+    const item = e.target.closest('.nav-reorder-item');
+    if(!item) return;
+    if(upBtn){
+      let target = item.previousElementSibling;
+      if(target &amp;&amp; !target.classList.contains('nav-reorder-item')) target = target.previousElementSibling;
+      if(target) target.before(item);
+    } else if(downBtn &amp;&amp; item.nextElementSibling){
+      // skip over a non-reorderable divider (e.g. nav-sep) to the next real item
+      let target = item.nextElementSibling;
+      if(target &amp;&amp; !target.classList.contains('nav-reorder-item')) target = target.nextElementSibling;
+      if(target) target.after(item);
+    }
+    refreshDisabled();
+    saveOrder();
+  });
+
+  refreshDisabled();
 })();
 &lt;/script&gt;
 &lt;/body&gt;
