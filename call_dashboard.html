@@ -1006,6 +1006,16 @@
     cursor:pointer;font-size:14px;color:var(--grey);
   }
   .card-delete-btn:hover{background:#D64545;color:#fff;}
+  .reorderable-card.is-empty-block{
+    min-height:44px;
+    border:2px dashed #D64545 !important;
+    background:rgba(214,69,69,0.06);
+  }
+  .reorderable-card.is-empty-block::before{
+    content:'Empty box — click 🗑 to remove';
+    position:absolute;top:50%;left:80px;transform:translateY(-50%);
+    font-size:12px;color:#D64545;font-weight:600;
+  }
   .reorderable-card.is-empty-block .card-delete-btn{
     display:flex !important;
     background:#D64545;color:#fff;
@@ -1041,6 +1051,17 @@
     cursor:pointer;font-size:14px;color:var(--grey);
   }
   .block-delete-btn:hover{background:#D64545;color:#fff;}
+  .draggable-block.is-empty-block{
+    min-height:44px;
+    border:2px dashed #D64545 !important;
+    border-radius:8px;
+    background:rgba(214,69,69,0.06);
+  }
+  .draggable-block.is-empty-block::before{
+    content:'Empty block — click 🗑 to remove';
+    position:absolute;top:50%;left:16px;transform:translateY(-50%);
+    font-size:12px;color:#D64545;font-weight:600;
+  }
   .draggable-block.is-empty-block .block-delete-btn{
     display:flex !important;
     background:#D64545;color:#fff;
@@ -3740,6 +3761,16 @@ document.addEventListener('keydown', (e)=&gt;{
     cursor:pointer;font-size:14px;color:var(--grey);
   }
   .card-delete-btn:hover{background:#D64545;color:#fff;}
+  .reorderable-card.is-empty-block{
+    min-height:44px;
+    border:2px dashed #D64545 !important;
+    background:rgba(214,69,69,0.06);
+  }
+  .reorderable-card.is-empty-block::before{
+    content:'קוביה ריקה — לחצו על 🗑 להסרה';
+    position:absolute;top:50%;left:80px;transform:translateY(-50%);
+    font-size:12px;color:#D64545;font-weight:600;
+  }
   .reorderable-card.is-empty-block .card-delete-btn{
     display:flex !important;
     background:#D64545;color:#fff;
@@ -3776,7 +3807,20 @@ document.addEventListener('keydown', (e)=&gt;{
   }
   .block-delete-btn:hover{background:#D64545;color:#fff;}
   /* An emptied-out block always shows its delete button, even outside
-     move/delete tools mode — otherwise there's no way to get rid of it. */
+     move/delete tools mode — otherwise there's no way to get rid of it.
+     It also gets a visible dashed outline of its own, so it reads as an
+     obvious &quot;empty — remove me&quot; box instead of a stray floating button. */
+  .draggable-block.is-empty-block{
+    min-height:44px;
+    border:2px dashed #D64545 !important;
+    border-radius:8px;
+    background:rgba(214,69,69,0.06);
+  }
+  .draggable-block.is-empty-block::before{
+    content:'קוביה ריקה — לחצו על 🗑 להסרה';
+    position:absolute;top:50%;left:16px;transform:translateY(-50%);
+    font-size:12px;color:#D64545;font-weight:600;
+  }
   .draggable-block.is-empty-block .block-delete-btn{
     display:flex !important;
     background:#D64545;color:#fff;
