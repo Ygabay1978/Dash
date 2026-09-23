@@ -1,0 +1,2841 @@
+<!DOCTYPE html>
+<html dir="rtl" lang="he"><head>
+<meta charset="utf-8">
+<title>פיץ' ללקוח — מוצרי Postman</title>
+<style>
+  :root{
+    --orange:#FF6C37;
+    --ink:#1C1C1E;
+    --grey:#5B5F66;
+    --line:#E6E4E0;
+    --bg-card:#FBFAF8;
+    --bg-page:#FFFFFF;
+  }
+  *{box-sizing:border-box;}
+  body{
+    margin:0;
+    background:var(--bg-page);
+    color:var(--ink);
+    font-family:"Segoe UI","Arial Hebrew","Noto Sans Hebrew",Arial,sans-serif;
+    line-height:1.7;
+  }
+  header.top{
+    padding-bottom:28px;
+    border-bottom:3px solid var(--orange);
+    margin-bottom:36px;
+  }
+  header.top h1{font-size:26px;margin:0 0 8px;}
+  header.top p{color:var(--grey);margin:0;font-size:15px;}
+  h2{font-size:20px;margin:52px 0 6px;display:flex;align-items:baseline;gap:10px;}
+  h2 .num{color:var(--orange);font-size:20px;}
+  .lead{color:var(--grey);font-size:15px;margin:0 0 22px;}
+  .stage-row{display:grid;grid-template-columns:repeat(5,1fr);gap:10px;margin-bottom:14px;}
+  .stage{background:var(--bg-card);border:1px solid var(--line);border-radius:8px;padding:14px 12px;box-shadow:0 1px 2px rgba(20,20,20,0.04);}
+  .stage.core{border-color:var(--orange);background:#FFF6F1;}
+  .stage .n{font-size:12px;color:var(--grey);}
+  .stage .t{font-weight:600;font-size:15px;margin:2px 0 6px;}
+  .stage .who{font-size:12px;color:var(--grey);margin-bottom:6px;}
+  .stage .d{font-size:13px;}
+  .say{
+    background:#F3F7F5;
+    border-right:3px solid #2E7D5B;
+    border-radius:6px;
+    padding:12px 16px;
+    margin:16px 0;
+    font-size:14.5px;
+  }
+  .say b.tag{color:#2E7D5B;display:block;font-size:12px;margin-bottom:4px;}
+  .offer-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-top:12px;}
+  .offer{background:var(--bg-card);border:1px solid var(--line);border-radius:8px;padding:16px 18px;box-shadow:0 1px 2px rgba(20,20,20,0.04);}
+  .offer .t{font-weight:700;color:var(--orange);font-size:14px;margin-bottom:8px;}
+  .offer p{margin:0;font-size:13.5px;}
+  .cross-box{margin-top:14px;background:#FFF6F1;border:1px solid #FFD9C7;border-radius:8px;padding:14px 18px;font-size:13.5px;}
+  .cross-box b{color:var(--orange);}
+  .group-title{font-size:14px;font-weight:700;color:var(--grey);margin:26px 0 10px;}
+  .prod{border:1px solid var(--line);border-radius:8px;padding:16px 18px;margin-bottom:12px;background:var(--bg-card);box-shadow:0 1px 2px rgba(20,20,20,0.04);}
+  /* Draggable reordering — grab the top-right handle and drag up/down within the same list */
+  .reorderable-card{position:relative;cursor:default;}
+  .reorderable-card .drag-grip{
+    position:absolute;top:6px;left:6px;
+    width:30px;height:30px;
+    display:flex;align-items:center;justify-content:center;
+    border-radius:6px;background:rgba(0,0,0,0.08);
+    cursor:grab;font-size:16px;color:var(--grey);
+    user-select:none;
+    touch-action:none;
+    -webkit-user-drag:element;
+  }
+  .reorderable-card .drag-grip:hover{background:var(--orange);color:#fff;}
+  .reorderable-card .drag-grip:active{cursor:grabbing;}
+  .reorderable-card.dragging{opacity:0.4;}
+  .reorderable-card.drag-over-top{box-shadow:0 -3px 0 var(--orange) inset;}
+  .reorderable-card.drag-over-bottom{box-shadow:0 3px 0 var(--orange) inset;}
+  .card-delete-btn{
+    position:absolute;top:6px;left:40px;
+    width:30px;height:30px;
+    display:flex;align-items:center;justify-content:center;
+    border:none;border-radius:6px;background:rgba(0,0,0,0.08);
+    cursor:pointer;font-size:14px;color:var(--grey);
+  }
+  .card-delete-btn:hover{background:#D64545;color:#fff;}
+  .reorderable-card.is-empty-block{
+    min-height:44px;
+    border:2px dashed #D64545 !important;
+    background:rgba(214,69,69,0.06);
+  }
+  .reorderable-card.is-empty-block::before{
+    content:'קוביה ריקה — לחצו על 🗑 להסרה';
+    position:absolute;top:50%;left:80px;transform:translateY(-50%);
+    font-size:12px;color:#D64545;font-weight:600;
+  }
+  .reorderable-card.is-empty-block .card-delete-btn{
+    display:flex !important;
+    background:#D64545;color:#fff;
+    animation:emptyBlockPulse 1.6s ease-in-out infinite;
+  }
+  .add-card-btn{
+    display:block;width:100%;
+    margin-top:6px;padding:10px;
+    border:2px dashed var(--line);border-radius:8px;
+    background:none;color:var(--grey);
+    font-size:13px;font-weight:600;cursor:pointer;
+  }
+  .add-card-btn:hover{border-color:var(--orange);color:var(--orange);}
+  /* --- generic drag/add/delete for section & panel content blocks --- */
+  .draggable-block{position:relative;}
+  .draggable-block.dragging{opacity:0.4;}
+  .block-drag-grip{
+    position:absolute;top:4px;right:4px;
+    width:30px;height:30px;
+    display:flex;align-items:center;justify-content:center;
+    border-radius:6px;background:rgba(0,0,0,0.08);
+    cursor:grab;font-size:16px;color:var(--grey);
+    user-select:none;
+    touch-action:none;
+    -webkit-user-drag:element;
+  }
+  .block-drag-grip:hover{background:var(--orange);color:#fff;}
+  .block-drag-grip:active{cursor:grabbing;}
+  .block-delete-btn{
+    position:absolute;top:4px;right:38px;
+    width:30px;height:30px;
+    display:flex;align-items:center;justify-content:center;
+    border:none;border-radius:6px;background:rgba(0,0,0,0.08);
+    cursor:pointer;font-size:14px;color:var(--grey);
+  }
+  .block-delete-btn:hover{background:#D64545;color:#fff;}
+  /* An emptied-out block always shows its delete button, even outside
+     move/delete tools mode — otherwise there's no way to get rid of it.
+     It also gets a visible dashed outline of its own, so it reads as an
+     obvious "empty — remove me" box instead of a stray floating button. */
+  .draggable-block.is-empty-block{
+    min-height:44px;
+    border:2px dashed #D64545 !important;
+    border-radius:8px;
+    background:rgba(214,69,69,0.06);
+  }
+  .draggable-block.is-empty-block::before{
+    content:'קוביה ריקה — לחצו על 🗑 להסרה';
+    position:absolute;top:50%;left:16px;transform:translateY(-50%);
+    font-size:12px;color:#D64545;font-weight:600;
+  }
+  .draggable-block.is-empty-block .block-delete-btn{
+    display:flex !important;
+    background:#D64545;color:#fff;
+    animation:emptyBlockPulse 1.6s ease-in-out infinite;
+  }
+  @keyframes emptyBlockPulse{0%,100%{opacity:1;}50%{opacity:.55;}}
+  .add-block-btn{
+    display:block;width:100%;
+    margin-top:10px;padding:12px;
+    border:2px dashed var(--line);border-radius:8px;
+    background:none;color:var(--grey);
+    font-size:13px;font-weight:600;cursor:pointer;
+  }
+  .add-block-btn:hover{border-color:var(--orange);color:var(--orange);}
+
+  body:not(.block-tools-active) .block-drag-grip,
+  body:not(.block-tools-active) .block-delete-btn,
+  body:not(.block-tools-active) .add-block-btn,
+  body:not(.block-tools-active) .drag-grip,
+  body:not(.block-tools-active) .card-delete-btn,
+  body:not(.block-tools-active) .add-card-btn{
+    display:none !important;
+  }
+  #block-tools-toggle.active{background:var(--orange);}
+  .prod .name{font-weight:700;font-size:15.5px;margin-bottom:8px;}
+  .prod .pitch{font-size:14px;}
+  .obj{border:1px solid var(--line);border-radius:8px;padding:14px 18px;margin-bottom:10px;background:var(--bg-card);box-shadow:0 1px 2px rgba(20,20,20,0.04);}
+  .obj .q{font-weight:600;font-size:14px;margin-bottom:6px;}
+  .obj .a{font-size:13.5px;color:var(--grey);}
+  .final{margin-top:56px;padding:22px 22px 6px;border-top:3px solid var(--ink);}
+  .final h2{margin-top:0;}
+  .final p{font-size:14.5px;}
+  .final ul{font-size:14.5px;padding-right:20px;}
+  .final li{margin-bottom:8px;}
+  .ai-box{
+    background:#FFF6F1;
+    border:1px solid #FFD9C7;
+    border-radius:6px;
+    padding:20px 22px;
+    margin:18px 0;
+  }
+  .ai-box .h{font-weight:700;color:var(--orange);font-size:15px;margin-bottom:8px;}
+  .ai-box p{font-size:14.5px;margin:0 0 12px;}
+  .ai-box p:last-child{margin-bottom:0;}
+  @media (max-width:720px){
+    .stage-row{grid-template-columns:1fr 1fr;}
+    .offer-grid{grid-template-columns:1fr;}
+  }
+
+  /* --- app shell: framed container + top bar + 3-column layout --- */
+  html, body{height:100%;}
+  body{overflow:hidden;background:#fff;}
+  .wrap{max-width:880px;margin:20px auto 40px;padding:32px 34px 60px;background:#fff;border-radius:10px;box-shadow:0 1px 3px rgba(20,20,20,0.06);}
+
+  #app-frame{
+    position:fixed;
+    inset:0;
+    background:#fff;
+    border-radius:0;
+    box-shadow:none;
+    overflow:hidden;
+    display:flex;
+    flex-direction:column;
+    direction:rtl;
+  }
+
+  #edit-toolbar{
+    flex-shrink:0;
+    height:52px;
+    background:var(--ink);
+    color:#fff;
+    display:flex;
+    align-items:center;
+    gap:10px;
+    padding:9px 18px;
+    font-size:13px;
+    direction:rtl;
+  }
+  #doc-title{font-weight:700;font-size:14px;margin-left:12px;white-space:nowrap;}
+  #edit-toolbar button{
+    background:var(--orange);
+    color:#fff;
+    border:none;
+    border-radius:5px;
+    padding:6px 14px;
+    font-size:13px;
+    cursor:pointer;
+    font-family:inherit;
+  }
+  #edit-toolbar button:disabled{background:#6B6B6E;cursor:default;}
+  #edit-toolbar button.secondary{background:#3A3A3C;}
+  #edit-toolbar .status{color:#B9B9BC;font-size:12px;margin-right:auto;}
+  #edit-toolbar .fmt-group{display:flex;gap:4px;padding-right:10px;border-right:1px solid #4A4A4C;}
+  #edit-toolbar .fmt-group button{
+    background:#3A3A3C;
+    min-width:32px;
+    padding:6px 10px;
+    font-weight:700;
+  }
+  #edit-toolbar .fmt-group button:hover{background:#4A4A4C;}
+  #edit-toolbar #italic-btn{font-style:italic;}
+  #edit-toolbar .swatch{
+    width:22px;
+    height:22px;
+    border-radius:4px;
+    border:2px solid #ffffff33;
+    cursor:pointer;
+    padding:0;
+  }
+  #edit-toolbar .swatch:hover{border-color:#fff;}
+
+  .edit-unit{
+    outline:2px dashed transparent;
+    border-radius:3px;
+    transition:outline-color .15s, background-color .15s;
+  }
+  .edit-unit[contenteditable="true"]:hover{
+    outline-color:#FFD9C7;
+    background-color:rgba(255,108,55,0.04);
+  }
+  .edit-unit[contenteditable="true"]:focus{
+    outline-color:var(--orange);
+    outline-style:solid;
+  }
+  .pitch-open{
+    background:#FFF6F1;
+    border:1px solid #FFD9C7;
+    border-radius:8px;
+    padding:20px 22px;
+    margin-bottom:8px;
+    font-size:15px;
+    box-shadow:0 1px 2px rgba(20,20,20,0.04);
+  }
+  .pitch-open .tag{color:var(--orange);font-weight:700;font-size:13px;margin-bottom:8px;display:block;}
+
+  #app-shell{
+    flex:1;
+    display:flex;
+    min-height:0;
+    direction:rtl;
+  }
+
+  /* --- right sidebar: topics nav --- */
+  #left-nav{
+    width:190px;
+    flex-shrink:0;
+    background:#FAFAFB;
+    border-left:1px solid var(--line);
+    padding:18px 12px;
+    overflow-y:auto;
+  }
+  #left-nav .nav-title{
+    font-weight:700;
+    color:var(--grey);
+    font-size:11.5px;
+    margin-bottom:10px;
+    padding:0 6px;
+    text-transform:uppercase;
+    letter-spacing:.02em;
+  }
+  #left-nav .nav-item{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    width:100%;
+    text-align:right;
+    background:none;
+    border:none;
+    color:var(--ink);
+    padding:10px 10px;
+    border-radius:6px;
+    font-size:14.5px;
+    font-weight:700;
+    font-family:inherit;
+    cursor:pointer;
+    margin-bottom:2px;
+  }
+  #left-nav .nav-item:hover{background:#FFF6F1;color:var(--orange);}
+  #left-nav .nav-item.active{background:#FFF1E8;color:var(--orange);border-right:3px solid var(--orange);padding-right:7px;}
+  .nav-reorder-item{display:flex;align-items:center;gap:2px;}
+  .nav-reorder-item > .nav-item{flex:1;min-width:0;}
+  .nav-item-label{overflow:hidden;text-overflow:ellipsis;white-space:nowrap;min-width:0;}
+  .nav-item .chevron-btn{flex-shrink:0;margin-right:4px;}
+  .reorder-arrows{display:flex;flex-direction:column;flex-shrink:0;}
+  .reorder-up, .reorder-down{
+    border:none;background:transparent;color:var(--grey);cursor:pointer;
+    font-size:9px;line-height:1;padding:1px 3px;border-radius:3px;
+  }
+  .reorder-up:hover, .reorder-down:hover{background:#FFF1E8;color:var(--orange);}
+  .reorder-up:disabled, .reorder-down:disabled{opacity:.25;cursor:default;}
+  .reorder-up:disabled:hover, .reorder-down:disabled:hover{background:transparent;color:var(--grey);}  #left-nav .nav-sep{height:1px;background:var(--line);margin:10px 4px;}
+  #left-nav .nav-panel .arrow{color:var(--orange);font-size:12px;}
+  #left-nav .nav-item.active .arrow{color:var(--orange);}
+  .nav-item-row{display:flex;align-items:center;gap:2px;}
+  .nav-item-row .nav-item{flex:1;margin-bottom:0;}
+  .chevron-btn{
+    background:none;
+    border:none;
+    color:var(--grey);
+    font-size:13px;
+    cursor:pointer;
+    padding:6px 6px;
+    border-radius:5px;
+    transition:transform .15s;
+  }
+  .chevron-btn:hover{color:var(--orange);}
+  .chevron-btn.open{transform:rotate(180deg);}
+  .nav-submenu{
+    max-height:0;
+    overflow:hidden;
+    transition:max-height .2s ease;
+  }
+  .nav-submenu.open{max-height:400px;overflow-y:auto;}
+  .nav-subitem{
+    display:block;
+    width:100%;
+    text-align:right;
+    background:none;
+    border:none;
+    color:var(--ink);
+    padding:7px 10px 7px 10px;
+    padding-right:22px;
+    border-radius:5px;
+    font-size:13px;
+    font-weight:600;
+    font-family:inherit;
+    cursor:pointer;
+    margin-bottom:1px;
+  }
+  .nav-subitem:hover{background:#FFF6F1;color:var(--orange);}
+  @media (max-width:900px){
+    #left-nav{display:none;}
+  }
+
+  /* --- center column: the actual document --- */
+  #center-content{
+    flex:1;
+    overflow-y:auto;
+    min-width:0;
+    background:#F6F6F7;
+  }
+
+  /* --- left sidebar: docked chat --- */
+  #chat-panel{
+    width:340px;
+    flex-shrink:0;
+    background:#fff;
+    border-right:1px solid var(--line);
+    display:flex;
+    flex-direction:column;
+    min-height:0;
+  }
+  @media (max-width:680px){
+    #chat-panel{display:none;}
+  }
+  .chat-header{
+    display:flex;
+    align-items:center;
+    gap:8px;
+    padding:14px 16px;
+    border-bottom:1px solid var(--line);
+    flex-shrink:0;
+  }
+  .chat-header-icon{font-size:18px;}
+  .chat-header-title{font-weight:700;font-size:14px;}
+  .chat-quick{
+    display:flex;
+    flex-direction:column;
+    gap:6px;
+    padding:12px 16px;
+    border-bottom:1px solid var(--line);
+    flex-shrink:0;
+  }
+  .chat-quick-btn{
+    text-align:right;
+    background:var(--bg-card);
+    border:1px solid var(--line);
+    border-radius:6px;
+    padding:8px 10px;
+    font-size:12px;
+    font-family:inherit;
+    color:var(--ink);
+    cursor:pointer;
+  }
+  .chat-quick-btn:hover{border-color:var(--orange);color:var(--orange);}
+  .chat-quick-item{display:flex;align-items:center;gap:4px;}
+  .chat-quick-item .chat-quick-btn{flex:1;}
+  .chat-quick-remove{
+    flex-shrink:0;width:20px;height:20px;border-radius:50%;border:1px solid var(--line);
+    background:#fff;color:var(--grey);font-size:11px;cursor:pointer;display:flex;
+    align-items:center;justify-content:center;padding:0;
+  }
+  .chat-quick-remove:hover{background:#FDECEC;color:#D64545;border-color:#D64545;}
+
+  #saved-questions-wrap{
+    position:relative;
+    padding:0 16px 10px;
+    border-bottom:1px solid var(--line);
+    flex-shrink:0;
+  }
+  #saved-questions-btn{
+    width:100%;
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    background:var(--bg-card);
+    border:1px solid var(--line);
+    border-radius:6px;
+    padding:8px 10px;
+    font-size:12px;
+    font-family:inherit;
+    color:var(--ink);
+    cursor:pointer;
+  }
+  #saved-questions-btn:hover{border-color:var(--orange);color:var(--orange);}
+  #saved-questions-count{
+    background:var(--orange);
+    color:#fff;
+    font-size:10px;
+    font-weight:700;
+    border-radius:10px;
+    padding:1px 6px;
+    margin-right:auto;
+  }
+  #saved-questions-count:empty{display:none;}
+  #sync-status{
+    font-size:11px;
+    color:var(--grey);
+    padding-top:4px;
+    min-height:14px;
+  }
+  #sync-status.ok{color:#2E7D5B;}
+  #sync-status.err{color:#D64545;}
+  #saved-questions-menu{
+    display:none;
+    position:absolute;
+    top:100%;
+    right:16px;
+    left:16px;
+    background:#fff;
+    border:1px solid var(--line);
+    border-radius:8px;
+    box-shadow:0 8px 24px rgba(0,0,0,.15);
+    max-height:260px;
+    overflow-y:auto;
+    z-index:50;
+    margin-top:4px;
+  }
+  #saved-questions-menu.open{display:block;}
+  #saved-questions-menu .sq-empty{
+    padding:14px;font-size:12px;color:var(--grey);
+  }
+  .sq-item{
+    display:flex;
+    align-items:center;
+    gap:6px;
+    padding:9px 10px;
+    border-bottom:1px solid var(--line);
+    cursor:pointer;
+    font-size:12.5px;
+  }
+  .sq-item:last-child{border-bottom:none;}
+  .sq-item:hover{background:#FFF6F1;color:var(--orange);}
+  .sq-item .sq-text{flex:1;white-space:normal;word-break:break-word;line-height:1.4;}
+  .sq-item .sq-delete{
+    background:none;border:none;color:var(--grey);
+    font-size:13px;cursor:pointer;flex-shrink:0;padding:2px 4px;
+  }
+  .sq-item .sq-delete:hover{color:#D64545;}
+
+  .chat-msg.bot{position:relative;padding-left:26px;}
+  .msg-star-btn{
+    position:absolute;
+    left:6px;
+    bottom:6px;
+    background:none;
+    border:none;
+    font-size:14px;
+    cursor:pointer;
+    opacity:.5;
+    line-height:1;
+    padding:2px;
+  }
+  .msg-star-btn:hover{opacity:1;}
+  .msg-star-btn.saved{opacity:1;}
+  #chat-log{
+    flex:1;
+    overflow-y:auto;
+    padding:14px 16px;
+    display:flex;
+    flex-direction:column;
+    gap:10px;
+  }
+  .chat-placeholder{color:var(--grey);font-size:13px;}
+  .chat-msg{
+    max-width:92%;
+    padding:9px 12px;
+    border-radius:8px;
+    font-size:13.5px;
+    line-height:1.55;
+    white-space:pre-wrap;
+  }
+  .chat-msg.user{
+    align-self:flex-start;
+    background:var(--ink);
+    color:#fff;
+  }
+  .chat-msg.bot{
+    align-self:flex-end;
+    background:var(--bg-card);
+    border:1px solid var(--line);
+    color:var(--ink);
+  }
+  .chat-msg.bot.loading{color:var(--orange);}
+  .chat-msg.bot.err{color:#D64545;border-color:#D64545;}
+  #chat-input-row{
+    display:flex;
+    gap:8px;
+    padding:12px;
+    border-top:1px solid var(--line);
+    flex-shrink:0;
+  }
+  #chat-question{
+    flex:1;
+    border:1px solid var(--line);
+    border-radius:6px;
+    padding:8px 10px;
+    font-size:13.5px;
+    font-family:inherit;
+    resize:none;
+  }
+  #chat-send{
+    background:var(--orange);
+    color:#fff;
+    border:none;
+    border-radius:6px;
+    padding:0 16px;
+    font-size:13px;
+    cursor:pointer;
+  }
+  #chat-send:disabled{background:#B9B9BC;cursor:default;}
+  .chat-disclaimer{
+    font-size:10.5px;
+    color:var(--grey);
+    padding:0 16px 12px;
+    flex-shrink:0;
+  }
+
+  /* --- slide-in side panels (objections / Fabric / Passport / ASA) ---
+     position:absolute here (not fixed) so they're contained inside
+     #app-frame — which is the nearest positioned ancestor — instead of
+     the raw browser viewport. */
+  #panel-backdrop{
+    position:absolute;
+    inset:0;
+    background:rgba(0,0,0,0.25);
+    opacity:0;
+    pointer-events:none;
+    transition:opacity .2s;
+    z-index:996;
+  }
+  #panel-backdrop.open{opacity:0;pointer-events:auto;}
+  /* Floating, draggable window instead of an edge-anchored drawer.
+     Position is top/left (not right/bottom) from the start, since
+     dragging math needs one consistent anchor pair — JS moves it by
+     just rewriting these two values. */
+  .side-panel{
+    position:absolute;
+    top:10px;
+    left:calc(50% - 450px);
+    width:900px;
+    height:calc(100% - 20px);
+    max-width:95%;
+    background:#fff;
+    border-radius:12px;
+    box-shadow:0 20px 50px rgba(0,0,0,0.28);
+    opacity:0;
+    visibility:hidden;
+    transform:scale(0.96);
+    transition:opacity .15s ease, transform .15s ease;
+    z-index:997;
+    display:flex;
+    flex-direction:column;
+    overflow:hidden;
+  }
+  .side-panel.open{opacity:1;visibility:visible;transform:scale(1);}
+
+  /* Fern opens as a full page, not a framed card — it's an embedded real
+     page the person scrolls through normally, not a floating box. */
+  #panel-fern{
+    top:0;left:0;right:0;width:100%;height:100%;max-width:none;
+    border-radius:0;box-shadow:none;
+  }
+  #panel-fern .panel-body{flex:1;min-height:0;}
+
+  /* Every floating panel (Fabric / Passport / ASA / DATABASE / Objections /
+     the chat answer window) shares the .side-panel rule above, so they now
+     all open at this same large, centered size — no more per-panel override. */
+  .panel-header{
+    background:var(--ink);
+    color:#fff;
+    padding:14px 18px;
+    font-size:16px;
+    font-weight:700;
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    flex-shrink:0;
+    cursor:grab;
+    user-select:none;
+  }
+  .panel-header:active{cursor:grabbing;}
+  .panel-header .panel-close{
+    background:none;
+    border:none;
+    color:#fff;
+    font-size:18px;
+    cursor:pointer;
+  }
+  .panel-body{
+    padding:20px;
+    overflow-y:auto;
+    flex:1;
+  }
+  .panel-list{margin:0 0 16px;padding-right:20px;font-size:14px;}
+  .panel-list li{margin-bottom:8px;}
+  .panel-table{
+    width:100%;
+    border-collapse:collapse;
+    font-size:12.5px;
+    margin-top:10px;
+  }
+  .panel-table th, .panel-table td{
+    border:1px solid var(--line);
+    padding:8px;
+    text-align:right;
+    vertical-align:top;
+  }
+  .panel-table th{background:var(--bg-card);font-weight:700;}
+
+  /* --- floating, editable bot-answer window --- */
+  /* --- light-themed formatting toolbar, duplicated inside the answer window --- */
+  .answer-fmt-group{
+    display:flex;
+    gap:5px;
+    margin-bottom:10px;
+    flex-wrap:wrap;
+  }
+  .answer-fmt-group .swatch{
+    width:22px;
+    height:22px;
+    border-radius:4px;
+    border:2px solid var(--line);
+    cursor:pointer;
+    padding:0;
+  }
+  .answer-fmt-group .swatch:hover{border-color:var(--orange);}
+  .answer-fmt-group button:not(.swatch){
+    background:var(--bg-card);
+    border:1px solid var(--line);
+    color:var(--ink);
+    min-width:30px;
+    padding:5px 9px;
+    border-radius:5px;
+    font-size:13px;
+    font-weight:700;
+    cursor:pointer;
+    font-family:inherit;
+  }
+  .answer-fmt-group button:not(.swatch):hover{border-color:var(--orange);color:var(--orange);}
+  #answer-italic-btn{font-style:italic;}
+
+  .answer-window-text{
+    font-size:14.5px;
+    line-height:1.6;
+    white-space:pre-wrap;
+    min-height:60px;
+    padding:10px 12px;
+    border:1px solid var(--line);
+    border-radius:8px;
+    background:var(--bg-card);
+    outline:none;
+  }
+  .answer-window-text:focus{border-color:var(--orange);}
+  .answer-window-actions{
+    display:flex;
+    align-items:center;
+    gap:10px;
+    margin-top:12px;
+  }
+  #save-answer-edit-btn{
+    background:var(--orange);
+    color:#fff;
+    border:none;
+    border-radius:6px;
+    padding:8px 16px;
+    font-size:13px;
+    font-family:inherit;
+    cursor:pointer;
+  }
+  .answer-window-status{font-size:12px;color:#2E7D5B;}
+</style>
+</head>
+<body class="">
+<div id="app-frame">
+<div id="edit-toolbar">
+<span id="doc-title">סקריפט שיחת לקוח — Postman</span>
+<button id="undo-btn">↩ בטל שינוי אחרון</button>
+<button class="secondary" id="download-btn">⬇ הורד קובץ מעודכן</button>
+<button class="secondary" id="save-sync-btn" onclick="saveAndSyncContent()">💾 שמור ותרגם לאנגלית</button>
+<button class="secondary" id="toggle-btn">✏️ עריכה פעילה</button>
+<button class="secondary" id="block-tools-toggle">🧱 כלי הזזה/מחיקה</button>
+<div class="fmt-group">
+<button id="bold-btn" title="הדגשה (סמן טקסט ולחץ)">B</button>
+<button id="italic-btn" title="נטוי (סמן טקסט ולחץ)">I</button>
+<button id="dec-font-btn" title="הקטן טקסט (סמן טקסט ולחץ)">A-</button>
+<button id="inc-font-btn" title="הגדל טקסט (סמן טקסט ולחץ)">A+</button>
+<input id="color-input" title="צבע טקסט (סמן טקסט ובחר צבע)" type="color" value="#1C1C1E">
+<button class="swatch" data-color="#1C1C1E" style="background:#1C1C1E" title="שחור"></button>
+<button class="swatch" data-color="#FF6C37" style="background:#FF6C37" title="כתום"></button>
+<button class="swatch" data-color="#D64545" style="background:#D64545" title="אדום"></button>
+<button class="swatch" data-color="#2E7D5B" style="background:#2E7D5B" title="ירוק"></button>
+<button class="swatch" data-color="#2F6FED" style="background:#2F6FED" title="כחול"></button>
+<button class="swatch" data-color="#5B5F66" style="background:#5B5F66" title="אפור"></button>
+</div>
+<span class="status" id="save-status"></span>
+</div>
+<div id="panel-backdrop" class=""></div>
+<div id="app-shell">
+<nav id="left-nav">
+<div class="nav-title">נושאים</div><div class="nav-reorder-item" data-reorder-id="pitch"><button class="nav-item active" data-scroll="sec-opening">פיץ' פתיחה</button><span class="reorder-arrows"><button class="reorder-up" title="הזז מעלה" disabled="">▲</button><button class="reorder-down" title="הזז מטה">▼</button></span></div><div class="nav-reorder-item" data-reorder-id="process"><button class="nav-item" data-scroll="sec-process">התהליך</button><span class="reorder-arrows"><button class="reorder-up" title="הזז מעלה">▲</button><button class="reorder-down" title="הזז מטה">▼</button></span></div><div class="nav-reorder-item" data-reorder-id="ai"><button class="nav-item" data-scroll="sec-ai">AI</button><span class="reorder-arrows"><button class="reorder-up" title="הזז מעלה">▲</button><button class="reorder-down" title="הזז מטה">▼</button></span></div><div class="nav-reorder-item" data-reorder-id="stages"><button class="nav-item" data-scroll="sec-stages">מה אנחנו מציעים</button><span class="reorder-arrows"><button class="reorder-up" title="הזז מעלה">▲</button><button class="reorder-down" title="הזז מטה">▼</button></span></div><div class="nav-reorder-item" data-reorder-id="panel-objections"><button class="nav-item nav-panel" data-open-panel="panel-objections"><span>מיצוב והתנגדויות</span><span class="arrow">↗</span></button><span class="reorder-arrows"><button class="reorder-up" title="הזז מעלה">▲</button><button class="reorder-down" title="הזז מטה">▼</button></span></div><div class="nav-reorder-item" data-reorder-id="panel-fabric"><button class="nav-item nav-panel" data-open-panel="panel-fabric"><span>Fabric</span><span class="arrow">↗</span></button><span class="reorder-arrows"><button class="reorder-up" title="הזז מעלה">▲</button><button class="reorder-down" title="הזז מטה">▼</button></span></div><div class="nav-reorder-item" data-reorder-id="panel-passport"><button class="nav-item nav-panel" data-open-panel="panel-passport"><span>Passport</span><span class="arrow">↗</span></button><span class="reorder-arrows"><button class="reorder-up" title="הזז מעלה">▲</button><button class="reorder-down" title="הזז מטה">▼</button></span></div><div class="nav-reorder-item" data-reorder-id="panel-asa"><button class="nav-item nav-panel" data-open-panel="panel-asa"><span>ASA</span><span class="arrow">↗</span></button><span class="reorder-arrows"><button class="reorder-up" title="הזז מעלה">▲</button><button class="reorder-down" title="הזז מטה">▼</button></span></div><div class="nav-reorder-item" data-reorder-id="panel-fern"><button class="nav-item nav-panel" data-open-panel="panel-fern"><span>Fern</span><span class="arrow">↗</span></button><span class="reorder-arrows"><button class="reorder-up" title="הזז מעלה">▲</button><button class="reorder-down" title="הזז מטה">▼</button></span></div><div class="nav-reorder-item" data-reorder-id="panel-database"><button class="nav-item nav-panel" data-open-panel="panel-database"><span>DATABASE</span><span class="arrow">↗</span></button><span class="reorder-arrows"><button class="reorder-up" title="הזז מעלה">▲</button><button class="reorder-down" title="הזז מטה" disabled="">▼</button></span></div>
+
+
+
+
+<div class="nav-item-row">
+<button class="nav-item" data-scroll="sec-products">מוצרי הליבה</button>
+<button class="chevron-btn" data-toggle="submenu-products" title="הצג את כל המוצרים">⌄</button>
+</div>
+<div class="nav-submenu" id="submenu-products">
+<button class="nav-subitem" data-scroll="prod-organizations">Organizations</button>
+<button class="nav-subitem" data-scroll="prod-api-catalog">API Catalog</button>
+<button class="nav-subitem" data-scroll="prod-private-network">Private API Network</button>
+<button class="nav-subitem" data-scroll="prod-governance-builder">Governance Rule Builder</button>
+<button class="nav-subitem" data-scroll="prod-secret-scanner">Secret Scanner</button>
+<button class="nav-subitem" data-scroll="prod-vault">Postman Vault</button>
+<button class="nav-subitem" data-scroll="prod-insights">Insights</button>
+<button class="nav-subitem" data-scroll="prod-api-reports">API Reports</button>
+<button class="nav-subitem" data-scroll="prod-agent-mode">Agent Mode</button>
+<button class="nav-subitem" data-scroll="prod-git-workflows">Native Git Workflows</button>
+<button class="nav-subitem" data-scroll="prod-cli-pipeline">CLI + Pipeline</button>
+<button class="nav-subitem" data-scroll="prod-mock-servers">Mock Servers</button>
+<button class="nav-subitem" data-scroll="prod-partner-workspaces">Partner Workspaces</button>
+<button class="nav-subitem" data-scroll="prod-asa">ASA</button>
+<button class="nav-subitem" data-scroll="prod-fabric-inline">Fabric</button>
+<button class="nav-subitem" data-scroll="prod-passport-inline">Passport</button>
+</div>
+<div class="nav-sep"></div>
+
+
+
+
+
+
+</nav>
+<main id="center-content">
+<div class="wrap" id="editable-root">
+<!-- SECTION 0: 30-SECOND OPENING PITCH -->
+<section id="sec-opening">
+
+
+<div class="pitch-open edit-unit draggable-block" contenteditable="true" draggable="true" data-block-wired="1">
+<span class="tag" style="color:#FF6C37;font-weight:700;font-size:13px;margin-bottom:8px;display:block;">שאלות להתחלת השיחה</span>
+<p style="margin:0 0 10px;">לפני שניכנס ל-Postman, אשמח להבין קצת יותר עליך — מה התפקיד שלך ומה אתה מוביל היום אצלכם בחברה?</p>
+
+<p style="margin:0 0 4px;"><i>ואחרי שהוא עונה:</i></p>
+<p style="margin:0 0 10px;">מעניין. ומה גרם לך לקבל את הפניה שלי לשיחה דווקא עכשיו? יש משהו ספציפי סביב API Testing או AI שאתם מנסים לפתור?</p>
+
+<p style="margin:0 0 10px;">מעניין. כשאתה אומר את זה, אני סקרן להבין — זה משהו שכל צוות מתמודד איתו בפני עצמו, או שיש אצלכם איזושהי יוזמה רחבה יותר סביב APIs וסטנדרטיזציה? <b>[Governance / API Catalog]</b></p>
+
+<p style="margin:0 0 4px;"><i>אם הוא מדבר על חוסר סטנדרטיזציה:</i></p>
+<p style="margin:0 0 10px;">ואיך אתם מתמודדים עם זה היום? כלומר, כשצוות מפתח API חדש — מי מגדיר מה הסטנדרט ואיך מוודאים שהוא באמת עומד בו? <b>[Governance]</b></p>
+
+<p style="margin:0 0 4px;"><i>אם הוא מדבר על חוסר Visibility:</i></p>
+<p style="margin:0 0 14px;">זה מעניין. אז בעצם אין היום מקום אחד שבו אפשר לראות אילו APIs קיימים, מי הבעלים שלהם ואיך צוותים אחרים יכולים למצוא ולהשתמש בהם? <b>[API Catalog / Passport]</b></p>
+
+<p style="margin:0 0 10px;font-weight:700;color:#1C1C1E;">להבין את תהליך הפיתוח והבדיקות</p>
+
+<p style="margin:0 0 4px;"><i>אם הוא מזכיר Testing / QA / Release:</i></p>
+<p style="margin:0 0 10px;">ואיך זה עובד היום בפועל? נניח שמפתח משנה API, מה קורה מהרגע הזה ועד שהשינוי מגיע לפרודקשן? כמה מזה כבר אוטומטי וכמה עדיין דורש עבודה ידנית? <b>[Postman / Automation]</b></p>
+
+<p style="margin:0 0 4px;"><i>ואם הוא אומר שיש הרבה עבודה ידנית:</i></p>
+<p style="margin:0 0 14px;">אה, מעניין. ומה בדרך כלל עוצר אתכם מלהעביר יותר מזה ל-CI/CD? <b>[Postman CLI / Automation]</b></p>
+
+<p style="margin:0 0 4px;"><i>אם הוא מזכיר AI / Agents:</i></p>
+<p style="margin:0 0 10px;">כן, זה מעניין. עם כל השימוש ב-AI היום, אני סקרן להבין — אצלכם ה-AI כבר מתחיל לעבוד גם מול APIs וכלים פנימיים, או שזה עדיין בעיקר סביב כתיבת קוד? <b>[AI / Fabric / Fern]</b></p>
+
+<p style="margin:0 0 4px;"><i>אם הוא מדבר על Agents:</i></p>
+<p style="margin:0 0 14px;">ואיך אתם שולטים במה שה-Agent יכול לגשת אליו? כלומר, איך הוא יודע לאיזה API או כלי מותר לו לגשת, ואיך אתם עוקבים אחרי זה? או איך אתם שולטים על עלויות? <b>[Fabric / Passport]</b></p>
+
+<p style="margin:0 0 4px;"><i>אם עולה נושא של API Consumption, והבעיה היא שמפתחים לא יודעים למצוא/לקבל גישה ל-API:</i></p>
+<p style="margin:0 0 14px;">ואיך מפתח מקבל היום גישה ל-API פנימי שהוא צריך? יש איזשהו מקום מרכזי שהוא יכול למצוא אותו ולבקש access, או שזה עדיין דרך Slack, tickets וכדומה? <b>[Passport / API Catalog]</b></p>
+
+<p style="margin:0 0 10px;font-weight:700;color:#1C1C1E;">שאלה אחת שאני ממש רוצה להגיע אליה</p>
+
+<p style="margin:0 0 4px;"><i>לקראת סוף השיחה:</i></p>
+<p style="margin:0;">אם אני רגע מסכם את מה שאמרת, הבעיה המרכזית היא יותר סביב XXX. מי אצלכם הכי קרוב לבעיה הזאת ביום־יום? מי בעצם יהיה האדם הנכון להכניס לשיחה הבאה? <b>[Champion / Multithreading]</b></p>
+<span class="block-drag-grip" title="גרור כדי להזיז" contenteditable="false" draggable="true">⠿</span><button type="button" class="block-delete-btn" title="מחק בלוק זה" contenteditable="false">🗑</button></div><div class="cross-box edit-unit draggable-block" contenteditable="true" data-block-wired="1"><span class="tag" style="color: rgb(255, 108, 55); font-weight: 700; font-size: 13px; margin-bottom: 8px; display: block;"><span style="color: rgb(28, 28, 30); font-size: 15px;">הסבר על POSTMAN<br><br></span><span style="font-size: 15.5px; color: rgb(28, 28, 30);"><span style="font-weight: normal;">בארגונים גדולים אנחנו רואים לא מעט מקרים שבהם צוותים שונים משתמשים ב-Postman באופן עצמאי, דרך חשבונות אישיים לצד חשבונות ארגוניים, בלי ניהול מרכזי של המשתמשים, ההרשאות, תהליכי העבודה, ה-APIs והאבטחה. עם הזמן, זה יוצר מצב שבו כל צוות עובד קצת אחרת, אין תמונה מרכזית של כלל ה-APIs והפעילות סביבם, וקשה לדעת מי משתמש במה ומי מחזיק גישה לאילו APIs ומערכות — במיוחד כשהפעילות מפוזרת בין משתמשים, צוותים, חשבונות, ויותר ויותר גם כלי AI ו-AI Agents. זה המקום שבו בדרך כלל מתחילים לעלות נושאים כמו API Governance, סטנדרטיזציה ואבטח</span>ה</span></span><span style="font-size: 15px;">בניית APIs כבר לא באמת החלק הקשה. </span><b style="color: rgb(28, 28, 30); font-size: 15px;">האתגר מתחיל</b><span style="font-size: 15px;"> כשה-APIs גדלים על פני כמה צוותים, מוצרים וסביבות.</span><br style="font-size: 15px;"><span style="font-size: 15px;">בשלב הזה, ארגונים בדרך כלל נתקלים באותן בעיות: </span><b style="color: rgb(28, 28, 30); font-size: 15px;">אין נראות למה שקיים בכלל, תיעוד ובדיקות לא עקביים, כפילויות עבודה בין צוותים, ודרישות Governance ואבטחה שגדלות כל הזמן.</b><br style="font-size: 15px;"><span style="font-size: 15px;">בזמן האחרון, יוזמות AI חשפו את הבעיות האלה עוד יותר, כי אפליקציות AI תלויות ב-APIs שאפשר לגלות, שאמינים, ושמתועדים כמו שצריך.</span><br style="font-size: 15px;"><span style="font-size: 15px; color: rgb(29, 27, 27);"><span style="color: rgb(197, 27, 27);"><b><span style="color: rgb(241, 168, 9);"><span style="color: rgb(197, 143, 27);"><span style="color: rgb(197, 18, 253);">זה בדיוק המקום שבו Postman נכנס לתמונה</span></span></span></b></span></span><span style="font-size: 15px;">. </span><b style="color: rgb(28, 28, 30); font-size: 15px;">Postman היא פלטפורמה כוללת שבה צוותים יכולים לעצב, לבדוק, לתעד, לגלות ולנהל Governance על APIs</b><span style="font-size: 15px;"> — במקום לנהל את כל זה על פני כלים ותהליכים מפוצלים.</span><br style="font-size: 15px;"><span style="font-size: 15px;">בין אם אתם בשלב פרוטוטייפ לרעיון, ובין אם אתם מרחיבים מערכת שכבר בפרודקשן — Postman נותנת לכם את הכלים שאתם צריכים בכל שלב במחזור החיים של ה-API.</span><br style="font-size: 15px;"><span style="font-size: 15px;">אז כן — הפתרון שלנו הוא הרבה יותר מרק שליחת requests. אנחנו מלווים את כל מחזור החיים של ה-API, מהעיצוב והתיעוד ועד למעקב, אוטומציה ו-Governance.</span>טקסט חדש...<span class="block-drag-grip" title="גרור כדי להזיז" contenteditable="false" draggable="true">⠿</span><button type="button" class="block-delete-btn" title="מחק בלוק זה" contenteditable="false">🗑</button></div><button type="button" class="add-block-btn">+ הוסף בלוק טקסט</button></section>
+<!-- SECTION 1: THE PROCESS -->
+<section id="sec-process">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<h2 class="edit-unit draggable-block" contenteditable="true" draggable="true" data-block-wired="1"><span class="num">1</span> התהליך: איך תוכנה נבנית היום<span class="block-drag-grip" title="גרור כדי להזיז" contenteditable="false" draggable="true">⠿</span><button type="button" class="block-delete-btn" title="מחק בלוק זה" contenteditable="false">🗑</button></h2><p class="lead edit-unit draggable-block" contenteditable="true" draggable="true" data-block-wired="1">כל ארגון פיתוח - Waterfall, Agile, או CI/CD - עובר בפועל את חמשת השלבים האלה. השאלה היחידה היא אם הם מחוברים או מבודדים.&nbsp;<span style="color: rgb(28, 28, 30); font-size: 14.5px; font-weight: 700;">הערך המירבי של Postman הוא בשלבים 1 עד 3 — עיצוב, פיתוח ובדיקות — כי זה המקום שבו טעות עולה הכי פחות לתקן. פריסה ומעקב זה ערך נוסף שנוסיף בהמשך, אבל זה לא הליבה של מה שאני רוצה שתראו היום</span><span class="block-drag-grip" title="גרור כדי להזיז" contenteditable="false" draggable="true">⠿</span><button type="button" class="block-delete-btn" title="מחק בלוק זה" contenteditable="false">🗑</button></p><div class="stage-row draggable-block" draggable="true" data-block-wired="1">
+<div class="stage core">
+<div class="n">01</div>
+<div class="t edit-unit" contenteditable="true">עיצוב (Design)</div>
+<div class="who edit-unit" contenteditable="true">אדריכלים, מנהלי מוצר API</div>
+<div class="d edit-unit" contenteditable="true">כותבים מראש בדיוק מה ה-API עושה, ואילו כללי Governance חלים עליו — לפני שנכתבה שורת קוד אחת.</div>
+</div>
+<div class="stage core">
+<div class="n">02</div>
+<div class="t edit-unit" contenteditable="true">פיתוח (Develop)</div>
+<div class="who edit-unit" contenteditable="true">מפתחים</div>
+<div class="d edit-unit" contenteditable="true">כותבים את הקוד עצמו, עוברים code review, ומשלבים בין הרכיבים.</div>
+</div>
+<div class="stage core">
+<div class="n">03</div>
+<div class="t edit-unit" contenteditable="true">בדיקות (Test)</div>
+<div class="who edit-unit" contenteditable="true">Quality Engineers</div>
+<div class="d edit-unit" contenteditable="true">בודקים שהכל עובד כמו שתכננו — גם ידנית וגם אוטומטית.</div>
+</div>
+<div class="stage">
+<div class="n">04</div>
+<div class="t edit-unit" contenteditable="true">פריסה (Deploy)</div>
+<div class="who edit-unit" contenteditable="true">DevOps, Platform</div>
+<div class="d edit-unit" contenteditable="true">עוברים שער אישור, ואז עולים ל-production.</div>
+</div>
+<div class="stage">
+<div class="n">05</div>
+<div class="t edit-unit" contenteditable="true">מעקב (Monitor)</div>
+<div class="who edit-unit" contenteditable="true">Platform Engineer</div>
+<div class="d edit-unit" contenteditable="true">עוקבים אחרי המערכת בזמן אמת — התראות, עמידה ב-SLA.</div>
+</div>
+<span class="block-drag-grip" title="גרור כדי להזיז" contenteditable="false" draggable="true">⠿</span><button type="button" class="block-delete-btn" title="מחק בלוק זה" contenteditable="false">🗑</button></div><div class="say edit-unit draggable-block" contenteditable="true" draggable="true" data-block-wired="1">
+<b class="tag">איך אני ממסגר את זה</b>
+"הפלטפורמה שלנו לא נועדה להחליף את ה-API Gateway — אלא אם תרצו בכך — הערך הוא ביצירת שכבת שיקוף, גילוי, אבטחה ו-Governance סביב ה-APIs, ובניהול יעיל יותר של כל מחזור החיים שלהם."
+<span class="block-drag-grip" title="גרור כדי להזיז" contenteditable="false" draggable="true">⠿</span><button type="button" class="block-delete-btn" title="מחק בלוק זה" contenteditable="false">🗑</button></div><div class="cross-box edit-unit draggable-block" contenteditable="true" draggable="true" data-block-wired="1"><span style="font-size: 15.5px;">Postman נותנת מענה כולל לאורך כל מחזור החיים של ה-API באמצעות ארכיטקטורת Waterfall, שבה כל שלב מתבסס על מה שהוגדר בשלב הקודם, וגם אוכף אותו אוטומטית: בעיצוב (Design) מגדירים את חוזה ה-API ומיישמים Governance; בפיתוח (Development) בודקים ברציפות שהקוד נשאר בהתאם לחוזה ומזהים שינויים ששוברים מערכות קיימות; בבדיקות (Tests) מייצרים ומריצים בדיקות אוטומטית, עם AI שמתקן בדיקות שנכשלו ומריץ בדיקות עומס; ובהטמעה ומעקב (Deployment &amp; Monitoring) בדיקות אוטומטיות ממשיכות לוודא עמידה בסטנדרטים, ו-Insights מזהה פערים על בסיס תעבורה אמיתית. במקביל, Agent Mode ו-AI Engineer מספקים יכולות AI שמבינות את ההקשר ומבצעות פעולות אוטומטיות או מונחות לאורך השלבים — Agent Mode עובד עם APIs, בדיקות ותהליכי Governance, ו-AI Engineer עובד עם הקוד וההיסטוריה ב-Git כדי לזהות APIs ישנים או לא בשימוש, ולבדוק שינויים לפני Merge. אפשר גם ליצור את כללי ה-Governance עצמם בעזרת AI, ו-Postman אוכפת אותם באופן עקבי על פני כל הפרויקטים.</span>
+<span class="block-drag-grip" title="גרור כדי להזיז" contenteditable="false" draggable="true">⠿</span><button type="button" class="block-delete-btn" title="מחק בלוק זה" contenteditable="false">🗑</button></div><div class="group-title edit-unit draggable-block" contenteditable="true" draggable="true" data-block-wired="1">מה כולל Postman Enterprise<span class="block-drag-grip" title="גרור כדי להזיז" contenteditable="false" draggable="true">⠿</span><button type="button" class="block-delete-btn" title="מחק בלוק זה" contenteditable="false">🗑</button></div><div class="cross-box edit-unit draggable-block" contenteditable="true" draggable="true" data-block-wired="1">
+תוכנית ה-Enterprise מיועדת לארגונים שרוצים לנהל APIs בקנה מידה רחב — Governance ארגוני, בקרות אבטחה ונראות מלאה, אכיפת כללים אוטומטית על פני כל הצוותים, ניהול סודות מרכזי, ותצוגה אחודה של כל ה-APIs שנבנים בארגון. בקנה מידה גדול, כלים מפוזרים ותהליכים ידניים הופכים לסיכון ממשי, במיוחד לנוכח דרישות אבטחה ותאימות שהולכות וגדלות.
+<span class="block-drag-grip" title="גרור כדי להזיז" contenteditable="false" draggable="true">⠿</span><button type="button" class="block-delete-btn" title="מחק בלוק זה" contenteditable="false">🗑</button></div><ul class="panel-list draggable-block" draggable="true" data-block-wired="1">
+<li class="edit-unit" contenteditable="true"><b>API Catalog</b> — מקום מרכזי לראות ולנהל את כל ה-APIs, כולל אלה שבפיתוח ולא רק אלה שבפרודקשן.</li>
+<li class="edit-unit" contenteditable="true"><b>API Governance</b> — הגדרת סטנדרטים וכללים ל-APIs ואכיפתם לאורך הפיתוח וה-CI/CD.</li>
+<li class="edit-unit" contenteditable="true"><b>Private API Network</b> — קטלוג פנימי שמאפשר למפתחים למצוא ולצרוך APIs מאושרים של הארגון.</li>
+<li class="edit-unit" contenteditable="true"><b>Advanced RBAC ובקרות ארגוניות</b> — שליטה מדויקת על מי יכול לראות, לערוך, לפרסם ולגשת ל-APIs ולמידע.</li>
+<li class="edit-unit" contenteditable="true"><b>Audit Logs, Reporting ו-API usage visibility</b> — שקיפות מלאה על מי עשה מה, מתי, ואיך משתמשים ב-APIs.</li>
+<li class="edit-unit" contenteditable="true"><b>Private Test and Flows Runners</b> — הרצת בדיקות ו-Flows בתוך הסביבה הפרטית של הארגון, בלי לשלוח מידע לחוץ.</li>
+<li class="edit-unit" contenteditable="true"><b>Insights</b> — תמונה ברורה של פעילות ה-APIs, שימוש, תעבורה ודפוסי פעילות.</li>
+<li class="edit-unit" contenteditable="true"><b>800 קרדיטי AI משותפים למשתמש/חודש</b> — קרדיטים חודשיים ליכולות ה-AI, משותפים בתוך הארגון.</li>
+<span class="block-drag-grip" title="גרור כדי להזיז" contenteditable="false" draggable="true">⠿</span><button type="button" class="block-delete-btn" title="מחק בלוק זה" contenteditable="false">🗑</button></ul><div class="cross-box edit-unit draggable-block" contenteditable="true" draggable="true" data-block-wired="1">
+כמה יכולות נוספות שיכולות להיות רלוונטיות, בהתאם לצרכי הלקוח:
+<br><br>
+<b>Advanced Security Administration (ASA)</b> — תוסף שמוסיף שכבת אבטחה ושליטה מתקדמת: Domain Capture, Account Discovery ו-Control, נראות ארגונית על Secret Scanner, אינטגרציה עם Azure Key Vault, AWS Secrets Manager ו-HashiCorp Vault, ו-BYOK.
+<br><br>
+<b>Passport</b> — תוסף שמתמקד באיך מפתחים, אפליקציות ו-AI Agents מוצאים APIs בארגון ומקבלים אליהם גישה — במקום לשאול ב-Slack מי יכול לשלוח API Key ולשמור אותו בקוד, מקבלים תהליך מסודר: למצוא, לבקש גישה, לקבל אישור, ולהשתמש בצורה מאובטחת, בלי לקבל את ה-Secret עצמו.
+<br><br>
+<b>Fabric</b> — שכבת בקרה מרכזית לעולם ה-AI בארגון. ככל שיותר צוותים עובדים עם מודלי LLM שונים, בונים AI Agents ומחברים AI למערכות פנימיות, Fabric נותן שכבה מרכזית לשלוט בתעבורה הזו, לאבטח אותה, להגדיר מה Agents יכולים לגשת אליו, לנהל Credentials, ולשלוט בעלויות ובצריכת Tokens.
+<span class="block-drag-grip" title="גרור כדי להזיז" contenteditable="false" draggable="true">⠿</span><button type="button" class="block-delete-btn" title="מחק בלוק זה" contenteditable="false">🗑</button></div><button type="button" class="add-block-btn">+ הוסף בלוק טקסט</button></section>
+<!-- SECTION 2: AI SHIFT — EXPANDED -->
+<section id="sec-ai">
+<h2 class="edit-unit draggable-block" contenteditable="false" data-block-wired="1"><span class="num">2</span> AI<span class="block-drag-grip" title="גרור כדי להזיז" contenteditable="false" draggable="true">⠿</span><button type="button" class="block-delete-btn" title="מחק בלוק זה" contenteditable="false">🗑</button></h2>
+
+<div class="say edit-unit draggable-block" contenteditable="false" data-block-wired="1">
+<b class="tag"><span style="font-size: 14.5px; color: rgb(28, 28, 30);">אני רוצה לעצור רגע על ולדבר על ה-AI, כי זה בעצם זאת נקודה מכרעת היום כמעט לכל ארגון. <br>ה-AI לא משנה את חמשת שלבי מחזור חיי ה-API, אלא רק מגדיל בטירוף את המהירות שעוברים בהם. וכשהמהירות עולה, כל סדק שהיה קיים אצלכם גם קודם, נהיה גדול יותר, ומהר יותר."</span></b><span class="block-drag-grip" title="גרור כדי להזיז" contenteditable="false" draggable="true">⠿</span><button type="button" class="block-delete-btn" title="מחק בלוק זה" contenteditable="false">🗑</button></div>
+<div class="ai-box draggable-block" data-block-wired="1">
+<div class="h edit-unit" contenteditable="false">מהירות מול איכות</div>
+<p class="edit-unit" contenteditable="false">"המפתחים שלכם כבר משתמשים בכלים כמו Copilot או Cursor לכתוב קוד — וזה מעולה למהירות. הבעיה היא שקצב הבדיקות לא גדל באותו הקצב. אתם מקבלים יותר קוד, אבל לא יותר וידוא שהוא תקין. וזה בדיוק הפער שגורם לזינוק בתקלות שמגיעות לפרודקשן."</p>
+<div class="h edit-unit" contenteditable="false">APIs שנבנו לבני אדם, לא לסוכני AI</div>
+<p class="edit-unit" contenteditable="false">"יש נקודה שרוב החברות לא חושבות עליה בכלל: כשסוכן AI הוא זה שצורך את ה-API שלכם ולא מפתח אנושי, הוא צריך מפרט אחרת. סוכן AI לא 'מבין לפי הקשר' כמו מפתח — הוא צריך שיוצהר לו במפורש אילו פעולות אפשריות ומה המגבלות שלהן. אם ה-API שלכם לא כתוב כך, הסוכן פשוט ישתמש בו לא נכון — ואתם לא תדעו את זה עד שזה יקרה בפרודקשן."</p>
+<div class="h edit-unit" contenteditable="false">Governance כבקבוק צוואר</div>
+<p class="edit-unit" contenteditable="false">"וכשהכל רץ מהר יותר, Governance ואבטחה נהיים בקבוק הצוואר של הארגון. תיעוד ראיות לביקורת — audit evidence — הופך מתהליך שוטף לריצה ידנית פעם ברבעון. ואת זה אף אחד לא רוצה לעשות בלחץ."</p>
+<div class="h edit-unit" contenteditable="false">נתון שאני פותח איתו</div>
+<p class="edit-unit" contenteditable="false">"89 אחוז מהמפתחים כבר משתמשים ב-AI לכתיבת קוד. רק 24 אחוז מהם בכלל מעצבים את ה-API שלהם כך שסוכן AI יידע להשתמש בו נכון. זה הפער שאנחנו סוגרים."</p>
+<span class="block-drag-grip" title="גרור כדי להזיז" contenteditable="false" draggable="true">⠿</span><button type="button" class="block-delete-btn" title="מחק בלוק זה" contenteditable="false">🗑</button></div>
+<div class="say edit-unit draggable-block" contenteditable="false" data-block-wired="1">
+<b class="tag">איך אני ממשיך לחלק ה-AI של המוצר שלנו עצמו</b>
+      "וזה מוביל אותי לנקודה שהלקוחות שלנו הכי אוהבים: ה-AI שבתוך Postman הוא לא כמו ChatGPT כללי. אנחנו קוראים לו&nbsp;<b>Agent Mode</b>&nbsp; והוא בנוי במיוחד לעולם ה-API.&nbsp;<div>הוא רץ בתוך הסביבה שלכם ב-Postman, מכיר את כל הפרויקטים, הבדיקות וההתראות שכבר קיימים אצלכם, ולא רק עונה על שאלות אלא גם מבצע פעולות בפועל: כותב חוזים חדשים, מתקן בדיקות שנשברו, ומזהה מתי גרסה חדשה שוברת הבטחה שנתנו למישהו בעבר.</div><div><br></div><div>יש גם <b>AI Engineer</b>, שמתחבר למקום שבו שמור כל הקוד וההיסטוריה שלו (Git) ועושה עבודה עצמאית יותר/</div><div>לדוגמה, לעבור על כל ה-API-ים שלכם ולסמן אילו מהם כדאי להוציא משימוש כי הם ישנים או לא בשימוש, או לבדוק אוטומטית כל שינוי קוד חדש שמפתח מעלה למערכת, לפני שהוא מתקבל.&nbsp;</div><div>ואתם יכולים גם לבנות את כללי ה-Governance עצמם בעזרת AI — לכתוב אותם ב-Claude או ב-ChatGPT, ו-Postman הוא זה שבפועל אוכף אותם אוטומטית, על כל הפרויקטים, כל הזמן.&nbsp;</div><div>וזה בעצם ההבדל האמיתי: <b>אתם יכולים לעשות חלק מזה בעצמכם, או לקנות כמה כלים נפרדים — אבל אנחנו שמים את הכל תחת קורת גג אחת."
+    </b></div>
+<span class="block-drag-grip" title="גרור כדי להזיז" contenteditable="false" draggable="true">⠿</span><button type="button" class="block-delete-btn" title="מחק בלוק זה" contenteditable="false">🗑</button></div><button type="button" class="add-block-btn">+ הוסף בלוק טקסט</button></section>
+<!-- SECTION 3: WHAT POSTMAN OFFERS PER STAGE -->
+<section id="sec-stages">
+<h2 class="edit-unit draggable-block" contenteditable="false" data-block-wired="1"><span class="num">3</span> מה יש לנו להציע - שלב-שלב<span class="block-drag-grip" title="גרור כדי להזיז" contenteditable="false" draggable="true">⠿</span><button type="button" class="block-delete-btn" title="מחק בלוק זה" contenteditable="false">🗑</button></h2>
+<p class="lead edit-unit draggable-block" contenteditable="false" data-block-wired="1"><b>"זה מה שאני קורא ה-golden path: בכל שלב יש כלי שאוכף אוטומטית את מה שהגדרנו בשלב הקודם - כך שאתם לא בודקים את זה שוב מאוחר יותר."</b><span class="block-drag-grip" title="גרור כדי להזיז" contenteditable="false" draggable="true">⠿</span><button type="button" class="block-delete-btn" title="מחק בלוק זה" contenteditable="false">🗑</button></p>
+<div class="offer-grid">
+<div class="offer">
+<div class="t edit-unit" contenteditable="false">01 · עיצוב</div>
+<p class="edit-unit" contenteditable="false">"אתם כותבים מראש מה ה-API אמור לעשות — כמו חוזה מסודר לפני שמתחילים לבנות בפועל — ויש AI שעוזר לכתוב ולתקן את החוזה הזה. אפשר גם להגדיר כלל כמו 'כל בקשה חייבת אישור זהות', וזה לא נשאר המלצה שמישהו צריך לזכור לבדוק — הוא נאכף אוטומטית. ובזמן שצוות ה-backend עדיין בונה את המערכת האמיתית, צוות ה-frontend יכול כבר להתחיל לעבוד מול גרסה מדומה שמתנהגת כמו ה-API האמיתי (Mock Server), כדי שלא יצטרכו לחכות."</p>
+</div>
+<div class="offer">
+<div class="t edit-unit" contenteditable="false">02 · פיתוח</div>
+<p class="edit-unit" contenteditable="false">"כל פעם שמפתח כותב קוד, יש לנו כלי שרץ ברקע ובודק אוטומטית שהקוד עדיין עומד בחוזה שהוגדר בשלב העיצוב — ממש כמו בודק איות שרץ בזמן שאתה כותב מסמך, רק שהוא בודק לוגיקה ולא שגיאות כתיב. ואם מישהו משנה משהו שהולך לשבור הבטחה שמישהו אחר כבר סומך עליה — זה נתפס באותו רגע, לפני שהקוד בכלל נכנס למוצר, ולא כמו בדיקה מסורתית שמגלים את זה שבועיים אחר כך."</p>
+</div>
+<div class="offer">
+<div class="t edit-unit" contenteditable="false">03 · בדיקות</div>
+<p class="edit-unit" contenteditable="false">"יש כלי שמריץ אוטומטית חבילה שלמה של בדיקות בלחיצת כפתור, ויש עוזר AI שבונה בדיקות בסיסיות ישירות מהחוזה שכתבתם בשלב העיצוב, ואפילו מתקן בדיקה שנשברה. ואפשר גם לבדוק מה קורה בעומס גבוה — למשל מה יקרה אם בבת אחת יהיו הרבה יותר משתמשים, כמו ביום מבצע גדול."</p>
+</div>
+<div class="offer">
+<div class="t edit-unit" contenteditable="false">04–05 · פריסה ומעקב</div>
+<p class="edit-unit" contenteditable="false">"יש בדיקות אוטומטיות שרצות כל הזמן על ה-API-ים שפונים לעולם החוץ, כדי לוודא שהם באמת עונים ועובדים. יש גרסה מקבילה שרצה בתוך הרשת הפנימית שלכם, מאחורי כל שכבות האבטחה, ל-API-ים שלא פתוחים לעולם. ו-Insights מזהה פערים על סמך התעבורה האמיתית שקורית בפועל."</p>
+</div>
+</div>
+<div class="cross-box edit-unit draggable-block" contenteditable="false" data-block-wired="1"><b>
+      "שני דברים חשוב שתדעו — הם לא שייכים לשלב אחד, הם רצים על פני כולם:&nbsp;</b><div><b>API Catalog</b> נותן לכם תצוגה אחת של כל ה-APIs שבפיתוח בארגון — לא רק אלה שכבר חיים ב-gateway בפרודקשן. זה ההבדל המרכזי בינינו ל-Kong, Apigee או Boomi — הם מראים לכם רק מה שכבר רץ, אנחנו מראים לכם גם מה שבבנייה.</div><div>&nbsp;ו<b>Agent Mode</b> עם <b>AI Engineer</b> זמינים בכל שלב — לא עוזרים כלליים, אלא כלים שמכירים את הקונטקסט שלכם ובפועל מבצעים פעולות."
+    </div><span class="block-drag-grip" title="גרור כדי להזיז" contenteditable="false" draggable="true">⠿</span><button type="button" class="block-delete-btn" title="מחק בלוק זה" contenteditable="false">🗑</button></div>
+<button type="button" class="add-block-btn">+ הוסף בלוק טקסט</button></section>
+<!-- SECTION 4: CORE PRODUCTS -->
+<section id="sec-products">
+<h2 class="edit-unit" contenteditable="false" data-ceid="ce0">סקריפט לשיחת לקוח — מוצרי Postman</h2>
+<div class="group-title edit-unit" contenteditable="false" data-ceid="ce1">ניהול API ושירותים</div>
+<div class="prod reorderable-card" id="prod-organizations" data-wired="1" style="position: relative;">
+<div class="name edit-unit" contenteditable="false">Organizations — ניהול ארגוני</div>
+<div class="pitch edit-unit" contenteditable="false">"זו שכבת הניהול שקובעת מי יכול לגשת למה — צוותים, הרשאות, ו-Governance אחיד על פני כל הארגון. תחשבו על בנק עם 40 צוותי פיתוח: Organizations מאפשר לי להגדיר שצוות התשלומים לא יכול בכלל לגעת ב-workspace של משאבי אנוש — בלי שמישהו צריך לנהל את זה ידנית כל יום."</div>
+<div class="drag-grip" title="גרור כדי לשנות סדר" contenteditable="false" draggable="true">⠿</div><button class="card-delete-btn" title="מחק כרטיס זה" type="button" contenteditable="false">🗑</button></div>
+<div class="prod reorderable-card" id="prod-api-catalog" data-wired="1" style="position: relative;">
+<div class="name edit-unit" contenteditable="false">API Catalog — קטלוג API</div>
+<div class="pitch edit-unit" contenteditable="false">"זו תצוגה מרכזית אחת של כל ה-APIs והשירותים שלכם — מי הבעלים, מה המצב שלו ב-CI, מה קצב השגיאות שלו בפרודקשן. אם מנהל פלטפורמה שלכם רוצה לדעת אילו APIs לא עומדים בתקן האבטחה, הוא מקבל ציון תאימות לכל אחד — בלי לחפש ידנית ב-20 workspaces."</div>
+<div class="drag-grip" title="גרור כדי לשנות סדר" contenteditable="false" draggable="true">⠿</div><button class="card-delete-btn" title="מחק כרטיס זה" type="button" contenteditable="false">🗑</button></div>
+<div class="prod reorderable-card" id="prod-private-network" data-wired="1" style="position: relative;">
+<div class="name edit-unit" contenteditable="false">Private API Network — רשת API פרטית</div>
+<div class="pitch edit-unit" contenteditable="false">"אתם מפרסמים APIs פנימיים מאושרים כך שצוותים אחרים בארגון יכולים למצוא ולהשתמש בהם — בלי לחשוף אותם לעולם החוץ. אם צוות אחד כבר בנה API לבדיקת זיהוי לקוח, צוות אחר לא בונה את זה מהתחלה כי הוא בכלל לא ידע שזה קיים."</div>
+<div class="drag-grip" title="גרור כדי לשנות סדר" contenteditable="false" draggable="true">⠿</div><button class="card-delete-btn" title="מחק כרטיס זה" type="button" contenteditable="false">🗑</button></div>
+<div class="prod reorderable-card" id="prod-governance-builder" data-wired="1" style="position: relative;">
+<div class="name edit-unit" contenteditable="false">Governance Rule Builder — בונה כללי Governance</div>
+<div class="pitch edit-unit" contenteditable="false">"פה אתם כותבים כלל בהתאמה אישית — למשל, שכל endpoint חייב שדה Authorization — והוא נאכף אוטומטית, לא כהמלצה, אלא כחסימה בפועל. גוף פיננסי יכול להגדיר כלל שאוסר להחזיר מספר כרטיס אשראי מלא ב-response, והכלל הזה רץ על כל מפרט חדש, לפני שהוא בכלל מגיע לסקירה אנושית."</div>
+<div class="drag-grip" title="גרור כדי לשנות סדר" contenteditable="false" draggable="true">⠿</div><button class="card-delete-btn" title="מחק כרטיס זה" type="button" contenteditable="false">🗑</button></div>
+<div class="prod reorderable-card" id="prod-secret-scanner" data-wired="1" style="position: relative;">
+<div class="name edit-unit" contenteditable="false">Secret Scanner — סורק סודות מקומי</div>
+<div class="pitch edit-unit" contenteditable="false">"זה תופס מפתחות ו-secrets שנחשפו בטעות — נניח, מפתח API שמפתח הדביק בבדיקה מהירה — ומנתב אותם ל-Vault המקומי לפני שהם בכלל מגיעים ל-Git. זה נתפס לפני commit, ולא מתגלה בסקירת אבטחה חצי שנה אחר כך."</div>
+<div class="drag-grip" title="גרור כדי לשנות סדר" contenteditable="false" draggable="true">⠿</div><button class="card-delete-btn" title="מחק כרטיס זה" type="button" contenteditable="false">🗑</button></div>
+<div class="prod reorderable-card" id="prod-vault" data-wired="1" style="position: relative;">
+<div class="name edit-unit" contenteditable="false">Postman Vault — כספת סודות</div>
+<div class="pitch edit-unit" contenteditable="false">"מקום מרכזי ומאובטח לשמור ולשתף secrets בתוך צוות — בלי שהערך עצמו נחשף לחברי הצוות שמשתמשים בו. שני מפתחים צריכים את אותו מפתח API כדי לעבוד על אותו workspace — שניהם משתמשים בו, ואף אחד מהם לא רואה אותו בטקסט גלוי."</div>
+<div class="drag-grip" title="גרור כדי לשנות סדר" contenteditable="false" draggable="true">⠿</div><button class="card-delete-btn" title="מחק כרטיס זה" type="button" contenteditable="false">🗑</button></div>
+<div class="group-title edit-unit" contenteditable="false" data-ceid="ce2">מעקב בפרודקשן</div>
+<div class="prod reorderable-card" id="prod-insights" data-wired="1" style="position: relative;">
+<div class="name edit-unit" contenteditable="false">Insights — תובנות שימוש</div>
+<div class="pitch edit-unit" contenteditable="false">"תמונת מצב אחידה על שימוש, אימוץ ופעילות API על פני כל הארגון — פנימי, שותפים, ופומבי. אם מנהל הנדסה רוצה לדעת אילו APIs בכלל לא בשימוש כבר חצי שנה לפני שמחליטים על תקציב לשנה הבאה — זה לוקח כמה קליקים, לא פרויקט."</div>
+<div class="drag-grip" title="גרור כדי לשנות סדר" contenteditable="false" draggable="true">⠿</div><button class="card-delete-btn" title="מחק כרטיס זה" type="button" contenteditable="false">🗑</button></div>
+<div class="prod reorderable-card" id="prod-api-reports" data-wired="1" style="position: relative;">
+<div class="name edit-unit" contenteditable="false">API Reports — דוחות API</div>
+<div class="pitch edit-unit" contenteditable="false">"דוח מאוחד שמראה שימוש, אימוץ והשפעה על פני workspaces פנימיים, שותפים ופומביים — במקום דוחות מפוזרים לכל workspace בנפרד. לפני חידוש חוזה, זה הדוח שמראה להנהלה כמה API-ים באמת נכנסו לשימוש ברבעון האחרון."</div>
+<div class="drag-grip" title="גרור כדי לשנות סדר" contenteditable="false" draggable="true">⠿</div><button class="card-delete-btn" title="מחק כרטיס זה" type="button" contenteditable="false">🗑</button></div>
+<div class="group-title edit-unit" contenteditable="false" data-ceid="ce3">פיתוח ובדיקות</div>
+<div class="prod reorderable-card" id="prod-agent-mode" data-wired="1" style="position: relative;">
+<div class="name edit-unit" contenteditable="false">Agent Mode — עוזר AI מובנה</div>
+<div class="pitch edit-unit" contenteditable="false">"זה לא עוזר כללי כמו ChatGPT — הוא בנוי במיוחד לעולם ה-API, ורץ בתוך הסביבה שלכם ב-Postman, ומכיר את כל הפרויקטים, הבדיקות וההתראות שכבר קיימים אצלכם. מפתח מבקש 'תבדוק אם הגרסה הזו שוברת הבטחה שנתנו למישהו בגרסה הקודמת' — Agent Mode לא רק עונה, הוא בפועל מריץ את ההשוואה על הקוד האמיתי ומראה תוצאה."</div>
+<div class="drag-grip" title="גרור כדי לשנות סדר" contenteditable="false" draggable="true">⠿</div><button class="card-delete-btn" title="מחק כרטיס זה" type="button" contenteditable="false">🗑</button></div>
+<div class="prod reorderable-card" id="prod-git-workflows" data-wired="1" style="position: relative;">
+<div class="name edit-unit" contenteditable="false">Native Git Workflows — עבודה טבעית עם Git</div>
+<div class="pitch edit-unit" contenteditable="false">"בדיוק כמו ש-Google Docs שומר גרסאות קודמות של מסמך, ומאפשר לכמה אנשים לעבוד עליו במקביל בלי לדרוס אחד את השני — כך גם אנחנו מנהלים גרסאות על מפרטי ה-API עצמם, באותה שיטה שמפתחים מכירים מניהול קוד (Git). שני מפתחים יכולים לשנות את אותו מפרט במקביל, כל אחד בגרסה נפרדת שלו, ולשלב את השינויים בסוף בלי לאבד שום דבר."</div>
+<div class="drag-grip" title="גרור כדי לשנות סדר" contenteditable="false" draggable="true">⠿</div><button class="card-delete-btn" title="מחק כרטיס זה" type="button" contenteditable="false">🗑</button></div>
+<div class="prod reorderable-card" id="prod-cli-pipeline" data-wired="1" style="position: relative;">
+<div class="name edit-unit" contenteditable="false">CLI ואינטגרציית Pipeline</div>
+<div class="pitch edit-unit" contenteditable="false">"אלה ממש אותן הבדיקות שרצות גם כשמפתח בודק את זה ידנית על המחשב שלו, וגם כשהמערכת האוטומטית שמעלה את הקוד לייצור מריצה אותן שוב, בלי מגע ידיים (בעולם הטכני זה נקרא CI/CD). אז אין מצב של 'עבד לי אצלי במחשב' ואז זה נשבר בשרת — זו בדיוק אותה בדיקה, פעמיים."</div>
+<div class="drag-grip" title="גרור כדי לשנות סדר" contenteditable="false" draggable="true">⠿</div><button class="card-delete-btn" title="מחק כרטיס זה" type="button" contenteditable="false">🗑</button></div>
+<div class="prod reorderable-card" id="prod-mock-servers" data-wired="1" style="position: relative;">
+<div class="name edit-unit" contenteditable="false">Mock Servers — שרתי דמה</div>
+<div class="pitch edit-unit" contenteditable="false">"מדמים API שלם בלי backend אמיתי, כדי שצוות frontend יתחיל לעבוד לפני שהקוד האמיתי בכלל קיים. הם צריכים מסך שמציג תשלומים, וה-backend עדיין באמצע הפיתוח — Mock Server מחזיר תשובות מדומות לפי המפרט, והעבודה מתקדמת במקביל."</div>
+<div class="drag-grip" title="גרור כדי לשנות סדר" contenteditable="false" draggable="true">⠿</div><button class="card-delete-btn" title="מחק כרטיס זה" type="button" contenteditable="false">🗑</button></div>
+<div class="prod reorderable-card" id="prod-partner-workspaces" data-wired="1" style="position: relative;">
+<div class="name edit-unit" contenteditable="false">Partner Workspaces — סביבות עבודה לשותפים</div>
+<div class="pitch edit-unit" contenteditable="false">"שיתוף פעולה מאובטח עם צדדים שלישיים על API-ים משותפים, עם הרשאות מדויקות למה שהם רואים ומה שהם יכולים לשנות. חברת סליקה משתפת עם שותף חיצוני רק את ה-collection הרלוונטי, בלי לחשוף לו את ה-workspace הפנימי."</div>
+<div class="drag-grip" title="גרור כדי לשנות סדר" contenteditable="false" draggable="true">⠿</div><button class="card-delete-btn" title="מחק כרטיס זה" type="button" contenteditable="false">🗑</button></div>
+<div class="prod reorderable-card" id="prod-asa" data-wired="1" style="position: relative;">
+<div class="name edit-unit" contenteditable="false">Advanced Security Administration — ASA</div>
+<div class="pitch edit-unit" contenteditable="false">"זה ה-Add-on שאני מביא לשולחן כשמדברים על אבטחה בקנה מידה Enterprise, ומוצר קיים ופעיל היום. בגדול, זה נותן לצוות האבטחה שליטה מדויקת יותר על מי יכול להתחבר, מאיפה, ואיך שומרים על הסודות (secrets) שלהם — כולל ניתוב אוטומטי של כניסות לפי דומיין (Domain Capture), לוח בקרה והתראות על ניסיונות חשיפה של סודות (Secret Scanner), חיבור לכספות חיצוניות שהם כבר עובדים איתן — כמו Azure Key Vault, HashiCorp, AWS Secrets Manager, 1Password — והצפנה במפתח שהם עצמם שולטים בו (BYOK). ארגון עם דרישת רגולציה להצפין את המידע שלו במפתח שהוא שולט בו לגמרי — BYOK מאפשר את זה בלי לתת ל-Postman גישה למפתח ההצפנה."</div>
+<div class="drag-grip" title="גרור כדי לשנות סדר" contenteditable="false" draggable="true">⠿</div><button class="card-delete-btn" title="מחק כרטיס זה" type="button" contenteditable="false">🗑</button></div>
+<div class="prod reorderable-card" id="prod-fabric-inline" data-wired="1" style="position: relative;">
+<div class="name edit-unit" contenteditable="false">Fabric — שכבת בקרה ל-AI (הרחבה בפאנל הצדדי)</div>
+<div class="pitch edit-unit" contenteditable="false">"Fabric הוא שכבת הבקרה המרכזית שלנו לעולם ה-AI בארגון. ככל שיותר צוותים עובדים עם מודלים שונים, בונים AI Agents ומתחברים לשרתי MCP ול-APIs פנימיים — כל צוות מתחיל לנהל בעצמו את החיבורים, ההרשאות וה-Credentials שלו. Fabric מרכז את כל התעבורה הזו דרך נקודת שליטה אחת: לאן בקשות ה-AI נשלחות, לאילו מודלים ו-APIs יש להן גישה, איך נשמרים הסודות, כמה זה עולה, ומה קרה בפועל — הכל תחת Governance אחיד."</div>
+<div class="drag-grip" title="גרור כדי לשנות סדר" contenteditable="false" draggable="true">⠿</div><button class="card-delete-btn" title="מחק כרטיס זה" type="button" contenteditable="false">🗑</button></div>
+<div class="prod reorderable-card" id="prod-passport-inline" data-wired="1" style="position: relative;">
+<div class="name edit-unit" contenteditable="false">Postman Passport — Governance לגישה ל-APIs (הרחבה בפאנל הצדדי)</div>
+<div class="pitch edit-unit" contenteditable="false">"Passport הוא שכבת Governance מרכזית לגילוי, בקשת גישה וצריכה מאובטחת של APIs בארגון. במקום שמפתחים ו-AI Agents יקבלו את ה-API Key האמיתי ויפזרו אותו בקבצים, סקריפטים ו-CI/CD — הם מקבלים Reference של Passport. ה-Credential האמיתי נשאר ב-Vault הקיים של הלקוח, ונפתר רק בזמן הקריאה בפועל ל-API. הארגון מקבל Visibility מלא על מי ביקש גישה, מי אישר, ואיך משתמשים ב-API — בלי לחשוף Secrets בשום שלב."</div>
+<div class="drag-grip" title="גרור כדי לשנות סדר" contenteditable="false" draggable="true">⠿</div><button class="card-delete-btn" title="מחק כרטיס זה" type="button" contenteditable="false">🗑</button></div>
+<button type="button" class="add-card-btn">+ הוסף כרטיס</button></section>
+<!-- PANELS: these no longer sit in the scrolling flow. They open as
+     slide-in side panels, triggered from the table of contents. -->
+<div class="side-panel" id="panel-objections">
+<div class="panel-header">
+<span>מיצוב והתנגדויות — איך אני עונה</span>
+<button class="panel-close" data-close="panel-objections">✕</button>
+</div>
+<div class="panel-body">
+<div class="fmt-group answer-fmt-group panel-toolbar">
+  <button type="button" class="ptb-bold" title="הדגשה (סמן טקסט ולחץ)">B</button>
+  <button type="button" class="ptb-italic" title="נטוי (סמן טקסט ולחץ)">I</button>
+  <button class="swatch" data-color="#1C1C1E" style="background:#1C1C1E" title="שחור"></button>
+  <button class="swatch" data-color="#FF6C37" style="background:#FF6C37" title="כתום"></button>
+  <button class="swatch" data-color="#D64545" style="background:#D64545" title="אדום"></button>
+  <button class="swatch" data-color="#2E7D5B" style="background:#2E7D5B" title="ירוק"></button>
+  <button class="swatch" data-color="#2F6FED" style="background:#2F6FED" title="כחול"></button>
+  <button class="swatch" data-color="#5B5F66" style="background:#5B5F66" title="אפור"></button>
+  <button type="button" class="ptb-save" title="שמור">💾 שמור</button>
+</div>
+<div class="obj reorderable-card" data-wired="1" style="position: relative;">
+<div class="q edit-unit" contenteditable="false">"זה נשמע כמו Waterfall — אנחנו עובדים Agile / CD."</div>
+<div class="a edit-unit" contenteditable="false">"השלבים האלה לא שערים של Waterfall — הם פעילויות איכות שקורות כל הזמן. בארגון CD: כל PR הוא 'עיצוב', כל merge הוא 'שער', כל deploy ל-staging הוא 'אימות'. השאלה היא לא אם השלבים קיימים אצלכם — השאלה היא אם הם מחוברים, או מפוצלים."</div>
+<div class="drag-grip" title="גרור כדי לשנות סדר" contenteditable="false" draggable="true">⠿</div><button class="card-delete-btn" title="מחק כרטיס זה" type="button" contenteditable="false">🗑</button></div>
+<div class="obj reorderable-card" data-wired="1" style="position: relative;">
+<div class="q edit-unit" contenteditable="false">"יש לנו כבר QE וכלים בשביל זה."</div>
+<div class="a edit-unit" contenteditable="false">"אז אני שואל: הכלים שלכם חולקים artifacts בין שלבים, או שכל כלי שומר בפורמט משלו? ואתם יכולים להוציא audit trail אוטומטית, או שזה סקר ידני כל רבעון?"</div>
+<div class="drag-grip" title="גרור כדי לשנות סדר" contenteditable="false" draggable="true">⠿</div><button class="card-delete-btn" title="מחק כרטיס זה" type="button" contenteditable="false">🗑</button></div>
+<div class="obj reorderable-card" data-wired="1" style="position: relative;">
+<div class="q edit-unit" contenteditable="false">"ה-AI שלנו כבר כותב את הבדיקות."</div>
+<div class="a edit-unit" contenteditable="false">"אם הסוכן שכתב את הקוד הוא גם זה שכתב את הבדיקה, יש ניגוד אינטרסים מובנה — הבדיקה תשקף את ההנחות של המימוש, לא את הכוונה של המפרט. השאלה היא לא אם AI יכול לייצר בדיקות — השאלה היא אם הבדיקות עצמאיות, מבוססות-spec, ותחת Governance."</div>
+<div class="drag-grip" title="גרור כדי לשנות סדר" contenteditable="false" draggable="true">⠿</div><button class="card-delete-btn" title="מחק כרטיס זה" type="button" contenteditable="false">🗑</button></div>
+<div class="obj reorderable-card" data-wired="1" style="position: relative;">
+<div class="q edit-unit" contenteditable="false">פרטיות נתונים (רלוונטי לשיחות עם גופים פיננסיים)</div>
+<div class="a edit-unit" contenteditable="false">"Postman אף פעם לא נגיש למידע האמיתי של הלקוח — הוא נשאר תמיד בענן שלכם, AWS או Azure, ולא עובר אצלנו. בתוכנית Enterprise, נתוני ה-AI גם לא משותפים עם Postman לצורך אימון מודלים; בתוכניות נמוכות יותר — כן. יש לנו גם Trust Portal (דורש NDA), עם אישורי SOC 2, SOC 3 ו-ISO."</div>
+<div class="drag-grip" title="גרור כדי לשנות סדר" contenteditable="false" draggable="true">⠿</div><button class="card-delete-btn" title="מחק כרטיס זה" type="button" contenteditable="false">🗑</button></div>
+<button type="button" class="add-card-btn">+ הוסף כרטיס</button></div>
+</div>
+<div class="side-panel" id="panel-fabric">
+<div class="panel-header">
+<span>Fabric</span>
+<button class="panel-close" data-close="panel-fabric">✕</button>
+</div>
+<div class="panel-body">
+<div class="fmt-group answer-fmt-group panel-toolbar">
+  <button type="button" class="ptb-bold" title="הדגשה (סמן טקסט ולחץ)">B</button>
+  <button type="button" class="ptb-italic" title="נטוי (סמן טקסט ולחץ)">I</button>
+  <button class="swatch" data-color="#1C1C1E" style="background:#1C1C1E" title="שחור"></button>
+  <button class="swatch" data-color="#FF6C37" style="background:#FF6C37" title="כתום"></button>
+  <button class="swatch" data-color="#D64545" style="background:#D64545" title="אדום"></button>
+  <button class="swatch" data-color="#2E7D5B" style="background:#2E7D5B" title="ירוק"></button>
+  <button class="swatch" data-color="#2F6FED" style="background:#2F6FED" title="כחול"></button>
+  <button class="swatch" data-color="#5B5F66" style="background:#5B5F66" title="אפור"></button>
+  <button type="button" class="ptb-save" title="שמור">💾 שמור</button>
+</div>
+<p class="lead edit-unit draggable-block" contenteditable="false" data-block-wired="1">Fabric הוא שכבת הבקרה המרכזית שלנו לעולם ה-AI בארגון.<span class="block-drag-grip" title="גרור כדי להזיז" contenteditable="false" draggable="true">⠿</span><button type="button" class="block-delete-btn" title="מחק בלוק זה" contenteditable="false">🗑</button></p>
+<div class="say edit-unit draggable-block" contenteditable="false" data-block-wired="1">
+<b class="tag">איך אני מסביר את זה</b>
+      "ככל שיותר צוותים מתחילים להשתמש במודלים שונים — OpenAI, Claude, Gemini — לבנות AI Agents, ולהתחבר לשרתי MCP ול-APIs פנימיים, כל צוות מתחיל לנהל בעצמו את החיבורים, ההרשאות וה-Credentials שלו. Fabric מרכז את כל התעבורה הזו דרך נקודת שליטה אחת — כדי שהארגון יידע לאן בקשות ה-AI נשלחות, לאילו מודלים ו-APIs יש להן גישה, איך נשמרים הסודות, כמה זה עולה, ומה קרה בפועל."
+    <span class="block-drag-grip" title="גרור כדי להזיז" contenteditable="false" draggable="true">⠿</span><button type="button" class="block-delete-btn" title="מחק בלוק זה" contenteditable="false">🗑</button></div>
+<div class="group-title edit-unit draggable-block" contenteditable="false" data-block-wired="1">מה Fabric מאפשר לארגון<span class="block-drag-grip" title="גרור כדי להזיז" contenteditable="false" draggable="true">⠿</span><button type="button" class="block-delete-btn" title="מחק בלוק זה" contenteditable="false">🗑</button></div>
+<ul class="panel-list draggable-block" data-block-wired="1">
+<li class="edit-unit" contenteditable="false"><b>נקודת שליטה מרכזית</b> — לנהל ממקום אחד את התעבורה בין מודלים, Agents, שרתי MCP ו-APIs פנימיים.</li>
+<li class="edit-unit" contenteditable="false"><b>Routing ו-Reliability</b> — לנתב בקשות בין מודלים, לבצע Fallback אוטומטי כשמודל נופל, ולבחור את המודל המתאים לכל בקשה.</li>
+<li class="edit-unit" contenteditable="false"><b>Security ו-Credential Management</b> — ה-Agent לא צריך לראות או להחזיק את המפתחות בעצמו.</li>
+<li class="edit-unit" contenteditable="false"><b>Agent Governance</b> — לקבוע במדויק לאילו APIs, Tools או MCP Servers כל Agent מורשה לגשת.</li>
+<li class="edit-unit" contenteditable="false"><b>שליטה בעלויות</b> — לראות מי צורך כמה Tokens ובאיזו עלות, ולהגדיר תקציבים.</li>
+<li class="edit-unit" contenteditable="false"><b>Audit מלא</b> — לדעת מי הפעיל איזה Agent, על איזה מודל, לאיזה API ניגש, ואיזו Policy הופעלה.</li>
+<span class="block-drag-grip" title="גרור כדי להזיז" contenteditable="false" draggable="true">⠿</span><button type="button" class="block-delete-btn" title="מחק בלוק זה" contenteditable="false">🗑</button></ul>
+<div class="cross-box edit-unit draggable-block" contenteditable="false" data-block-wired="1">
+<b>דוגמה שאני נותן:</b> יש לכם צוות שעובד עם OpenAI, צוות אחר עם Claude, ו-Agent שמתחבר ל-MCP Server — וכולם צריכים גישה למערכות פנימיות. היום כל אחד מהם מחזיק Keys, הרשאות ולוגים משלו, ואין שכבה מרכזית שרואה את כל התעבורה. עם Fabric, כל הבקשות עוברות דרך שכבת בקרה אחת: אם Agent מבקש GPT-5, Fabric יכול לאשר, לחסום, לנתב למודל אחר, לעבור ל-Claude אם יש תקלה, או לפצל את התעבורה בין כמה מודלים — הכל במקום אחד.
+    <span class="block-drag-grip" title="גרור כדי להזיז" contenteditable="false" draggable="true">⠿</span><button type="button" class="block-delete-btn" title="מחק בלוק זה" contenteditable="false">🗑</button></div>
+<div class="say edit-unit draggable-block" contenteditable="false" data-block-wired="1">
+<b class="tag">משפט סיכום</b>
+      "Fabric הוא שכבת הבקרה המרכזית שמחברת בין ה-AI, ה-Agents, שרתי MCP וה-APIs של הארגון — ונותנת שליטה על התעבורה, האבטחה, ההרשאות, העלויות וה-Audit, במקום שכל אחד מהם ינוהל בנפרד."
+    <span class="block-drag-grip" title="גרור כדי להזיז" contenteditable="false" draggable="true">⠿</span><button type="button" class="block-delete-btn" title="מחק בלוק זה" contenteditable="false">🗑</button></div>
+<button type="button" class="add-block-btn">+ הוסף בלוק טקסט</button></div>
+</div>
+<div class="side-panel" id="panel-passport">
+<div class="panel-header">
+<span>Postman Passport</span>
+<button class="panel-close" data-close="panel-passport">✕</button>
+</div>
+<div class="panel-body">
+<div class="fmt-group answer-fmt-group panel-toolbar">
+  <button type="button" class="ptb-bold" title="הדגשה (סמן טקסט ולחץ)">B</button>
+  <button type="button" class="ptb-italic" title="נטוי (סמן טקסט ולחץ)">I</button>
+  <button class="swatch" data-color="#1C1C1E" style="background:#1C1C1E" title="שחור"></button>
+  <button class="swatch" data-color="#FF6C37" style="background:#FF6C37" title="כתום"></button>
+  <button class="swatch" data-color="#D64545" style="background:#D64545" title="אדום"></button>
+  <button class="swatch" data-color="#2E7D5B" style="background:#2E7D5B" title="ירוק"></button>
+  <button class="swatch" data-color="#2F6FED" style="background:#2F6FED" title="כחול"></button>
+  <button class="swatch" data-color="#5B5F66" style="background:#5B5F66" title="אפור"></button>
+  <button type="button" class="ptb-save" title="שמור">💾 שמור</button>
+</div>
+<p class="lead edit-unit draggable-block" contenteditable="false" data-block-wired="1">Passport הוא שכבת Governance מרכזית לגילוי, בקשת גישה וצריכה מאובטחת של APIs בארגון.<span class="block-drag-grip" title="גרור כדי להזיז" contenteditable="false" draggable="true">⠿</span><button type="button" class="block-delete-btn" title="מחק בלוק זה" contenteditable="false">🗑</button></p>
+<div class="say edit-unit draggable-block" contenteditable="false" data-block-wired="1">
+<b class="tag">האתגר שאני מתאר</b>
+      "ככל שיש יותר APIs ויותר אנשים, אפליקציות ו-AI Agents שצריכים להשתמש בהם, קשה לדעת מי משתמש במה, למי יש גישה, ולאן ה-API Keys וה-Secrets מתפזרים. מפתח מחפש API ב-Slack או בתיעוד, מבקש גישה ממישהו, וה-Key האמיתי מגיע לקבצי .env, לסקריפטים, ל-CI/CD ולעוד מקומות. וככל שיותר AI Agents מתחילים לגשת ל-APIs, האתגר הזה רק גדל."
+    <span class="block-drag-grip" title="גרור כדי להזיז" contenteditable="false" draggable="true">⠿</span><button type="button" class="block-delete-btn" title="מחק בלוק זה" contenteditable="false">🗑</button></div>
+<div class="cross-box edit-unit draggable-block" contenteditable="false" data-block-wired="1">
+<b>דוגמה שאני נותן:</b> צוות חדש בונה אפליקציה שצריכה API פנימי של לקוחות. המפתח צריך להבין מי הבעלים, למי לפנות, לקבל Key ולהכניס אותו למערכת. תכפילו את זה בעשרות APIs ומאות מפתחים — ובשלב מסוים הארגון כבר לא יודע מי מחזיק איזה Key, ולאיזה API יש לו גישה.
+    <span class="block-drag-grip" title="גרור כדי להזיז" contenteditable="false" draggable="true">⠿</span><button type="button" class="block-delete-btn" title="מחק בלוק זה" contenteditable="false">🗑</button></div>
+<div class="group-title edit-unit draggable-block" contenteditable="false" data-block-wired="1">איך Passport פותר את זה<span class="block-drag-grip" title="גרור כדי להזיז" contenteditable="false" draggable="true">⠿</span><button type="button" class="block-delete-btn" title="מחק בלוק זה" contenteditable="false">🗑</button></div>
+<ul class="panel-list draggable-block" data-block-wired="1">
+<li class="edit-unit" contenteditable="false"><b>גילוי מרכזי</b> — מפתחים ו-AI Agents מוצאים APIs מאושרים במקום אחד.</li>
+<li class="edit-unit" contenteditable="false"><b>בקשת גישה מבוקרת</b> — במקום לקבל את ה-Key האמיתי, מקבלים Reference של Passport.</li>
+<li class="edit-unit" contenteditable="false"><b>Secretless Consumption</b> — ה-Credential האמיתי נשאר ב-Vault הקיים של הלקוח, ונפתר רק בזמן הקריאה בפועל ל-API — בלי שהמשתמש או ה-Agent רואים או מעתיקים אותו.</li>
+<li class="edit-unit" contenteditable="false"><b>Visibility מלא</b> — מי ביקש גישה, מי אישר, ואיך בפועל משתמשים ב-API.</li>
+<li class="edit-unit" contenteditable="false"><b>עובד עם הכלים הקיימים</b> — משלים HashiCorp, AWS Secrets Manager, 1Password וכו', לא מחליף אותם.</li>
+<span class="block-drag-grip" title="גרור כדי להזיז" contenteditable="false" draggable="true">⠿</span><button type="button" class="block-delete-btn" title="מחק בלוק זה" contenteditable="false">🗑</button></ul>
+<div class="say edit-unit draggable-block" contenteditable="false" data-block-wired="1">
+<b class="tag">משפט סיכום</b>
+      "Passport נותן לארגון דרך מרכזית לגלות APIs, לנהל את הגישה אליהם ולאפשר שימוש מאובטח בהם — בלי לחשוף את ה-Credentials האמיתיים."
+    <span class="block-drag-grip" title="גרור כדי להזיז" contenteditable="false" draggable="true">⠿</span><button type="button" class="block-delete-btn" title="מחק בלוק זה" contenteditable="false">🗑</button></div>
+<div class="group-title edit-unit draggable-block" contenteditable="false" data-block-wired="1">מתי Passport ממש רלוונטי — סיגנלים מהלקוח<span class="block-drag-grip" title="גרור כדי להזיז" contenteditable="false" draggable="true">⠿</span><button type="button" class="block-delete-btn" title="מחק בלוק זה" contenteditable="false">🗑</button></div>
+<table class="panel-table draggable-block" data-block-wired="1">
+<tbody><tr><th>מה הלקוח אומר</th><th>התאמה</th><th>למה זה מעניין</th></tr>
+<tr><td>המפתחים לא יודעים לאיזה APIs פנימיים או של שותפים הם אמורים לגשת</td><td>🟢 חזקה</td><td>API Network נותן מקום מרכזי ומבוקר לגילוי APIs מאושרים.</td></tr>
+<tr><td>גישה ל-API מתבצעת דרך Slack, Tickets, מייל או ידע שבטי</td><td>🟢🟢 חזקה מאוד</td><td>Passport מסדיר בקשות גישה, אישור, Scope, Audit וביטול גישה.</td></tr>
+<tr><td>אנחנו חוששים ש-API Keys יופיעו ב-Variables, Repos, Logs או קבצים מקומיים</td><td>🟢🟢 חזקה מאוד</td><td>Secretless Consumption מפחית את הצורך להפיץ את ה-API Keys עצמם.</td></tr>
+<tr><td>אנחנו משתמשים ב-HashiCorp / AWS Secrets Manager / 1Password / GitGuardian וכו'</td><td>🟢 חזקה</td><td>Passport משלים את הכלים הקיימים ומוסיף שכבת Access Governance.</td></tr>
+<tr><td>ל-AI Agents או לתהליכים אוטומטיים דרושה גישה ל-APIs אבל אנחנו לא יודעים איך לנהל אותה</td><td>🟢🟢 חזקה מאוד</td><td>זה אחד מתרחישי השימוש המרכזיים והמתפתחים של Passport.</td></tr>
+</tbody><span class="block-drag-grip" title="גרור כדי להזיז" contenteditable="false" draggable="true">⠿</span><button type="button" class="block-delete-btn" title="מחק בלוק זה" contenteditable="false">🗑</button></table>
+<button type="button" class="add-block-btn">+ הוסף בלוק טקסט</button></div>
+</div>
+<div class="side-panel" id="panel-asa">
+<div class="panel-header">
+<span>Advanced Security Administration — ASA</span>
+<button class="panel-close" data-close="panel-asa">✕</button>
+</div>
+<div class="panel-body">
+<div class="fmt-group answer-fmt-group panel-toolbar">
+  <button type="button" class="ptb-bold" title="הדגשה (סמן טקסט ולחץ)">B</button>
+  <button type="button" class="ptb-italic" title="נטוי (סמן טקסט ולחץ)">I</button>
+  <button class="swatch" data-color="#1C1C1E" style="background:#1C1C1E" title="שחור"></button>
+  <button class="swatch" data-color="#FF6C37" style="background:#FF6C37" title="כתום"></button>
+  <button class="swatch" data-color="#D64545" style="background:#D64545" title="אדום"></button>
+  <button class="swatch" data-color="#2E7D5B" style="background:#2E7D5B" title="ירוק"></button>
+  <button class="swatch" data-color="#2F6FED" style="background:#2F6FED" title="כחול"></button>
+  <button class="swatch" data-color="#5B5F66" style="background:#5B5F66" title="אפור"></button>
+  <button type="button" class="ptb-save" title="שמור">💾 שמור</button>
+</div>
+<p class="lead edit-unit draggable-block" contenteditable="false" data-block-wired="1">ASA הוא ה-Add-on שאני מביא לשולחן כשמדברים על אבטחה בקנה מידה Enterprise — מוצר קיים ופעיל היום, נמכר בתשלום נפרד על גבי Enterprise.<span class="block-drag-grip" title="גרור כדי להזיז" contenteditable="false" draggable="true">⠿</span><button type="button" class="block-delete-btn" title="מחק בלוק זה" contenteditable="false">🗑</button></p>
+<div class="say edit-unit draggable-block" contenteditable="false" data-block-wired="1">
+<b class="tag">איך אני מסביר את זה</b>
+      "בגדול, זה נותן לצוות האבטחה שליטה מדויקת יותר על מי יכול להתחבר, מאיפה, ואיך שומרים על הסודות (secrets) שלהם. ברירת המחדל של Postman כבר מאובטחת, אבל ASA מוסיף שכבת בקרה נוספת שספציפית ל-Enterprise ולדרישות רגולציה כמו SOC 2, ISO או PCI."
+    <span class="block-drag-grip" title="גרור כדי להזיז" contenteditable="false" draggable="true">⠿</span><button type="button" class="block-delete-btn" title="מחק בלוק זה" contenteditable="false">🗑</button></div>
+<div class="group-title edit-unit draggable-block" contenteditable="false" data-block-wired="1">מה כלול ב-ASA<span class="block-drag-grip" title="גרור כדי להזיז" contenteditable="false" draggable="true">⠿</span><button type="button" class="block-delete-btn" title="מחק בלוק זה" contenteditable="false">🗑</button></div>
+<ul class="panel-list draggable-block" data-block-wired="1">
+<li class="edit-unit" contenteditable="false"><b>Domain Capture</b> — ניתוב אוטומטי של כניסות לפי דומיין, כך שכל עובד נכנס לחשבון הארגוני הנכון בלי בלבול בין חשבונות אישיים לחשבון החברה.</li>
+<li class="edit-unit" contenteditable="false"><b>Secret Scanner — לוח בקרה והתראות</b> — לא רק סורק סודות בודד, אלא תמונת מצב ארגונית: כמה ניסיונות חשיפה קרו, איפה, ומי היה מעורב.</li>
+<li class="edit-unit" contenteditable="false"><b>אינטגרציה עם כספות חיצוניות</b> — Azure Key Vault, HashiCorp, AWS Secrets Manager, 1Password — כדי ש-Postman יעבוד עם התשתית שהלקוח כבר משתמש בה, לא יחליף אותה.</li>
+<li class="edit-unit" contenteditable="false"><b>BYOK — הצפנה במפתח של הלקוח</b> — הלקוח שולט לגמרי במפתח ההצפנה; Postman לא מקבל אליו גישה בשום שלב.</li>
+<span class="block-drag-grip" title="גרור כדי להזיז" contenteditable="false" draggable="true">⠿</span><button type="button" class="block-delete-btn" title="מחק בלוק זה" contenteditable="false">🗑</button></ul>
+<div class="cross-box edit-unit draggable-block" contenteditable="false" data-block-wired="1">
+<b>דוגמה שאני נותן:</b> ארגון פיננסי שכפוף לרגולציה שמחייבת אותו להצפין את כל המידע הרגיש שלו במפתח שהוא עצמו שולט בו, ולא סומך על אף ספק חיצוני שמחזיק את המפתח. עם BYOK, הארגון שומר את מפתח ההצפנה בכספת שלו — ו-Postman פשוט לא יכול לגשת למידע בלי המפתח הזה, אפילו אם הוא ירצה.
+    <span class="block-drag-grip" title="גרור כדי להזיז" contenteditable="false" draggable="true">⠿</span><button type="button" class="block-delete-btn" title="מחק בלוק זה" contenteditable="false">🗑</button></div>
+<div class="say edit-unit draggable-block" contenteditable="false" data-block-wired="1">
+<b class="tag">משפט סיכום</b>
+      "ASA לא מחליף את האבטחה הבסיסית של Postman — הוא מוסיף עליה שכבת בקרה, ניראות ושליטה ברמת Enterprise, למי שצריך לעמוד בדרישות רגולציה מחמירות."
+    <span class="block-drag-grip" title="גרור כדי להזיז" contenteditable="false" draggable="true">⠿</span><button type="button" class="block-delete-btn" title="מחק בלוק זה" contenteditable="false">🗑</button></div>
+<button type="button" class="add-block-btn">+ הוסף בלוק טקסט</button></div>
+</div>
+
+<div class="side-panel" id="panel-fern">
+  <div class="panel-header">
+    <span>Fern</span>
+    <button class="panel-close" data-close="panel-fern">✕</button>
+  </div>
+  <div class="panel-body" style="padding:0;overflow:hidden;">
+    <iframe src="fern-explainer.html" style="width:100%;height:100%;border:none;display:block;"></iframe>
+  </div>
+</div>
+
+<div class="side-panel" id="panel-database">
+  <div class="panel-header">
+    <span>DATABASE — השוואה, תמחור ו-Discovery</span>
+    <button class="panel-close" data-close="panel-database">✕</button>
+  </div>
+  <div class="panel-body">
+    <div class="fmt-group answer-fmt-group panel-toolbar">
+      <button type="button" class="ptb-bold" title="הדגשה (סמן טקסט ולחץ)">B</button>
+      <button type="button" class="ptb-italic" title="נטוי (סמן טקסט ולחץ)">I</button>
+      <button class="swatch" data-color="#1C1C1E" style="background:#1C1C1E" title="שחור"></button>
+      <button class="swatch" data-color="#FF6C37" style="background:#FF6C37" title="כתום"></button>
+      <button class="swatch" data-color="#D64545" style="background:#D64545" title="אדום"></button>
+      <button class="swatch" data-color="#2E7D5B" style="background:#2E7D5B" title="ירוק"></button>
+      <button class="swatch" data-color="#2F6FED" style="background:#2F6FED" title="כחול"></button>
+      <button class="swatch" data-color="#5B5F66" style="background:#5B5F66" title="אפור"></button>
+      <button type="button" class="ptb-save" title="שמור">💾 שמור</button>
+    </div>
+    <p class="lead edit-unit draggable-block" contenteditable="false" data-block-wired="1">מסד ידע פנימי — לא סקריפט לקריאה, אלא חומר רקע שהבוט יכול לשלוף ממנו כשאתה שואל אותו שאלה על מתחרים, תמחור, או מתי לפתוח ב-Fabric.<span class="block-drag-grip" title="גרור כדי להזיז" contenteditable="false" draggable="true">⠿</span><button type="button" class="block-delete-btn" title="מחק בלוק זה" contenteditable="false">🗑</button></p>
+
+    <div class="group-title edit-unit draggable-block" contenteditable="false" data-block-wired="1">השוואה למתחרים — הפיץ' לכל מתחרה<span class="block-drag-grip" title="גרור כדי להזיז" contenteditable="false" draggable="true">⠿</span><button type="button" class="block-delete-btn" title="מחק בלוק זה" contenteditable="false">🗑</button></div>
+
+    <div class="prod draggable-block" data-block-wired="1">
+      <div class="name edit-unit" contenteditable="false">cURL — כלי שורת פקודה (CLI)</div>
+      <div class="pitch edit-unit" contenteditable="false">"cURL מושלם למפתח בודד ששולח בקשה אחת. בשנייה שהבקשה הזו צריכה להיות משותפת, נבדקת, או במעקב בפרודקשן — אין לה לאן להתקדם. Postman הוא המקום שבו זה הופך לנכס של הצוות."</div>
+    <span class="block-drag-grip" title="גרור כדי להזיז" contenteditable="false" draggable="true">⠿</span><button type="button" class="block-delete-btn" title="מחק בלוק זה" contenteditable="false">🗑</button></div>
+    <div class="prod draggable-block" data-block-wired="1">
+      <div class="name edit-unit" contenteditable="false">Bruno — API Client מקומי, Git-native</div>
+      <div class="pitch edit-unit" contenteditable="false">"Bruno הוא כלי נקי, מקומי ו-Git-native, טוב אם אתה עובד לבד. Postman הוא המקום שבו העבודה הזו הופכת לסביבת עבודה משותפת שכל הצוות שלך יכול לבנות עליה."</div>
+    <span class="block-drag-grip" title="גרור כדי להזיז" contenteditable="false" draggable="true">⠿</span><button type="button" class="block-delete-btn" title="מחק בלוק זה" contenteditable="false">🗑</button></div>
+    <div class="prod draggable-block" data-block-wired="1">
+      <div class="name edit-unit" contenteditable="false">Hoppscotch — API Client חינמי בדפדפן</div>
+      <div class="pitch edit-unit" contenteditable="false">"Hoppscotch חינמי, וזה יתרון אמיתי בשלב ה-client. אבל contract testing, מוניטורינג, Governance ויצירה בעזרת AI לא קיימים בשום tier. Postman נותן לך את מחזור החיים המלא."</div>
+    <span class="block-drag-grip" title="גרור כדי להזיז" contenteditable="false" draggable="true">⠿</span><button type="button" class="block-delete-btn" title="מחק בלוק זה" contenteditable="false">🗑</button></div>
+    <div class="prod draggable-block" data-block-wired="1">
+      <div class="name edit-unit" contenteditable="false">Kong Insomnia — API Client שמגיע חבילה עם Kong</div>
+      <div class="pitch edit-unit" contenteditable="false">"Insomnia מרגיש חינמי כי הוא מגיע בחבילה עם חוזה Kong שלכם, אבל client שמגיע בחבילה זה לא פלטפורמה. Postman יושב מעל ה-gateway, לכל הצוותים — לא רק לאלה שנוגעים ב-Kong."</div>
+    <span class="block-drag-grip" title="גרור כדי להזיז" contenteditable="false" draggable="true">⠿</span><button type="button" class="block-delete-btn" title="מחק בלוק זה" contenteditable="false">🗑</button></div>
+    <div class="prod draggable-block" data-block-wired="1">
+      <div class="name edit-unit" contenteditable="false">SmartBear Swagger — חבילת עיצוב ומחזור חיים</div>
+      <div class="pitch edit-unit" contenteditable="false">"Swagger נותן לכם login אחד על פני שלושה מוצרים שלא באמת חולקים מידע. Postman היא פלטפורמה אחת אמיתית, שבה שינוי ב-spec זורם ישירות לבדיקות, ל-mocks ולתיעוד."</div>
+    <span class="block-drag-grip" title="גרור כדי להזיז" contenteditable="false" draggable="true">⠿</span><button type="button" class="block-delete-btn" title="מחק בלוק זה" contenteditable="false">🗑</button></div>
+    <div class="prod draggable-block" data-block-wired="1">
+      <div class="name edit-unit" contenteditable="false">Stoplight — כלי עיצוב API (בהפסקת פיתוח)</div>
+      <div class="pitch edit-unit" contenteditable="false">"אף אחד, אפילו לא החברה שמחזיקה בו, לא ממשיך להשקיע ב-Stoplight. השאלה היא לא אם תעזבו, אלא לאן תגיעו. Postman הוא היעד המודרני למחזור החיים."</div>
+    <span class="block-drag-grip" title="גרור כדי להזיז" contenteditable="false" draggable="true">⠿</span><button type="button" class="block-delete-btn" title="מחק בלוק זה" contenteditable="false">🗑</button></div>
+    <div class="prod draggable-block" data-block-wired="1">
+      <div class="name edit-unit" contenteditable="false">SoapUI (OSS) — בדיקות SOAP/REST חינמיות</div>
+      <div class="pitch edit-unit" contenteditable="false">"היכולות של SoapUI ב-SOAP וב-WSDL הן ממש מהטובות בתחום, וזה חינמי. מה שהוא לא יכול לעשות זה לשים את הבדיקות שלכם בסביבת עבודה משותפת או לעקוב אחרי ה-APIs שלכם בפרודקשן. זה המקום שבו Postman נכנס לתמונה."</div>
+    <span class="block-drag-grip" title="גרור כדי להזיז" contenteditable="false" draggable="true">⠿</span><button type="button" class="block-delete-btn" title="מחק בלוק זה" contenteditable="false">🗑</button></div>
+    <div class="prod draggable-block" data-block-wired="1">
+      <div class="name edit-unit" contenteditable="false">ReadyAPI — בדיקות Enterprise בתשלום</div>
+      <div class="pitch edit-unit" contenteditable="false">"ReadyAPI הוא מוצר בדיקות Enterprise רציני, לא ה-SoapUI החינמי. Postman מריץ את אותן בדיקות, ואז מחבר אותן למוניטורינג ולקטלוג API חי, עם מסלול הגירה אמיתי."</div>
+    <span class="block-drag-grip" title="גרור כדי להזיז" contenteditable="false" draggable="true">⠿</span><button type="button" class="block-delete-btn" title="מחק בלוק זה" contenteditable="false">🗑</button></div>
+    <div class="prod draggable-block" data-block-wired="1">
+      <div class="name edit-unit" contenteditable="false">APIdog — פתרון זול הכל-באחד</div>
+      <div class="pitch edit-unit" contenteditable="false">"במחיר של 25$ למשתמש, APIdog נראה כמו מציאה לצד המחיר שלנו. אבל ברגע שאתם שואלים על Governance, קטלוג API, או אמון ברמת Enterprise — הפער הזה מפסיק להיות השיחה."</div>
+    <span class="block-drag-grip" title="גרור כדי להזיז" contenteditable="false" draggable="true">⠿</span><button type="button" class="block-delete-btn" title="מחק בלוק זה" contenteditable="false">🗑</button></div>
+    <div class="prod draggable-block" data-block-wired="1">
+      <div class="name edit-unit" contenteditable="false">MuleSoft Anypoint — פלטפורמת אינטגרציה Enterprise</div>
+      <div class="pitch edit-unit" contenteditable="false">"MuleSoft מצטיין בחיבור בין מערכות Enterprise, ואנחנו לא מחליפים את זה. Postman היא הפלטפורמה לכל מפתח ושותף שנוגע ב-APIs שה-runtime של MuleSoft לא מגיע אליהם."</div>
+    <span class="block-drag-grip" title="גרור כדי להזיז" contenteditable="false" draggable="true">⠿</span><button type="button" class="block-delete-btn" title="מחק בלוק זה" contenteditable="false">🗑</button></div>
+
+    <div class="group-title edit-unit draggable-block" contenteditable="false" data-block-wired="1">מטריצת כיסוי מחזור חיים<span class="block-drag-grip" title="גרור כדי להזיז" contenteditable="false" draggable="true">⠿</span><button type="button" class="block-delete-btn" title="מחק בלוק זה" contenteditable="false">🗑</button></div>
+    <table class="panel-table draggable-block" data-block-wired="1">
+      <tbody><tr><th>יכולת</th><th>Postman</th><th>API Clients</th><th>כלי עיצוב</th><th>חבילות בדיקה</th><th>MuleSoft</th></tr>
+      <tr><td>עיצוב ותכנון spec</td><td>✓ מלא</td><td>— אין</td><td>✓ מלא</td><td>~ חלקי</td><td>✓ מלא</td></tr>
+      <tr><td>בדיקות פונקציונליות</td><td>✓ מלא</td><td>~ חלקי</td><td>~ חלקי</td><td>✓ מלא</td><td>~ חלקי</td></tr>
+      <tr><td>בדיקות עומס ואבטחה</td><td>✓ מלא</td><td>— אין</td><td>~ חלקי</td><td>✓ מלא</td><td>~ חלקי</td></tr>
+      <tr><td>שרתי Mock</td><td>✓ מלא</td><td>~ חלקי</td><td>✓ מלא</td><td>~ חלקי</td><td>~ חלקי</td></tr>
+      <tr><td>מוניטורינג רציף בפרודקשן</td><td>✓ מלא</td><td>— אין</td><td>— אין</td><td>— אין</td><td>✓ מלא</td></tr>
+      <tr><td>Governance וקטלוג API</td><td>✓ מלא</td><td>— אין</td><td>~ חלקי</td><td>— אין</td><td>~ חלקי</td></tr>
+      <tr><td>יצירה בעזרת AI</td><td>✓ מלא</td><td>~ חלקי</td><td>~ חלקי</td><td>~ חלקי</td><td>~ חלקי</td></tr>
+      <tr><td>סביבת עבודה משותפת</td><td>✓ מלא</td><td>~ חלקי</td><td>✓ מלא</td><td>~ חלקי</td><td>✓ מלא</td></tr>
+      <tr><td>אבטחת Enterprise (SSO/SCIM/RBAC)</td><td>✓ מלא</td><td>~ חלקי</td><td>✓ מלא</td><td>~ חלקי</td><td>✓ מלא</td></tr>
+    </tbody><span class="block-drag-grip" title="גרור כדי להזיז" contenteditable="false" draggable="true">⠿</span><button type="button" class="block-delete-btn" title="מחק בלוק זה" contenteditable="false">🗑</button></table>
+
+    <div class="group-title edit-unit draggable-block" contenteditable="false" data-block-wired="1">תמחור וחבילות (2026)<span class="block-drag-grip" title="גרור כדי להזיז" contenteditable="false" draggable="true">⠿</span><button type="button" class="block-delete-btn" title="מחק בלוק זה" contenteditable="false">🗑</button></div>
+    <div class="cross-box edit-unit draggable-block" contenteditable="false" data-block-wired="1">
+      מבנה החבילות עבר מ-Free/Basic/Professional/Enterprise ל-<b>Free/Solo/Team/Enterprise</b> ב-1 במרץ 2026. Free, Solo ו-Team הן חבילות <b>self-serve</b>; Enterprise היא <b>sales-assisted</b>. Professional היא חבילה legacy — אין הגירה בכפייה, לקוחות קיימים יכולים להישאר עליה ולהמשיך להתרחב.
+    <span class="block-drag-grip" title="גרור כדי להזיז" contenteditable="false" draggable="true">⠿</span><button type="button" class="block-delete-btn" title="מחק בלוק זה" contenteditable="false">🗑</button></div>
+    <ul class="panel-list draggable-block" data-block-wired="1">
+      <li class="edit-unit" contenteditable="false"><b>ASA</b> (Advanced Security Administration) — ה-Add-on הראשון שאני ממקם בשיחה.</li>
+      <li class="edit-unit" contenteditable="false"><b>Fabric AI Gateway</b> — ה-Add-on השני שאני ממקם, אחרי ASA.</li>
+      <li class="edit-unit" contenteditable="false"><b>Passport</b> — Governance לגישה ל-APIs, ללא חשיפת Credentials.</li>
+      <li class="edit-unit" contenteditable="false"><b>Premium Support</b> — שכבת תמיכה מוגברת מעל Enterprise.</li>
+    <span class="block-drag-grip" title="גרור כדי להזיז" contenteditable="false" draggable="true">⠿</span><button type="button" class="block-delete-btn" title="מחק בלוק זה" contenteditable="false">🗑</button></ul>
+
+    <div class="group-title edit-unit draggable-block" contenteditable="false" data-block-wired="1">שאלות Discovery ל-Fabric<span class="block-drag-grip" title="גרור כדי להזיז" contenteditable="false" draggable="true">⠿</span><button type="button" class="block-delete-btn" title="מחק בלוק זה" contenteditable="false">🗑</button></div>
+    <div class="say edit-unit draggable-block" contenteditable="false" data-block-wired="1">
+      <b class="tag">שאלה 1</b>
+      "כמה צוותים בונים או מריצים היום אפליקציות AI או Agents, ואיך זה מנוהל?" — 🟢 "כמה צוותים," "כל אחד בונה בנפרד" = פרגמנטציה, סימן חזק. 🔴 "פרויקט קטן אחד" = כנראה מוקדם.
+    <span class="block-drag-grip" title="גרור כדי להזיז" contenteditable="false" draggable="true">⠿</span><button type="button" class="block-delete-btn" title="מחק בלוק זה" contenteditable="false">🗑</button></div>
+    <div class="say edit-unit draggable-block" contenteditable="false" data-block-wired="1">
+      <b class="tag">שאלה 2</b>
+      "איך ה-Agents שלכם נגישים היום ל-LLMs, שרתי MCP ו-APIs פנימיים?" — 🟢 "כל צוות מנהל בעצמו," "יש לנו API Keys שונים בכל מקום," "בנינו Proxy משלנו" = סימן חזק מאוד. 🔴 "חיבור ישיר פשוט אחד" = סימן חלש.
+    <span class="block-drag-grip" title="גרור כדי להזיז" contenteditable="false" draggable="true">⠿</span><button type="button" class="block-delete-btn" title="מחק בלוק זה" contenteditable="false">🗑</button></div>
+    <div class="say edit-unit draggable-block" contenteditable="false" data-block-wired="1">
+      <b class="tag">שאלה 3</b>
+      "עם צמיחת השימוש ב-AI, יש חששות סביב אבטחה, גישת Agents, Credentials, Governance או עלויות?" — 🟢 "Security שואלים איך שולטים בגישת Agents," "לא רוצים ש-Agents יחזיקו Credentials," "צריך Audit Trail" = סימן חזק מאוד. 🔴 "לא חושש," "ההוצאה זניחה" = כנראה לא בעדיפות כרגע.
+    <span class="block-drag-grip" title="גרור כדי להזיז" contenteditable="false" draggable="true">⠿</span><button type="button" class="block-delete-btn" title="מחק בלוק זה" contenteditable="false">🗑</button></div>
+
+    <table class="panel-table draggable-block" data-block-wired="1">
+      <tbody><tr><th>נושא</th><th>מתאים ל-Fabric</th><th>לא מתאים כרגע</th></tr>
+      <tr><td>MCP</td><td>שימוש או תכנון של כמה MCP Servers</td><td>אין שימוש/תכנון ב-MCP</td></tr>
+      <tr><td>APIs פנימיים</td><td>Agents צריכים גישה מאובטחת ל-APIs פנימיים</td><td>Agents לא נוגעים במערכות הארגון</td></tr>
+      <tr><td>אבטחה</td><td>דרישות Governance חזקות</td><td>דרישות אבטחה מינימליות</td></tr>
+      <tr><td>Credentials</td><td>הרבה API Keys ומידע רגיש</td><td>API Key אחד פשוט</td></tr>
+      <tr><td>עלויות AI</td><td>צריך Visibility ושליטה בהוצאה</td><td>עלויות AI לא משמעותיות</td></tr>
+      <tr><td>ארכיטקטורה</td><td>סביבת AI מבוזרת בין צוותים/מערכות</td><td>חיבור ישיר פשוט אחד</td></tr>
+      <tr><td>זווית API Gateway</td><td>מחפשים Governance אג'נטי לצד התשתית הקיימת</td><td>רק רוצים להחליף API Gateway מסורתי</td></tr>
+    </tbody><span class="block-drag-grip" title="גרור כדי להזיז" contenteditable="false" draggable="true">⠿</span><button type="button" class="block-delete-btn" title="מחק בלוק זה" contenteditable="false">🗑</button></table>
+    <div class="cross-box edit-unit draggable-block" contenteditable="false" data-block-wired="1">
+      <b>נקודת מיצוב:</b> לא למכור את Fabric כתחליף ל-Kong/Apigee — זו שכבת Governance מותאמת AI שיושבת לצד תשתית ה-API הקיימת.
+    <span class="block-drag-grip" title="גרור כדי להזיז" contenteditable="false" draggable="true">⠿</span><button type="button" class="block-delete-btn" title="מחק בלוק זה" contenteditable="false">🗑</button></div>
+<div class="group-title edit-unit draggable-block" contenteditable="false" data-block-wired="1">שאלות נפוצות מלקוחות ב-First Call<span class="block-drag-grip" title="גרור כדי להזיז" contenteditable="false" draggable="true">⠿</span><button type="button" class="block-delete-btn" title="מחק בלוק זה" contenteditable="false">🗑</button></div>
+
+<div class="obj draggable-block" data-block-wired="1">
+<div class="q edit-unit" contenteditable="false">"אתם מתחברים למערכות אחרות (API Connect, Azure APIM)?"</div>
+<div class="a edit-unit" contenteditable="false">"כן. יש אינטגרציות עם gateways שונים (כולל Azure API Management ו-IBM API Connect) ועם AWS, Azure ו-Google Cloud. Postman שואב מידע מהסביבות הקיימות לצורך discovery ו-API Catalog." <br><b>לזכור:</b> לברר קודם למה הלקוח מתכוון ב-"integration" — discovery, monitoring, testing או החלפת gateway.</div>
+<span class="block-drag-grip" title="גרור כדי להזיז" contenteditable="false" draggable="true">⠿</span><button type="button" class="block-delete-btn" title="מחק בלוק זה" contenteditable="false">🗑</button></div>
+
+<div class="obj draggable-block" data-block-wired="1">
+<div class="q edit-unit" contenteditable="false">"Postman הוא Gateway, או ששם Gateway באמצע?"</div>
+<div class="a edit-unit" contenteditable="false">"לא. Postman לא נועד להחליף API Gateway. הוא מתחבר ל-Gateways קיימים ומקבל מהם מידע, ובנוסף יש agent שמאזין לפעילות בסביבה." <br><b>לזכור:</b> להפריד — Gateway מטפל בתעבורה; Postman מנהל את ה-API lifecycle סביבו.</div>
+<span class="block-drag-grip" title="גרור כדי להזיז" contenteditable="false" draggable="true">⠿</span><button type="button" class="block-delete-btn" title="מחק בלוק זה" contenteditable="false">🗑</button></div>
+
+<div class="obj draggable-block" data-block-wired="1">
+<div class="q edit-unit" contenteditable="false">"איך אתם מוצאים APIs שאנחנו בעצמנו לא מכירים?"</div>
+<div class="a edit-unit" contenteditable="false">"כמה מנגנוני discovery: אינטגרציה עם gateways ו-cloud providers, agent שמזהה APIs לפי תעבורת רשת (Postman Insights), ו-service discovery ב-Kubernetes (Cluster Watcher). המטרה — תמונה רחבה של כל ה-API landscape." <br><b>לזכור:</b> זה מתחבר ישירות לבעיה של APIs לא מוכרים ול-API Catalog.</div>
+<span class="block-drag-grip" title="גרור כדי להזיז" contenteditable="false" draggable="true">⠿</span><button type="button" class="block-delete-btn" title="מחק בלוק זה" contenteditable="false">🗑</button></div>
+
+<div class="obj draggable-block" data-block-wired="1">
+<div class="q edit-unit" contenteditable="false">"כדי לנטר APIs אתם חייבים ליירט תעבורה?"</div>
+<div class="a edit-unit" contenteditable="false">"לא בהכרח. באינטגרציה עם Gateway, Postman מקבל מידע ישירות מה-Gateway. אפשר גם agent שמאזין לסביבה ומזהה אילו APIs נקראים." <br><b>לזכור:</b> לא להיכנס עמוק מדי לטכנולוגיה — יש כמה שיטות בהתאם לארכיטקטורה של הלקוח.</div>
+<span class="block-drag-grip" title="גרור כדי להזיז" contenteditable="false" draggable="true">⠿</span><button type="button" class="block-delete-btn" title="מחק בלוק זה" contenteditable="false">🗑</button></div>
+
+<div class="obj draggable-block" data-block-wired="1">
+<div class="q edit-unit" contenteditable="false">"מה זה API Catalog, ולמה צריך אותו אם יש API Management?"</div>
+<div class="a edit-unit" contenteditable="false">"API Catalog הוא registry מרכזי שנותן single pane of glass על כל ה-APIs בארגון — מה קיים, מי הבעלים, ומה המצב שלו (מקושר ל-source control, CI/CD ו-production). API Management מטפל בתעבורה בזמן אמת; Catalog נותן את תמונת ה-visibility וה-ownership שמעליו." <br><b>לזכור:</b> לא להציג Catalog כעוד רשימה, אלא כ-visibility ו-ownership על API landscape מבוזר.</div>
+<span class="block-drag-grip" title="גרור כדי להזיז" contenteditable="false" draggable="true">⠿</span><button type="button" class="block-delete-btn" title="מחק בלוק זה" contenteditable="false">🗑</button></div>
+
+<div class="obj draggable-block" data-block-wired="1">
+<div class="q edit-unit" contenteditable="false">"אתם עובדים עם source code ו-repositories?"</div>
+<div class="a edit-unit" contenteditable="false">"כן. יש חיבור ל-GitHub שמקשר בין source code ל-APIs, וניתן גם להפוך קוד קיים ל-Postman collections." <br><b>לזכור:</b> רלוונטי במיוחד לארגונים שעובדים Git-based.</div>
+<span class="block-drag-grip" title="גרור כדי להזיז" contenteditable="false" draggable="true">⠿</span><button type="button" class="block-delete-btn" title="מחק בלוק זה" contenteditable="false">🗑</button></div>
+
+<div class="obj draggable-block" data-block-wired="1">
+<div class="q edit-unit" contenteditable="false">"אנחנו עובדים הרבה עם AI ו-Agents — איך Postman משתלב?"</div>
+<div class="a edit-unit" contenteditable="false">"Postman כולל יכולות AI מובנות (Postman AI ו-Agent Mode) לאוטומציה של תהליכי פיתוח API — יצירת בדיקות, תיעוד ו-workflows. מעבר לכך, ככל שיותר תהליכי AI/Agents צורכים APIs, גובר הצורך ב-APIs שניתנים לגילוי, אמינים ומתועדים היטב, וב-Governance כש-AI משתתף בתהליך." <br><b>לזכור:</b> קודם להבין את ה-AI workflow של הלקוח, ורק אחר כך לחבר למוצר הרלוונטי.</div>
+<span class="block-drag-grip" title="גרור כדי להזיז" contenteditable="false" draggable="true">⠿</span><button type="button" class="block-delete-btn" title="מחק בלוק זה" contenteditable="false">🗑</button></div>
+
+<div class="obj draggable-block" data-block-wired="1">
+<div class="q edit-unit" contenteditable="false">"אתם אוכפים standards כמו OpenAPI על צוותי הפיתוח?"</div>
+<div class="a edit-unit" contenteditable="false">"כן. Postman (API Governance) מאפשר להגדיר ולאכוף כללים על פני צוותים — כללים מובנים וגם custom rules — ולשלב Governance ב-CI/CD." <br><b>לזכור:</b> להבדיל בין "אנחנו עובדים לפי OpenAPI" לבין "אנחנו אוכפים OpenAPI בפועל".</div>
+<span class="block-drag-grip" title="גרור כדי להזיז" contenteditable="false" draggable="true">⠿</span><button type="button" class="block-delete-btn" title="מחק בלוק זה" contenteditable="false">🗑</button></div>
+
+<div class="group-title edit-unit draggable-block" contenteditable="false" data-block-wired="1">שאלות נפוצות על תמחור וחבילות (2026)<span class="block-drag-grip" title="גרור כדי להזיז" contenteditable="false" draggable="true">⠿</span><button type="button" class="block-delete-btn" title="מחק בלוק זה" contenteditable="false">🗑</button></div>
+
+<div class="obj draggable-block" data-block-wired="1">
+<div class="q edit-unit" contenteditable="false">"למה Free זה רק משתמש אחד עכשיו?"</div>
+<div class="a edit-unit" contenteditable="false">"Free הפכה לחוויה מלאה למפתח בודד - ריצות ללא הגבלה, Git, mocks, 50 קרדיטי AI - במקום חבילת צוות קלה ל-3 אנשים. שיתוף פעולה מתחיל ב-Team, שבאמת נבנתה לעבודה מרובת-משתמשים עם תפקידים ובקרות אמיתיים."</div>
+<span class="block-drag-grip" title="גרור כדי להזיז" contenteditable="false" draggable="true">⠿</span><button type="button" class="block-delete-btn" title="מחק בלוק זה" contenteditable="false">🗑</button></div>
+
+<div class="obj draggable-block" data-block-wired="1">
+<div class="q edit-unit" contenteditable="false">"מה ההבדל האמיתי בין RBAC ב-Team ל-RBAC ב-Enterprise?"</div>
+<div class="a edit-unit" contenteditable="false">"RBAC ב-Team הוא ברמת ה-workspace - כמו ב-Professional הישן. RBAC ב-Enterprise הוא ארגוני ומתקדם - קבוצות משתמשים, תפקידים בגובה API, Governance ותפקידי מנהל רשת."</div>
+<span class="block-drag-grip" title="גרור כדי להזיז" contenteditable="false" draggable="true">⠿</span><button type="button" class="block-delete-btn" title="מחק בלוק זה" contenteditable="false">🗑</button></div>
+
+<div class="obj draggable-block" data-block-wired="1">
+<div class="q edit-unit" contenteditable="false">"למה רוב ה-Add-ons נעלמו?"</div>
+<div class="a edit-unit" contenteditable="false">"הם גרמו לבלבול מתמיד לגבי מה שהלקוח בעצם צריך. עכשיו כמעט הכל מגיע מובנה בתוך החבילה שאליה הוא שייך, ללא הגבלה, כך שהחלטת הרכישה היא רק 'איזו חבילה', לא 'איזו חבילה ואיזה Add-on'."</div>
+<span class="block-drag-grip" title="גרור כדי להזיז" contenteditable="false" draggable="true">⠿</span><button type="button" class="block-delete-btn" title="מחק בלוק זה" contenteditable="false">🗑</button></div>
+
+<div class="obj draggable-block" data-block-wired="1">
+<div class="q edit-unit" contenteditable="false">"קרדיטי ה-AI באמת ללא הגבלה?"</div>
+<div class="a edit-unit" contenteditable="false">"אין חבילה עם הגבלה אינסופית, אבל בכל חבילה יש בסיס שרוב המשתמשים לא מגיעים אליו, ותמחור לפי צריכה נכנס לתמונה רק מעל לזה - זה שסתום ביטחון, לא חוויית ברירת המחדל, והמנהל בוחר אם חיוב חריגה מופעל בכלל." <br><b>מספרים:</b> Free 50 / Solo ו-Team 400 / Enterprise 800 (pooled), הכל לחודש למשתמש; חריגה: Solo $0.05, Team $0.04, Enterprise $0.035 לקרדיט (ב-Free חייבים לשדרג).</div>
+<span class="block-drag-grip" title="גרור כדי להזיז" contenteditable="false" draggable="true">⠿</span><button type="button" class="block-delete-btn" title="מחק בלוק זה" contenteditable="false">🗑</button></div>
+
+<div class="obj draggable-block" data-block-wired="1">
+<div class="q edit-unit" contenteditable="false">"מה Postman מוסיף מעבר ל-WAF, DDoS ו-Authentication שיש לנו?"</div>
+<div class="a edit-unit" contenteditable="false">"Postman לא מתחרה ב-WAF/DDoS/authentication — הוא מוסיף שכבת אבטחה שממוקדת ב-API lifecycle: Secret Scanner שמאתר סודות ומפתחות שדלפו בקוד ובקולקציות, security scorecards ב-API Catalog, וגישת shift-left testing." <br><b>לזכור:</b> לא להתווכח עם ה-stack הקיים. לברר איפה יש gaps ב-lifecycle, Governance, secrets ו-testing.</div>
+<span class="block-drag-grip" title="גרור כדי להזיז" contenteditable="false" draggable="true">⠿</span><button type="button" class="block-delete-btn" title="מחק בלוק זה" contenteditable="false">🗑</button></div>
+
+<div class="obj draggable-block" data-block-wired="1">
+<div class="q edit-unit" contenteditable="false">"אנחנו עובדים עם MuleSoft — איפה Postman נכנס?"</div>
+<div class="a edit-unit" contenteditable="false">"Postman לא מחליף את MuleSoft כפלטפורמת אינטגרציה — MuleSoft/Anypoint הוא integration platform בפני עצמו עם ה-Catalog שלו. הכיוון הרלוונטי הוא self-service API publishing מ-Postman, עם Governance ו-approval flow, שממלא את הפער של המתנה ארוכה ליצירת APIs חדשים. אינטגרציה טכנית ישירה וספציפית מול MuleSoft טרם אושרה במלואה." <br><b>לזכור:</b> לא להבטיח capability שלא הוצגה בפועל — לקבוע follow-up טכני עם SE.</div>
+<span class="block-drag-grip" title="גרור כדי להזיז" contenteditable="false" draggable="true">⠿</span><button type="button" class="block-delete-btn" title="מחק בלוק זה" contenteditable="false">🗑</button></div>
+
+<div class="obj draggable-block" data-block-wired="1">
+<div class="q edit-unit" contenteditable="false">"אנחנו כבר משתמשים ב-Postman ל-testing — מה עוד נקבל?"</div>
+<div class="a edit-unit" contenteditable="false">"Enterprise מרחיב שימוש נקודתי ב-testing לכל ה-API lifecycle: design, Governance, ו-visibility ארגוני על כל ה-APIs בחברה — לא רק על אלה שכבר נבדקים." <br><b>לזכור:</b> להתחיל ממה שהם כבר עושים עם Postman, ואז לזהות מה חסר סביבו.</div>
+<span class="block-drag-grip" title="גרור כדי להזיז" contenteditable="false" draggable="true">⠿</span><button type="button" class="block-delete-btn" title="מחק בלוק זה" contenteditable="false">🗑</button></div>
+
+<div class="group-title edit-unit draggable-block" contenteditable="false" data-block-wired="1">10 שאלות שכדאי להיות מוכן אליהן בכל First Call<span class="block-drag-grip" title="גרור כדי להזיז" contenteditable="false" draggable="true">⠿</span><button type="button" class="block-delete-btn" title="מחק בלוק זה" contenteditable="false">🗑</button></div>
+<ul class="panel-list draggable-block" data-block-wired="1">
+<li class="edit-unit" contenteditable="false">אני כבר משתמש ב-Free — למה Enterprise?</li>
+<li class="edit-unit" contenteditable="false">האם אתם מחליפים את ה-API Gateway?</li>
+<li class="edit-unit" contenteditable="false">האם אתם מתחברים ל-API Management / Cloud / GitHub?</li>
+<li class="edit-unit" contenteditable="false">איך אתם מגלים APIs שאני בכלל לא יודע שקיימים?</li>
+<li class="edit-unit" contenteditable="false">האם אתם יושבים באמצע התעבורה?</li>
+<li class="edit-unit" contenteditable="false">מה ההבדל בין API Catalog ל-API Management?</li>
+<li class="edit-unit" contenteditable="false">איך אתם אוכפים OpenAPI / Governance?</li>
+<li class="edit-unit" contenteditable="false">מה אתם מוסיפים מעבר ל-WAF / DDoS / Security tools?</li>
+<li class="edit-unit" contenteditable="false">איך מוכיחים ROI?</li>
+<li class="edit-unit" contenteditable="false">אפשר להתחיל קטן / Trial / POC?</li>
+<span class="block-drag-grip" title="גרור כדי להזיז" contenteditable="false" draggable="true">⠿</span><button type="button" class="block-delete-btn" title="מחק בלוק זה" contenteditable="false">🗑</button></ul>
+
+  <button type="button" class="add-block-btn">+ הוסף בלוק טקסט</button></div>
+</div>
+
+<div class="side-panel" id="chat-answer-window">
+  <div class="panel-header">
+    <span>תשובת הבוט</span>
+    <button class="panel-close" data-close="chat-answer-window">✕</button>
+  </div>
+  <div class="panel-body answer-body">
+    <div class="fmt-group answer-fmt-group">
+      <button id="answer-bold-btn" title="הדגשה (סמן טקסט ולחץ)">B</button>
+      <button id="answer-italic-btn" title="נטוי (סמן טקסט ולחץ)">I</button>
+      <button id="answer-dec-font-btn" title="הקטן טקסט (סמן טקסט ולחץ)">A-</button>
+      <button id="answer-inc-font-btn" title="הגדל טקסט (סמן טקסט ולחץ)">A+</button>
+      <button class="swatch" data-color="#1C1C1E" style="background:#1C1C1E" title="שחור"></button>
+      <button class="swatch" data-color="#FF6C37" style="background:#FF6C37" title="כתום"></button>
+      <button class="swatch" data-color="#D64545" style="background:#D64545" title="אדום"></button>
+      <button class="swatch" data-color="#2E7D5B" style="background:#2E7D5B" title="ירוק"></button>
+      <button class="swatch" data-color="#2F6FED" style="background:#2F6FED" title="כחול"></button>
+      <button class="swatch" data-color="#5B5F66" style="background:#5B5F66" title="אפור"></button>
+      <button id="save-answer-edit-btn" title="שמור את העריכה שלך כדי שהשאלה הזו תציג את התשובה הזו בפעם הבאה">💾 שמור עריכה</button>
+    </div>
+    <div id="chat-answer-content" class="answer-window-text" contenteditable="true"></div>
+  </div>
+</div>
+
+</div>
+</main>
+<aside id="chat-panel">
+<div class="chat-header">
+<span class="chat-header-icon">🤖</span>
+<span class="chat-header-title">שאל על החומר</span>
+</div>
+<div class="chat-quick">
+<div class="chat-quick-item"><button class="chat-quick-btn" data-prompt="מה ההבדל בין Fabric ל-Passport?">מה ההבדל בין Fabric ל-Passport?</button><button class="chat-quick-remove" title="הסר שאלה זו">✕</button></div>
+<div class="chat-quick-item"><button class="chat-quick-btn" data-prompt="הלקוח מתנגד למחיר, איך אני עונה?">הלקוח מתנגד למחיר, איך אני עונה?</button><button class="chat-quick-remove" title="הסר שאלה זו">✕</button></div>
+<div class="chat-quick-item"><button class="chat-quick-btn" data-prompt="מה זה ASA ולמה זה Add-on?">מה זה ASA ולמה זה Add-on?</button><button class="chat-quick-remove" title="הסר שאלה זו">✕</button></div>
+<div class="chat-quick-item"><button class="chat-quick-btn" data-prompt="הלקוח משתמש ב-Kong, איך אני עונה?">הלקוח משתמש ב-Kong, איך אני עונה?</button><button class="chat-quick-remove" title="הסר שאלה זו">✕</button></div>
+<div class="chat-quick-item"><button class="chat-quick-btn" data-prompt="האם אתם מחליפים את ה-API Gateway?">האם אתם מחליפים את ה-API Gateway?</button><button class="chat-quick-remove" title="הסר שאלה זו">✕</button></div>
+<div class="chat-quick-item"><button class="chat-quick-btn" data-prompt="מה אתם מוסיפים מעבר ל-WAF / DDoS / Security tools?">מה אתם מוסיפים מעבר ל-WAF / DDoS?</button><button class="chat-quick-remove" title="הסר שאלה זו">✕</button></div>
+<div class="chat-quick-item"><button class="chat-quick-btn" data-prompt="למה Free זה רק משתמש אחד עכשיו?">למה Free זה רק משתמש אחד עכשיו?</button><button class="chat-quick-remove" title="הסר שאלה זו">✕</button></div>
+<div class="chat-quick-item"><button class="chat-quick-btn" data-prompt="מה ההבדל האמיתי בין RBAC ב-Team ל-RBAC ב-Enterprise?">מה ההבדל בין RBAC ב-Team ל-Enterprise?</button><button class="chat-quick-remove" title="הסר שאלה זו">✕</button></div>
+
+<div class="chat-quick-item"><button class="chat-quick-btn" data-prompt="קרדיטי ה-AI באמת ללא הגבלה?">קרדיטי ה-AI באמת ללא הגבלה?</button><button class="chat-quick-remove" title="הסר שאלה זו">✕</button></div>
+</div>
+<div id="saved-questions-wrap">
+  <button id="saved-questions-btn">📌 שאלות שמורות <span id="saved-questions-count">3</span> <span class="sq-arrow">▾</span></button>
+  <div id="sync-status"></div>
+  <div id="saved-questions-menu"><div class="sq-item"><span class="sq-text">אני משתמש בגרסה החינמית. למה שאשלם עבור Enterprise?</span><button class="sq-delete" title="הסר מהרשימה">✕</button></div><div class="sq-item"><span class="sq-text">מה ההבדל בין MuleSoft ל-Postman ?</span><button class="sq-delete" title="הסר מהרשימה">✕</button></div><div class="sq-item"><span class="sq-text">מה ההבדל בין Fabric ל-Passport?</span><button class="sq-delete" title="הסר מהרשימה">✕</button></div></div>
+</div>
+<div id="chat-log">
+<div class="chat-placeholder"></div>
+</div>
+<div id="chat-input-row">
+<textarea id="chat-question" placeholder="הקלד שאלה..." rows="1"></textarea>
+<button id="chat-send">שלח</button>
+</div>
+
+</aside>
+</div>
+</div>
+<script>
+(function(){
+  const root = document.getElementById('editable-root');
+  const undoBtn = document.getElementById('undo-btn');
+  const toggleBtn = document.getElementById('toggle-btn');
+  const downloadBtn = document.getElementById('download-btn');
+  const statusEl = document.getElementById('save-status');
+
+  // --- Turn only specific text-bearing elements into editable "units" ---
+  // Card / grid / row containers (.stage, .offer, .prod, .obj, .stage-row,
+  // .offer-grid, ul) are deliberately left OUT of this list. That's the fix
+  // for "deleting a line makes everything jump up": since those structural
+  // wrappers are never contenteditable themselves, the browser can't merge
+  // or remove them when you backspace inside the text — only the text
+  // inside the specific line changes, the card/grid box stays put.
+  const EDITABLE_SELECTORS = [
+    'header.top h1', 'header.top p',
+    'h2', '.lead',
+    '.stage .t', '.stage .who', '.stage .d',
+    '.say', '.ai-box .h', '.ai-box p',
+    '.offer .t', '.offer p',
+    '.cross-box', '.group-title',
+    '.prod .name', '.prod .pitch',
+    '.obj .q', '.obj .a',
+    '.final > p', '.final li',
+    '.pitch-open',
+    '.panel-list li'
+  ];
+  const units = new Set();
+  EDITABLE_SELECTORS.forEach(sel => root.querySelectorAll(sel).forEach(el => units.add(el)));
+  units.forEach(el => { el.classList.add('edit-unit'); el.setAttribute('contenteditable', 'true'); });
+
+  let editingLocked = false;
+  let undoStack = [];
+  const MAX_UNDO = 40;
+  let burstSnapshot = null;      // state of the document BEFORE the current typing burst
+  let debounceTimer = null;
+  const DEBOUNCE_MS = 700;       // pause in typing that counts as "one step" ending
+  let savedRange = null;         // selection kept alive across the color picker's native dialog
+
+  function setStatus(text){
+    statusEl.textContent = text;
+    clearTimeout(statusEl._t);
+    statusEl._t = setTimeout(()=>{ statusEl.textContent = ''; }, 2500);
+  }
+
+  function updateUndoButton(){
+    undoBtn.disabled = undoStack.length === 0;
+  }
+
+  function pushUndo(snapshot){
+    undoStack.push(snapshot);
+    if(undoStack.length > MAX_UNDO) undoStack.shift();
+    updateUndoButton();
+  }
+
+  // Typing is grouped into "steps": a step is a burst of typing with no
+  // pause longer than DEBOUNCE_MS. Only when the burst ends do we push ONE
+  // undo entry for that whole burst — so Undo reverts one step, not
+  // everything typed since you started editing.
+  function commitBurst(){
+    clearTimeout(debounceTimer);
+    if(burstSnapshot === null) return;
+    const current = root.innerHTML;
+    if(current !== burstSnapshot){
+      pushUndo(burstSnapshot);
+    }
+    burstSnapshot = null;
+  }
+
+  root.addEventListener('beforeinput', ()=>{
+    if(editingLocked) return;
+    if(burstSnapshot === null){
+      burstSnapshot = root.innerHTML;
+    }
+    clearTimeout(debounceTimer);
+    debounceTimer = setTimeout(commitBurst, DEBOUNCE_MS);
+  });
+
+  root.addEventListener('focusout', commitBurst);
+
+  undoBtn.addEventListener('click', ()=>{
+    commitBurst(); // flush any typing that hasn't been committed as a step yet
+    if(undoStack.length === 0) return;
+    const prev = undoStack.pop();
+    root.innerHTML = prev;
+    // innerHTML replacement wipes the contenteditable attributes we added —
+    // put them back on the restored content.
+    units.clear();
+    EDITABLE_SELECTORS.forEach(sel => root.querySelectorAll(sel).forEach(el => units.add(el)));
+    units.forEach(el => { el.classList.add('edit-unit'); el.setAttribute('contenteditable', editingLocked ? 'false' : 'true'); });
+    updateUndoButton();
+    setStatus('שינוי אחרון בוטל');
+  });
+
+  toggleBtn.addEventListener('click', ()=>{
+    commitBurst();
+    editingLocked = !editingLocked;
+    units.forEach(el => el.setAttribute('contenteditable', editingLocked ? 'false' : 'true'));
+    toggleBtn.textContent = editingLocked ? '✏️ עריכה פעילה' : '🔒 נעילת עריכה';
+  });
+
+  const blockToolsToggle = document.getElementById('block-tools-toggle');
+  blockToolsToggle.addEventListener('click', ()=>{
+    const active = document.body.classList.toggle('block-tools-active');
+    blockToolsToggle.classList.toggle('active', active);
+  });
+
+  downloadBtn.addEventListener('click', ()=>{
+    commitBurst();
+    const htmlContent = '<!DOCTYPE html>\n' + document.documentElement.outerHTML;
+    const blob = new Blob([htmlContent], {type:'text/html;charset=utf-8'});
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = 'postman-explainer-edited.html';
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+    URL.revokeObjectURL(url);
+    setStatus('הקובץ הורד ✓');
+  });
+
+  // ---- formatting toolbar: each click is its own single undo step ----
+
+  function runCommand(cmd, value){
+    if(editingLocked) return;
+    commitBurst();
+    const before = root.innerHTML;
+    document.execCommand(cmd, false, value || null);
+    const after = root.innerHTML;
+    if(after !== before) pushUndo(before);
+  }
+
+  function wrapSelection(styleProp, valueOrDelta, isSizeDelta){
+    if(editingLocked) return;
+    const sel = window.getSelection();
+    if(!sel || sel.rangeCount === 0 || sel.isCollapsed || !root.contains(sel.getRangeAt(0).commonAncestorContainer)){
+      setStatus('סמן טקסט קודם');
+      return;
+    }
+    commitBurst();
+    const before = root.innerHTML;
+    const range = sel.getRangeAt(0);
+
+    let value = valueOrDelta;
+    if(isSizeDelta){
+      const refNode = range.startContainer.nodeType === 3 ? range.startContainer.parentElement : range.startContainer;
+      const currentSize = parseFloat(window.getComputedStyle(refNode).fontSize) || 15;
+      value = Math.max(10, Math.min(40, currentSize + valueOrDelta)) + 'px';
+    }
+
+    const span = document.createElement('span');
+    span.style[styleProp] = value;
+    span.appendChild(range.extractContents());
+    range.insertNode(span);
+
+    // Fix: a nested tag like <b> can have its OWN color set by a CSS class
+    // rule (e.g. ".cross-box b{color:orange}"). That rule targets the <b>
+    // element directly, so it wins over the wrapping span's colour no matter
+    // what we set on the span — inheritance only applies when nothing
+    // targets the element itself. So when recoloring, also stamp the new
+    // color directly onto every element inside the selection.
+    if(styleProp === 'color'){
+      span.querySelectorAll('*').forEach(node => { node.style.color = value; });
+    }
+
+    sel.removeAllRanges();
+    const newRange = document.createRange();
+    newRange.selectNodeContents(span);
+    sel.addRange(newRange);
+
+    const after = root.innerHTML;
+    if(after !== before) pushUndo(before);
+  }
+
+  // Exclude the answer window's swatches — those are wired separately
+  // below to a self-contained color function scoped to that window only.
+  document.querySelectorAll('.swatch').forEach(btn=>{
+    if(btn.closest('#chat-answer-window')) return;
+    btn.addEventListener('mousedown', e=>e.preventDefault());
+    btn.addEventListener('click', ()=> wrapSelection('color', btn.dataset.color, false));
+  });
+
+  document.getElementById('bold-btn').addEventListener('mousedown', e=>e.preventDefault());
+  document.getElementById('bold-btn').addEventListener('click', ()=> runCommand('bold'));
+
+  document.getElementById('italic-btn').addEventListener('mousedown', e=>e.preventDefault());
+  document.getElementById('italic-btn').addEventListener('click', ()=> runCommand('italic'));
+
+  document.getElementById('inc-font-btn').addEventListener('mousedown', e=>e.preventDefault());
+  document.getElementById('inc-font-btn').addEventListener('click', ()=> wrapSelection('fontSize', 2, true));
+
+  document.getElementById('dec-font-btn').addEventListener('mousedown', e=>e.preventDefault());
+  document.getElementById('dec-font-btn').addEventListener('click', ()=> wrapSelection('fontSize', -2, true));
+
+  // Note: the answer window's own Bold/Italic/A-/A+/color buttons are
+  // wired separately, in the chat IIFE below, to self-contained functions
+  // scoped to that window only — NOT to runCommand/wrapSelection here.
+  // (They used to be double-wired to both, which made formatting apply
+  // twice — e.g. Bold would toggle on then immediately back off.)
+
+  const colorInput = document.getElementById('color-input');
+  colorInput.addEventListener('mousedown', ()=>{
+    const sel = window.getSelection();
+    savedRange = (sel && sel.rangeCount > 0 && !sel.isCollapsed && root.contains(sel.getRangeAt(0).commonAncestorContainer))
+      ? sel.getRangeAt(0).cloneRange()
+      : null;
+  });
+  colorInput.addEventListener('input', (e)=>{
+    if(!savedRange){ setStatus('סמן טקסט קודם'); return; }
+    const sel = window.getSelection();
+    sel.removeAllRanges();
+    sel.addRange(savedRange);
+    wrapSelection('color', e.target.value, false);
+  });
+
+  updateUndoButton();
+})();
+
+// --- left nav: scroll-to for sections, open for side panels ---
+(function(){
+  const backdrop = document.getElementById('panel-backdrop');
+  const centerContent = document.getElementById('center-content');
+
+  function openPanel(id){
+    const panel = document.getElementById(id);
+    if(!panel) return;
+    document.querySelectorAll('.side-panel.open').forEach(p => p.classList.remove('open'));
+    panel.classList.add('open');
+    backdrop.classList.add('open');
+  }
+  function closeAllPanels(){
+    document.querySelectorAll('.side-panel.open').forEach(p => p.classList.remove('open'));
+    backdrop.classList.remove('open');
+  }
+
+  document.querySelectorAll('[data-open-panel]').forEach(btn=>{
+    btn.addEventListener('click', ()=> openPanel(btn.dataset.openPanel));
+  });
+  document.querySelectorAll('.panel-close').forEach(btn=>{
+    btn.addEventListener('click', closeAllPanels);
+  });
+  backdrop.addEventListener('click', closeAllPanels);
+  document.addEventListener('keydown', (e)=>{
+    if(e.key === 'Escape') closeAllPanels();
+  });
+
+  // Make each panel draggable by its header. Clicking the ✕ inside the
+  // header must NOT start a drag — checked via closest() below.
+  document.querySelectorAll('.side-panel').forEach(panel=>{
+    const header = panel.querySelector('.panel-header');
+    if(!header) return;
+    const frame = document.getElementById('app-frame');
+
+    header.addEventListener('mousedown', (e)=>{
+      if(e.target.closest('.panel-close')) return;
+      e.preventDefault();
+
+      const panelRect = panel.getBoundingClientRect();
+      const frameRect = frame.getBoundingClientRect();
+      // Lock in the panel's current on-screen spot as explicit left/top
+      // (in case it's still sitting at its default CSS position), then
+      // drag from there.
+      const startLeft = panelRect.left - frameRect.left;
+      const startTop = panelRect.top - frameRect.top;
+      panel.style.left = startLeft + 'px';
+      panel.style.top = startTop + 'px';
+
+      const startX = e.clientX;
+      const startY = e.clientY;
+
+      function onMove(ev){
+        const newLeft = startLeft + (ev.clientX - startX);
+        const newTop = startTop + (ev.clientY - startY);
+        const maxLeft = Math.max(0, frame.clientWidth - panel.offsetWidth);
+        const maxTop = Math.max(0, frame.clientHeight - panel.offsetHeight);
+        panel.style.left = Math.min(Math.max(0, newLeft), maxLeft) + 'px';
+        panel.style.top = Math.min(Math.max(0, newTop), maxTop) + 'px';
+      }
+      function onUp(){
+        document.removeEventListener('mousemove', onMove);
+        document.removeEventListener('mouseup', onUp);
+      }
+      document.addEventListener('mousemove', onMove);
+      document.addEventListener('mouseup', onUp);
+    });
+  });
+
+  // Scroll within the center column itself (not the whole window) — this is
+  // what actually fixes "clicking a topic takes me to an external page":
+  // a plain href="#id" anchor was navigating the top-level document, which
+  // in this sandboxed viewer got treated as leaving the page. scrollIntoView
+  // finds the nearest scrollable ancestor (#center-content) and scrolls that
+  // instead, with no navigation involved at all.
+
+  // Brief highlight so you can spot exactly where you landed mid-call,
+  // without it staying loud/distracting.
+  function flashTarget(el){
+    if(!el) return;
+    el.style.transition = 'background-color .9s ease, box-shadow .9s ease';
+    el.style.backgroundColor = '#FFF1E6';
+    el.style.boxShadow = '0 0 0 2px rgba(255,108,55,0.35)';
+    setTimeout(()=>{
+      el.style.backgroundColor = '';
+      el.style.boxShadow = '';
+    }, 1100);
+  }
+
+  const scrollButtons = document.querySelectorAll('.nav-item[data-scroll]');
+  scrollButtons.forEach(btn=>{
+    btn.addEventListener('click', (e)=>{
+      if(e.target.closest('.chevron-btn')) return; // handled separately below
+      const target = document.getElementById(btn.dataset.scroll);
+      if(target){
+        target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        flashTarget(target);
+      }
+    });
+  });
+
+  // Product submenu: the chevron only toggles the list open/closed and does
+  // NOT scroll — the "מוצרי הליבה" button next to it keeps scrolling to the
+  // section exactly as before. Each product inside the list scrolls to that
+  // specific product's own card.
+  document.querySelectorAll('.chevron-btn[data-toggle]').forEach(btn=>{
+    btn.addEventListener('click', (e)=>{
+      e.stopPropagation();
+      const submenu = document.getElementById(btn.dataset.toggle);
+      if(!submenu) return;
+      submenu.classList.toggle('open');
+      btn.classList.toggle('open');
+    });
+  });
+  document.querySelectorAll('.nav-subitem[data-scroll]').forEach(btn=>{
+    btn.addEventListener('click', ()=>{
+      const target = document.getElementById(btn.dataset.scroll);
+      if(target){
+        target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        flashTarget(target);
+      }
+    });
+  });
+
+  // Highlight the nav item for whichever section is currently in view.
+  const sectionIds = Array.from(scrollButtons).map(b => b.dataset.scroll);
+  const sections = sectionIds.map(id => document.getElementById(id)).filter(Boolean);
+  function updateActive(){
+    let currentId = sectionIds[0];
+    for(const sec of sections){
+      if(sec.getBoundingClientRect().top - centerContent.getBoundingClientRect().top < 80){
+        currentId = sec.id;
+      }
+    }
+    scrollButtons.forEach(btn=>{
+      btn.classList.toggle('active', btn.dataset.scroll === currentId);
+    });
+  }
+  centerContent.addEventListener('scroll', updateActive);
+  updateActive();
+})();
+
+// --- docked chat panel: multi-turn, answers only from the document's own current text ---
+(function(){
+  // Works as-is inside Claude.ai (calls Anthropic directly — that only
+  // works in this sandbox). Once you host this file elsewhere (GitHub
+  // Pages, etc.), deploy anthropic-proxy-worker.js to Cloudflare Workers
+  // and replace the line below with your Worker's URL, e.g.
+  // 'https://postman-bot-relay.your-subdomain.workers.dev' — nothing
+  // else in this file needs to change.
+  const API_ENDPOINT = 'https://yanivdash.ygabay1978.workers.dev';
+
+  const logEl = document.getElementById('chat-log');
+  const questionEl = document.getElementById('chat-question');
+  const sendBtn = document.getElementById('chat-send');
+  const root = document.getElementById('editable-root');
+  const answerWindow = document.getElementById('chat-answer-window');
+  const answerContentEl = document.getElementById('chat-answer-content');
+  const saveEditBtn = document.getElementById('save-answer-edit-btn');
+  const backdrop = document.getElementById('panel-backdrop');
+  const savedBtn = document.getElementById('saved-questions-btn');
+  const savedMenu = document.getElementById('saved-questions-menu');
+  const savedCountEl = document.getElementById('saved-questions-count');
+  let placeholderRemoved = false;
+  let currentQuestionKey = null;
+  let currentQuestionOriginal = null;
+
+  // Saved Q&A pairs persist in localStorage — works once this is hosted for
+  // real; inside this preview it may or may not persist across reloads,
+  // but never breaks anything either way. Schema: { [normalizedKey]: { q, a } }
+  const SAVED_ANSWERS_KEY = 'postman-explainer-saved-answers-he';
+
+  function normalizeQuestion(q){
+    return q.trim().toLowerCase().replace(/\s+/g, ' ');
+  }
+  function loadSavedAnswers(){
+    let answers;
+    try{ answers = JSON.parse(localStorage.getItem(SAVED_ANSWERS_KEY)) || {}; }
+    catch(e){ return {}; }
+    // Migrate old-format entries (from before the ⭐/dropdown feature
+    // existed, when a saved answer was just a plain string keyed by the
+    // normalized question) — without this, old entries render with no
+    // visible question text, just the ✕ delete button.
+    let migrated = false;
+    Object.keys(answers).forEach(key=>{
+      if(typeof answers[key] === 'string'){
+        answers[key] = { q: key, a: answers[key] };
+        migrated = true;
+      }
+    });
+    if(migrated) writeSavedAnswers(answers);
+    return answers;
+  }
+  function writeSavedAnswers(answers){
+    try{ localStorage.setItem(SAVED_ANSWERS_KEY, JSON.stringify(answers)); }catch(e){}
+  }
+  function getSavedAnswer(question){
+    const entry = loadSavedAnswers()[normalizeQuestion(question)];
+    return entry ? entry.a : null;
+  }
+  function saveQA(question, answerHTML){
+    const answers = loadSavedAnswers();
+    answers[normalizeQuestion(question)] = { q: question, a: answerHTML };
+    writeSavedAnswers(answers);
+    renderSavedQuestionsMenu();
+    translateAndSyncToOtherLanguage(question, answerHTML);
+  }
+  function deleteSavedQA(key){
+    const answers = loadSavedAnswers();
+    delete answers[key];
+    writeSavedAnswers(answers);
+    renderSavedQuestionsMenu();
+  }
+
+  // Cross-language sync: saving here also translates and writes into the
+  // English version's own storage key (shared localStorage, same domain).
+  // Visible status here (not just console.error) so a failed sync is
+  // actually noticeable instead of silently not happening.
+  const OTHER_LANG_KEY = 'postman-explainer-saved-answers-en';
+  const syncStatusEl = document.getElementById('sync-status');
+  function flashSyncStatus(text, ok){
+    syncStatusEl.textContent = text;
+    syncStatusEl.classList.remove('ok', 'err');
+    syncStatusEl.classList.add(ok ? 'ok' : 'err');
+    setTimeout(()=>{ syncStatusEl.textContent = ''; syncStatusEl.classList.remove('ok','err'); }, 4000);
+  }
+  async function translateAndSyncToOtherLanguage(question, answerHTML){
+    flashSyncStatus('מתרגם לאנגלית…', true);
+    try{
+      const prompt = 'Translate the following Hebrew sales Q&A into natural, professional English. This must be a COMPLETE, full-length, faithful translation — do not summarize, shorten, condense, or omit any part of the content. Match the original\'s length and level of detail exactly. Keep every HTML tag exactly as-is (e.g. <b>, <span style="...">) — translate ONLY the visible text between tags, never tag names or attributes. Respond with ONLY a single valid JSON object and nothing else — no markdown fences, no preamble — in exactly this shape: {"q":"<translated question>","a":"<translated answer, HTML preserved, properly escaped for JSON>"}\n\nHebrew question: ' + question + '\nHebrew answer (HTML): ' + answerHTML;
+      const response = await fetch(API_ENDPOINT, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ model: 'claude-sonnet-4-6', max_tokens: 2000, messages: [{ role: 'user', content: prompt }] })
+      });
+      if(!response.ok) throw new Error('bad response ' + response.status);
+      const data = await response.json();
+      const text = (data.content || []).filter(b => b.type === 'text').map(b => b.text).join('').trim();
+      const jsonMatch = text.match(/\{[\s\S]*\}/);
+      if(!jsonMatch) throw new Error('no JSON found in translation response');
+      const parsed = JSON.parse(jsonMatch[0]);
+      if(!parsed.q || !parsed.a) throw new Error('translation JSON missing q/a');
+      let otherAnswers = {};
+      try{ otherAnswers = JSON.parse(localStorage.getItem(OTHER_LANG_KEY)) || {}; }catch(e){}
+      otherAnswers[parsed.q.trim().toLowerCase().replace(/\s+/g, ' ')] = { q: parsed.q, a: parsed.a };
+      localStorage.setItem(OTHER_LANG_KEY, JSON.stringify(otherAnswers));
+      flashSyncStatus('✓ סונכרן גם באנגלית', true);
+    }catch(e){
+      console.error('cross-language sync failed', e);
+      flashSyncStatus('⚠ הסנכרון לאנגלית נכשל — נסה לשמור שוב', false);
+    }
+  }
+
+  function saveCurrentAnswer(){
+    if(!currentQuestionKey) return;
+    // innerHTML (not innerText) — this is the actual fix for edits not
+    // sticking: innerText re-serializes the DOM and can normalize away an
+    // in-progress edit in an RTL contenteditable region; innerHTML captures
+    // exactly what's rendered, formatting included.
+    saveQA(currentQuestionOriginal, answerContentEl.innerHTML);
+    const original = saveEditBtn.textContent;
+    saveEditBtn.textContent = 'נשמר ✓';
+    setTimeout(()=>{ saveEditBtn.textContent = original; }, 1500);
+    // keep the log bubble in sync with the edited version too
+    const lastBotMsg = logEl.querySelector('.chat-msg.bot:last-of-type');
+    if(lastBotMsg) lastBotMsg.textContent = answerContentEl.innerText;
+    questionEl.value = answerContentEl.innerText;
+  }
+  saveEditBtn.addEventListener('click', saveCurrentAnswer);
+
+  function openAnswerWindow(question){
+    currentQuestionKey = normalizeQuestion(question);
+    currentQuestionOriginal = question;
+    answerWindow.classList.add('open');
+    backdrop.classList.add('open');
+  }
+
+  // ---- ⭐ quick-save star on each bot bubble ----
+  function addStarToBubble(botMsgEl, question){
+    const star = document.createElement('button');
+    star.className = 'msg-star-btn';
+    star.title = 'שמור שאלה ותשובה זו לרשימת השאלות השמורות';
+    star.textContent = '☆';
+    if(getSavedAnswer(question) !== null) { star.textContent = '⭐'; star.classList.add('saved'); }
+    star.addEventListener('click', ()=>{
+      saveQA(question, botMsgEl.textContent);
+      star.textContent = '⭐';
+      star.classList.add('saved');
+    });
+    botMsgEl.appendChild(star);
+  }
+
+  // ---- saved-questions dropdown ----
+  function renderSavedQuestionsMenu(){
+    const answers = loadSavedAnswers();
+    const keys = Object.keys(answers);
+    savedCountEl.textContent = keys.length ? String(keys.length) : '';
+    if(keys.length === 0){
+      savedMenu.innerHTML = '<div class="sq-empty">עדיין לא שמרת שאלות — לחץ על ⭐ לצד כל תשובה כדי לשמור אותה.</div>';
+      return;
+    }
+    savedMenu.innerHTML = '';
+    keys.forEach(key=>{
+      const entry = answers[key];
+      const item = document.createElement('div');
+      item.className = 'sq-item';
+      const textSpan = document.createElement('span');
+      textSpan.className = 'sq-text';
+      textSpan.textContent = entry.q;
+      const delBtn = document.createElement('button');
+      delBtn.className = 'sq-delete';
+      delBtn.title = 'הסר מהרשימה';
+      delBtn.textContent = '✕';
+      item.appendChild(textSpan);
+      item.appendChild(delBtn);
+      textSpan.addEventListener('click', ()=>{
+        savedMenu.classList.remove('open');
+        ask(entry.q);
+      });
+      delBtn.addEventListener('click', (e)=>{
+        e.stopPropagation();
+        deleteSavedQA(key);
+      });
+      savedMenu.appendChild(item);
+    });
+  }
+  savedBtn.addEventListener('click', (e)=>{
+    e.stopPropagation();
+    savedMenu.classList.toggle('open');
+  });
+  document.addEventListener('click', (e)=>{
+    if(!document.getElementById('saved-questions-wrap').contains(e.target)){
+      savedMenu.classList.remove('open');
+    }
+  });
+  renderSavedQuestionsMenu();
+
+  // The actual fix for "give me another follow-up question" losing the
+  // topic: we now keep the real message history and resend it every call.
+  // The document text + instructions are embedded once, in the FIRST user
+  // turn only; every later turn is just the plain question.
+  let conversationHistory = [];
+  const MAX_HISTORY_MESSAGES = 16;
+
+  function addMessage(role, text){
+    if(!placeholderRemoved){
+      logEl.innerHTML = '';
+      placeholderRemoved = true;
+    }
+    const div = document.createElement('div');
+    div.className = 'chat-msg ' + role;
+    div.textContent = text;
+    logEl.appendChild(div);
+    logEl.scrollTop = logEl.scrollHeight;
+    return div;
+  }
+
+  function trimHistory(){
+    if(conversationHistory.length <= MAX_HISTORY_MESSAGES) return;
+    const keepTail = MAX_HISTORY_MESSAGES - 1;
+    conversationHistory = [conversationHistory[0], ...conversationHistory.slice(-keepTail)];
+  }
+
+  async function ask(question){
+    if(!question) return;
+    sendBtn.disabled = true;
+    addMessage('user', question);
+
+    openAnswerWindow(question);
+    // Locked while loading/streaming — only unlocked once there's a real
+    // answer to edit. Editing something that's still being overwritten by
+    // incoming stream chunks is exactly what was causing edits to not
+    // stick reliably.
+    answerContentEl.setAttribute('contenteditable', 'false');
+
+    // A saved correction for this exact question skips the model call
+    // entirely — instant, and guaranteed to match what you approved.
+    const saved = getSavedAnswer(question);
+    if(saved !== null){
+      answerContentEl.classList.remove('loading');
+      answerContentEl.innerHTML = saved;
+      answerContentEl.setAttribute('contenteditable', 'true');
+      const botMsg = addMessage('bot', answerContentEl.innerText);
+      addStarToBubble(botMsg, question);
+      conversationHistory.push({ role: 'user', content: question });
+      conversationHistory.push({ role: 'assistant', content: answerContentEl.innerText });
+      trimHistory();
+      sendBtn.disabled = false;
+      return;
+    }
+
+    answerContentEl.classList.add('loading');
+    answerContentEl.textContent = 'מחפש תשובה במסמך…';
+    const botMsg = addMessage('bot loading', 'מחפש תשובה במסמך…');
+
+    let userTurnContent;
+    if(conversationHistory.length === 0){
+      const documentText = root.innerText;
+      userTurnContent = 'להלן מסמך הדרכה למכירות של מוצרי Postman, בעברית. ענה על השאלות הבאות בהתבסס רק על המידע שכתוב במסמך הזה (כולל תוכן הפאנלים הצדדיים — מיצוב והתנגדויות, Fabric, Passport, ASA, DATABASE). אם התשובה לא מופיעה במסמך, אמור זאת בבירור ואל תמציא מידע. אתה עונה למוכר שנמצא באמצע שיחת מכירה חייה ועם הלקוח על הקו — תן תשובה קצרה וישירה, 2-3 משפטים לכל היותר, בעברית, בלי הקדמות.\n\nבנוסף: אם השאלה מתאימה למקרה שבו כדאי להחזיר ללקוח שאלת בירור או שאלת נגד (Reverse Question) — הוסף שורה נפרדת בסוף שמתחילה במדויק ב-"🔄 שאלת המשך מומלצת:" ולאחריה שאלה קונקרטית אחת. אם המצב לא מתאים לזה, אל תוסיף את השורה הזו בכלל.\n\nזו תהיה שיחה מתמשכת עם כמה שאלות ברצף. אם שאלה עוקבת היא כללית או מנוסחת בקצרה (למשל "תן לי עוד אחת", "ומה עוד?", "תסביר יותר"), התייחס אליה כהמשך של הנושא שדיברנו עליו לאחרונה — אלא אם היא מנוסחת בבירור כמעבר לנושא אחר.\n\n<מסמך>\n' + documentText + '\n</מסמך>\n\nשאלה ראשונה: ' + question;
+    } else {
+      userTurnContent = question;
+    }
+    conversationHistory.push({ role: 'user', content: userTurnContent });
+    trimHistory();
+
+    let accumulated = '';
+    let firstTokenReceived = false;
+
+    try{
+      const response = await fetch(API_ENDPOINT, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          model: 'claude-sonnet-4-6',
+          max_tokens: 300,
+          stream: true,
+          messages: conversationHistory
+        })
+      });
+
+      if(!response.ok || !response.body){
+        throw new Error('bad response: ' + response.status);
+      }
+
+      const reader = response.body.getReader();
+      const decoder = new TextDecoder();
+      let buffer = '';
+
+      while(true){
+        const { value, done } = await reader.read();
+        if(done) break;
+        buffer += decoder.decode(value, { stream: true });
+        const lines = buffer.split('\n');
+        buffer = lines.pop();
+
+        for(const line of lines){
+          if(!line.startsWith('data:')) continue;
+          const jsonStr = line.slice(5).trim();
+          if(!jsonStr || jsonStr === '[DONE]') continue;
+          try{
+            const evt = JSON.parse(jsonStr);
+            if(evt.type === 'content_block_delta' && evt.delta && evt.delta.type === 'text_delta'){
+              if(!firstTokenReceived){
+                botMsg.textContent = '';
+                botMsg.classList.remove('loading');
+                answerContentEl.classList.remove('loading');
+                answerContentEl.textContent = '';
+                firstTokenReceived = true;
+              }
+              accumulated += evt.delta.text;
+              botMsg.textContent = accumulated;
+              answerContentEl.textContent = accumulated;
+              logEl.scrollTop = logEl.scrollHeight;
+            }
+          }catch(e){ /* partial/incomplete JSON line — ignore, next chunk completes it */ }
+        }
+      }
+
+      if(!accumulated){
+        botMsg.classList.remove('loading');
+        botMsg.textContent = 'לא התקבלה תשובה מהמערכת.';
+        answerContentEl.classList.remove('loading');
+        answerContentEl.textContent = 'לא התקבלה תשובה מהמערכת.';
+        conversationHistory.pop();
+      } else {
+        conversationHistory.push({ role: 'assistant', content: accumulated });
+        answerContentEl.setAttribute('contenteditable', 'true');
+        questionEl.value = accumulated;
+        addStarToBubble(botMsg, question);
+      }
+    }catch(err){
+      botMsg.classList.remove('loading');
+      botMsg.classList.add('err');
+      botMsg.textContent = 'משהו נכשל בפנייה. נסה שוב.';
+      answerContentEl.classList.remove('loading');
+      answerContentEl.textContent = 'משהו נכשל בפנייה. נסה שוב.';
+      conversationHistory.pop();
+      console.error('ai question failed', err);
+    }finally{
+      sendBtn.disabled = false;
+    }
+  }
+
+  function sendCurrentInput(){
+    const question = questionEl.value.trim();
+    if(!question) return;
+    questionEl.value = '';
+    ask(question);
+  }
+
+  sendBtn.addEventListener('click', sendCurrentInput);
+  questionEl.addEventListener('keydown', (e)=>{
+    if(e.key === 'Enter' && !e.shiftKey){
+      e.preventDefault();
+      sendCurrentInput();
+    }
+  });
+  document.querySelectorAll('.chat-quick-btn').forEach(btn=>{
+    btn.addEventListener('click', ()=> ask(btn.dataset.prompt));
+  });
+
+  // ---- remove/hide irrelevant quick-question buttons (persisted per browser) ----
+  const REMOVED_QUICK_KEY = 'removed-quick-questions:he';
+  let removedQuick = [];
+  try{ removedQuick = JSON.parse(localStorage.getItem(REMOVED_QUICK_KEY)) || []; }catch(e){}
+  document.querySelectorAll('.chat-quick-item').forEach(item=>{
+    const prompt = item.querySelector('.chat-quick-btn')?.dataset.prompt;
+    if(prompt && removedQuick.includes(prompt)) item.remove();
+  });
+  document.querySelectorAll('.chat-quick-remove').forEach(x=>{
+    x.addEventListener('click', (e)=>{
+      e.stopPropagation();
+      const item = x.closest('.chat-quick-item');
+      const prompt = item?.querySelector('.chat-quick-btn')?.dataset.prompt;
+      if(prompt && !removedQuick.includes(prompt)){
+        removedQuick.push(prompt);
+        try{ localStorage.setItem(REMOVED_QUICK_KEY, JSON.stringify(removedQuick)); }catch(e){}
+      }
+      item?.remove();
+    });
+  });
+
+  // ---- formatting toolbar inside the floating answer window ----
+  // Self-contained (scoped to answerContentEl only, not the main
+  // document's global formatting functions) — deliberately simple, no
+  // undo stack, matching the proven English implementation.
+  function ansWrapSelection(styleProp, valueOrDelta, isSizeDelta){
+    const sel = window.getSelection();
+    if(!sel || sel.rangeCount === 0 || sel.isCollapsed || !answerContentEl.contains(sel.getRangeAt(0).commonAncestorContainer)){
+      return;
+    }
+    const range = sel.getRangeAt(0);
+    let value = valueOrDelta;
+    if(isSizeDelta){
+      const refNode = range.startContainer.nodeType === 3 ? range.startContainer.parentElement : range.startContainer;
+      const currentSize = parseFloat(window.getComputedStyle(refNode).fontSize) || 14;
+      value = Math.max(10, Math.min(40, currentSize + valueOrDelta)) + 'px';
+    }
+    const span = document.createElement('span');
+    span.style[styleProp] = value;
+    span.appendChild(range.extractContents());
+    range.insertNode(span);
+    if(styleProp === 'color'){
+      span.querySelectorAll('*').forEach(node => { node.style.color = value; });
+    }
+    sel.removeAllRanges();
+    const newRange = document.createRange();
+    newRange.selectNodeContents(span);
+    sel.addRange(newRange);
+  }
+  function ansRunCommand(cmd){
+    const sel = window.getSelection();
+    if(!sel || sel.rangeCount === 0 || !answerContentEl.contains(sel.getRangeAt(0).commonAncestorContainer)) return;
+    document.execCommand(cmd, false, null);
+  }
+  ['answer-bold-btn','answer-italic-btn','answer-dec-font-btn','answer-inc-font-btn'].forEach(id=>{
+    document.getElementById(id).addEventListener('mousedown', e=>e.preventDefault());
+  });
+  document.getElementById('answer-bold-btn').addEventListener('click', ()=> ansRunCommand('bold'));
+  document.getElementById('answer-italic-btn').addEventListener('click', ()=> ansRunCommand('italic'));
+  document.getElementById('answer-inc-font-btn').addEventListener('click', ()=> ansWrapSelection('fontSize', 2, true));
+  document.getElementById('answer-dec-font-btn').addEventListener('click', ()=> ansWrapSelection('fontSize', -2, true));
+  document.querySelectorAll('#chat-answer-window .swatch').forEach(btn=>{
+    btn.addEventListener('mousedown', e=>e.preventDefault());
+    btn.addEventListener('click', ()=> ansWrapSelection('color', btn.dataset.color, false));
+  });
+})();
+
+// --- drag-to-reorder + add/delete cards for Core Products and Objections ---
+(function(){
+  const CARD_GROUPS = [
+    { containerSelector: '#sec-products', cardSelector: '.prod', storageKey: 'cards:he:products',
+      newCardHTML: '<div class="name edit-unit" contenteditable="false">שם המוצר</div><div class="pitch edit-unit" contenteditable="false">תיאור המוצר...</div>' },
+    { containerSelector: '#panel-objections .panel-body', cardSelector: '.obj', storageKey: 'cards:he:objections',
+      newCardHTML: '<div class="q edit-unit" contenteditable="false">"השאלה/התנגדות של הלקוח?"</div><div class="a edit-unit" contenteditable="false">"התשובה שלי..."</div>' }
+  ];
+
+  function getDragAfterElement(container, y, cardSelector){
+    const cards = [...container.querySelectorAll(cardSelector + ':not(.dragging)')];
+    return cards.reduce((closest, card)=>{
+      const box = card.getBoundingClientRect();
+      // Swap as soon as the cursor crosses into the TOP quarter of the next
+      // box, not its full center — a light touch is enough, no need to
+      // fully overlap it.
+      const offset = y - box.top - box.height * 0.25;
+      if(offset < 0 && offset > closest.offset){
+        return { offset, element: card };
+      } else {
+        return closest;
+      }
+    }, { offset: Number.NEGATIVE_INFINITY, element: null }).element;
+  }
+
+  CARD_GROUPS.forEach(({containerSelector, cardSelector, storageKey, newCardHTML})=>{
+    const container = document.querySelector(containerSelector);
+    if(!container) return;
+    const tagClass = cardSelector.slice(1);
+
+    // A full snapshot (each card's complete outerHTML, in order) captures
+    // reordering, added cards, deleted cards, and text edits all at once —
+    // simpler and more robust than tracking them as separate operations.
+    try{
+      const saved = JSON.parse(localStorage.getItem(storageKey));
+      if(saved && saved.length){
+        container.querySelectorAll(cardSelector).forEach(c => c.remove());
+        saved.forEach(cardHTML=>{
+          const temp = document.createElement('div');
+          temp.innerHTML = cardHTML;
+          const cardEl = temp.firstElementChild;
+          if(cardEl){
+            // Defensive cleanup for snapshots saved before this cleanup
+            // existed: strip any stale grip/delete buttons and wired-flag
+            // baked into an older save, so this card is wired fresh below.
+            cardEl.querySelectorAll('.drag-grip, .card-delete-btn').forEach(n => n.remove());
+            cardEl.removeAttribute('data-wired');
+            container.appendChild(cardEl);
+          }
+        });
+      }
+    }catch(e){}
+
+    function saveSnapshot(){
+      const current = Array.from(container.querySelectorAll(cardSelector));
+      // Strip the injected grip/delete buttons and the "already wired" flag
+      // before saving — otherwise a restored card looks pre-wired but its
+      // actual click/drag listeners (which don't survive serialization)
+      // are gone, leaving dead buttons after every reload.
+      const htmlList = current.map(c => {
+        const clone = c.cloneNode(true);
+        clone.querySelectorAll('.drag-grip, .card-delete-btn').forEach(n => n.remove());
+        clone.removeAttribute('data-wired');
+        return clone.outerHTML;
+      });
+      try{ localStorage.setItem(storageKey, JSON.stringify(htmlList)); }catch(e){}
+    }
+
+    function currentEditableState(){
+      const sample = container.querySelector(cardSelector + ' .edit-unit');
+      return sample ? sample.getAttribute('contenteditable') : 'true';
+    }
+
+    function wireCard(card){
+      if(!card.dataset.wired){
+        card.dataset.wired = '1';
+        card.classList.add('reorderable-card');
+        card.style.position = card.style.position || 'relative';
+        // NOT draggable on the whole card — only the grip is a drag source
+        // (see the block version's comment for why: cards contain
+        // contenteditable text, and a draggable card fights text selection).
+
+        let grip = card.querySelector('.drag-grip');
+        if(!grip){
+          grip = document.createElement('div');
+          grip.className = 'drag-grip';
+          grip.title = 'גרור כדי לשנות סדר';
+          grip.textContent = '⠿';
+          card.appendChild(grip);
+        }
+        grip.setAttribute('contenteditable', 'false');
+        grip.setAttribute('draggable', 'true');
+
+        if(!card.querySelector('.card-delete-btn')){
+          const del = document.createElement('button');
+          del.className = 'card-delete-btn';
+          del.title = 'מחק כרטיס זה';
+          del.type = 'button';
+          del.textContent = '🗑';
+          del.setAttribute('contenteditable', 'false');
+          del.addEventListener('click', (e)=>{
+            e.stopPropagation();
+            if(window.confirm('למחוק את הכרטיס הזה?')){
+              card.remove();
+              saveSnapshot();
+            }
+          });
+          card.appendChild(del);
+        }
+
+        grip.addEventListener('dragstart', (e)=>{
+          e.dataTransfer.setData('text/plain', '');
+          card.classList.add('dragging');
+        });
+        grip.addEventListener('dragend', ()=>{ card.classList.remove('dragging'); saveSnapshot(); });
+      }
+      checkEmptyCard(card);
+    }
+
+    function checkEmptyCard(card){
+      const clone = card.cloneNode(true);
+      clone.querySelectorAll('.drag-grip, .card-delete-btn').forEach(n=>n.remove());
+      const isEmpty = clone.textContent.replace(/\s|\u200b/g, '') === '';
+      card.classList.toggle('is-empty-block', isEmpty);
+    }
+
+    container.querySelectorAll(cardSelector).forEach(wireCard);
+
+    container.addEventListener('dragover', (e)=>{
+      e.preventDefault();
+      const dragging = container.querySelector(cardSelector + '.dragging');
+      if(!dragging) return;
+      const addBtn = container.querySelector('.add-card-btn');
+      const afterElement = getDragAfterElement(container, e.clientY, cardSelector);
+      if(afterElement == null){
+        if(addBtn) container.insertBefore(dragging, addBtn); else container.appendChild(dragging);
+      } else {
+        container.insertBefore(dragging, afterElement);
+      }
+    });
+
+    // Re-save (debounced) on any text edit within a card, so edited wording
+    // is captured in the snapshot too, not just structure/order.
+    let saveTimer;
+    container.addEventListener('input', (e)=>{
+      const card = e.target.closest(cardSelector);
+      if(!card) return;
+      checkEmptyCard(card);
+      clearTimeout(saveTimer);
+      saveTimer = setTimeout(saveSnapshot, 600);
+    });
+
+    // "+ add card" control, always pinned at the end of the list.
+    let addBtn = container.querySelector('.add-card-btn');
+    if(!addBtn){
+      addBtn = document.createElement('button');
+      addBtn.type = 'button';
+      addBtn.className = 'add-card-btn';
+      addBtn.textContent = '+ הוסף כרטיס';
+      container.appendChild(addBtn);
+    }
+    addBtn.addEventListener('click', ()=>{
+      const card = document.createElement('div');
+      card.className = tagClass;
+      card.innerHTML = newCardHTML;
+      const editState = currentEditableState();
+      card.querySelectorAll('.edit-unit').forEach(u => u.setAttribute('contenteditable', editState));
+      container.insertBefore(card, addBtn);
+      wireCard(card);
+      saveSnapshot();
+      const firstEditable = card.querySelector('.edit-unit');
+      if(firstEditable && editState === 'true') firstEditable.focus();
+    });
+  });
+})();
+
+// --- generic drag/add/delete for section & panel content blocks ---
+// (Products and Objections cards have their own dedicated system above —
+// this covers everything else: headings, paragraphs, cross-boxes, say-boxes,
+// lists, etc. inside each section or reference panel.)
+(function(){
+  const BLOCK_CONTAINERS = [
+    '#sec-opening', '#sec-process', '#sec-ai', '#sec-stages',
+    '#panel-fabric .panel-body', '#panel-passport .panel-body',
+    '#panel-asa .panel-body', '#panel-database .panel-body'
+  ];
+  const SKIP_SELECTOR = '.fmt-group, .panel-toolbar, .panel-header, .add-block-btn, .add-card-btn, .offer-grid';
+
+  function getDragAfterElement(container, y){
+    const blocks = [...container.querySelectorAll(':scope > .draggable-block:not(.dragging)')];
+    return blocks.reduce((closest, el)=>{
+      const box = el.getBoundingClientRect();
+      // Same lighter touch as the card version: crossing the top quarter
+      // of the next block is enough to trigger the swap.
+      const offset = y - box.top - box.height * 0.25;
+      if(offset < 0 && offset > closest.offset){
+        return { offset, element: el };
+      } else {
+        return closest;
+      }
+    }, { offset: Number.NEGATIVE_INFINITY, element: null }).element;
+  }
+
+  BLOCK_CONTAINERS.forEach(containerSelector=>{
+    const container = document.querySelector(containerSelector);
+    if(!container) return;
+    const storageKey = 'blocks:he:' + containerSelector;
+
+    // A full snapshot of every block's outerHTML, in order — captures
+    // reordering, added blocks, deleted blocks, and text edits all at once.
+    try{
+      const saved = JSON.parse(localStorage.getItem(storageKey));
+      if(saved && saved.length){
+        Array.from(container.children).forEach(c=>{
+          if(!c.matches(SKIP_SELECTOR)) c.remove();
+        });
+        const addBtn = container.querySelector('.add-block-btn');
+        saved.forEach(htmlStr=>{
+          const temp = document.createElement('div');
+          temp.innerHTML = htmlStr;
+          const el = temp.firstElementChild;
+          if(el){
+            // Defensive cleanup for snapshots saved before this cleanup
+            // existed — strip stale grip/delete buttons and wired-flag so
+            // this block gets wired fresh (with real listeners) below.
+            el.querySelectorAll('.block-drag-grip, .block-delete-btn').forEach(n => n.remove());
+            el.removeAttribute('data-block-wired');
+            if(addBtn) container.insertBefore(el, addBtn);
+            else container.appendChild(el);
+          }
+        });
+      }
+    }catch(e){}
+
+    function saveSnapshot(){
+      const blocks = Array.from(container.children).filter(c => c.classList.contains('draggable-block'));
+      // Same cleanup as the card version: strip injected grip/delete
+      // buttons and the "already wired" flag before saving, so a restored
+      // block gets its listeners freshly (and really) re-attached.
+      const htmlList = blocks.map(b => {
+        const clone = b.cloneNode(true);
+        clone.querySelectorAll('.block-drag-grip, .block-delete-btn').forEach(n => n.remove());
+        clone.removeAttribute('data-block-wired');
+        return clone.outerHTML;
+      });
+      try{ localStorage.setItem(storageKey, JSON.stringify(htmlList)); }catch(e){}
+    }
+
+    function currentEditableState(){
+      const sample = container.querySelector('.edit-unit');
+      return sample ? sample.getAttribute('contenteditable') : 'true';
+    }
+
+    function wireBlock(el){
+      if(!el.dataset.blockWired){
+        el.dataset.blockWired = '1';
+        el.classList.add('draggable-block');
+        // NOT draggable on the whole block — only the grip is a drag
+        // source. The block is contenteditable, so making the whole thing
+        // draggable made any drag gesture over the text start a native
+        // text-selection drag instead of moving the block.
+
+        const grip = document.createElement('span');
+        grip.className = 'block-drag-grip';
+        grip.title = 'גרור כדי להזיז';
+        grip.textContent = '⠿';
+        grip.setAttribute('contenteditable', 'false');
+        grip.setAttribute('draggable', 'true');
+        el.appendChild(grip);
+
+        const del = document.createElement('button');
+        del.type = 'button';
+        del.className = 'block-delete-btn';
+        del.title = 'מחק בלוק זה';
+        del.textContent = '🗑';
+        del.setAttribute('contenteditable', 'false');
+        del.addEventListener('click', (e)=>{
+          e.stopPropagation();
+          if(window.confirm('למחוק את הבלוק הזה?')){
+            el.remove();
+            saveSnapshot();
+          }
+        });
+        el.appendChild(del);
+
+        grip.addEventListener('dragstart', (e)=>{
+          e.dataTransfer.setData('text/plain', ''); // Firefox needs this to allow the drag
+          el.classList.add('dragging');
+        });
+        grip.addEventListener('dragend', ()=>{ el.classList.remove('dragging'); saveSnapshot(); });
+      }
+      // Always re-check emptiness — even for a block restored from a saved
+      // snapshot that was already wired (and already empty) in a past
+      // session, so a stale ghost block never survives a reload silently.
+      checkEmptyBlock(el);
+    }
+
+    // A block whose visible text has been fully deleted always shows its
+    // delete (X) button, even when move/delete tools mode is off — otherwise
+    // there'd be no way to get rid of an accidentally-emptied block.
+    function checkEmptyBlock(el){
+      const clone = el.cloneNode(true);
+      clone.querySelectorAll('.block-drag-grip, .block-delete-btn').forEach(n=>n.remove());
+      const isEmpty = clone.textContent.replace(/\s|\u200b/g, '') === '';
+      el.classList.toggle('is-empty-block', isEmpty);
+    }
+
+    Array.from(container.children).forEach(el=>{
+      if(el.matches(SKIP_SELECTOR)) return;
+      wireBlock(el);
+    });
+
+    container.addEventListener('dragover', (e)=>{
+      const dragging = container.querySelector(':scope > .dragging');
+      if(!dragging) return;
+      e.preventDefault();
+      const addBtn = container.querySelector('.add-block-btn');
+      const afterEl = getDragAfterElement(container, e.clientY);
+      if(afterEl == null){
+        if(addBtn) container.insertBefore(dragging, addBtn); else container.appendChild(dragging);
+      } else {
+        container.insertBefore(dragging, afterEl);
+      }
+    });
+
+    let saveTimer;
+    container.addEventListener('input', (e)=>{
+      const block = e.target.closest('.draggable-block');
+      if(!block) return;
+      checkEmptyBlock(block);
+      clearTimeout(saveTimer);
+      saveTimer = setTimeout(saveSnapshot, 600);
+    });
+
+    let addBtn = container.querySelector('.add-block-btn');
+    if(!addBtn){
+      addBtn = document.createElement('button');
+      addBtn.type = 'button';
+      addBtn.className = 'add-block-btn';
+      addBtn.textContent = '+ הוסף בלוק טקסט';
+      container.appendChild(addBtn);
+    }
+    addBtn.addEventListener('click', ()=>{
+      const el = document.createElement('div');
+      el.className = 'cross-box edit-unit';
+      el.setAttribute('contenteditable', currentEditableState());
+      el.textContent = 'טקסט חדש...';
+      container.insertBefore(el, addBtn);
+      wireBlock(el);
+      saveSnapshot();
+      if(el.getAttribute('contenteditable') === 'true') el.focus();
+    });
+  });
+})();
+
+// --- generic content persistence + cross-language sync (for edit-units
+// OUTSIDE the reorderable card groups, which have their own snapshot system) ---
+(function(){
+  const LANG = 'he';
+  const OTHER_LANG = 'en';
+  const STORAGE_PREFIX = 'content-edit:' + LANG + ':';
+  const DIRTY_KEY = 'content-edit-dirty:' + LANG;
+  const root = document.getElementById('editable-root');
+  if(!root) return;
+
+  function isInCardGroup(el){
+    return !!(
+      el.closest('.prod') || el.closest('.obj') ||
+      el.closest('#sec-opening') || el.closest('#sec-process') ||
+      el.closest('#sec-ai') || el.closest('#sec-stages') ||
+      el.closest('#panel-fabric .panel-body') || el.closest('#panel-passport .panel-body') ||
+      el.closest('#panel-asa .panel-body') || el.closest('#panel-database .panel-body')
+    );
+  }
+
+  // Stable ids, assigned once in document order — skips anything inside a
+  // reorderable card group, since those persist as part of the card's own
+  // full-snapshot mechanism instead.
+  let counter = 0;
+  const units = Array.from(root.querySelectorAll('.edit-unit')).filter(el => !isInCardGroup(el));
+  units.forEach(el=>{
+    if(!el.dataset.ceid) el.dataset.ceid = 'ce' + (counter++);
+  });
+
+  // Restore any previously saved edits for this language.
+  // Guard: an override that is empty/whitespace-only is treated as no
+  // override at all, so a page can never load blank just because a stray
+  // cached edit (e.g. an accidental full-select-delete) got saved once.
+  units.forEach(el=>{
+    try{
+      const saved = localStorage.getItem(STORAGE_PREFIX + el.dataset.ceid);
+      if(saved !== null && saved.replace(/<[^>]*>/g,'').trim() !== '') el.innerHTML = saved;
+    }catch(e){}
+  });
+
+  function markDirty(ceid){
+    let dirty = [];
+    try{ dirty = JSON.parse(localStorage.getItem(DIRTY_KEY)) || []; }catch(e){}
+    if(!dirty.includes(ceid)) dirty.push(ceid);
+    try{ localStorage.setItem(DIRTY_KEY, JSON.stringify(dirty)); }catch(e){}
+  }
+
+  // Auto-save on every edit — debounced per element — so content is never
+  // lost even if you never click the Save button at all.
+  const timers = {};
+  root.addEventListener('input', (e)=>{
+    const el = e.target.closest('.edit-unit');
+    if(!el || isInCardGroup(el) || !el.dataset.ceid) return;
+    const ceid = el.dataset.ceid;
+    clearTimeout(timers[ceid]);
+    timers[ceid] = setTimeout(()=>{
+      try{ localStorage.setItem(STORAGE_PREFIX + ceid, el.innerHTML); }catch(err){}
+      markDirty(ceid);
+    }, 500);
+  });
+
+  async function translateHTML(htmlSnippet){
+    const prompt = 'Translate the following Hebrew HTML snippet into natural, professional English. Keep every HTML tag exactly as-is (e.g. <b>, <span style="...">) — translate ONLY the visible text between tags, never tag names or attributes. Respond with ONLY the translated HTML snippet and nothing else — no markdown fences, no preamble, no explanation.\n\n' + htmlSnippet;
+    const response = await fetch(API_ENDPOINT, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ model: 'claude-sonnet-4-6', max_tokens: 1500, messages: [{ role: 'user', content: prompt }] })
+    });
+    if(!response.ok) throw new Error('bad response ' + response.status);
+    const data = await response.json();
+    const text = (data.content || []).filter(b => b.type === 'text').map(b => b.text).join('').trim();
+    if(!text) throw new Error('empty translation');
+    return text;
+  }
+
+  window.saveAndSyncContent = async function(){
+    let dirty = [];
+    try{ dirty = JSON.parse(localStorage.getItem(DIRTY_KEY)) || []; }catch(e){}
+    const btn = document.getElementById('save-sync-btn');
+    if(!dirty.length){
+      if(btn){
+        const orig = btn.textContent;
+        btn.textContent = 'אין שינויים חדשים';
+        setTimeout(()=>{ btn.textContent = orig; }, 1800);
+      }
+      return;
+    }
+    if(btn){ btn.textContent = 'מסנכרן... (0/' + dirty.length + ')'; btn.disabled = true; }
+    let done = 0, failed = 0;
+    for(const ceid of dirty){
+      const el = root.querySelector('[data-ceid="' + ceid + '"]');
+      if(el){
+        try{
+          const translated = await translateHTML(el.innerHTML);
+          try{ localStorage.setItem('content-edit:' + OTHER_LANG + ':' + ceid, translated); }catch(e){}
+        }catch(err){
+          failed++;
+          console.error('sync failed for', ceid, err);
+        }
+      }
+      done++;
+      if(btn) btn.textContent = 'מסנכרן... (' + done + '/' + dirty.length + ')';
+    }
+    try{ localStorage.setItem(DIRTY_KEY, JSON.stringify([])); }catch(e){}
+    if(btn){
+      btn.textContent = failed ? ('✓ נשמר — ' + failed + ' לא סונכרנו') : '✓ נשמר וסונכרן לאנגלית';
+      btn.disabled = false;
+      setTimeout(()=>{ btn.textContent = '💾 שמור ותרגם לאנגלית'; }, 3000);
+    }
+  };
+})();
+
+// --- toolbars added to the floating reference panels (Objections / Fabric /
+// Passport / ASA / DATABASE): Bold, Italic and the existing color swatches
+// (delegated below; colors reuse the same .swatch handler wired earlier
+// against #editable-root, since these panels live inside it). Typing here
+// already auto-saves via the block-persistence system above — Save just
+// flushes focus and gives a visible confirmation.
+(function(){
+  document.addEventListener('mousedown', (e)=>{
+    if(e.target.closest('.ptb-bold, .ptb-italic, .ptb-save')) e.preventDefault();
+  });
+  document.addEventListener('click', (e)=>{
+    const boldBtn = e.target.closest('.ptb-bold');
+    if(boldBtn){ document.execCommand('bold'); return; }
+    const italicBtn = e.target.closest('.ptb-italic');
+    if(italicBtn){ document.execCommand('italic'); return; }
+    const saveBtn = e.target.closest('.ptb-save');
+    if(saveBtn){
+      if(document.activeElement && document.activeElement.blur) document.activeElement.blur();
+      const original = saveBtn.textContent;
+      saveBtn.textContent = '✓ נשמר';
+      setTimeout(()=>{ saveBtn.textContent = original; }, 1800);
+    }
+  });
+})();
+// --- Enter key inside any editable text: always a plain line break, never
+// carries over bold/italic/color/font-size from wherever the cursor is.
+// (Requested rule: pressing Enter should just go to a new line — nothing else.)
+document.addEventListener('keydown', (e)=>{
+  if(e.key !== 'Enter' || e.shiftKey) return;
+  const el = e.target.closest('[contenteditable="true"]');
+  if(!el) return;
+  e.preventDefault();
+  const sel = window.getSelection();
+  if(!sel || !sel.rangeCount) return;
+  const range = sel.getRangeAt(0);
+  range.deleteContents();
+  const br = document.createElement('br');
+  range.insertNode(br);
+  range.setStartAfter(br);
+  range.setEndAfter(br);
+  sel.removeAllRanges();
+  sel.addRange(range);
+});
+// --- reorder the topics nav (up/down arrows), persisted per browser ---
+(function(){
+  const NAV_ORDER_KEY = 'nav-order:he';
+  const nav = document.getElementById('left-nav');
+  if(!nav) return;
+
+  function currentItems(){ return Array.from(nav.querySelectorAll(':scope > .nav-reorder-item')); }
+
+  function refreshDisabled(){
+    const items = currentItems();
+    items.forEach((item, i)=>{
+      item.querySelector('.reorder-up').disabled = (i === 0);
+      item.querySelector('.reorder-down').disabled = (i === items.length - 1);
+    });
+  }
+
+  function saveOrder(){
+    try{ localStorage.setItem(NAV_ORDER_KEY, JSON.stringify(currentItems().map(i=>i.dataset.reorderId))); }catch(e){}
+  }
+
+  // Apply a previously saved order, if any (anchored right after nav-title).
+  try{
+    const savedOrder = JSON.parse(localStorage.getItem(NAV_ORDER_KEY));
+    if(savedOrder && savedOrder.length){
+      const byId = {};
+      currentItems().forEach(i=>{ byId[i.dataset.reorderId] = i; });
+      const navTitle = nav.querySelector('.nav-title');
+      let anchor = navTitle;
+      savedOrder.forEach(id=>{
+        const el = byId[id];
+        if(el){ anchor.after(el); anchor = el; }
+      });
+    }
+  }catch(e){}
+
+  nav.addEventListener('click', (e)=>{
+    const upBtn = e.target.closest('.reorder-up');
+    const downBtn = e.target.closest('.reorder-down');
+    if(!upBtn && !downBtn) return;
+    e.preventDefault();
+    e.stopPropagation();
+    const item = e.target.closest('.nav-reorder-item');
+    if(!item) return;
+    if(upBtn){
+      let target = item.previousElementSibling;
+      if(target && !target.classList.contains('nav-reorder-item')) target = target.previousElementSibling;
+      if(target) target.before(item);
+    } else if(downBtn && item.nextElementSibling){
+      // skip over a non-reorderable divider (e.g. nav-sep) to the next real item
+      let target = item.nextElementSibling;
+      if(target && !target.classList.contains('nav-reorder-item')) target = target.nextElementSibling;
+      if(target) target.after(item);
+    }
+    refreshDisabled();
+    saveOrder();
+  });
+
+  refreshDisabled();
+})();
+</script>
+
+</body></html>
