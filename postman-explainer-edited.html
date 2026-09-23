@@ -742,14 +742,14 @@
   .answer-window-status{font-size:12px;color:#2E7D5B;}
 </style>
 </head>
-<body class="">
+<body>
 <div id="app-frame">
 <div id="edit-toolbar">
 <span id="doc-title">סקריפט שיחת לקוח — Postman</span>
 <button id="undo-btn">↩ בטל שינוי אחרון</button>
 <button class="secondary" id="download-btn">⬇ הורד קובץ מעודכן</button>
 <button class="secondary" id="save-sync-btn" onclick="saveAndSyncContent()">💾 שמור ותרגם לאנגלית</button>
-<button class="secondary" id="toggle-btn">✏️ עריכה פעילה</button>
+<button class="secondary" id="toggle-btn">🔒 נעילת עריכה</button>
 <button class="secondary" id="block-tools-toggle">🧱 כלי הזזה/מחיקה</button>
 <div class="fmt-group">
 <button id="bold-btn" title="הדגשה (סמן טקסט ולחץ)">B</button>
@@ -769,13 +769,13 @@
 <div id="panel-backdrop" class=""></div>
 <div id="app-shell">
 <nav id="left-nav">
-<div class="nav-title">נושאים</div><div class="nav-reorder-item" data-reorder-id="pitch"><button class="nav-item active" data-scroll="sec-opening">פיץ' פתיחה</button><span class="reorder-arrows"><button class="reorder-up" title="הזז מעלה" disabled="">▲</button><button class="reorder-down" title="הזז מטה">▼</button></span></div><div class="nav-reorder-item" data-reorder-id="process"><button class="nav-item" data-scroll="sec-process">התהליך</button><span class="reorder-arrows"><button class="reorder-up" title="הזז מעלה">▲</button><button class="reorder-down" title="הזז מטה">▼</button></span></div><div class="nav-reorder-item" data-reorder-id="ai"><button class="nav-item" data-scroll="sec-ai">AI</button><span class="reorder-arrows"><button class="reorder-up" title="הזז מעלה">▲</button><button class="reorder-down" title="הזז מטה">▼</button></span></div><div class="nav-reorder-item" data-reorder-id="stages"><button class="nav-item" data-scroll="sec-stages">מה אנחנו מציעים</button><span class="reorder-arrows"><button class="reorder-up" title="הזז מעלה">▲</button><button class="reorder-down" title="הזז מטה">▼</button></span></div><div class="nav-reorder-item" data-reorder-id="panel-objections"><button class="nav-item nav-panel" data-open-panel="panel-objections"><span>מיצוב והתנגדויות</span><span class="arrow">↗</span></button><span class="reorder-arrows"><button class="reorder-up" title="הזז מעלה">▲</button><button class="reorder-down" title="הזז מטה">▼</button></span></div><div class="nav-reorder-item" data-reorder-id="panel-fabric"><button class="nav-item nav-panel" data-open-panel="panel-fabric"><span>Fabric</span><span class="arrow">↗</span></button><span class="reorder-arrows"><button class="reorder-up" title="הזז מעלה">▲</button><button class="reorder-down" title="הזז מטה">▼</button></span></div><div class="nav-reorder-item" data-reorder-id="panel-passport"><button class="nav-item nav-panel" data-open-panel="panel-passport"><span>Passport</span><span class="arrow">↗</span></button><span class="reorder-arrows"><button class="reorder-up" title="הזז מעלה">▲</button><button class="reorder-down" title="הזז מטה">▼</button></span></div><div class="nav-reorder-item" data-reorder-id="panel-asa"><button class="nav-item nav-panel" data-open-panel="panel-asa"><span>ASA</span><span class="arrow">↗</span></button><span class="reorder-arrows"><button class="reorder-up" title="הזז מעלה">▲</button><button class="reorder-down" title="הזז מטה">▼</button></span></div><div class="nav-reorder-item" data-reorder-id="panel-fern"><button class="nav-item nav-panel" data-open-panel="panel-fern"><span>Fern</span><span class="arrow">↗</span></button><span class="reorder-arrows"><button class="reorder-up" title="הזז מעלה">▲</button><button class="reorder-down" title="הזז מטה">▼</button></span></div><div class="nav-reorder-item" data-reorder-id="panel-database"><button class="nav-item nav-panel" data-open-panel="panel-database"><span>DATABASE</span><span class="arrow">↗</span></button><span class="reorder-arrows"><button class="reorder-up" title="הזז מעלה">▲</button><button class="reorder-down" title="הזז מטה" disabled="">▼</button></span></div>
+<div class="nav-title">נושאים</div><div class="nav-reorder-item" data-reorder-id="pitch"><button class="nav-item" data-scroll="sec-opening">פיץ' פתיחה</button><span class="reorder-arrows"><button class="reorder-up" title="הזז מעלה" disabled="">▲</button><button class="reorder-down" title="הזז מטה">▼</button></span></div><div class="nav-reorder-item" data-reorder-id="process"><button class="nav-item" data-scroll="sec-process">התהליך</button><span class="reorder-arrows"><button class="reorder-up" title="הזז מעלה">▲</button><button class="reorder-down" title="הזז מטה">▼</button></span></div><div class="nav-reorder-item" data-reorder-id="ai"><button class="nav-item" data-scroll="sec-ai">AI</button><span class="reorder-arrows"><button class="reorder-up" title="הזז מעלה">▲</button><button class="reorder-down" title="הזז מטה">▼</button></span></div><div class="nav-reorder-item" data-reorder-id="stages"><button class="nav-item" data-scroll="sec-stages">מה אנחנו מציעים</button><span class="reorder-arrows"><button class="reorder-up" title="הזז מעלה">▲</button><button class="reorder-down" title="הזז מטה">▼</button></span></div><div class="nav-reorder-item" data-reorder-id="panel-objections"><button class="nav-item nav-panel" data-open-panel="panel-objections"><span>מיצוב והתנגדויות</span><span class="arrow">↗</span></button><span class="reorder-arrows"><button class="reorder-up" title="הזז מעלה">▲</button><button class="reorder-down" title="הזז מטה">▼</button></span></div><div class="nav-reorder-item" data-reorder-id="panel-fabric"><button class="nav-item nav-panel" data-open-panel="panel-fabric"><span>Fabric</span><span class="arrow">↗</span></button><span class="reorder-arrows"><button class="reorder-up" title="הזז מעלה">▲</button><button class="reorder-down" title="הזז מטה">▼</button></span></div><div class="nav-reorder-item" data-reorder-id="panel-passport"><button class="nav-item nav-panel" data-open-panel="panel-passport"><span>Passport</span><span class="arrow">↗</span></button><span class="reorder-arrows"><button class="reorder-up" title="הזז מעלה">▲</button><button class="reorder-down" title="הזז מטה">▼</button></span></div><div class="nav-reorder-item" data-reorder-id="panel-asa"><button class="nav-item nav-panel" data-open-panel="panel-asa"><span>ASA</span><span class="arrow">↗</span></button><span class="reorder-arrows"><button class="reorder-up" title="הזז מעלה">▲</button><button class="reorder-down" title="הזז מטה">▼</button></span></div><div class="nav-reorder-item" data-reorder-id="panel-fern"><button class="nav-item nav-panel" data-open-panel="panel-fern"><span>Fern</span><span class="arrow">↗</span></button><span class="reorder-arrows"><button class="reorder-up" title="הזז מעלה">▲</button><button class="reorder-down" title="הזז מטה">▼</button></span></div><div class="nav-reorder-item" data-reorder-id="panel-database"><button class="nav-item nav-panel" data-open-panel="panel-database"><span>DATABASE</span><span class="arrow">↗</span></button><span class="reorder-arrows"><button class="reorder-up" title="הזז מעלה">▲</button><button class="reorder-down" title="הזז מטה" disabled="">▼</button></span></div>
 
 
 
 
 <div class="nav-item-row">
-<button class="nav-item" data-scroll="sec-products">מוצרי הליבה</button>
+<button class="nav-item active" data-scroll="sec-products">מוצרי הליבה</button>
 <button class="chevron-btn" data-toggle="submenu-products" title="הצג את כל המוצרים">⌄</button>
 </div>
 <div class="nav-submenu" id="submenu-products">
@@ -810,45 +810,14 @@
 <section id="sec-opening">
 
 
+
+
 <div class="pitch-open edit-unit draggable-block" contenteditable="true" draggable="true" data-block-wired="1">
-<span class="tag" style="color:#FF6C37;font-weight:700;font-size:13px;margin-bottom:8px;display:block;">שאלות להתחלת השיחה</span>
-<p style="margin:0 0 10px;">לפני שניכנס ל-Postman, אשמח להבין קצת יותר עליך — מה התפקיד שלך ומה אתה מוביל היום אצלכם בחברה?</p>
+<span class="tag"><span style="color: rgb(28, 28, 30);"><span style="font-size: 15px;"></span></span><span style="color: rgb(255, 108, 55);"><span style="color: rgb(255, 108, 55);"><span style="font-size: 15px; color: rgb(255, 108, 55);">שאלות להתחלת השיחה</span></span><br style="color: rgb(255, 108, 55);"><p style="scrollbar-width: thin; color: rgb(255, 108, 55); font-size: 15px; margin: 0px 0px 10px;"></p></span><p style="scrollbar-width: thin; color: rgb(28, 28, 30); font-size: 15px; margin: 0px 0px 10px;">לפני שניכנס ל-Postman, אשמח להבין קצת יותר עליך -&nbsp;מה התפקיד שלך ומה אתה מוביל היום אצלכם בחברה?</p><p style="scrollbar-width: thin; color: rgb(28, 28, 30); font-size: 15px; margin: 0px 0px 4px;"><i style="scrollbar-width: thin;"></i></p><span style="color: rgb(255, 108, 55);"><p style="scrollbar-width: thin; color: rgb(255, 108, 55); font-size: 15px; font-weight: 400; margin: 0px 0px 4px;"><i style="scrollbar-width: thin; color: rgb(255, 108, 55);">ואחרי שהוא עונה:<br></i><span style="color: rgb(28, 28, 30); font-weight: 700;">מעניין. ומה גרם לך לקבל את הפניה שלי לשיחה דווקא עכשיו? יש משהו ספציפי סביב API Testing או AI שאתם מנסים לפתור?</span></p></span><p style="scrollbar-width: thin; color: rgb(28, 28, 30); font-size: 15px; margin: 0px 0px 10px;"><span style="font-weight: 400;">מעניין. כשאתה אומר את זה, אני סקרן להבין -</span> זה משהו שכל צוות מתמודד איתו בפני עצמו, או שיש אצלכם איזושהי יוזמה רחבה יותר סביב APIs וסטנדרטיזציה?<span style="font-weight: normal;"> <span style="scrollbar-width: thin;">[Governance / API Catalog]</span></span></p><p style="scrollbar-width: thin; color: rgb(28, 28, 30); font-size: 15px; font-weight: 400; margin: 0px 0px 4px;"><i style="scrollbar-width: thin;"></i></p><span style="color: rgb(255, 108, 55);"><p style="scrollbar-width: thin; color: rgb(255, 108, 55); font-size: 15px; font-weight: 400; margin: 0px 0px 4px;"><i style="scrollbar-width: thin; color: rgb(255, 108, 55);">אם הוא מדבר על חוסר סטנדרטיזציה:<br></i><span style="color: rgb(28, 28, 30); font-weight: 700;">ואיך אתם מתמודדים עם זה היום? כלומר, כשצוות מפתח API חדש, מי מגדיר מה הסטנדרט ואיך מוודאים שהוא באמת עומד בו?</span><span style="color: rgb(28, 28, 30); font-weight: 700;"> </span><span style="color: rgb(28, 28, 30); scrollbar-width: thin;">[</span><span style="color: rgb(28, 28, 30); scrollbar-width: thin;">Governance</span><span style="color: rgb(28, 28, 30); scrollbar-width: thin;">]</span></p></span><p style="scrollbar-width: thin; color: rgb(28, 28, 30); font-size: 15px; margin: 0px 0px 4px;"><i style="scrollbar-width: thin; font-weight: normal;"></i></p><span style="color: rgb(255, 108, 55);"><p style="scrollbar-width: thin; color: rgb(255, 108, 55); font-size: 15px; margin: 0px 0px 4px;"><i style="scrollbar-width: thin; font-weight: normal; color: rgb(255, 108, 55);">אם הוא מדבר על חוסר Visibility:<br></i><span style="color: rgb(28, 28, 30);">זה מעניין. אז בעצם אין היום מקום אחד שבו אפשר לראות אילו APIs קיימים, מי הבעלים שלהם ואיך צוותים אחרים יכולים למצוא ולהשתמש בהם?</span><span style="color: rgb(28, 28, 30);"> </span><span style="color: rgb(28, 28, 30); font-weight: normal; scrollbar-width: thin;">[API Catalog / Passport]</span></p></span><p style="scrollbar-width: thin; color: rgb(28, 28, 30); font-size: 15px; margin: 0px 0px 10px;"><span style="font-weight: normal;"></span></p><span style="color: rgb(255, 108, 55);"><p style="scrollbar-width: thin; color: rgb(255, 108, 55); font-size: 15px; margin: 0px 0px 10px;"><span style="color: rgb(255, 108, 55);"></span></p></span><span style="color: rgb(47, 111, 237);"><span style="color: rgb(47, 111, 237);"><p style="scrollbar-width: thin; color: rgb(47, 111, 237); font-size: 15px; margin: 0px 0px 10px;"><span style="color: rgb(47, 111, 237);">להבין את תהליך הפיתוח והבדיקות</span></p><p style="scrollbar-width: thin; color: rgb(47, 111, 237); font-size: 15px; margin: 0px 0px 4px;"></p></span><p style="scrollbar-width: thin; color: rgb(47, 111, 237); font-size: 15px; margin: 0px 0px 4px;"></p></span><p style="scrollbar-width: thin; color: rgb(28, 28, 30); font-size: 15px; margin: 0px 0px 4px;"><i style="scrollbar-width: thin; font-weight: normal;">אם הוא מזכיר Testing / QA / Release:</i></p><p style="scrollbar-width: thin; color: rgb(28, 28, 30); font-size: 15px; margin: 0px 0px 10px;">ואיך זה עובד היום בפועל? נניח שמפתח משנה API, מה קורה מהרגע הזה ועד שהשינוי מגיע לפרודקשן? כמה מזה כבר אוטומטי וכמה עדיין דורש עבודה ידנית? <span style="font-weight: normal; scrollbar-width: thin;">[Postman / Automation]</span></p><p style="scrollbar-width: thin; color: rgb(28, 28, 30); font-size: 15px; margin: 0px 0px 4px;"><i style="scrollbar-width: thin; font-weight: normal;"></i></p><span style="color: rgb(255, 108, 55);"><p style="scrollbar-width: thin; color: rgb(255, 108, 55); font-size: 15px; margin: 0px 0px 4px;"><i style="scrollbar-width: thin; font-weight: normal; color: rgb(255, 108, 55);">ואם הוא אומר שיש הרבה עבודה ידנית:<br></i><span style="color: rgb(28, 28, 30);">אה, מעניין. ומה בדרך כלל עוצר אתכם מלהעביר יותר מזה ל-CI/CD?&nbsp;<br></span><span style="font-weight: normal; color: rgb(28, 28, 30);">&nbsp;</span><span style="font-weight: normal; color: rgb(28, 28, 30); scrollbar-width: thin;">[</span><span style="color: rgb(28, 28, 30); font-weight: 400;">Postman CLI / Automation</span><span style="color: rgb(28, 28, 30); font-weight: normal;">]</span></p></span><p style="scrollbar-width: thin; color: rgb(28, 28, 30); font-size: 15px; margin: 0px 0px 4px;"><i style="scrollbar-width: thin; font-weight: normal;"><span style="color: rgb(255, 108, 55);">אם הוא מזכיר AI / Agents:<br style="color: rgb(255, 108, 55);"></span></i>כן, זה מעניין. עם כל השימוש ב-AI היום, אני סקרן להבין - אצלכם ה-AI כבר מתחיל לעבוד גם מול APIs וכלים פנימיים, או שזה עדיין בעיקר סביב כתיבת קוד<span style="font-weight: normal;">?</span><span style="font-weight: normal;"> </span><span style="font-weight: normal; scrollbar-width: thin;">[AI / Fabric / Fern]</span></p><p style="scrollbar-width: thin; color: rgb(28, 28, 30); font-size: 15px; margin: 0px 0px 4px;"><i style="scrollbar-width: thin; font-weight: normal;"></i></p><span style="color: rgb(255, 108, 55);"><p style="scrollbar-width: thin; color: rgb(255, 108, 55); font-size: 15px; margin: 0px 0px 4px;"><i style="scrollbar-width: thin; font-weight: normal; color: rgb(255, 108, 55);">אם הוא מדבר על Agents:<br></i><span style="font-weight: normal; color: rgb(28, 28, 30);">ואיך אתם שולטים במה שה-Agent יכול לגשת אליו? כלומר, איך הוא יודע לאיזה API או כלי מותר לו לגשת, ואיך אתם עוקבים אחרי זה? או איך אתם שולטים על עלויות?</span><span style="font-weight: normal; color: rgb(28, 28, 30);"> </span><span style="font-weight: normal; color: rgb(28, 28, 30); scrollbar-width: thin;">[Fabric / Passport]</span></p></span><p style="scrollbar-width: thin; color: rgb(28, 28, 30); font-size: 15px; margin: 0px 0px 4px;"><i style="scrollbar-width: thin; font-weight: normal;"></i></p><span style="color: rgb(255, 108, 55);"><p style="scrollbar-width: thin; color: rgb(255, 108, 55); font-size: 15px; margin: 0px 0px 4px;"><i style="scrollbar-width: thin; font-weight: normal; color: rgb(255, 108, 55);">אם עולה נושא של API Consumption, והבעיה היא שמפתחים לא יודעים למצוא/לקבל גישה ל-API:<br></i><span style="color: rgb(28, 28, 30);">ואיך מפתח מקבל היום גישה ל-API פנימי שהוא צריך? יש איזשהו מקום מרכזי שהוא יכול למצוא אותו ולבקש access, או שזה עדיין דרך Slack, tickets וכדומה?</span><span style="font-weight: normal; color: rgb(28, 28, 30);"> </span><span style="font-weight: normal; color: rgb(28, 28, 30); scrollbar-width: thin;">[Passport / API Catalog]</span></p></span><p style="scrollbar-width: thin; color: rgb(28, 28, 30); font-size: 15px; margin: 0px 0px 10px;"><i style="scrollbar-width: thin; font-weight: normal;"></i></p><span style="color: rgb(255, 108, 55);"><p style="scrollbar-width: thin; color: rgb(255, 108, 55); font-size: 15px; margin: 0px 0px 10px;"><i style="scrollbar-width: thin; color: rgb(255, 108, 55);"><span style="color: rgb(47, 111, 237);">לקראת סוף השיחה:<br style="color: rgb(47, 111, 237);"></span></i><span style="color: rgb(28, 28, 30);">אם אני רגע מסכם את מה שאמרת, הבעיה המרכזית היא יותר סביב XXX. מי אצלכם הכי קרוב לבעיה הזאת ביום־יום? מי בעצם יהיה האדם הנכון להכניס לשיחה הבאה?</span><span style="font-weight: normal; color: rgb(28, 28, 30);"> </span><span style="font-weight: normal; color: rgb(28, 28, 30); scrollbar-width: thin;">[Champion / Multithreading</span><b style="color: rgb(28, 28, 30); scrollbar-width: thin; font-size: 15.3333px;"><font face="Segoe UI, sans-serif">]</font></b></p></span><p class="MsoNormal" dir="RTL" style="direction: rtl; unicode-bidi: embed;"><span class="tag"><span dir="LTR" style="font-size: 11.5pt; line-height: 115%; font-family: &quot;Segoe UI&quot;, sans-serif; color: rgb(28, 28, 30); font-weight: normal;"><o:p></o:p></span></span></p>
 
-<p style="margin:0 0 4px;"><i>ואחרי שהוא עונה:</i></p>
-<p style="margin:0 0 10px;">מעניין. ומה גרם לך לקבל את הפניה שלי לשיחה דווקא עכשיו? יש משהו ספציפי סביב API Testing או AI שאתם מנסים לפתור?</p>
-
-<p style="margin:0 0 10px;">מעניין. כשאתה אומר את זה, אני סקרן להבין — זה משהו שכל צוות מתמודד איתו בפני עצמו, או שיש אצלכם איזושהי יוזמה רחבה יותר סביב APIs וסטנדרטיזציה? <b>[Governance / API Catalog]</b></p>
-
-<p style="margin:0 0 4px;"><i>אם הוא מדבר על חוסר סטנדרטיזציה:</i></p>
-<p style="margin:0 0 10px;">ואיך אתם מתמודדים עם זה היום? כלומר, כשצוות מפתח API חדש — מי מגדיר מה הסטנדרט ואיך מוודאים שהוא באמת עומד בו? <b>[Governance]</b></p>
-
-<p style="margin:0 0 4px;"><i>אם הוא מדבר על חוסר Visibility:</i></p>
-<p style="margin:0 0 14px;">זה מעניין. אז בעצם אין היום מקום אחד שבו אפשר לראות אילו APIs קיימים, מי הבעלים שלהם ואיך צוותים אחרים יכולים למצוא ולהשתמש בהם? <b>[API Catalog / Passport]</b></p>
-
-<p style="margin:0 0 10px;font-weight:700;color:#1C1C1E;">להבין את תהליך הפיתוח והבדיקות</p>
-
-<p style="margin:0 0 4px;"><i>אם הוא מזכיר Testing / QA / Release:</i></p>
-<p style="margin:0 0 10px;">ואיך זה עובד היום בפועל? נניח שמפתח משנה API, מה קורה מהרגע הזה ועד שהשינוי מגיע לפרודקשן? כמה מזה כבר אוטומטי וכמה עדיין דורש עבודה ידנית? <b>[Postman / Automation]</b></p>
-
-<p style="margin:0 0 4px;"><i>ואם הוא אומר שיש הרבה עבודה ידנית:</i></p>
-<p style="margin:0 0 14px;">אה, מעניין. ומה בדרך כלל עוצר אתכם מלהעביר יותר מזה ל-CI/CD? <b>[Postman CLI / Automation]</b></p>
-
-<p style="margin:0 0 4px;"><i>אם הוא מזכיר AI / Agents:</i></p>
-<p style="margin:0 0 10px;">כן, זה מעניין. עם כל השימוש ב-AI היום, אני סקרן להבין — אצלכם ה-AI כבר מתחיל לעבוד גם מול APIs וכלים פנימיים, או שזה עדיין בעיקר סביב כתיבת קוד? <b>[AI / Fabric / Fern]</b></p>
-
-<p style="margin:0 0 4px;"><i>אם הוא מדבר על Agents:</i></p>
-<p style="margin:0 0 14px;">ואיך אתם שולטים במה שה-Agent יכול לגשת אליו? כלומר, איך הוא יודע לאיזה API או כלי מותר לו לגשת, ואיך אתם עוקבים אחרי זה? או איך אתם שולטים על עלויות? <b>[Fabric / Passport]</b></p>
-
-<p style="margin:0 0 4px;"><i>אם עולה נושא של API Consumption, והבעיה היא שמפתחים לא יודעים למצוא/לקבל גישה ל-API:</i></p>
-<p style="margin:0 0 14px;">ואיך מפתח מקבל היום גישה ל-API פנימי שהוא צריך? יש איזשהו מקום מרכזי שהוא יכול למצוא אותו ולבקש access, או שזה עדיין דרך Slack, tickets וכדומה? <b>[Passport / API Catalog]</b></p>
-
-<p style="margin:0 0 10px;font-weight:700;color:#1C1C1E;">שאלה אחת שאני ממש רוצה להגיע אליה</p>
-
-<p style="margin:0 0 4px;"><i>לקראת סוף השיחה:</i></p>
-<p style="margin:0;">אם אני רגע מסכם את מה שאמרת, הבעיה המרכזית היא יותר סביב XXX. מי אצלכם הכי קרוב לבעיה הזאת ביום־יום? מי בעצם יהיה האדם הנכון להכניס לשיחה הבאה? <b>[Champion / Multithreading]</b></p>
-<span class="block-drag-grip" title="גרור כדי להזיז" contenteditable="false" draggable="true">⠿</span><button type="button" class="block-delete-btn" title="מחק בלוק זה" contenteditable="false">🗑</button></div><div class="cross-box edit-unit draggable-block" contenteditable="true" data-block-wired="1"><span class="tag" style="color: rgb(255, 108, 55); font-weight: 700; font-size: 13px; margin-bottom: 8px; display: block;"><span style="color: rgb(28, 28, 30); font-size: 15px;">הסבר על POSTMAN<br><br></span><span style="font-size: 15.5px; color: rgb(28, 28, 30);"><span style="font-weight: normal;">בארגונים גדולים אנחנו רואים לא מעט מקרים שבהם צוותים שונים משתמשים ב-Postman באופן עצמאי, דרך חשבונות אישיים לצד חשבונות ארגוניים, בלי ניהול מרכזי של המשתמשים, ההרשאות, תהליכי העבודה, ה-APIs והאבטחה. עם הזמן, זה יוצר מצב שבו כל צוות עובד קצת אחרת, אין תמונה מרכזית של כלל ה-APIs והפעילות סביבם, וקשה לדעת מי משתמש במה ומי מחזיק גישה לאילו APIs ומערכות — במיוחד כשהפעילות מפוזרת בין משתמשים, צוותים, חשבונות, ויותר ויותר גם כלי AI ו-AI Agents. זה המקום שבו בדרך כלל מתחילים לעלות נושאים כמו API Governance, סטנדרטיזציה ואבטח</span>ה</span></span><span style="font-size: 15px;">בניית APIs כבר לא באמת החלק הקשה. </span><b style="color: rgb(28, 28, 30); font-size: 15px;">האתגר מתחיל</b><span style="font-size: 15px;"> כשה-APIs גדלים על פני כמה צוותים, מוצרים וסביבות.</span><br style="font-size: 15px;"><span style="font-size: 15px;">בשלב הזה, ארגונים בדרך כלל נתקלים באותן בעיות: </span><b style="color: rgb(28, 28, 30); font-size: 15px;">אין נראות למה שקיים בכלל, תיעוד ובדיקות לא עקביים, כפילויות עבודה בין צוותים, ודרישות Governance ואבטחה שגדלות כל הזמן.</b><br style="font-size: 15px;"><span style="font-size: 15px;">בזמן האחרון, יוזמות AI חשפו את הבעיות האלה עוד יותר, כי אפליקציות AI תלויות ב-APIs שאפשר לגלות, שאמינים, ושמתועדים כמו שצריך.</span><br style="font-size: 15px;"><span style="font-size: 15px; color: rgb(29, 27, 27);"><span style="color: rgb(197, 27, 27);"><b><span style="color: rgb(241, 168, 9);"><span style="color: rgb(197, 143, 27);"><span style="color: rgb(197, 18, 253);">זה בדיוק המקום שבו Postman נכנס לתמונה</span></span></span></b></span></span><span style="font-size: 15px;">. </span><b style="color: rgb(28, 28, 30); font-size: 15px;">Postman היא פלטפורמה כוללת שבה צוותים יכולים לעצב, לבדוק, לתעד, לגלות ולנהל Governance על APIs</b><span style="font-size: 15px;"> — במקום לנהל את כל זה על פני כלים ותהליכים מפוצלים.</span><br style="font-size: 15px;"><span style="font-size: 15px;">בין אם אתם בשלב פרוטוטייפ לרעיון, ובין אם אתם מרחיבים מערכת שכבר בפרודקשן — Postman נותנת לכם את הכלים שאתם צריכים בכל שלב במחזור החיים של ה-API.</span><br style="font-size: 15px;"><span style="font-size: 15px;">אז כן — הפתרון שלנו הוא הרבה יותר מרק שליחת requests. אנחנו מלווים את כל מחזור החיים של ה-API, מהעיצוב והתיעוד ועד למעקב, אוטומציה ו-Governance.</span>טקסט חדש...<span class="block-drag-grip" title="גרור כדי להזיז" contenteditable="false" draggable="true">⠿</span><button type="button" class="block-delete-btn" title="מחק בלוק זה" contenteditable="false">🗑</button></div><button type="button" class="add-block-btn">+ הוסף בלוק טקסט</button></section>
+<p class="MsoNormal" dir="RTL" style="direction: rtl; unicode-bidi: embed;"><span class="tag"><span lang="HE" style="font-size: 11.5pt; line-height: 115%; font-family: &quot;Segoe UI&quot;, sans-serif; color: rgb(28, 28, 30); font-weight: normal;"></span></span></p><span style="font-size: 13.3333px;"><i><p class="MsoNormal" dir="RTL" style="direction: rtl; unicode-bidi: embed;"><span class="tag"><span style="color: rgb(28, 28, 30); font-size: 15.5px; font-weight: normal;">&nbsp;</span></span></p></i></span></span><span class="block-drag-grip" title="גרור כדי להזיז" contenteditable="false" draggable="true">⠿</span><button type="button" class="block-delete-btn" title="מחק בלוק זה" contenteditable="false">🗑</button></div><div class="cross-box edit-unit draggable-block" contenteditable="true" data-block-wired="1"><span class="tag" style="color: rgb(255, 108, 55); font-weight: 700; font-size: 13px; margin-bottom: 8px; display: block;"><span style="color: rgb(28, 28, 30); font-size: 15px;">הסבר על POSTMAN<br></span><span style="font-size: 15.5px; color: rgb(28, 28, 30);"><span style="font-weight: normal;">בארגונים גדולים אנחנו רואים לא מעט מקרים שבהם צוותים שונים משתמשים ב-Postman באופן עצמאי, דרך חשבונות אישיים לצד חשבונות ארגוניים, בלי ניהול מרכזי של המשתמשים, ההרשאות, תהליכי העבודה, ה-APIs והאבטחה. עם הזמן, זה יוצר מצב שבו כל צוות עובד קצת אחרת, אין תמונה מרכזית של כלל ה-APIs והפעילות סביבם, וקשה לדעת מי משתמש במה ומי מחזיק גישה לאילו APIs ומערכות — במיוחד כשהפעילות מפוזרת בין משתמשים, צוותים, חשבונות, ויותר ויותר גם כלי AI ו-AI Agents. זה המקום שבו בדרך כלל מתחילים לעלות נושאים כמו API Governance, סטנדרטיזציה ואבטח</span>ה</span></span><span style="font-size: 15px;">בניית APIs כבר לא באמת החלק הקשה. </span><b style="color: rgb(28, 28, 30); font-size: 15px;">האתגר מתחיל</b><span style="font-size: 15px;"> כשה-APIs גדלים על פני כמה צוותים, מוצרים וסביבות.</span><br style="font-size: 15px;"><span style="font-size: 15px;">בשלב הזה, ארגונים בדרך כלל נתקלים באותן בעיות: </span><b style="color: rgb(28, 28, 30); font-size: 15px;">אין נראות למה שקיים בכלל, תיעוד ובדיקות לא עקביים, כפילויות עבודה בין צוותים, ודרישות Governance ואבטחה שגדלות כל הזמן.</b><br style="font-size: 15px;"><span style="font-size: 15px;">בזמן האחרון, יוזמות AI חשפו את הבעיות האלה עוד יותר, כי אפליקציות AI תלויות ב-APIs שאפשר לגלות, שאמינים, ושמתועדים כמו שצריך.</span><br style="font-size: 15px;"><span style="font-size: 15px; color: rgb(29, 27, 27);"><span style="color: rgb(197, 27, 27);"><b><span style="color: rgb(241, 168, 9);"><span style="color: rgb(197, 143, 27);"><span style="color: rgb(197, 18, 253);">זה בדיוק המקום שבו Postman נכנס לתמונה</span></span></span></b></span></span><span style="font-size: 15px;">. </span><b style="color: rgb(28, 28, 30); font-size: 15px;">Postman היא פלטפורמה כוללת שבה צוותים יכולים לעצב, לבדוק, לתעד, לגלות ולנהל Governance על APIs</b><span style="font-size: 15px;"> — במקום לנהל את כל זה על פני כלים ותהליכים מפוצלים.</span><br style="font-size: 15px;"><span style="font-size: 15px;">בין אם אתם בשלב פרוטוטייפ לרעיון, ובין אם אתם מרחיבים מערכת שכבר בפרודקשן — Postman נותנת לכם את הכלים שאתם צריכים בכל שלב במחזור החיים של ה-API.</span><br style="font-size: 15px;"><span style="font-size: 15px;">אז כן — הפתרון שלנו הוא הרבה יותר מרק שליחת requests. אנחנו מלווים את כל מחזור החיים של ה-API, מהעיצוב והתיעוד ועד למעקב, אוטומציה ו-Governance.</span>טקסט חדש...<span class="block-drag-grip" title="גרור כדי להזיז" contenteditable="false" draggable="true">⠿</span><button type="button" class="block-delete-btn" title="מחק בלוק זה" contenteditable="false">🗑</button></div><button type="button" class="add-block-btn">+ הוסף בלוק טקסט</button></section>
 <!-- SECTION 1: THE PROCESS -->
-<section id="sec-process">
+<section id="sec-process" style="transition: background-color 0.9s, box-shadow 0.9s;">
 
 
 
@@ -898,7 +867,7 @@
 <span class="block-drag-grip" title="גרור כדי להזיז" contenteditable="false" draggable="true">⠿</span><button type="button" class="block-delete-btn" title="מחק בלוק זה" contenteditable="false">🗑</button></div><div class="say edit-unit draggable-block" contenteditable="true" draggable="true" data-block-wired="1">
 <b class="tag">איך אני ממסגר את זה</b>
 "הפלטפורמה שלנו לא נועדה להחליף את ה-API Gateway — אלא אם תרצו בכך — הערך הוא ביצירת שכבת שיקוף, גילוי, אבטחה ו-Governance סביב ה-APIs, ובניהול יעיל יותר של כל מחזור החיים שלהם."
-<span class="block-drag-grip" title="גרור כדי להזיז" contenteditable="false" draggable="true">⠿</span><button type="button" class="block-delete-btn" title="מחק בלוק זה" contenteditable="false">🗑</button></div><div class="cross-box edit-unit draggable-block" contenteditable="true" draggable="true" data-block-wired="1"><span style="font-size: 15.5px;">Postman נותנת מענה כולל לאורך כל מחזור החיים של ה-API באמצעות ארכיטקטורת Waterfall, שבה כל שלב מתבסס על מה שהוגדר בשלב הקודם, וגם אוכף אותו אוטומטית: בעיצוב (Design) מגדירים את חוזה ה-API ומיישמים Governance; בפיתוח (Development) בודקים ברציפות שהקוד נשאר בהתאם לחוזה ומזהים שינויים ששוברים מערכות קיימות; בבדיקות (Tests) מייצרים ומריצים בדיקות אוטומטית, עם AI שמתקן בדיקות שנכשלו ומריץ בדיקות עומס; ובהטמעה ומעקב (Deployment &amp; Monitoring) בדיקות אוטומטיות ממשיכות לוודא עמידה בסטנדרטים, ו-Insights מזהה פערים על בסיס תעבורה אמיתית. במקביל, Agent Mode ו-AI Engineer מספקים יכולות AI שמבינות את ההקשר ומבצעות פעולות אוטומטיות או מונחות לאורך השלבים — Agent Mode עובד עם APIs, בדיקות ותהליכי Governance, ו-AI Engineer עובד עם הקוד וההיסטוריה ב-Git כדי לזהות APIs ישנים או לא בשימוש, ולבדוק שינויים לפני Merge. אפשר גם ליצור את כללי ה-Governance עצמם בעזרת AI, ו-Postman אוכפת אותם באופן עקבי על פני כל הפרויקטים.</span>
+<span class="block-drag-grip" title="גרור כדי להזיז" contenteditable="false" draggable="true">⠿</span><button type="button" class="block-delete-btn" title="מחק בלוק זה" contenteditable="false">🗑</button></div><div class="cross-box edit-unit draggable-block" contenteditable="true" draggable="true" data-block-wired="1"><span style="font-size: 15.5px;">אנחנו נותנים מענה כולל לאורך כל מחזור החיים של ה-API באמצעות ארכיטקטורת Waterfall, שבה כל שלב מתבסס על מה שהוגדר בשלב הקודם, וגם אוכף אותו אוטומטית: <br><b>בעיצוב (Design)</b> מגדירים את חוזה ה-API ומיישמים Governance<br><b>בפיתוח (Development)</b> בודקים ברציפות שהקוד נשאר בהתאם לחוזה ומזהים שינויים ששוברים מערכות קיימות<br><b>בבדיקות (Tests)</b> מייצרים ומריצים בדיקות אוטומטית, עם AI שמתקן בדיקות שנכשלו ומריץ בדיקות עומס <b>ובהטמעה ומעקב (Deployment &amp; Monitoring) </b>בדיקות אוטומטיות ממשיכות לוודא עמידה בסטנדרטים, ו-<b>Insights </b>מזהה פערים על בסיס תעבורה אמיתית. <br>במקביל, <b><span style="color: rgb(28, 28, 30);">Agent Mode</span></b> ו-<span style="color: rgb(28, 28, 30);"><b><span style="color: rgb(28, 28, 30);">AI </span></b></span><span style="color: rgb(28, 28, 30);"><span style="color: rgb(28, 28, 30);"><b style="color: rgb(28, 28, 30);">Engineer</b></span> </span>מספקים יכולות AI שמבינות את ההקשר ומבצעות פעולות אוטומטיות או מונחות לאורך השלבים<br> <span style="color: rgb(255, 108, 55);">Agent Mode</span> עובד עם APIs, בדיקות ותהליכי Governance, ו-<span style="color: rgb(255, 108, 55);">AI Engineer</span> עובד עם הקוד וההיסטוריה ב-Git כדי לזהות APIs ישנים או לא בשימוש, ולבדוק שינויים לפני Merge. אפשר גם ליצור את כללי ה-Governance עצמם בעזרת AI, ו-Postman אוכפת אותם באופן עקבי על פני כל הפרויקטים.</span>
 <span class="block-drag-grip" title="גרור כדי להזיז" contenteditable="false" draggable="true">⠿</span><button type="button" class="block-delete-btn" title="מחק בלוק זה" contenteditable="false">🗑</button></div><div class="group-title edit-unit draggable-block" contenteditable="true" draggable="true" data-block-wired="1">מה כולל Postman Enterprise<span class="block-drag-grip" title="גרור כדי להזיז" contenteditable="false" draggable="true">⠿</span><button type="button" class="block-delete-btn" title="מחק בלוק זה" contenteditable="false">🗑</button></div><div class="cross-box edit-unit draggable-block" contenteditable="true" draggable="true" data-block-wired="1">
 תוכנית ה-Enterprise מיועדת לארגונים שרוצים לנהל APIs בקנה מידה רחב — Governance ארגוני, בקרות אבטחה ונראות מלאה, אכיפת כללים אוטומטית על פני כל הצוותים, ניהול סודות מרכזי, ותצוגה אחודה של כל ה-APIs שנבנים בארגון. בקנה מידה גדול, כלים מפוזרים ותהליכים ידניים הופכים לסיכון ממשי, במיוחד לנוכח דרישות אבטחה ותאימות שהולכות וגדלות.
 <span class="block-drag-grip" title="גרור כדי להזיז" contenteditable="false" draggable="true">⠿</span><button type="button" class="block-delete-btn" title="מחק בלוק זה" contenteditable="false">🗑</button></div><ul class="panel-list draggable-block" draggable="true" data-block-wired="1">
@@ -920,121 +889,118 @@
 <b>Fabric</b> — שכבת בקרה מרכזית לעולם ה-AI בארגון. ככל שיותר צוותים עובדים עם מודלי LLM שונים, בונים AI Agents ומחברים AI למערכות פנימיות, Fabric נותן שכבה מרכזית לשלוט בתעבורה הזו, לאבטח אותה, להגדיר מה Agents יכולים לגשת אליו, לנהל Credentials, ולשלוט בעלויות ובצריכת Tokens.
 <span class="block-drag-grip" title="גרור כדי להזיז" contenteditable="false" draggable="true">⠿</span><button type="button" class="block-delete-btn" title="מחק בלוק זה" contenteditable="false">🗑</button></div><button type="button" class="add-block-btn">+ הוסף בלוק טקסט</button></section>
 <!-- SECTION 2: AI SHIFT — EXPANDED -->
-<section id="sec-ai">
-<h2 class="edit-unit draggable-block" contenteditable="false" data-block-wired="1"><span class="num">2</span> AI<span class="block-drag-grip" title="גרור כדי להזיז" contenteditable="false" draggable="true">⠿</span><button type="button" class="block-delete-btn" title="מחק בלוק זה" contenteditable="false">🗑</button></h2>
+<section id="sec-ai" style="transition: background-color 0.9s, box-shadow 0.9s;">
 
-<div class="say edit-unit draggable-block" contenteditable="false" data-block-wired="1">
-<b class="tag"><span style="font-size: 14.5px; color: rgb(28, 28, 30);">אני רוצה לעצור רגע על ולדבר על ה-AI, כי זה בעצם זאת נקודה מכרעת היום כמעט לכל ארגון. <br>ה-AI לא משנה את חמשת שלבי מחזור חיי ה-API, אלא רק מגדיל בטירוף את המהירות שעוברים בהם. וכשהמהירות עולה, כל סדק שהיה קיים אצלכם גם קודם, נהיה גדול יותר, ומהר יותר."</span></b><span class="block-drag-grip" title="גרור כדי להזיז" contenteditable="false" draggable="true">⠿</span><button type="button" class="block-delete-btn" title="מחק בלוק זה" contenteditable="false">🗑</button></div>
-<div class="ai-box draggable-block" data-block-wired="1">
-<div class="h edit-unit" contenteditable="false">מהירות מול איכות</div>
-<p class="edit-unit" contenteditable="false">"המפתחים שלכם כבר משתמשים בכלים כמו Copilot או Cursor לכתוב קוד — וזה מעולה למהירות. הבעיה היא שקצב הבדיקות לא גדל באותו הקצב. אתם מקבלים יותר קוד, אבל לא יותר וידוא שהוא תקין. וזה בדיוק הפער שגורם לזינוק בתקלות שמגיעות לפרודקשן."</p>
-<div class="h edit-unit" contenteditable="false">APIs שנבנו לבני אדם, לא לסוכני AI</div>
-<p class="edit-unit" contenteditable="false">"יש נקודה שרוב החברות לא חושבות עליה בכלל: כשסוכן AI הוא זה שצורך את ה-API שלכם ולא מפתח אנושי, הוא צריך מפרט אחרת. סוכן AI לא 'מבין לפי הקשר' כמו מפתח — הוא צריך שיוצהר לו במפורש אילו פעולות אפשריות ומה המגבלות שלהן. אם ה-API שלכם לא כתוב כך, הסוכן פשוט ישתמש בו לא נכון — ואתם לא תדעו את זה עד שזה יקרה בפרודקשן."</p>
-<div class="h edit-unit" contenteditable="false">Governance כבקבוק צוואר</div>
-<p class="edit-unit" contenteditable="false">"וכשהכל רץ מהר יותר, Governance ואבטחה נהיים בקבוק הצוואר של הארגון. תיעוד ראיות לביקורת — audit evidence — הופך מתהליך שוטף לריצה ידנית פעם ברבעון. ואת זה אף אחד לא רוצה לעשות בלחץ."</p>
-<div class="h edit-unit" contenteditable="false">נתון שאני פותח איתו</div>
-<p class="edit-unit" contenteditable="false">"89 אחוז מהמפתחים כבר משתמשים ב-AI לכתיבת קוד. רק 24 אחוז מהם בכלל מעצבים את ה-API שלהם כך שסוכן AI יידע להשתמש בו נכון. זה הפער שאנחנו סוגרים."</p>
-<span class="block-drag-grip" title="גרור כדי להזיז" contenteditable="false" draggable="true">⠿</span><button type="button" class="block-delete-btn" title="מחק בלוק זה" contenteditable="false">🗑</button></div>
-<div class="say edit-unit draggable-block" contenteditable="false" data-block-wired="1">
+
+
+
+<h2 class="edit-unit draggable-block" contenteditable="true" data-block-wired="1"><span class="num">2</span> AI<span class="block-drag-grip" title="גרור כדי להזיז" contenteditable="false" draggable="true">⠿</span><button type="button" class="block-delete-btn" title="מחק בלוק זה" contenteditable="false">🗑</button></h2><div class="say edit-unit draggable-block" contenteditable="true" data-block-wired="1">
+<b class="tag"><span style="font-size: 14.5px; color: rgb(28, 28, 30);">אני רוצה לעצור רגע על ולדבר על ה-AI, כי זה בעצם זאת נקודה מכרעת היום כמעט לכל ארגון. <br>ה-AI לא משנה את חמשת שלבי מחזור חיי ה-API, אלא רק מגדיל בטירוף את המהירות שעוברים בהם. וכשהמהירות עולה, כל סדק שהיה קיים אצלכם גם קודם, נהיה גדול יותר, ומהר יותר."</span></b><span class="block-drag-grip" title="גרור כדי להזיז" contenteditable="false" draggable="true">⠿</span><button type="button" class="block-delete-btn" title="מחק בלוק זה" contenteditable="false">🗑</button></div><div class="ai-box draggable-block" data-block-wired="1">
+<div class="h edit-unit" contenteditable="true">מהירות מול איכות</div>
+<p class="edit-unit" contenteditable="true">"המפתחים שלכם כבר משתמשים בכלים כמו Copilot או Cursor לכתוב קוד — וזה מעולה למהירות. הבעיה היא שקצב הבדיקות לא גדל באותו הקצב. אתם מקבלים יותר קוד, אבל לא יותר וידוא שהוא תקין. וזה בדיוק הפער שגורם לזינוק בתקלות שמגיעות לפרודקשן."</p>
+<div class="h edit-unit" contenteditable="true">APIs שנבנו לבני אדם, לא לסוכני AI</div>
+<p class="edit-unit" contenteditable="true">"יש נקודה שרוב החברות לא חושבות עליה בכלל: כשסוכן AI הוא זה שצורך את ה-API שלכם ולא מפתח אנושי, הוא צריך מפרט אחרת. סוכן AI לא 'מבין לפי הקשר' כמו מפתח — הוא צריך שיוצהר לו במפורש אילו פעולות אפשריות ומה המגבלות שלהן. אם ה-API שלכם לא כתוב כך, הסוכן פשוט ישתמש בו לא נכון — ואתם לא תדעו את זה עד שזה יקרה בפרודקשן."</p>
+<div class="h edit-unit" contenteditable="true">Governance כבקבוק צוואר</div>
+<p class="edit-unit" contenteditable="true">"וכשהכל רץ מהר יותר, Governance ואבטחה נהיים בקבוק הצוואר של הארגון. תיעוד ראיות לביקורת — audit evidence — הופך מתהליך שוטף לריצה ידנית פעם ברבעון. ואת זה אף אחד לא רוצה לעשות בלחץ."</p>
+<div class="h edit-unit" contenteditable="true">נתון שאני פותח איתו</div>
+<p class="edit-unit" contenteditable="true">"89 אחוז מהמפתחים כבר משתמשים ב-AI לכתיבת קוד. רק 24 אחוז מהם בכלל מעצבים את ה-API שלהם כך שסוכן AI יידע להשתמש בו נכון. זה הפער שאנחנו סוגרים."</p>
+<span class="block-drag-grip" title="גרור כדי להזיז" contenteditable="false" draggable="true">⠿</span><button type="button" class="block-delete-btn" title="מחק בלוק זה" contenteditable="false">🗑</button></div><div class="say edit-unit draggable-block" contenteditable="true" data-block-wired="1">
 <b class="tag">איך אני ממשיך לחלק ה-AI של המוצר שלנו עצמו</b>
       "וזה מוביל אותי לנקודה שהלקוחות שלנו הכי אוהבים: ה-AI שבתוך Postman הוא לא כמו ChatGPT כללי. אנחנו קוראים לו&nbsp;<b>Agent Mode</b>&nbsp; והוא בנוי במיוחד לעולם ה-API.&nbsp;<div>הוא רץ בתוך הסביבה שלכם ב-Postman, מכיר את כל הפרויקטים, הבדיקות וההתראות שכבר קיימים אצלכם, ולא רק עונה על שאלות אלא גם מבצע פעולות בפועל: כותב חוזים חדשים, מתקן בדיקות שנשברו, ומזהה מתי גרסה חדשה שוברת הבטחה שנתנו למישהו בעבר.</div><div><br></div><div>יש גם <b>AI Engineer</b>, שמתחבר למקום שבו שמור כל הקוד וההיסטוריה שלו (Git) ועושה עבודה עצמאית יותר/</div><div>לדוגמה, לעבור על כל ה-API-ים שלכם ולסמן אילו מהם כדאי להוציא משימוש כי הם ישנים או לא בשימוש, או לבדוק אוטומטית כל שינוי קוד חדש שמפתח מעלה למערכת, לפני שהוא מתקבל.&nbsp;</div><div>ואתם יכולים גם לבנות את כללי ה-Governance עצמם בעזרת AI — לכתוב אותם ב-Claude או ב-ChatGPT, ו-Postman הוא זה שבפועל אוכף אותם אוטומטית, על כל הפרויקטים, כל הזמן.&nbsp;</div><div>וזה בעצם ההבדל האמיתי: <b>אתם יכולים לעשות חלק מזה בעצמכם, או לקנות כמה כלים נפרדים — אבל אנחנו שמים את הכל תחת קורת גג אחת."
     </b></div>
 <span class="block-drag-grip" title="גרור כדי להזיז" contenteditable="false" draggable="true">⠿</span><button type="button" class="block-delete-btn" title="מחק בלוק זה" contenteditable="false">🗑</button></div><button type="button" class="add-block-btn">+ הוסף בלוק טקסט</button></section>
 <!-- SECTION 3: WHAT POSTMAN OFFERS PER STAGE -->
-<section id="sec-stages">
-<h2 class="edit-unit draggable-block" contenteditable="false" data-block-wired="1"><span class="num">3</span> מה יש לנו להציע - שלב-שלב<span class="block-drag-grip" title="גרור כדי להזיז" contenteditable="false" draggable="true">⠿</span><button type="button" class="block-delete-btn" title="מחק בלוק זה" contenteditable="false">🗑</button></h2>
-<p class="lead edit-unit draggable-block" contenteditable="false" data-block-wired="1"><b>"זה מה שאני קורא ה-golden path: בכל שלב יש כלי שאוכף אוטומטית את מה שהגדרנו בשלב הקודם - כך שאתם לא בודקים את זה שוב מאוחר יותר."</b><span class="block-drag-grip" title="גרור כדי להזיז" contenteditable="false" draggable="true">⠿</span><button type="button" class="block-delete-btn" title="מחק בלוק זה" contenteditable="false">🗑</button></p>
+<section id="sec-stages" style="transition: background-color 0.9s, box-shadow 0.9s;">
+<h2 class="edit-unit draggable-block" contenteditable="true" data-block-wired="1"><span class="num">3</span> מה יש לנו להציע - שלב-שלב<span class="block-drag-grip" title="גרור כדי להזיז" contenteditable="false" draggable="true">⠿</span><button type="button" class="block-delete-btn" title="מחק בלוק זה" contenteditable="false">🗑</button></h2>
+<p class="lead edit-unit draggable-block" contenteditable="true" data-block-wired="1"><b>"זה מה שאני קורא ה-golden path: בכל שלב יש כלי שאוכף אוטומטית את מה שהגדרנו בשלב הקודם - כך שאתם לא בודקים את זה שוב מאוחר יותר."</b><span class="block-drag-grip" title="גרור כדי להזיז" contenteditable="false" draggable="true">⠿</span><button type="button" class="block-delete-btn" title="מחק בלוק זה" contenteditable="false">🗑</button></p>
 <div class="offer-grid">
 <div class="offer">
-<div class="t edit-unit" contenteditable="false">01 · עיצוב</div>
-<p class="edit-unit" contenteditable="false">"אתם כותבים מראש מה ה-API אמור לעשות — כמו חוזה מסודר לפני שמתחילים לבנות בפועל — ויש AI שעוזר לכתוב ולתקן את החוזה הזה. אפשר גם להגדיר כלל כמו 'כל בקשה חייבת אישור זהות', וזה לא נשאר המלצה שמישהו צריך לזכור לבדוק — הוא נאכף אוטומטית. ובזמן שצוות ה-backend עדיין בונה את המערכת האמיתית, צוות ה-frontend יכול כבר להתחיל לעבוד מול גרסה מדומה שמתנהגת כמו ה-API האמיתי (Mock Server), כדי שלא יצטרכו לחכות."</p>
+<div class="t edit-unit" contenteditable="true">01 · עיצוב</div>
+<p class="edit-unit" contenteditable="true">"אתם כותבים מראש מה ה-API אמור לעשות — כמו חוזה מסודר לפני שמתחילים לבנות בפועל — ויש AI שעוזר לכתוב ולתקן את החוזה הזה. אפשר גם להגדיר כלל כמו 'כל בקשה חייבת אישור זהות', וזה לא נשאר המלצה שמישהו צריך לזכור לבדוק — הוא נאכף אוטומטית. ובזמן שצוות ה-backend עדיין בונה את המערכת האמיתית, צוות ה-frontend יכול כבר להתחיל לעבוד מול גרסה מדומה שמתנהגת כמו ה-API האמיתי (Mock Server), כדי שלא יצטרכו לחכות."</p>
 </div>
 <div class="offer">
-<div class="t edit-unit" contenteditable="false">02 · פיתוח</div>
-<p class="edit-unit" contenteditable="false">"כל פעם שמפתח כותב קוד, יש לנו כלי שרץ ברקע ובודק אוטומטית שהקוד עדיין עומד בחוזה שהוגדר בשלב העיצוב — ממש כמו בודק איות שרץ בזמן שאתה כותב מסמך, רק שהוא בודק לוגיקה ולא שגיאות כתיב. ואם מישהו משנה משהו שהולך לשבור הבטחה שמישהו אחר כבר סומך עליה — זה נתפס באותו רגע, לפני שהקוד בכלל נכנס למוצר, ולא כמו בדיקה מסורתית שמגלים את זה שבועיים אחר כך."</p>
+<div class="t edit-unit" contenteditable="true">02 · פיתוח</div>
+<p class="edit-unit" contenteditable="true">"כל פעם שמפתח כותב קוד, יש לנו כלי שרץ ברקע ובודק אוטומטית שהקוד עדיין עומד בחוזה שהוגדר בשלב העיצוב — ממש כמו בודק איות שרץ בזמן שאתה כותב מסמך, רק שהוא בודק לוגיקה ולא שגיאות כתיב. ואם מישהו משנה משהו שהולך לשבור הבטחה שמישהו אחר כבר סומך עליה — זה נתפס באותו רגע, לפני שהקוד בכלל נכנס למוצר, ולא כמו בדיקה מסורתית שמגלים את זה שבועיים אחר כך."</p>
 </div>
 <div class="offer">
-<div class="t edit-unit" contenteditable="false">03 · בדיקות</div>
-<p class="edit-unit" contenteditable="false">"יש כלי שמריץ אוטומטית חבילה שלמה של בדיקות בלחיצת כפתור, ויש עוזר AI שבונה בדיקות בסיסיות ישירות מהחוזה שכתבתם בשלב העיצוב, ואפילו מתקן בדיקה שנשברה. ואפשר גם לבדוק מה קורה בעומס גבוה — למשל מה יקרה אם בבת אחת יהיו הרבה יותר משתמשים, כמו ביום מבצע גדול."</p>
+<div class="t edit-unit" contenteditable="true">03 · בדיקות</div>
+<p class="edit-unit" contenteditable="true">"יש כלי שמריץ אוטומטית חבילה שלמה של בדיקות בלחיצת כפתור, ויש עוזר AI שבונה בדיקות בסיסיות ישירות מהחוזה שכתבתם בשלב העיצוב, ואפילו מתקן בדיקה שנשברה. ואפשר גם לבדוק מה קורה בעומס גבוה — למשל מה יקרה אם בבת אחת יהיו הרבה יותר משתמשים, כמו ביום מבצע גדול."</p>
 </div>
 <div class="offer">
-<div class="t edit-unit" contenteditable="false">04–05 · פריסה ומעקב</div>
-<p class="edit-unit" contenteditable="false">"יש בדיקות אוטומטיות שרצות כל הזמן על ה-API-ים שפונים לעולם החוץ, כדי לוודא שהם באמת עונים ועובדים. יש גרסה מקבילה שרצה בתוך הרשת הפנימית שלכם, מאחורי כל שכבות האבטחה, ל-API-ים שלא פתוחים לעולם. ו-Insights מזהה פערים על סמך התעבורה האמיתית שקורית בפועל."</p>
+<div class="t edit-unit" contenteditable="true">04–05 · פריסה ומעקב</div>
+<p class="edit-unit" contenteditable="true">"יש בדיקות אוטומטיות שרצות כל הזמן על ה-API-ים שפונים לעולם החוץ, כדי לוודא שהם באמת עונים ועובדים. יש גרסה מקבילה שרצה בתוך הרשת הפנימית שלכם, מאחורי כל שכבות האבטחה, ל-API-ים שלא פתוחים לעולם. ו-Insights מזהה פערים על סמך התעבורה האמיתית שקורית בפועל."</p>
 </div>
 </div>
-<div class="cross-box edit-unit draggable-block" contenteditable="false" data-block-wired="1"><b>
+<div class="cross-box edit-unit draggable-block" contenteditable="true" data-block-wired="1"><b>
       "שני דברים חשוב שתדעו — הם לא שייכים לשלב אחד, הם רצים על פני כולם:&nbsp;</b><div><b>API Catalog</b> נותן לכם תצוגה אחת של כל ה-APIs שבפיתוח בארגון — לא רק אלה שכבר חיים ב-gateway בפרודקשן. זה ההבדל המרכזי בינינו ל-Kong, Apigee או Boomi — הם מראים לכם רק מה שכבר רץ, אנחנו מראים לכם גם מה שבבנייה.</div><div>&nbsp;ו<b>Agent Mode</b> עם <b>AI Engineer</b> זמינים בכל שלב — לא עוזרים כלליים, אלא כלים שמכירים את הקונטקסט שלכם ובפועל מבצעים פעולות."
     </div><span class="block-drag-grip" title="גרור כדי להזיז" contenteditable="false" draggable="true">⠿</span><button type="button" class="block-delete-btn" title="מחק בלוק זה" contenteditable="false">🗑</button></div>
 <button type="button" class="add-block-btn">+ הוסף בלוק טקסט</button></section>
 <!-- SECTION 4: CORE PRODUCTS -->
 <section id="sec-products">
-<h2 class="edit-unit" contenteditable="false" data-ceid="ce0">סקריפט לשיחת לקוח — מוצרי Postman</h2>
-<div class="group-title edit-unit" contenteditable="false" data-ceid="ce1">ניהול API ושירותים</div>
+<h2 class="edit-unit" contenteditable="true" data-ceid="ce0">&nbsp;מוצרי Postman</h2>
+<div class="group-title edit-unit" contenteditable="true" data-ceid="ce1"><span style="color: rgb(255, 108, 55);">ניהול API ושירותים</span></div>
 <div class="prod reorderable-card" id="prod-organizations" data-wired="1" style="position: relative;">
-<div class="name edit-unit" contenteditable="false">Organizations — ניהול ארגוני</div>
-<div class="pitch edit-unit" contenteditable="false">"זו שכבת הניהול שקובעת מי יכול לגשת למה — צוותים, הרשאות, ו-Governance אחיד על פני כל הארגון. תחשבו על בנק עם 40 צוותי פיתוח: Organizations מאפשר לי להגדיר שצוות התשלומים לא יכול בכלל לגעת ב-workspace של משאבי אנוש — בלי שמישהו צריך לנהל את זה ידנית כל יום."</div>
+<div class="name edit-unit" contenteditable="true">Organizations — ניהול ארגוני</div>
+<div class="pitch edit-unit" contenteditable="true">"זו שכבת הניהול שקובעת מי יכול לגשת למה — צוותים, הרשאות, ו-Governance אחיד על פני כל הארגון. תחשבו על בנק עם 40 צוותי פיתוח: Organizations מאפשר לי להגדיר שצוות התשלומים לא יכול בכלל לגעת ב-workspace של משאבי אנוש — בלי שמישהו צריך לנהל את זה ידנית כל יום."</div>
 <div class="drag-grip" title="גרור כדי לשנות סדר" contenteditable="false" draggable="true">⠿</div><button class="card-delete-btn" title="מחק כרטיס זה" type="button" contenteditable="false">🗑</button></div>
 <div class="prod reorderable-card" id="prod-api-catalog" data-wired="1" style="position: relative;">
-<div class="name edit-unit" contenteditable="false">API Catalog — קטלוג API</div>
-<div class="pitch edit-unit" contenteditable="false">"זו תצוגה מרכזית אחת של כל ה-APIs והשירותים שלכם — מי הבעלים, מה המצב שלו ב-CI, מה קצב השגיאות שלו בפרודקשן. אם מנהל פלטפורמה שלכם רוצה לדעת אילו APIs לא עומדים בתקן האבטחה, הוא מקבל ציון תאימות לכל אחד — בלי לחפש ידנית ב-20 workspaces."</div>
+<div class="name edit-unit" contenteditable="true">API Catalog — קטלוג API</div>
+<div class="pitch edit-unit" contenteditable="true">"זו תצוגה מרכזית אחת של כל ה-APIs והשירותים שלכם — מי הבעלים, מה המצב שלו ב-CI, מה קצב השגיאות שלו בפרודקשן. אם מנהל פלטפורמה שלכם רוצה לדעת אילו APIs לא עומדים בתקן האבטחה, הוא מקבל ציון תאימות לכל אחד — בלי לחפש ידנית ב-20 workspaces."</div>
 <div class="drag-grip" title="גרור כדי לשנות סדר" contenteditable="false" draggable="true">⠿</div><button class="card-delete-btn" title="מחק כרטיס זה" type="button" contenteditable="false">🗑</button></div>
 <div class="prod reorderable-card" id="prod-private-network" data-wired="1" style="position: relative;">
-<div class="name edit-unit" contenteditable="false">Private API Network — רשת API פרטית</div>
-<div class="pitch edit-unit" contenteditable="false">"אתם מפרסמים APIs פנימיים מאושרים כך שצוותים אחרים בארגון יכולים למצוא ולהשתמש בהם — בלי לחשוף אותם לעולם החוץ. אם צוות אחד כבר בנה API לבדיקת זיהוי לקוח, צוות אחר לא בונה את זה מהתחלה כי הוא בכלל לא ידע שזה קיים."</div>
+<div class="name edit-unit" contenteditable="true">Private API Network — רשת API פרטית</div>
+<div class="pitch edit-unit" contenteditable="true">"אתם מפרסמים APIs פנימיים מאושרים כך שצוותים אחרים בארגון יכולים למצוא ולהשתמש בהם — בלי לחשוף אותם לעולם החוץ. אם צוות אחד כבר בנה API לבדיקת זיהוי לקוח, צוות אחר לא בונה את זה מהתחלה כי הוא בכלל לא ידע שזה קיים."</div>
 <div class="drag-grip" title="גרור כדי לשנות סדר" contenteditable="false" draggable="true">⠿</div><button class="card-delete-btn" title="מחק כרטיס זה" type="button" contenteditable="false">🗑</button></div>
 <div class="prod reorderable-card" id="prod-governance-builder" data-wired="1" style="position: relative;">
-<div class="name edit-unit" contenteditable="false">Governance Rule Builder — בונה כללי Governance</div>
-<div class="pitch edit-unit" contenteditable="false">"פה אתם כותבים כלל בהתאמה אישית — למשל, שכל endpoint חייב שדה Authorization — והוא נאכף אוטומטית, לא כהמלצה, אלא כחסימה בפועל. גוף פיננסי יכול להגדיר כלל שאוסר להחזיר מספר כרטיס אשראי מלא ב-response, והכלל הזה רץ על כל מפרט חדש, לפני שהוא בכלל מגיע לסקירה אנושית."</div>
+<div class="name edit-unit" contenteditable="true">Governance Rule Builder — בונה כללי Governance</div>
+<div class="pitch edit-unit" contenteditable="true">"פה אתם כותבים כלל בהתאמה אישית — למשל, שכל endpoint חייב שדה Authorization — והוא נאכף אוטומטית, לא כהמלצה, אלא כחסימה בפועל. גוף פיננסי יכול להגדיר כלל שאוסר להחזיר מספר כרטיס אשראי מלא ב-response, והכלל הזה רץ על כל מפרט חדש, לפני שהוא בכלל מגיע לסקירה אנושית."</div>
 <div class="drag-grip" title="גרור כדי לשנות סדר" contenteditable="false" draggable="true">⠿</div><button class="card-delete-btn" title="מחק כרטיס זה" type="button" contenteditable="false">🗑</button></div>
 <div class="prod reorderable-card" id="prod-secret-scanner" data-wired="1" style="position: relative;">
-<div class="name edit-unit" contenteditable="false">Secret Scanner — סורק סודות מקומי</div>
-<div class="pitch edit-unit" contenteditable="false">"זה תופס מפתחות ו-secrets שנחשפו בטעות — נניח, מפתח API שמפתח הדביק בבדיקה מהירה — ומנתב אותם ל-Vault המקומי לפני שהם בכלל מגיעים ל-Git. זה נתפס לפני commit, ולא מתגלה בסקירת אבטחה חצי שנה אחר כך."</div>
+<div class="name edit-unit" contenteditable="true">Secret Scanner — סורק סודות מקומי</div>
+<div class="pitch edit-unit" contenteditable="true">"זה תופס מפתחות ו-secrets שנחשפו בטעות — נניח, מפתח API שמפתח הדביק בבדיקה מהירה — ומנתב אותם ל-Vault המקומי לפני שהם בכלל מגיעים ל-Git. זה נתפס לפני commit, ולא מתגלה בסקירת אבטחה חצי שנה אחר כך."</div>
 <div class="drag-grip" title="גרור כדי לשנות סדר" contenteditable="false" draggable="true">⠿</div><button class="card-delete-btn" title="מחק כרטיס זה" type="button" contenteditable="false">🗑</button></div>
 <div class="prod reorderable-card" id="prod-vault" data-wired="1" style="position: relative;">
-<div class="name edit-unit" contenteditable="false">Postman Vault — כספת סודות</div>
-<div class="pitch edit-unit" contenteditable="false">"מקום מרכזי ומאובטח לשמור ולשתף secrets בתוך צוות — בלי שהערך עצמו נחשף לחברי הצוות שמשתמשים בו. שני מפתחים צריכים את אותו מפתח API כדי לעבוד על אותו workspace — שניהם משתמשים בו, ואף אחד מהם לא רואה אותו בטקסט גלוי."</div>
+<div class="name edit-unit" contenteditable="true">Postman Vault — כספת סודות</div>
+<div class="pitch edit-unit" contenteditable="true">"מקום מרכזי ומאובטח לשמור ולשתף secrets בתוך צוות — בלי שהערך עצמו נחשף לחברי הצוות שמשתמשים בו. שני מפתחים צריכים את אותו מפתח API כדי לעבוד על אותו workspace — שניהם משתמשים בו, ואף אחד מהם לא רואה אותו בטקסט גלוי."</div>
 <div class="drag-grip" title="גרור כדי לשנות סדר" contenteditable="false" draggable="true">⠿</div><button class="card-delete-btn" title="מחק כרטיס זה" type="button" contenteditable="false">🗑</button></div>
-<div class="group-title edit-unit" contenteditable="false" data-ceid="ce2">מעקב בפרודקשן</div>
+<div class="group-title edit-unit" contenteditable="true" data-ceid="ce2"><span style="color: rgb(255, 108, 55);">מעקב בפרודקשן</span></div>
 <div class="prod reorderable-card" id="prod-insights" data-wired="1" style="position: relative;">
-<div class="name edit-unit" contenteditable="false">Insights — תובנות שימוש</div>
-<div class="pitch edit-unit" contenteditable="false">"תמונת מצב אחידה על שימוש, אימוץ ופעילות API על פני כל הארגון — פנימי, שותפים, ופומבי. אם מנהל הנדסה רוצה לדעת אילו APIs בכלל לא בשימוש כבר חצי שנה לפני שמחליטים על תקציב לשנה הבאה — זה לוקח כמה קליקים, לא פרויקט."</div>
+<div class="name edit-unit" contenteditable="true">Insights — תובנות שימוש</div>
+<div class="pitch edit-unit" contenteditable="true">"תמונת מצב אחידה על שימוש, אימוץ ופעילות API על פני כל הארגון — פנימי, שותפים, ופומבי. אם מנהל הנדסה רוצה לדעת אילו APIs בכלל לא בשימוש כבר חצי שנה לפני שמחליטים על תקציב לשנה הבאה — זה לוקח כמה קליקים, לא פרויקט."</div>
 <div class="drag-grip" title="גרור כדי לשנות סדר" contenteditable="false" draggable="true">⠿</div><button class="card-delete-btn" title="מחק כרטיס זה" type="button" contenteditable="false">🗑</button></div>
 <div class="prod reorderable-card" id="prod-api-reports" data-wired="1" style="position: relative;">
-<div class="name edit-unit" contenteditable="false">API Reports — דוחות API</div>
-<div class="pitch edit-unit" contenteditable="false">"דוח מאוחד שמראה שימוש, אימוץ והשפעה על פני workspaces פנימיים, שותפים ופומביים — במקום דוחות מפוזרים לכל workspace בנפרד. לפני חידוש חוזה, זה הדוח שמראה להנהלה כמה API-ים באמת נכנסו לשימוש ברבעון האחרון."</div>
+<div class="name edit-unit" contenteditable="true">API Reports — דוחות API</div>
+<div class="pitch edit-unit" contenteditable="true">"דוח מאוחד שמראה שימוש, אימוץ והשפעה על פני workspaces פנימיים, שותפים ופומביים — במקום דוחות מפוזרים לכל workspace בנפרד. לפני חידוש חוזה, זה הדוח שמראה להנהלה כמה API-ים באמת נכנסו לשימוש ברבעון האחרון."</div>
 <div class="drag-grip" title="גרור כדי לשנות סדר" contenteditable="false" draggable="true">⠿</div><button class="card-delete-btn" title="מחק כרטיס זה" type="button" contenteditable="false">🗑</button></div>
-<div class="group-title edit-unit" contenteditable="false" data-ceid="ce3">פיתוח ובדיקות</div>
+<div class="group-title edit-unit" contenteditable="true" data-ceid="ce3"><span style="color: rgb(255, 108, 55);">פיתוח ובדיקות</span></div>
 <div class="prod reorderable-card" id="prod-agent-mode" data-wired="1" style="position: relative;">
-<div class="name edit-unit" contenteditable="false">Agent Mode — עוזר AI מובנה</div>
-<div class="pitch edit-unit" contenteditable="false">"זה לא עוזר כללי כמו ChatGPT — הוא בנוי במיוחד לעולם ה-API, ורץ בתוך הסביבה שלכם ב-Postman, ומכיר את כל הפרויקטים, הבדיקות וההתראות שכבר קיימים אצלכם. מפתח מבקש 'תבדוק אם הגרסה הזו שוברת הבטחה שנתנו למישהו בגרסה הקודמת' — Agent Mode לא רק עונה, הוא בפועל מריץ את ההשוואה על הקוד האמיתי ומראה תוצאה."</div>
+<div class="name edit-unit" contenteditable="true">Agent Mode — עוזר AI מובנה</div>
+<div class="pitch edit-unit" contenteditable="true">"זה לא עוזר כללי כמו ChatGPT — הוא בנוי במיוחד לעולם ה-API, ורץ בתוך הסביבה שלכם ב-Postman, ומכיר את כל הפרויקטים, הבדיקות וההתראות שכבר קיימים אצלכם. מפתח מבקש 'תבדוק אם הגרסה הזו שוברת הבטחה שנתנו למישהו בגרסה הקודמת' — Agent Mode לא רק עונה, הוא בפועל מריץ את ההשוואה על הקוד האמיתי ומראה תוצאה."</div>
 <div class="drag-grip" title="גרור כדי לשנות סדר" contenteditable="false" draggable="true">⠿</div><button class="card-delete-btn" title="מחק כרטיס זה" type="button" contenteditable="false">🗑</button></div>
 <div class="prod reorderable-card" id="prod-git-workflows" data-wired="1" style="position: relative;">
-<div class="name edit-unit" contenteditable="false">Native Git Workflows — עבודה טבעית עם Git</div>
-<div class="pitch edit-unit" contenteditable="false">"בדיוק כמו ש-Google Docs שומר גרסאות קודמות של מסמך, ומאפשר לכמה אנשים לעבוד עליו במקביל בלי לדרוס אחד את השני — כך גם אנחנו מנהלים גרסאות על מפרטי ה-API עצמם, באותה שיטה שמפתחים מכירים מניהול קוד (Git). שני מפתחים יכולים לשנות את אותו מפרט במקביל, כל אחד בגרסה נפרדת שלו, ולשלב את השינויים בסוף בלי לאבד שום דבר."</div>
+<div class="name edit-unit" contenteditable="true">Native Git Workflows — עבודה טבעית עם Git</div>
+<div class="pitch edit-unit" contenteditable="true">"בדיוק כמו ש-Google Docs שומר גרסאות קודמות של מסמך, ומאפשר לכמה אנשים לעבוד עליו במקביל בלי לדרוס אחד את השני — כך גם אנחנו מנהלים גרסאות על מפרטי ה-API עצמם, באותה שיטה שמפתחים מכירים מניהול קוד (Git). שני מפתחים יכולים לשנות את אותו מפרט במקביל, כל אחד בגרסה נפרדת שלו, ולשלב את השינויים בסוף בלי לאבד שום דבר."</div>
 <div class="drag-grip" title="גרור כדי לשנות סדר" contenteditable="false" draggable="true">⠿</div><button class="card-delete-btn" title="מחק כרטיס זה" type="button" contenteditable="false">🗑</button></div>
 <div class="prod reorderable-card" id="prod-cli-pipeline" data-wired="1" style="position: relative;">
-<div class="name edit-unit" contenteditable="false">CLI ואינטגרציית Pipeline</div>
-<div class="pitch edit-unit" contenteditable="false">"אלה ממש אותן הבדיקות שרצות גם כשמפתח בודק את זה ידנית על המחשב שלו, וגם כשהמערכת האוטומטית שמעלה את הקוד לייצור מריצה אותן שוב, בלי מגע ידיים (בעולם הטכני זה נקרא CI/CD). אז אין מצב של 'עבד לי אצלי במחשב' ואז זה נשבר בשרת — זו בדיוק אותה בדיקה, פעמיים."</div>
+<div class="name edit-unit" contenteditable="true">CLI ואינטגרציית Pipeline</div>
+<div class="pitch edit-unit" contenteditable="true">"אלה ממש אותן הבדיקות שרצות גם כשמפתח בודק את זה ידנית על המחשב שלו, וגם כשהמערכת האוטומטית שמעלה את הקוד לייצור מריצה אותן שוב, בלי מגע ידיים (בעולם הטכני זה נקרא CI/CD). אז אין מצב של 'עבד לי אצלי במחשב' ואז זה נשבר בשרת — זו בדיוק אותה בדיקה, פעמיים."</div>
 <div class="drag-grip" title="גרור כדי לשנות סדר" contenteditable="false" draggable="true">⠿</div><button class="card-delete-btn" title="מחק כרטיס זה" type="button" contenteditable="false">🗑</button></div>
 <div class="prod reorderable-card" id="prod-mock-servers" data-wired="1" style="position: relative;">
-<div class="name edit-unit" contenteditable="false">Mock Servers — שרתי דמה</div>
-<div class="pitch edit-unit" contenteditable="false">"מדמים API שלם בלי backend אמיתי, כדי שצוות frontend יתחיל לעבוד לפני שהקוד האמיתי בכלל קיים. הם צריכים מסך שמציג תשלומים, וה-backend עדיין באמצע הפיתוח — Mock Server מחזיר תשובות מדומות לפי המפרט, והעבודה מתקדמת במקביל."</div>
+<div class="name edit-unit" contenteditable="true">Mock Servers — שרתי דמה</div>
+<div class="pitch edit-unit" contenteditable="true">"מדמים API שלם בלי backend אמיתי, כדי שצוות frontend יתחיל לעבוד לפני שהקוד האמיתי בכלל קיים. הם צריכים מסך שמציג תשלומים, וה-backend עדיין באמצע הפיתוח — Mock Server מחזיר תשובות מדומות לפי המפרט, והעבודה מתקדמת במקביל."</div>
 <div class="drag-grip" title="גרור כדי לשנות סדר" contenteditable="false" draggable="true">⠿</div><button class="card-delete-btn" title="מחק כרטיס זה" type="button" contenteditable="false">🗑</button></div>
 <div class="prod reorderable-card" id="prod-partner-workspaces" data-wired="1" style="position: relative;">
-<div class="name edit-unit" contenteditable="false">Partner Workspaces — סביבות עבודה לשותפים</div>
-<div class="pitch edit-unit" contenteditable="false">"שיתוף פעולה מאובטח עם צדדים שלישיים על API-ים משותפים, עם הרשאות מדויקות למה שהם רואים ומה שהם יכולים לשנות. חברת סליקה משתפת עם שותף חיצוני רק את ה-collection הרלוונטי, בלי לחשוף לו את ה-workspace הפנימי."</div>
+<div class="name edit-unit" contenteditable="true">Partner Workspaces — סביבות עבודה לשותפים</div>
+<div class="pitch edit-unit" contenteditable="true">"שיתוף פעולה מאובטח עם צדדים שלישיים על API-ים משותפים, עם הרשאות מדויקות למה שהם רואים ומה שהם יכולים לשנות. חברת סליקה משתפת עם שותף חיצוני רק את ה-collection הרלוונטי, בלי לחשוף לו את ה-workspace הפנימי."</div>
 <div class="drag-grip" title="גרור כדי לשנות סדר" contenteditable="false" draggable="true">⠿</div><button class="card-delete-btn" title="מחק כרטיס זה" type="button" contenteditable="false">🗑</button></div>
-<div class="prod reorderable-card" id="prod-asa" data-wired="1" style="position: relative;">
-<div class="name edit-unit" contenteditable="false">Advanced Security Administration — ASA</div>
-<div class="pitch edit-unit" contenteditable="false">"זה ה-Add-on שאני מביא לשולחן כשמדברים על אבטחה בקנה מידה Enterprise, ומוצר קיים ופעיל היום. בגדול, זה נותן לצוות האבטחה שליטה מדויקת יותר על מי יכול להתחבר, מאיפה, ואיך שומרים על הסודות (secrets) שלהם — כולל ניתוב אוטומטי של כניסות לפי דומיין (Domain Capture), לוח בקרה והתראות על ניסיונות חשיפה של סודות (Secret Scanner), חיבור לכספות חיצוניות שהם כבר עובדים איתן — כמו Azure Key Vault, HashiCorp, AWS Secrets Manager, 1Password — והצפנה במפתח שהם עצמם שולטים בו (BYOK). ארגון עם דרישת רגולציה להצפין את המידע שלו במפתח שהוא שולט בו לגמרי — BYOK מאפשר את זה בלי לתת ל-Postman גישה למפתח ההצפנה."</div>
-<div class="drag-grip" title="גרור כדי לשנות סדר" contenteditable="false" draggable="true">⠿</div><button class="card-delete-btn" title="מחק כרטיס זה" type="button" contenteditable="false">🗑</button></div>
+
 <div class="prod reorderable-card" id="prod-fabric-inline" data-wired="1" style="position: relative;">
-<div class="name edit-unit" contenteditable="false">Fabric — שכבת בקרה ל-AI (הרחבה בפאנל הצדדי)</div>
-<div class="pitch edit-unit" contenteditable="false">"Fabric הוא שכבת הבקרה המרכזית שלנו לעולם ה-AI בארגון. ככל שיותר צוותים עובדים עם מודלים שונים, בונים AI Agents ומתחברים לשרתי MCP ול-APIs פנימיים — כל צוות מתחיל לנהל בעצמו את החיבורים, ההרשאות וה-Credentials שלו. Fabric מרכז את כל התעבורה הזו דרך נקודת שליטה אחת: לאן בקשות ה-AI נשלחות, לאילו מודלים ו-APIs יש להן גישה, איך נשמרים הסודות, כמה זה עולה, ומה קרה בפועל — הכל תחת Governance אחיד."</div>
+<div class="name edit-unit" contenteditable="true">Fabric — שכבת בקרה ל-AI (הרחבה בפאנל הצדדי)</div>
+<div class="pitch edit-unit" contenteditable="true">"Fabri</div>
 <div class="drag-grip" title="גרור כדי לשנות סדר" contenteditable="false" draggable="true">⠿</div><button class="card-delete-btn" title="מחק כרטיס זה" type="button" contenteditable="false">🗑</button></div>
 <div class="prod reorderable-card" id="prod-passport-inline" data-wired="1" style="position: relative;">
-<div class="name edit-unit" contenteditable="false">Postman Passport — Governance לגישה ל-APIs (הרחבה בפאנל הצדדי)</div>
-<div class="pitch edit-unit" contenteditable="false">"Passport הוא שכבת Governance מרכזית לגילוי, בקשת גישה וצריכה מאובטחת של APIs בארגון. במקום שמפתחים ו-AI Agents יקבלו את ה-API Key האמיתי ויפזרו אותו בקבצים, סקריפטים ו-CI/CD — הם מקבלים Reference של Passport. ה-Credential האמיתי נשאר ב-Vault הקיים של הלקוח, ונפתר רק בזמן הקריאה בפועל ל-API. הארגון מקבל Visibility מלא על מי ביקש גישה, מי אישר, ואיך משתמשים ב-API — בלי לחשוף Secrets בשום שלב."</div>
+<div class="name edit-unit" contenteditable="true">Postman Passport — Governance לגישה ל-APIs (הרחבה בפאנל הצדדי)</div>
+<div class="pitch edit-unit" contenteditable="true">"Passport הוא שכבת Governance מרכזית לגילוי, בקשת גישה וצריכה מאובטחת של APIs בארגון. במקום שמפתחים ו-AI Agents יקבלו את ה-API Key האמיתי ויפזרו אותו בקבצים, סקריפטים ו-CI/CD — הם מקבלים Reference של Passport. ה-Credential האמיתי נשאר ב-Vault הקיים של הלקוח, ונפתר רק בזמן הקריאה בפועל ל-API. הארגון מקבל Visibility מלא על מי ביקש גישה, מי אישר, ואיך משתמשים ב-API — בלי לחשוף Secrets בשום שלב."</div>
 <div class="drag-grip" title="גרור כדי לשנות סדר" contenteditable="false" draggable="true">⠿</div><button class="card-delete-btn" title="מחק כרטיס זה" type="button" contenteditable="false">🗑</button></div>
 <button type="button" class="add-card-btn">+ הוסף כרטיס</button></section>
 <!-- PANELS: these no longer sit in the scrolling flow. They open as
@@ -1048,6 +1014,8 @@
 <div class="fmt-group answer-fmt-group panel-toolbar">
   <button type="button" class="ptb-bold" title="הדגשה (סמן טקסט ולחץ)">B</button>
   <button type="button" class="ptb-italic" title="נטוי (סמן טקסט ולחץ)">I</button>
+  <button type="button" class="ptb-decfont" title="הקטן טקסט (סמן טקסט ולחץ)">A-</button>
+  <button type="button" class="ptb-incfont" title="הגדל טקסט (סמן טקסט ולחץ)">A+</button>
   <button class="swatch" data-color="#1C1C1E" style="background:#1C1C1E" title="שחור"></button>
   <button class="swatch" data-color="#FF6C37" style="background:#FF6C37" title="כתום"></button>
   <button class="swatch" data-color="#D64545" style="background:#D64545" title="אדום"></button>
@@ -1057,24 +1025,24 @@
   <button type="button" class="ptb-save" title="שמור">💾 שמור</button>
 </div>
 <div class="obj reorderable-card" data-wired="1" style="position: relative;">
-<div class="q edit-unit" contenteditable="false">"זה נשמע כמו Waterfall — אנחנו עובדים Agile / CD."</div>
-<div class="a edit-unit" contenteditable="false">"השלבים האלה לא שערים של Waterfall — הם פעילויות איכות שקורות כל הזמן. בארגון CD: כל PR הוא 'עיצוב', כל merge הוא 'שער', כל deploy ל-staging הוא 'אימות'. השאלה היא לא אם השלבים קיימים אצלכם — השאלה היא אם הם מחוברים, או מפוצלים."</div>
+<div class="q edit-unit" contenteditable="true">"זה נשמע כמו Waterfall — אנחנו עובדים Agile / CD."</div>
+<div class="a edit-unit" contenteditable="true">"השלבים האלה לא שערים של Waterfall — הם פעילויות איכות שקורות כל הזמן. בארגון CD: כל PR הוא 'עיצוב', כל merge הוא 'שער', כל deploy ל-staging הוא 'אימות'. השאלה היא לא אם השלבים קיימים אצלכם — השאלה היא אם הם מחוברים, או מפוצלים."</div>
 <div class="drag-grip" title="גרור כדי לשנות סדר" contenteditable="false" draggable="true">⠿</div><button class="card-delete-btn" title="מחק כרטיס זה" type="button" contenteditable="false">🗑</button></div>
 <div class="obj reorderable-card" data-wired="1" style="position: relative;">
-<div class="q edit-unit" contenteditable="false">"יש לנו כבר QE וכלים בשביל זה."</div>
-<div class="a edit-unit" contenteditable="false">"אז אני שואל: הכלים שלכם חולקים artifacts בין שלבים, או שכל כלי שומר בפורמט משלו? ואתם יכולים להוציא audit trail אוטומטית, או שזה סקר ידני כל רבעון?"</div>
+<div class="q edit-unit" contenteditable="true">"יש לנו כבר QE וכלים בשביל זה."</div>
+<div class="a edit-unit" contenteditable="true">"אז אני שואל: הכלים שלכם חולקים artifacts בין שלבים, או שכל כלי שומר בפורמט משלו? ואתם יכולים להוציא audit trail אוטומטית, או שזה סקר ידני כל רבעון?"</div>
 <div class="drag-grip" title="גרור כדי לשנות סדר" contenteditable="false" draggable="true">⠿</div><button class="card-delete-btn" title="מחק כרטיס זה" type="button" contenteditable="false">🗑</button></div>
 <div class="obj reorderable-card" data-wired="1" style="position: relative;">
-<div class="q edit-unit" contenteditable="false">"ה-AI שלנו כבר כותב את הבדיקות."</div>
-<div class="a edit-unit" contenteditable="false">"אם הסוכן שכתב את הקוד הוא גם זה שכתב את הבדיקה, יש ניגוד אינטרסים מובנה — הבדיקה תשקף את ההנחות של המימוש, לא את הכוונה של המפרט. השאלה היא לא אם AI יכול לייצר בדיקות — השאלה היא אם הבדיקות עצמאיות, מבוססות-spec, ותחת Governance."</div>
+<div class="q edit-unit" contenteditable="true">"ה-AI שלנו כבר כותב את הבדיקות."</div>
+<div class="a edit-unit" contenteditable="true">"אם הסוכן שכתב את הקוד הוא גם זה שכתב את הבדיקה, יש ניגוד אינטרסים מובנה — הבדיקה תשקף את ההנחות של המימוש, לא את הכוונה של המפרט. השאלה היא לא אם AI יכול לייצר בדיקות — השאלה היא אם הבדיקות עצמאיות, מבוססות-spec, ותחת Governance."</div>
 <div class="drag-grip" title="גרור כדי לשנות סדר" contenteditable="false" draggable="true">⠿</div><button class="card-delete-btn" title="מחק כרטיס זה" type="button" contenteditable="false">🗑</button></div>
 <div class="obj reorderable-card" data-wired="1" style="position: relative;">
-<div class="q edit-unit" contenteditable="false">פרטיות נתונים (רלוונטי לשיחות עם גופים פיננסיים)</div>
-<div class="a edit-unit" contenteditable="false">"Postman אף פעם לא נגיש למידע האמיתי של הלקוח — הוא נשאר תמיד בענן שלכם, AWS או Azure, ולא עובר אצלנו. בתוכנית Enterprise, נתוני ה-AI גם לא משותפים עם Postman לצורך אימון מודלים; בתוכניות נמוכות יותר — כן. יש לנו גם Trust Portal (דורש NDA), עם אישורי SOC 2, SOC 3 ו-ISO."</div>
+<div class="q edit-unit" contenteditable="true">פרטיות נתונים (רלוונטי לשיחות עם גופים פיננסיים)</div>
+<div class="a edit-unit" contenteditable="true">"Postman אף פעם לא נגיש למידע האמיתי של הלקוח — הוא נשאר תמיד בענן שלכם, AWS או Azure, ולא עובר אצלנו. בתוכנית Enterprise, נתוני ה-AI גם לא משותפים עם Postman לצורך אימון מודלים; בתוכניות נמוכות יותר — כן. יש לנו גם Trust Portal (דורש NDA), עם אישורי SOC 2, SOC 3 ו-ISO."</div>
 <div class="drag-grip" title="גרור כדי לשנות סדר" contenteditable="false" draggable="true">⠿</div><button class="card-delete-btn" title="מחק כרטיס זה" type="button" contenteditable="false">🗑</button></div>
 <button type="button" class="add-card-btn">+ הוסף כרטיס</button></div>
 </div>
-<div class="side-panel" id="panel-fabric">
+<div class="side-panel" id="panel-fabric" style="left: 444px; top: 14px;">
 <div class="panel-header">
 <span>Fabric</span>
 <button class="panel-close" data-close="panel-fabric">✕</button>
@@ -1083,6 +1051,8 @@
 <div class="fmt-group answer-fmt-group panel-toolbar">
   <button type="button" class="ptb-bold" title="הדגשה (סמן טקסט ולחץ)">B</button>
   <button type="button" class="ptb-italic" title="נטוי (סמן טקסט ולחץ)">I</button>
+  <button type="button" class="ptb-decfont" title="הקטן טקסט (סמן טקסט ולחץ)">A-</button>
+  <button type="button" class="ptb-incfont" title="הגדל טקסט (סמן טקסט ולחץ)">A+</button>
   <button class="swatch" data-color="#1C1C1E" style="background:#1C1C1E" title="שחור"></button>
   <button class="swatch" data-color="#FF6C37" style="background:#FF6C37" title="כתום"></button>
   <button class="swatch" data-color="#D64545" style="background:#D64545" title="אדום"></button>
@@ -1091,24 +1061,22 @@
   <button class="swatch" data-color="#5B5F66" style="background:#5B5F66" title="אפור"></button>
   <button type="button" class="ptb-save" title="שמור">💾 שמור</button>
 </div>
-<p class="lead edit-unit draggable-block" contenteditable="false" data-block-wired="1">Fabric הוא שכבת הבקרה המרכזית שלנו לעולם ה-AI בארגון.<span class="block-drag-grip" title="גרור כדי להזיז" contenteditable="false" draggable="true">⠿</span><button type="button" class="block-delete-btn" title="מחק בלוק זה" contenteditable="false">🗑</button></p>
-<div class="say edit-unit draggable-block" contenteditable="false" data-block-wired="1">
-<b class="tag">איך אני מסביר את זה</b>
-      "ככל שיותר צוותים מתחילים להשתמש במודלים שונים — OpenAI, Claude, Gemini — לבנות AI Agents, ולהתחבר לשרתי MCP ול-APIs פנימיים, כל צוות מתחיל לנהל בעצמו את החיבורים, ההרשאות וה-Credentials שלו. Fabric מרכז את כל התעבורה הזו דרך נקודת שליטה אחת — כדי שהארגון יידע לאן בקשות ה-AI נשלחות, לאילו מודלים ו-APIs יש להן גישה, איך נשמרים הסודות, כמה זה עולה, ומה קרה בפועל."
-    <span class="block-drag-grip" title="גרור כדי להזיז" contenteditable="false" draggable="true">⠿</span><button type="button" class="block-delete-btn" title="מחק בלוק זה" contenteditable="false">🗑</button></div>
-<div class="group-title edit-unit draggable-block" contenteditable="false" data-block-wired="1">מה Fabric מאפשר לארגון<span class="block-drag-grip" title="גרור כדי להזיז" contenteditable="false" draggable="true">⠿</span><button type="button" class="block-delete-btn" title="מחק בלוק זה" contenteditable="false">🗑</button></div>
+<p class="lead edit-unit draggable-block" contenteditable="true" data-block-wired="1">Fabric הוא שכבת הבקרה המרכזית שלנו לעולם ה-AI בארגון.<span class="block-drag-grip" title="גרור כדי להזיז" contenteditable="false" draggable="true">⠿</span><button type="button" class="block-delete-btn" title="מחק בלוק זה" contenteditable="false">🗑</button></p>
+<div class="say edit-unit draggable-block" contenteditable="true" data-block-wired="1">
+<b class="tag"><span style="font-size: 14.5px; color: rgb(28, 28, 30);">ככל שיותר צוותים מתחילים להשתמש במודלים שונים — OpenAI, Claude, Gemini — לבנות AI Agents, ולהתחבר לשרתי MCP ול-APIs פנימיים, כל צוות מתחיל לנהל בעצמו את החיבורים, ההרשאות וה-Credentials שלו.<br> <span style="color: rgb(255, 108, 55);">Fabric </span>מרכז את כל התעבורה הזו דרך נקודת שליטה אחת, כדי שהארגון יידע לאן בקשות ה-AI נשלחות, לאילו מודלים ו-APIs יש להן גישה, איך נשמרים הסודות, כמה זה עולה, ומה קרה בפועל- הכל תחתGovernance&nbsp; אחיד.&nbsp;</span><span style="font-size: 14.5px; color: rgb(28, 28, 30);"><br></span></b><span class="block-drag-grip" title="גרור כדי להזיז" contenteditable="false" draggable="true">⠿</span><button type="button" class="block-delete-btn" title="מחק בלוק זה" contenteditable="false">🗑</button></div>
+<div class="group-title edit-unit draggable-block" contenteditable="true" data-block-wired="1">מה Fabric מאפשר לארגון<span class="block-drag-grip" title="גרור כדי להזיז" contenteditable="false" draggable="true">⠿</span><button type="button" class="block-delete-btn" title="מחק בלוק זה" contenteditable="false">🗑</button></div>
 <ul class="panel-list draggable-block" data-block-wired="1">
-<li class="edit-unit" contenteditable="false"><b>נקודת שליטה מרכזית</b> — לנהל ממקום אחד את התעבורה בין מודלים, Agents, שרתי MCP ו-APIs פנימיים.</li>
-<li class="edit-unit" contenteditable="false"><b>Routing ו-Reliability</b> — לנתב בקשות בין מודלים, לבצע Fallback אוטומטי כשמודל נופל, ולבחור את המודל המתאים לכל בקשה.</li>
-<li class="edit-unit" contenteditable="false"><b>Security ו-Credential Management</b> — ה-Agent לא צריך לראות או להחזיק את המפתחות בעצמו.</li>
-<li class="edit-unit" contenteditable="false"><b>Agent Governance</b> — לקבוע במדויק לאילו APIs, Tools או MCP Servers כל Agent מורשה לגשת.</li>
-<li class="edit-unit" contenteditable="false"><b>שליטה בעלויות</b> — לראות מי צורך כמה Tokens ובאיזו עלות, ולהגדיר תקציבים.</li>
-<li class="edit-unit" contenteditable="false"><b>Audit מלא</b> — לדעת מי הפעיל איזה Agent, על איזה מודל, לאיזה API ניגש, ואיזו Policy הופעלה.</li>
+<li class="edit-unit" contenteditable="true"><b>נקודת שליטה מרכזית</b> — לנהל ממקום אחד את התעבורה בין מודלים, Agents, שרתי MCP ו-APIs פנימיים.</li>
+<li class="edit-unit" contenteditable="true"><b>Routing ו-Reliability</b> — לנתב בקשות בין מודלים, לבצע Fallback אוטומטי כשמודל נופל, ולבחור את המודל המתאים לכל בקשה.</li>
+<li class="edit-unit" contenteditable="true"><b>Security ו-Credential Management</b> — ה-Agent לא צריך לראות או להחזיק את המפתחות בעצמו.</li>
+<li class="edit-unit" contenteditable="true"><b>Agent Governance</b> — לקבוע במדויק לאילו APIs, Tools או MCP Servers כל Agent מורשה לגשת.</li>
+<li class="edit-unit" contenteditable="true"><b>שליטה בעלויות</b> — לראות מי צורך כמה Tokens ובאיזו עלות, ולהגדיר תקציבים.</li>
+<li class="edit-unit" contenteditable="true"><b>Audit מלא</b> — לדעת מי הפעיל איזה Agent, על איזה מודל, לאיזה API ניגש, ואיזו Policy הופעלה.</li>
 <span class="block-drag-grip" title="גרור כדי להזיז" contenteditable="false" draggable="true">⠿</span><button type="button" class="block-delete-btn" title="מחק בלוק זה" contenteditable="false">🗑</button></ul>
-<div class="cross-box edit-unit draggable-block" contenteditable="false" data-block-wired="1">
-<b>דוגמה שאני נותן:</b> יש לכם צוות שעובד עם OpenAI, צוות אחר עם Claude, ו-Agent שמתחבר ל-MCP Server — וכולם צריכים גישה למערכות פנימיות. היום כל אחד מהם מחזיק Keys, הרשאות ולוגים משלו, ואין שכבה מרכזית שרואה את כל התעבורה. עם Fabric, כל הבקשות עוברות דרך שכבת בקרה אחת: אם Agent מבקש GPT-5, Fabric יכול לאשר, לחסום, לנתב למודל אחר, לעבור ל-Claude אם יש תקלה, או לפצל את התעבורה בין כמה מודלים — הכל במקום אחד.
+<div class="cross-box edit-unit draggable-block" contenteditable="true" data-block-wired="1">
+<b>דוגמה <br></b>&nbsp;יש לכם צוות שעובד עם OpenAI, צוות אחר עם Claude, ו-Agent שמתחבר ל-MCP Server — וכולם צריכים גישה למערכות פנימיות. היום כל אחד מהם מחזיק Keys, הרשאות ולוגים משלו, ואין שכבה מרכזית שרואה את כל התעבורה. עם Fabric, כל הבקשות עוברות דרך שכבת בקרה אחת: אם Agent מבקש GPT-5, Fabric יכול לאשר, לחסום, לנתב למודל אחר, לעבור ל-Claude אם יש תקלה, או לפצל את התעבורה בין כמה מודלים — הכל במקום אחד.
     <span class="block-drag-grip" title="גרור כדי להזיז" contenteditable="false" draggable="true">⠿</span><button type="button" class="block-delete-btn" title="מחק בלוק זה" contenteditable="false">🗑</button></div>
-<div class="say edit-unit draggable-block" contenteditable="false" data-block-wired="1">
+<div class="say edit-unit draggable-block" contenteditable="true" data-block-wired="1">
 <b class="tag">משפט סיכום</b>
       "Fabric הוא שכבת הבקרה המרכזית שמחברת בין ה-AI, ה-Agents, שרתי MCP וה-APIs של הארגון — ונותנת שליטה על התעבורה, האבטחה, ההרשאות, העלויות וה-Audit, במקום שכל אחד מהם ינוהל בנפרד."
     <span class="block-drag-grip" title="גרור כדי להזיז" contenteditable="false" draggable="true">⠿</span><button type="button" class="block-delete-btn" title="מחק בלוק זה" contenteditable="false">🗑</button></div>
@@ -1123,6 +1091,8 @@
 <div class="fmt-group answer-fmt-group panel-toolbar">
   <button type="button" class="ptb-bold" title="הדגשה (סמן טקסט ולחץ)">B</button>
   <button type="button" class="ptb-italic" title="נטוי (סמן טקסט ולחץ)">I</button>
+  <button type="button" class="ptb-decfont" title="הקטן טקסט (סמן טקסט ולחץ)">A-</button>
+  <button type="button" class="ptb-incfont" title="הגדל טקסט (סמן טקסט ולחץ)">A+</button>
   <button class="swatch" data-color="#1C1C1E" style="background:#1C1C1E" title="שחור"></button>
   <button class="swatch" data-color="#FF6C37" style="background:#FF6C37" title="כתום"></button>
   <button class="swatch" data-color="#D64545" style="background:#D64545" title="אדום"></button>
@@ -1131,27 +1101,27 @@
   <button class="swatch" data-color="#5B5F66" style="background:#5B5F66" title="אפור"></button>
   <button type="button" class="ptb-save" title="שמור">💾 שמור</button>
 </div>
-<p class="lead edit-unit draggable-block" contenteditable="false" data-block-wired="1">Passport הוא שכבת Governance מרכזית לגילוי, בקשת גישה וצריכה מאובטחת של APIs בארגון.<span class="block-drag-grip" title="גרור כדי להזיז" contenteditable="false" draggable="true">⠿</span><button type="button" class="block-delete-btn" title="מחק בלוק זה" contenteditable="false">🗑</button></p>
-<div class="say edit-unit draggable-block" contenteditable="false" data-block-wired="1">
+<p class="lead edit-unit draggable-block" contenteditable="true" data-block-wired="1">Passport הוא שכבת Governance מרכזית לגילוי, בקשת גישה וצריכה מאובטחת של APIs בארגון.<span class="block-drag-grip" title="גרור כדי להזיז" contenteditable="false" draggable="true">⠿</span><button type="button" class="block-delete-btn" title="מחק בלוק זה" contenteditable="false">🗑</button></p>
+<div class="say edit-unit draggable-block" contenteditable="true" data-block-wired="1">
 <b class="tag">האתגר שאני מתאר</b>
       "ככל שיש יותר APIs ויותר אנשים, אפליקציות ו-AI Agents שצריכים להשתמש בהם, קשה לדעת מי משתמש במה, למי יש גישה, ולאן ה-API Keys וה-Secrets מתפזרים. מפתח מחפש API ב-Slack או בתיעוד, מבקש גישה ממישהו, וה-Key האמיתי מגיע לקבצי .env, לסקריפטים, ל-CI/CD ולעוד מקומות. וככל שיותר AI Agents מתחילים לגשת ל-APIs, האתגר הזה רק גדל."
     <span class="block-drag-grip" title="גרור כדי להזיז" contenteditable="false" draggable="true">⠿</span><button type="button" class="block-delete-btn" title="מחק בלוק זה" contenteditable="false">🗑</button></div>
-<div class="cross-box edit-unit draggable-block" contenteditable="false" data-block-wired="1">
+<div class="cross-box edit-unit draggable-block" contenteditable="true" data-block-wired="1">
 <b>דוגמה שאני נותן:</b> צוות חדש בונה אפליקציה שצריכה API פנימי של לקוחות. המפתח צריך להבין מי הבעלים, למי לפנות, לקבל Key ולהכניס אותו למערכת. תכפילו את זה בעשרות APIs ומאות מפתחים — ובשלב מסוים הארגון כבר לא יודע מי מחזיק איזה Key, ולאיזה API יש לו גישה.
     <span class="block-drag-grip" title="גרור כדי להזיז" contenteditable="false" draggable="true">⠿</span><button type="button" class="block-delete-btn" title="מחק בלוק זה" contenteditable="false">🗑</button></div>
-<div class="group-title edit-unit draggable-block" contenteditable="false" data-block-wired="1">איך Passport פותר את זה<span class="block-drag-grip" title="גרור כדי להזיז" contenteditable="false" draggable="true">⠿</span><button type="button" class="block-delete-btn" title="מחק בלוק זה" contenteditable="false">🗑</button></div>
+<div class="group-title edit-unit draggable-block" contenteditable="true" data-block-wired="1">איך Passport פותר את זה<span class="block-drag-grip" title="גרור כדי להזיז" contenteditable="false" draggable="true">⠿</span><button type="button" class="block-delete-btn" title="מחק בלוק זה" contenteditable="false">🗑</button></div>
 <ul class="panel-list draggable-block" data-block-wired="1">
-<li class="edit-unit" contenteditable="false"><b>גילוי מרכזי</b> — מפתחים ו-AI Agents מוצאים APIs מאושרים במקום אחד.</li>
-<li class="edit-unit" contenteditable="false"><b>בקשת גישה מבוקרת</b> — במקום לקבל את ה-Key האמיתי, מקבלים Reference של Passport.</li>
-<li class="edit-unit" contenteditable="false"><b>Secretless Consumption</b> — ה-Credential האמיתי נשאר ב-Vault הקיים של הלקוח, ונפתר רק בזמן הקריאה בפועל ל-API — בלי שהמשתמש או ה-Agent רואים או מעתיקים אותו.</li>
-<li class="edit-unit" contenteditable="false"><b>Visibility מלא</b> — מי ביקש גישה, מי אישר, ואיך בפועל משתמשים ב-API.</li>
-<li class="edit-unit" contenteditable="false"><b>עובד עם הכלים הקיימים</b> — משלים HashiCorp, AWS Secrets Manager, 1Password וכו', לא מחליף אותם.</li>
+<li class="edit-unit" contenteditable="true"><b>גילוי מרכזי</b> — מפתחים ו-AI Agents מוצאים APIs מאושרים במקום אחד.</li>
+<li class="edit-unit" contenteditable="true"><b>בקשת גישה מבוקרת</b> — במקום לקבל את ה-Key האמיתי, מקבלים Reference של Passport.</li>
+<li class="edit-unit" contenteditable="true"><b>Secretless Consumption</b> — ה-Credential האמיתי נשאר ב-Vault הקיים של הלקוח, ונפתר רק בזמן הקריאה בפועל ל-API — בלי שהמשתמש או ה-Agent רואים או מעתיקים אותו.</li>
+<li class="edit-unit" contenteditable="true"><b>Visibility מלא</b> — מי ביקש גישה, מי אישר, ואיך בפועל משתמשים ב-API.</li>
+<li class="edit-unit" contenteditable="true"><b>עובד עם הכלים הקיימים</b> — משלים HashiCorp, AWS Secrets Manager, 1Password וכו', לא מחליף אותם.</li>
 <span class="block-drag-grip" title="גרור כדי להזיז" contenteditable="false" draggable="true">⠿</span><button type="button" class="block-delete-btn" title="מחק בלוק זה" contenteditable="false">🗑</button></ul>
-<div class="say edit-unit draggable-block" contenteditable="false" data-block-wired="1">
+<div class="say edit-unit draggable-block" contenteditable="true" data-block-wired="1">
 <b class="tag">משפט סיכום</b>
       "Passport נותן לארגון דרך מרכזית לגלות APIs, לנהל את הגישה אליהם ולאפשר שימוש מאובטח בהם — בלי לחשוף את ה-Credentials האמיתיים."
     <span class="block-drag-grip" title="גרור כדי להזיז" contenteditable="false" draggable="true">⠿</span><button type="button" class="block-delete-btn" title="מחק בלוק זה" contenteditable="false">🗑</button></div>
-<div class="group-title edit-unit draggable-block" contenteditable="false" data-block-wired="1">מתי Passport ממש רלוונטי — סיגנלים מהלקוח<span class="block-drag-grip" title="גרור כדי להזיז" contenteditable="false" draggable="true">⠿</span><button type="button" class="block-delete-btn" title="מחק בלוק זה" contenteditable="false">🗑</button></div>
+<div class="group-title edit-unit draggable-block" contenteditable="true" data-block-wired="1">מתי Passport ממש רלוונטי — סיגנלים מהלקוח<span class="block-drag-grip" title="גרור כדי להזיז" contenteditable="false" draggable="true">⠿</span><button type="button" class="block-delete-btn" title="מחק בלוק זה" contenteditable="false">🗑</button></div>
 <table class="panel-table draggable-block" data-block-wired="1">
 <tbody><tr><th>מה הלקוח אומר</th><th>התאמה</th><th>למה זה מעניין</th></tr>
 <tr><td>המפתחים לא יודעים לאיזה APIs פנימיים או של שותפים הם אמורים לגשת</td><td>🟢 חזקה</td><td>API Network נותן מקום מרכזי ומבוקר לגילוי APIs מאושרים.</td></tr>
@@ -1171,6 +1141,8 @@
 <div class="fmt-group answer-fmt-group panel-toolbar">
   <button type="button" class="ptb-bold" title="הדגשה (סמן טקסט ולחץ)">B</button>
   <button type="button" class="ptb-italic" title="נטוי (סמן טקסט ולחץ)">I</button>
+  <button type="button" class="ptb-decfont" title="הקטן טקסט (סמן טקסט ולחץ)">A-</button>
+  <button type="button" class="ptb-incfont" title="הגדל טקסט (סמן טקסט ולחץ)">A+</button>
   <button class="swatch" data-color="#1C1C1E" style="background:#1C1C1E" title="שחור"></button>
   <button class="swatch" data-color="#FF6C37" style="background:#FF6C37" title="כתום"></button>
   <button class="swatch" data-color="#D64545" style="background:#D64545" title="אדום"></button>
@@ -1179,22 +1151,20 @@
   <button class="swatch" data-color="#5B5F66" style="background:#5B5F66" title="אפור"></button>
   <button type="button" class="ptb-save" title="שמור">💾 שמור</button>
 </div>
-<p class="lead edit-unit draggable-block" contenteditable="false" data-block-wired="1">ASA הוא ה-Add-on שאני מביא לשולחן כשמדברים על אבטחה בקנה מידה Enterprise — מוצר קיים ופעיל היום, נמכר בתשלום נפרד על גבי Enterprise.<span class="block-drag-grip" title="גרור כדי להזיז" contenteditable="false" draggable="true">⠿</span><button type="button" class="block-delete-btn" title="מחק בלוק זה" contenteditable="false">🗑</button></p>
-<div class="say edit-unit draggable-block" contenteditable="false" data-block-wired="1">
-<b class="tag">איך אני מסביר את זה</b>
-      "בגדול, זה נותן לצוות האבטחה שליטה מדויקת יותר על מי יכול להתחבר, מאיפה, ואיך שומרים על הסודות (secrets) שלהם. ברירת המחדל של Postman כבר מאובטחת, אבל ASA מוסיף שכבת בקרה נוספת שספציפית ל-Enterprise ולדרישות רגולציה כמו SOC 2, ISO או PCI."
-    <span class="block-drag-grip" title="גרור כדי להזיז" contenteditable="false" draggable="true">⠿</span><button type="button" class="block-delete-btn" title="מחק בלוק זה" contenteditable="false">🗑</button></div>
-<div class="group-title edit-unit draggable-block" contenteditable="false" data-block-wired="1">מה כלול ב-ASA<span class="block-drag-grip" title="גרור כדי להזיז" contenteditable="false" draggable="true">⠿</span><button type="button" class="block-delete-btn" title="מחק בלוק זה" contenteditable="false">🗑</button></div>
+<p class="lead edit-unit draggable-block" contenteditable="true" data-block-wired="1">ASA הוא ה-Add-on שרלוונטי לאבטחה בקנה מידה Enterprise&nbsp;<span class="block-drag-grip" title="גרור כדי להזיז" contenteditable="false" draggable="true">⠿</span><button type="button" class="block-delete-btn" title="מחק בלוק זה" contenteditable="false">🗑</button></p>
+<div class="say edit-unit draggable-block" contenteditable="true" data-block-wired="1">
+<b class="tag"><span style="font-size: 14.5px; color: rgb(28, 28, 30);">בגדול, זה נותן לצוות האבטחה שליטה מדויקת יותר על מי יכול להתחבר, מאיפה, ואיך שומרים על הסודות (secrets) שלהם. ברירת המחדל של Postman כבר מאובטחת, אבל ASA מוסיף שכבת בקרה נוספת שספציפית ל-Enterprise ולדרישות רגולציה כמו SOC 2, ISO או PCI.&nbsp;<br></span><span style="color: rgb(28, 28, 30); font-size: 16px;">הוא גם כולל <br>ניתוב אוטומטי של כניסות לפי דומיין (Domain Capture), <br>לוח בקרה והתראות על ניסיונות חשיפה של סודות (Secret Scanner), <br>חיבור לכספות חיצוניות שהם כבר עובדים איתן כמו Azure Key Vault, HashiCorp, AWS Secrets Manager, 1Password <br>והצפנה במפתח שהם עצמם שולטים בו (BYOK). <br>ארגון שיש דרישת רגולציה להצפין את המידע שלו במפתח שהוא שולט בו לגמרי — BYOK מאפשר את זה בלי לתת ל-Postman גישה למפתח ההצפנה</span><span style="color: rgb(28, 28, 30); font-size: 14px; background-color: rgba(255, 108, 55, 0.04);">.</span></b><span class="block-drag-grip" title="גרור כדי להזיז" contenteditable="false" draggable="true">⠿</span><button type="button" class="block-delete-btn" title="מחק בלוק זה" contenteditable="false">🗑</button></div>
+<div class="group-title edit-unit draggable-block" contenteditable="true" data-block-wired="1">מה כלול ב-ASA<span class="block-drag-grip" title="גרור כדי להזיז" contenteditable="false" draggable="true">⠿</span><button type="button" class="block-delete-btn" title="מחק בלוק זה" contenteditable="false">🗑</button></div>
 <ul class="panel-list draggable-block" data-block-wired="1">
-<li class="edit-unit" contenteditable="false"><b>Domain Capture</b> — ניתוב אוטומטי של כניסות לפי דומיין, כך שכל עובד נכנס לחשבון הארגוני הנכון בלי בלבול בין חשבונות אישיים לחשבון החברה.</li>
-<li class="edit-unit" contenteditable="false"><b>Secret Scanner — לוח בקרה והתראות</b> — לא רק סורק סודות בודד, אלא תמונת מצב ארגונית: כמה ניסיונות חשיפה קרו, איפה, ומי היה מעורב.</li>
-<li class="edit-unit" contenteditable="false"><b>אינטגרציה עם כספות חיצוניות</b> — Azure Key Vault, HashiCorp, AWS Secrets Manager, 1Password — כדי ש-Postman יעבוד עם התשתית שהלקוח כבר משתמש בה, לא יחליף אותה.</li>
-<li class="edit-unit" contenteditable="false"><b>BYOK — הצפנה במפתח של הלקוח</b> — הלקוח שולט לגמרי במפתח ההצפנה; Postman לא מקבל אליו גישה בשום שלב.</li>
+<li class="edit-unit" contenteditable="true"><b>Domain Capture</b> — ניתוב אוטומטי של כניסות לפי דומיין, כך שכל עובד נכנס לחשבון הארגוני הנכון בלי בלבול בין חשבונות אישיים לחשבון החברה.</li>
+<li class="edit-unit" contenteditable="true"><b>Secret Scanner — לוח בקרה והתראות</b> — לא רק סורק סודות בודד, אלא תמונת מצב ארגונית: כמה ניסיונות חשיפה קרו, איפה, ומי היה מעורב.</li>
+<li class="edit-unit" contenteditable="true"><b>אינטגרציה עם כספות חיצוניות</b> — Azure Key Vault, HashiCorp, AWS Secrets Manager, 1Password — כדי ש-Postman יעבוד עם התשתית שהלקוח כבר משתמש בה, לא יחליף אותה.</li>
+<li class="edit-unit" contenteditable="true"><b>BYOK — הצפנה במפתח של הלקוח</b> — הלקוח שולט לגמרי במפתח ההצפנה; Postman לא מקבל אליו גישה בשום שלב.</li>
 <span class="block-drag-grip" title="גרור כדי להזיז" contenteditable="false" draggable="true">⠿</span><button type="button" class="block-delete-btn" title="מחק בלוק זה" contenteditable="false">🗑</button></ul>
-<div class="cross-box edit-unit draggable-block" contenteditable="false" data-block-wired="1">
+<div class="cross-box edit-unit draggable-block" contenteditable="true" data-block-wired="1">
 <b>דוגמה שאני נותן:</b> ארגון פיננסי שכפוף לרגולציה שמחייבת אותו להצפין את כל המידע הרגיש שלו במפתח שהוא עצמו שולט בו, ולא סומך על אף ספק חיצוני שמחזיק את המפתח. עם BYOK, הארגון שומר את מפתח ההצפנה בכספת שלו — ו-Postman פשוט לא יכול לגשת למידע בלי המפתח הזה, אפילו אם הוא ירצה.
     <span class="block-drag-grip" title="גרור כדי להזיז" contenteditable="false" draggable="true">⠿</span><button type="button" class="block-delete-btn" title="מחק בלוק זה" contenteditable="false">🗑</button></div>
-<div class="say edit-unit draggable-block" contenteditable="false" data-block-wired="1">
+<div class="say edit-unit draggable-block" contenteditable="true" data-block-wired="1">
 <b class="tag">משפט סיכום</b>
       "ASA לא מחליף את האבטחה הבסיסית של Postman — הוא מוסיף עליה שכבת בקרה, ניראות ושליטה ברמת Enterprise, למי שצריך לעמוד בדרישות רגולציה מחמירות."
     <span class="block-drag-grip" title="גרור כדי להזיז" contenteditable="false" draggable="true">⠿</span><button type="button" class="block-delete-btn" title="מחק בלוק זה" contenteditable="false">🗑</button></div>
@@ -1220,6 +1190,8 @@
     <div class="fmt-group answer-fmt-group panel-toolbar">
       <button type="button" class="ptb-bold" title="הדגשה (סמן טקסט ולחץ)">B</button>
       <button type="button" class="ptb-italic" title="נטוי (סמן טקסט ולחץ)">I</button>
+  <button type="button" class="ptb-decfont" title="הקטן טקסט (סמן טקסט ולחץ)">A-</button>
+  <button type="button" class="ptb-incfont" title="הגדל טקסט (סמן טקסט ולחץ)">A+</button>
       <button class="swatch" data-color="#1C1C1E" style="background:#1C1C1E" title="שחור"></button>
       <button class="swatch" data-color="#FF6C37" style="background:#FF6C37" title="כתום"></button>
       <button class="swatch" data-color="#D64545" style="background:#D64545" title="אדום"></button>
@@ -1228,52 +1200,52 @@
       <button class="swatch" data-color="#5B5F66" style="background:#5B5F66" title="אפור"></button>
       <button type="button" class="ptb-save" title="שמור">💾 שמור</button>
     </div>
-    <p class="lead edit-unit draggable-block" contenteditable="false" data-block-wired="1">מסד ידע פנימי — לא סקריפט לקריאה, אלא חומר רקע שהבוט יכול לשלוף ממנו כשאתה שואל אותו שאלה על מתחרים, תמחור, או מתי לפתוח ב-Fabric.<span class="block-drag-grip" title="גרור כדי להזיז" contenteditable="false" draggable="true">⠿</span><button type="button" class="block-delete-btn" title="מחק בלוק זה" contenteditable="false">🗑</button></p>
+    <p class="lead edit-unit draggable-block" contenteditable="true" data-block-wired="1">מסד ידע פנימי — לא סקריפט לקריאה, אלא חומר רקע שהבוט יכול לשלוף ממנו כשאתה שואל אותו שאלה על מתחרים, תמחור, או מתי לפתוח ב-Fabric.<span class="block-drag-grip" title="גרור כדי להזיז" contenteditable="false" draggable="true">⠿</span><button type="button" class="block-delete-btn" title="מחק בלוק זה" contenteditable="false">🗑</button></p>
 
-    <div class="group-title edit-unit draggable-block" contenteditable="false" data-block-wired="1">השוואה למתחרים — הפיץ' לכל מתחרה<span class="block-drag-grip" title="גרור כדי להזיז" contenteditable="false" draggable="true">⠿</span><button type="button" class="block-delete-btn" title="מחק בלוק זה" contenteditable="false">🗑</button></div>
+    <div class="group-title edit-unit draggable-block" contenteditable="true" data-block-wired="1">השוואה למתחרים — הפיץ' לכל מתחרה<span class="block-drag-grip" title="גרור כדי להזיז" contenteditable="false" draggable="true">⠿</span><button type="button" class="block-delete-btn" title="מחק בלוק זה" contenteditable="false">🗑</button></div>
 
     <div class="prod draggable-block" data-block-wired="1">
-      <div class="name edit-unit" contenteditable="false">cURL — כלי שורת פקודה (CLI)</div>
-      <div class="pitch edit-unit" contenteditable="false">"cURL מושלם למפתח בודד ששולח בקשה אחת. בשנייה שהבקשה הזו צריכה להיות משותפת, נבדקת, או במעקב בפרודקשן — אין לה לאן להתקדם. Postman הוא המקום שבו זה הופך לנכס של הצוות."</div>
+      <div class="name edit-unit" contenteditable="true">cURL — כלי שורת פקודה (CLI)</div>
+      <div class="pitch edit-unit" contenteditable="true">"cURL מושלם למפתח בודד ששולח בקשה אחת. בשנייה שהבקשה הזו צריכה להיות משותפת, נבדקת, או במעקב בפרודקשן — אין לה לאן להתקדם. Postman הוא המקום שבו זה הופך לנכס של הצוות."</div>
     <span class="block-drag-grip" title="גרור כדי להזיז" contenteditable="false" draggable="true">⠿</span><button type="button" class="block-delete-btn" title="מחק בלוק זה" contenteditable="false">🗑</button></div>
     <div class="prod draggable-block" data-block-wired="1">
-      <div class="name edit-unit" contenteditable="false">Bruno — API Client מקומי, Git-native</div>
-      <div class="pitch edit-unit" contenteditable="false">"Bruno הוא כלי נקי, מקומי ו-Git-native, טוב אם אתה עובד לבד. Postman הוא המקום שבו העבודה הזו הופכת לסביבת עבודה משותפת שכל הצוות שלך יכול לבנות עליה."</div>
+      <div class="name edit-unit" contenteditable="true">Bruno — API Client מקומי, Git-native</div>
+      <div class="pitch edit-unit" contenteditable="true">"Bruno הוא כלי נקי, מקומי ו-Git-native, טוב אם אתה עובד לבד. Postman הוא המקום שבו העבודה הזו הופכת לסביבת עבודה משותפת שכל הצוות שלך יכול לבנות עליה."</div>
     <span class="block-drag-grip" title="גרור כדי להזיז" contenteditable="false" draggable="true">⠿</span><button type="button" class="block-delete-btn" title="מחק בלוק זה" contenteditable="false">🗑</button></div>
     <div class="prod draggable-block" data-block-wired="1">
-      <div class="name edit-unit" contenteditable="false">Hoppscotch — API Client חינמי בדפדפן</div>
-      <div class="pitch edit-unit" contenteditable="false">"Hoppscotch חינמי, וזה יתרון אמיתי בשלב ה-client. אבל contract testing, מוניטורינג, Governance ויצירה בעזרת AI לא קיימים בשום tier. Postman נותן לך את מחזור החיים המלא."</div>
+      <div class="name edit-unit" contenteditable="true">Hoppscotch — API Client חינמי בדפדפן</div>
+      <div class="pitch edit-unit" contenteditable="true">"Hoppscotch חינמי, וזה יתרון אמיתי בשלב ה-client. אבל contract testing, מוניטורינג, Governance ויצירה בעזרת AI לא קיימים בשום tier. Postman נותן לך את מחזור החיים המלא."</div>
     <span class="block-drag-grip" title="גרור כדי להזיז" contenteditable="false" draggable="true">⠿</span><button type="button" class="block-delete-btn" title="מחק בלוק זה" contenteditable="false">🗑</button></div>
     <div class="prod draggable-block" data-block-wired="1">
-      <div class="name edit-unit" contenteditable="false">Kong Insomnia — API Client שמגיע חבילה עם Kong</div>
-      <div class="pitch edit-unit" contenteditable="false">"Insomnia מרגיש חינמי כי הוא מגיע בחבילה עם חוזה Kong שלכם, אבל client שמגיע בחבילה זה לא פלטפורמה. Postman יושב מעל ה-gateway, לכל הצוותים — לא רק לאלה שנוגעים ב-Kong."</div>
+      <div class="name edit-unit" contenteditable="true">Kong Insomnia — API Client שמגיע חבילה עם Kong</div>
+      <div class="pitch edit-unit" contenteditable="true">"Insomnia מרגיש חינמי כי הוא מגיע בחבילה עם חוזה Kong שלכם, אבל client שמגיע בחבילה זה לא פלטפורמה. Postman יושב מעל ה-gateway, לכל הצוותים — לא רק לאלה שנוגעים ב-Kong."</div>
     <span class="block-drag-grip" title="גרור כדי להזיז" contenteditable="false" draggable="true">⠿</span><button type="button" class="block-delete-btn" title="מחק בלוק זה" contenteditable="false">🗑</button></div>
     <div class="prod draggable-block" data-block-wired="1">
-      <div class="name edit-unit" contenteditable="false">SmartBear Swagger — חבילת עיצוב ומחזור חיים</div>
-      <div class="pitch edit-unit" contenteditable="false">"Swagger נותן לכם login אחד על פני שלושה מוצרים שלא באמת חולקים מידע. Postman היא פלטפורמה אחת אמיתית, שבה שינוי ב-spec זורם ישירות לבדיקות, ל-mocks ולתיעוד."</div>
+      <div class="name edit-unit" contenteditable="true">SmartBear Swagger — חבילת עיצוב ומחזור חיים</div>
+      <div class="pitch edit-unit" contenteditable="true">"Swagger נותן לכם login אחד על פני שלושה מוצרים שלא באמת חולקים מידע. Postman היא פלטפורמה אחת אמיתית, שבה שינוי ב-spec זורם ישירות לבדיקות, ל-mocks ולתיעוד."</div>
     <span class="block-drag-grip" title="גרור כדי להזיז" contenteditable="false" draggable="true">⠿</span><button type="button" class="block-delete-btn" title="מחק בלוק זה" contenteditable="false">🗑</button></div>
     <div class="prod draggable-block" data-block-wired="1">
-      <div class="name edit-unit" contenteditable="false">Stoplight — כלי עיצוב API (בהפסקת פיתוח)</div>
-      <div class="pitch edit-unit" contenteditable="false">"אף אחד, אפילו לא החברה שמחזיקה בו, לא ממשיך להשקיע ב-Stoplight. השאלה היא לא אם תעזבו, אלא לאן תגיעו. Postman הוא היעד המודרני למחזור החיים."</div>
+      <div class="name edit-unit" contenteditable="true">Stoplight — כלי עיצוב API (בהפסקת פיתוח)</div>
+      <div class="pitch edit-unit" contenteditable="true">"אף אחד, אפילו לא החברה שמחזיקה בו, לא ממשיך להשקיע ב-Stoplight. השאלה היא לא אם תעזבו, אלא לאן תגיעו. Postman הוא היעד המודרני למחזור החיים."</div>
     <span class="block-drag-grip" title="גרור כדי להזיז" contenteditable="false" draggable="true">⠿</span><button type="button" class="block-delete-btn" title="מחק בלוק זה" contenteditable="false">🗑</button></div>
     <div class="prod draggable-block" data-block-wired="1">
-      <div class="name edit-unit" contenteditable="false">SoapUI (OSS) — בדיקות SOAP/REST חינמיות</div>
-      <div class="pitch edit-unit" contenteditable="false">"היכולות של SoapUI ב-SOAP וב-WSDL הן ממש מהטובות בתחום, וזה חינמי. מה שהוא לא יכול לעשות זה לשים את הבדיקות שלכם בסביבת עבודה משותפת או לעקוב אחרי ה-APIs שלכם בפרודקשן. זה המקום שבו Postman נכנס לתמונה."</div>
+      <div class="name edit-unit" contenteditable="true">SoapUI (OSS) — בדיקות SOAP/REST חינמיות</div>
+      <div class="pitch edit-unit" contenteditable="true">"היכולות של SoapUI ב-SOAP וב-WSDL הן ממש מהטובות בתחום, וזה חינמי. מה שהוא לא יכול לעשות זה לשים את הבדיקות שלכם בסביבת עבודה משותפת או לעקוב אחרי ה-APIs שלכם בפרודקשן. זה המקום שבו Postman נכנס לתמונה."</div>
     <span class="block-drag-grip" title="גרור כדי להזיז" contenteditable="false" draggable="true">⠿</span><button type="button" class="block-delete-btn" title="מחק בלוק זה" contenteditable="false">🗑</button></div>
     <div class="prod draggable-block" data-block-wired="1">
-      <div class="name edit-unit" contenteditable="false">ReadyAPI — בדיקות Enterprise בתשלום</div>
-      <div class="pitch edit-unit" contenteditable="false">"ReadyAPI הוא מוצר בדיקות Enterprise רציני, לא ה-SoapUI החינמי. Postman מריץ את אותן בדיקות, ואז מחבר אותן למוניטורינג ולקטלוג API חי, עם מסלול הגירה אמיתי."</div>
+      <div class="name edit-unit" contenteditable="true">ReadyAPI — בדיקות Enterprise בתשלום</div>
+      <div class="pitch edit-unit" contenteditable="true">"ReadyAPI הוא מוצר בדיקות Enterprise רציני, לא ה-SoapUI החינמי. Postman מריץ את אותן בדיקות, ואז מחבר אותן למוניטורינג ולקטלוג API חי, עם מסלול הגירה אמיתי."</div>
     <span class="block-drag-grip" title="גרור כדי להזיז" contenteditable="false" draggable="true">⠿</span><button type="button" class="block-delete-btn" title="מחק בלוק זה" contenteditable="false">🗑</button></div>
     <div class="prod draggable-block" data-block-wired="1">
-      <div class="name edit-unit" contenteditable="false">APIdog — פתרון זול הכל-באחד</div>
-      <div class="pitch edit-unit" contenteditable="false">"במחיר של 25$ למשתמש, APIdog נראה כמו מציאה לצד המחיר שלנו. אבל ברגע שאתם שואלים על Governance, קטלוג API, או אמון ברמת Enterprise — הפער הזה מפסיק להיות השיחה."</div>
+      <div class="name edit-unit" contenteditable="true">APIdog — פתרון זול הכל-באחד</div>
+      <div class="pitch edit-unit" contenteditable="true">"במחיר של 25$ למשתמש, APIdog נראה כמו מציאה לצד המחיר שלנו. אבל ברגע שאתם שואלים על Governance, קטלוג API, או אמון ברמת Enterprise — הפער הזה מפסיק להיות השיחה."</div>
     <span class="block-drag-grip" title="גרור כדי להזיז" contenteditable="false" draggable="true">⠿</span><button type="button" class="block-delete-btn" title="מחק בלוק זה" contenteditable="false">🗑</button></div>
     <div class="prod draggable-block" data-block-wired="1">
-      <div class="name edit-unit" contenteditable="false">MuleSoft Anypoint — פלטפורמת אינטגרציה Enterprise</div>
-      <div class="pitch edit-unit" contenteditable="false">"MuleSoft מצטיין בחיבור בין מערכות Enterprise, ואנחנו לא מחליפים את זה. Postman היא הפלטפורמה לכל מפתח ושותף שנוגע ב-APIs שה-runtime של MuleSoft לא מגיע אליהם."</div>
+      <div class="name edit-unit" contenteditable="true">MuleSoft Anypoint — פלטפורמת אינטגרציה Enterprise</div>
+      <div class="pitch edit-unit" contenteditable="true">"MuleSoft מצטיין בחיבור בין מערכות Enterprise, ואנחנו לא מחליפים את זה. Postman היא הפלטפורמה לכל מפתח ושותף שנוגע ב-APIs שה-runtime של MuleSoft לא מגיע אליהם."</div>
     <span class="block-drag-grip" title="גרור כדי להזיז" contenteditable="false" draggable="true">⠿</span><button type="button" class="block-delete-btn" title="מחק בלוק זה" contenteditable="false">🗑</button></div>
 
-    <div class="group-title edit-unit draggable-block" contenteditable="false" data-block-wired="1">מטריצת כיסוי מחזור חיים<span class="block-drag-grip" title="גרור כדי להזיז" contenteditable="false" draggable="true">⠿</span><button type="button" class="block-delete-btn" title="מחק בלוק זה" contenteditable="false">🗑</button></div>
+    <div class="group-title edit-unit draggable-block" contenteditable="true" data-block-wired="1">מטריצת כיסוי מחזור חיים<span class="block-drag-grip" title="גרור כדי להזיז" contenteditable="false" draggable="true">⠿</span><button type="button" class="block-delete-btn" title="מחק בלוק זה" contenteditable="false">🗑</button></div>
     <table class="panel-table draggable-block" data-block-wired="1">
       <tbody><tr><th>יכולת</th><th>Postman</th><th>API Clients</th><th>כלי עיצוב</th><th>חבילות בדיקה</th><th>MuleSoft</th></tr>
       <tr><td>עיצוב ותכנון spec</td><td>✓ מלא</td><td>— אין</td><td>✓ מלא</td><td>~ חלקי</td><td>✓ מלא</td></tr>
@@ -1287,27 +1259,27 @@
       <tr><td>אבטחת Enterprise (SSO/SCIM/RBAC)</td><td>✓ מלא</td><td>~ חלקי</td><td>✓ מלא</td><td>~ חלקי</td><td>✓ מלא</td></tr>
     </tbody><span class="block-drag-grip" title="גרור כדי להזיז" contenteditable="false" draggable="true">⠿</span><button type="button" class="block-delete-btn" title="מחק בלוק זה" contenteditable="false">🗑</button></table>
 
-    <div class="group-title edit-unit draggable-block" contenteditable="false" data-block-wired="1">תמחור וחבילות (2026)<span class="block-drag-grip" title="גרור כדי להזיז" contenteditable="false" draggable="true">⠿</span><button type="button" class="block-delete-btn" title="מחק בלוק זה" contenteditable="false">🗑</button></div>
-    <div class="cross-box edit-unit draggable-block" contenteditable="false" data-block-wired="1">
+    <div class="group-title edit-unit draggable-block" contenteditable="true" data-block-wired="1">תמחור וחבילות (2026)<span class="block-drag-grip" title="גרור כדי להזיז" contenteditable="false" draggable="true">⠿</span><button type="button" class="block-delete-btn" title="מחק בלוק זה" contenteditable="false">🗑</button></div>
+    <div class="cross-box edit-unit draggable-block" contenteditable="true" data-block-wired="1">
       מבנה החבילות עבר מ-Free/Basic/Professional/Enterprise ל-<b>Free/Solo/Team/Enterprise</b> ב-1 במרץ 2026. Free, Solo ו-Team הן חבילות <b>self-serve</b>; Enterprise היא <b>sales-assisted</b>. Professional היא חבילה legacy — אין הגירה בכפייה, לקוחות קיימים יכולים להישאר עליה ולהמשיך להתרחב.
     <span class="block-drag-grip" title="גרור כדי להזיז" contenteditable="false" draggable="true">⠿</span><button type="button" class="block-delete-btn" title="מחק בלוק זה" contenteditable="false">🗑</button></div>
     <ul class="panel-list draggable-block" data-block-wired="1">
-      <li class="edit-unit" contenteditable="false"><b>ASA</b> (Advanced Security Administration) — ה-Add-on הראשון שאני ממקם בשיחה.</li>
-      <li class="edit-unit" contenteditable="false"><b>Fabric AI Gateway</b> — ה-Add-on השני שאני ממקם, אחרי ASA.</li>
-      <li class="edit-unit" contenteditable="false"><b>Passport</b> — Governance לגישה ל-APIs, ללא חשיפת Credentials.</li>
-      <li class="edit-unit" contenteditable="false"><b>Premium Support</b> — שכבת תמיכה מוגברת מעל Enterprise.</li>
+      <li class="edit-unit" contenteditable="true"><b>ASA</b> (Advanced Security Administration) — ה-Add-on הראשון שאני ממקם בשיחה.</li>
+      <li class="edit-unit" contenteditable="true"><b>Fabric AI Gateway</b> — ה-Add-on השני שאני ממקם, אחרי ASA.</li>
+      <li class="edit-unit" contenteditable="true"><b>Passport</b> — Governance לגישה ל-APIs, ללא חשיפת Credentials.</li>
+      <li class="edit-unit" contenteditable="true"><b>Premium Support</b> — שכבת תמיכה מוגברת מעל Enterprise.</li>
     <span class="block-drag-grip" title="גרור כדי להזיז" contenteditable="false" draggable="true">⠿</span><button type="button" class="block-delete-btn" title="מחק בלוק זה" contenteditable="false">🗑</button></ul>
 
-    <div class="group-title edit-unit draggable-block" contenteditable="false" data-block-wired="1">שאלות Discovery ל-Fabric<span class="block-drag-grip" title="גרור כדי להזיז" contenteditable="false" draggable="true">⠿</span><button type="button" class="block-delete-btn" title="מחק בלוק זה" contenteditable="false">🗑</button></div>
-    <div class="say edit-unit draggable-block" contenteditable="false" data-block-wired="1">
+    <div class="group-title edit-unit draggable-block" contenteditable="true" data-block-wired="1">שאלות Discovery ל-Fabric<span class="block-drag-grip" title="גרור כדי להזיז" contenteditable="false" draggable="true">⠿</span><button type="button" class="block-delete-btn" title="מחק בלוק זה" contenteditable="false">🗑</button></div>
+    <div class="say edit-unit draggable-block" contenteditable="true" data-block-wired="1">
       <b class="tag">שאלה 1</b>
       "כמה צוותים בונים או מריצים היום אפליקציות AI או Agents, ואיך זה מנוהל?" — 🟢 "כמה צוותים," "כל אחד בונה בנפרד" = פרגמנטציה, סימן חזק. 🔴 "פרויקט קטן אחד" = כנראה מוקדם.
     <span class="block-drag-grip" title="גרור כדי להזיז" contenteditable="false" draggable="true">⠿</span><button type="button" class="block-delete-btn" title="מחק בלוק זה" contenteditable="false">🗑</button></div>
-    <div class="say edit-unit draggable-block" contenteditable="false" data-block-wired="1">
+    <div class="say edit-unit draggable-block" contenteditable="true" data-block-wired="1">
       <b class="tag">שאלה 2</b>
       "איך ה-Agents שלכם נגישים היום ל-LLMs, שרתי MCP ו-APIs פנימיים?" — 🟢 "כל צוות מנהל בעצמו," "יש לנו API Keys שונים בכל מקום," "בנינו Proxy משלנו" = סימן חזק מאוד. 🔴 "חיבור ישיר פשוט אחד" = סימן חלש.
     <span class="block-drag-grip" title="גרור כדי להזיז" contenteditable="false" draggable="true">⠿</span><button type="button" class="block-delete-btn" title="מחק בלוק זה" contenteditable="false">🗑</button></div>
-    <div class="say edit-unit draggable-block" contenteditable="false" data-block-wired="1">
+    <div class="say edit-unit draggable-block" contenteditable="true" data-block-wired="1">
       <b class="tag">שאלה 3</b>
       "עם צמיחת השימוש ב-AI, יש חששות סביב אבטחה, גישת Agents, Credentials, Governance או עלויות?" — 🟢 "Security שואלים איך שולטים בגישת Agents," "לא רוצים ש-Agents יחזיקו Credentials," "צריך Audit Trail" = סימן חזק מאוד. 🔴 "לא חושש," "ההוצאה זניחה" = כנראה לא בעדיפות כרגע.
     <span class="block-drag-grip" title="גרור כדי להזיז" contenteditable="false" draggable="true">⠿</span><button type="button" class="block-delete-btn" title="מחק בלוק זה" contenteditable="false">🗑</button></div>
@@ -1322,100 +1294,100 @@
       <tr><td>ארכיטקטורה</td><td>סביבת AI מבוזרת בין צוותים/מערכות</td><td>חיבור ישיר פשוט אחד</td></tr>
       <tr><td>זווית API Gateway</td><td>מחפשים Governance אג'נטי לצד התשתית הקיימת</td><td>רק רוצים להחליף API Gateway מסורתי</td></tr>
     </tbody><span class="block-drag-grip" title="גרור כדי להזיז" contenteditable="false" draggable="true">⠿</span><button type="button" class="block-delete-btn" title="מחק בלוק זה" contenteditable="false">🗑</button></table>
-    <div class="cross-box edit-unit draggable-block" contenteditable="false" data-block-wired="1">
+    <div class="cross-box edit-unit draggable-block" contenteditable="true" data-block-wired="1">
       <b>נקודת מיצוב:</b> לא למכור את Fabric כתחליף ל-Kong/Apigee — זו שכבת Governance מותאמת AI שיושבת לצד תשתית ה-API הקיימת.
     <span class="block-drag-grip" title="גרור כדי להזיז" contenteditable="false" draggable="true">⠿</span><button type="button" class="block-delete-btn" title="מחק בלוק זה" contenteditable="false">🗑</button></div>
-<div class="group-title edit-unit draggable-block" contenteditable="false" data-block-wired="1">שאלות נפוצות מלקוחות ב-First Call<span class="block-drag-grip" title="גרור כדי להזיז" contenteditable="false" draggable="true">⠿</span><button type="button" class="block-delete-btn" title="מחק בלוק זה" contenteditable="false">🗑</button></div>
+<div class="group-title edit-unit draggable-block" contenteditable="true" data-block-wired="1">שאלות נפוצות מלקוחות ב-First Call<span class="block-drag-grip" title="גרור כדי להזיז" contenteditable="false" draggable="true">⠿</span><button type="button" class="block-delete-btn" title="מחק בלוק זה" contenteditable="false">🗑</button></div>
 
 <div class="obj draggable-block" data-block-wired="1">
-<div class="q edit-unit" contenteditable="false">"אתם מתחברים למערכות אחרות (API Connect, Azure APIM)?"</div>
-<div class="a edit-unit" contenteditable="false">"כן. יש אינטגרציות עם gateways שונים (כולל Azure API Management ו-IBM API Connect) ועם AWS, Azure ו-Google Cloud. Postman שואב מידע מהסביבות הקיימות לצורך discovery ו-API Catalog." <br><b>לזכור:</b> לברר קודם למה הלקוח מתכוון ב-"integration" — discovery, monitoring, testing או החלפת gateway.</div>
+<div class="q edit-unit" contenteditable="true">"אתם מתחברים למערכות אחרות (API Connect, Azure APIM)?"</div>
+<div class="a edit-unit" contenteditable="true">"כן. יש אינטגרציות עם gateways שונים (כולל Azure API Management ו-IBM API Connect) ועם AWS, Azure ו-Google Cloud. Postman שואב מידע מהסביבות הקיימות לצורך discovery ו-API Catalog." <br><b>לזכור:</b> לברר קודם למה הלקוח מתכוון ב-"integration" — discovery, monitoring, testing או החלפת gateway.</div>
 <span class="block-drag-grip" title="גרור כדי להזיז" contenteditable="false" draggable="true">⠿</span><button type="button" class="block-delete-btn" title="מחק בלוק זה" contenteditable="false">🗑</button></div>
 
 <div class="obj draggable-block" data-block-wired="1">
-<div class="q edit-unit" contenteditable="false">"Postman הוא Gateway, או ששם Gateway באמצע?"</div>
-<div class="a edit-unit" contenteditable="false">"לא. Postman לא נועד להחליף API Gateway. הוא מתחבר ל-Gateways קיימים ומקבל מהם מידע, ובנוסף יש agent שמאזין לפעילות בסביבה." <br><b>לזכור:</b> להפריד — Gateway מטפל בתעבורה; Postman מנהל את ה-API lifecycle סביבו.</div>
+<div class="q edit-unit" contenteditable="true">"Postman הוא Gateway, או ששם Gateway באמצע?"</div>
+<div class="a edit-unit" contenteditable="true">"לא. Postman לא נועד להחליף API Gateway. הוא מתחבר ל-Gateways קיימים ומקבל מהם מידע, ובנוסף יש agent שמאזין לפעילות בסביבה." <br><b>לזכור:</b> להפריד — Gateway מטפל בתעבורה; Postman מנהל את ה-API lifecycle סביבו.</div>
 <span class="block-drag-grip" title="גרור כדי להזיז" contenteditable="false" draggable="true">⠿</span><button type="button" class="block-delete-btn" title="מחק בלוק זה" contenteditable="false">🗑</button></div>
 
 <div class="obj draggable-block" data-block-wired="1">
-<div class="q edit-unit" contenteditable="false">"איך אתם מוצאים APIs שאנחנו בעצמנו לא מכירים?"</div>
-<div class="a edit-unit" contenteditable="false">"כמה מנגנוני discovery: אינטגרציה עם gateways ו-cloud providers, agent שמזהה APIs לפי תעבורת רשת (Postman Insights), ו-service discovery ב-Kubernetes (Cluster Watcher). המטרה — תמונה רחבה של כל ה-API landscape." <br><b>לזכור:</b> זה מתחבר ישירות לבעיה של APIs לא מוכרים ול-API Catalog.</div>
+<div class="q edit-unit" contenteditable="true">"איך אתם מוצאים APIs שאנחנו בעצמנו לא מכירים?"</div>
+<div class="a edit-unit" contenteditable="true">"כמה מנגנוני discovery: אינטגרציה עם gateways ו-cloud providers, agent שמזהה APIs לפי תעבורת רשת (Postman Insights), ו-service discovery ב-Kubernetes (Cluster Watcher). המטרה — תמונה רחבה של כל ה-API landscape." <br><b>לזכור:</b> זה מתחבר ישירות לבעיה של APIs לא מוכרים ול-API Catalog.</div>
 <span class="block-drag-grip" title="גרור כדי להזיז" contenteditable="false" draggable="true">⠿</span><button type="button" class="block-delete-btn" title="מחק בלוק זה" contenteditable="false">🗑</button></div>
 
 <div class="obj draggable-block" data-block-wired="1">
-<div class="q edit-unit" contenteditable="false">"כדי לנטר APIs אתם חייבים ליירט תעבורה?"</div>
-<div class="a edit-unit" contenteditable="false">"לא בהכרח. באינטגרציה עם Gateway, Postman מקבל מידע ישירות מה-Gateway. אפשר גם agent שמאזין לסביבה ומזהה אילו APIs נקראים." <br><b>לזכור:</b> לא להיכנס עמוק מדי לטכנולוגיה — יש כמה שיטות בהתאם לארכיטקטורה של הלקוח.</div>
+<div class="q edit-unit" contenteditable="true">"כדי לנטר APIs אתם חייבים ליירט תעבורה?"</div>
+<div class="a edit-unit" contenteditable="true">"לא בהכרח. באינטגרציה עם Gateway, Postman מקבל מידע ישירות מה-Gateway. אפשר גם agent שמאזין לסביבה ומזהה אילו APIs נקראים." <br><b>לזכור:</b> לא להיכנס עמוק מדי לטכנולוגיה — יש כמה שיטות בהתאם לארכיטקטורה של הלקוח.</div>
 <span class="block-drag-grip" title="גרור כדי להזיז" contenteditable="false" draggable="true">⠿</span><button type="button" class="block-delete-btn" title="מחק בלוק זה" contenteditable="false">🗑</button></div>
 
 <div class="obj draggable-block" data-block-wired="1">
-<div class="q edit-unit" contenteditable="false">"מה זה API Catalog, ולמה צריך אותו אם יש API Management?"</div>
-<div class="a edit-unit" contenteditable="false">"API Catalog הוא registry מרכזי שנותן single pane of glass על כל ה-APIs בארגון — מה קיים, מי הבעלים, ומה המצב שלו (מקושר ל-source control, CI/CD ו-production). API Management מטפל בתעבורה בזמן אמת; Catalog נותן את תמונת ה-visibility וה-ownership שמעליו." <br><b>לזכור:</b> לא להציג Catalog כעוד רשימה, אלא כ-visibility ו-ownership על API landscape מבוזר.</div>
+<div class="q edit-unit" contenteditable="true">"מה זה API Catalog, ולמה צריך אותו אם יש API Management?"</div>
+<div class="a edit-unit" contenteditable="true">"API Catalog הוא registry מרכזי שנותן single pane of glass על כל ה-APIs בארגון — מה קיים, מי הבעלים, ומה המצב שלו (מקושר ל-source control, CI/CD ו-production). API Management מטפל בתעבורה בזמן אמת; Catalog נותן את תמונת ה-visibility וה-ownership שמעליו." <br><b>לזכור:</b> לא להציג Catalog כעוד רשימה, אלא כ-visibility ו-ownership על API landscape מבוזר.</div>
 <span class="block-drag-grip" title="גרור כדי להזיז" contenteditable="false" draggable="true">⠿</span><button type="button" class="block-delete-btn" title="מחק בלוק זה" contenteditable="false">🗑</button></div>
 
 <div class="obj draggable-block" data-block-wired="1">
-<div class="q edit-unit" contenteditable="false">"אתם עובדים עם source code ו-repositories?"</div>
-<div class="a edit-unit" contenteditable="false">"כן. יש חיבור ל-GitHub שמקשר בין source code ל-APIs, וניתן גם להפוך קוד קיים ל-Postman collections." <br><b>לזכור:</b> רלוונטי במיוחד לארגונים שעובדים Git-based.</div>
+<div class="q edit-unit" contenteditable="true">"אתם עובדים עם source code ו-repositories?"</div>
+<div class="a edit-unit" contenteditable="true">"כן. יש חיבור ל-GitHub שמקשר בין source code ל-APIs, וניתן גם להפוך קוד קיים ל-Postman collections." <br><b>לזכור:</b> רלוונטי במיוחד לארגונים שעובדים Git-based.</div>
 <span class="block-drag-grip" title="גרור כדי להזיז" contenteditable="false" draggable="true">⠿</span><button type="button" class="block-delete-btn" title="מחק בלוק זה" contenteditable="false">🗑</button></div>
 
 <div class="obj draggable-block" data-block-wired="1">
-<div class="q edit-unit" contenteditable="false">"אנחנו עובדים הרבה עם AI ו-Agents — איך Postman משתלב?"</div>
-<div class="a edit-unit" contenteditable="false">"Postman כולל יכולות AI מובנות (Postman AI ו-Agent Mode) לאוטומציה של תהליכי פיתוח API — יצירת בדיקות, תיעוד ו-workflows. מעבר לכך, ככל שיותר תהליכי AI/Agents צורכים APIs, גובר הצורך ב-APIs שניתנים לגילוי, אמינים ומתועדים היטב, וב-Governance כש-AI משתתף בתהליך." <br><b>לזכור:</b> קודם להבין את ה-AI workflow של הלקוח, ורק אחר כך לחבר למוצר הרלוונטי.</div>
+<div class="q edit-unit" contenteditable="true">"אנחנו עובדים הרבה עם AI ו-Agents — איך Postman משתלב?"</div>
+<div class="a edit-unit" contenteditable="true">"Postman כולל יכולות AI מובנות (Postman AI ו-Agent Mode) לאוטומציה של תהליכי פיתוח API — יצירת בדיקות, תיעוד ו-workflows. מעבר לכך, ככל שיותר תהליכי AI/Agents צורכים APIs, גובר הצורך ב-APIs שניתנים לגילוי, אמינים ומתועדים היטב, וב-Governance כש-AI משתתף בתהליך." <br><b>לזכור:</b> קודם להבין את ה-AI workflow של הלקוח, ורק אחר כך לחבר למוצר הרלוונטי.</div>
 <span class="block-drag-grip" title="גרור כדי להזיז" contenteditable="false" draggable="true">⠿</span><button type="button" class="block-delete-btn" title="מחק בלוק זה" contenteditable="false">🗑</button></div>
 
 <div class="obj draggable-block" data-block-wired="1">
-<div class="q edit-unit" contenteditable="false">"אתם אוכפים standards כמו OpenAPI על צוותי הפיתוח?"</div>
-<div class="a edit-unit" contenteditable="false">"כן. Postman (API Governance) מאפשר להגדיר ולאכוף כללים על פני צוותים — כללים מובנים וגם custom rules — ולשלב Governance ב-CI/CD." <br><b>לזכור:</b> להבדיל בין "אנחנו עובדים לפי OpenAPI" לבין "אנחנו אוכפים OpenAPI בפועל".</div>
+<div class="q edit-unit" contenteditable="true">"אתם אוכפים standards כמו OpenAPI על צוותי הפיתוח?"</div>
+<div class="a edit-unit" contenteditable="true">"כן. Postman (API Governance) מאפשר להגדיר ולאכוף כללים על פני צוותים — כללים מובנים וגם custom rules — ולשלב Governance ב-CI/CD." <br><b>לזכור:</b> להבדיל בין "אנחנו עובדים לפי OpenAPI" לבין "אנחנו אוכפים OpenAPI בפועל".</div>
 <span class="block-drag-grip" title="גרור כדי להזיז" contenteditable="false" draggable="true">⠿</span><button type="button" class="block-delete-btn" title="מחק בלוק זה" contenteditable="false">🗑</button></div>
 
-<div class="group-title edit-unit draggable-block" contenteditable="false" data-block-wired="1">שאלות נפוצות על תמחור וחבילות (2026)<span class="block-drag-grip" title="גרור כדי להזיז" contenteditable="false" draggable="true">⠿</span><button type="button" class="block-delete-btn" title="מחק בלוק זה" contenteditable="false">🗑</button></div>
+<div class="group-title edit-unit draggable-block" contenteditable="true" data-block-wired="1">שאלות נפוצות על תמחור וחבילות (2026)<span class="block-drag-grip" title="גרור כדי להזיז" contenteditable="false" draggable="true">⠿</span><button type="button" class="block-delete-btn" title="מחק בלוק זה" contenteditable="false">🗑</button></div>
 
 <div class="obj draggable-block" data-block-wired="1">
-<div class="q edit-unit" contenteditable="false">"למה Free זה רק משתמש אחד עכשיו?"</div>
-<div class="a edit-unit" contenteditable="false">"Free הפכה לחוויה מלאה למפתח בודד - ריצות ללא הגבלה, Git, mocks, 50 קרדיטי AI - במקום חבילת צוות קלה ל-3 אנשים. שיתוף פעולה מתחיל ב-Team, שבאמת נבנתה לעבודה מרובת-משתמשים עם תפקידים ובקרות אמיתיים."</div>
-<span class="block-drag-grip" title="גרור כדי להזיז" contenteditable="false" draggable="true">⠿</span><button type="button" class="block-delete-btn" title="מחק בלוק זה" contenteditable="false">🗑</button></div>
-
-<div class="obj draggable-block" data-block-wired="1">
-<div class="q edit-unit" contenteditable="false">"מה ההבדל האמיתי בין RBAC ב-Team ל-RBAC ב-Enterprise?"</div>
-<div class="a edit-unit" contenteditable="false">"RBAC ב-Team הוא ברמת ה-workspace - כמו ב-Professional הישן. RBAC ב-Enterprise הוא ארגוני ומתקדם - קבוצות משתמשים, תפקידים בגובה API, Governance ותפקידי מנהל רשת."</div>
+<div class="q edit-unit" contenteditable="true">"למה Free זה רק משתמש אחד עכשיו?"</div>
+<div class="a edit-unit" contenteditable="true">"Free הפכה לחוויה מלאה למפתח בודד - ריצות ללא הגבלה, Git, mocks, 50 קרדיטי AI - במקום חבילת צוות קלה ל-3 אנשים. שיתוף פעולה מתחיל ב-Team, שבאמת נבנתה לעבודה מרובת-משתמשים עם תפקידים ובקרות אמיתיים."</div>
 <span class="block-drag-grip" title="גרור כדי להזיז" contenteditable="false" draggable="true">⠿</span><button type="button" class="block-delete-btn" title="מחק בלוק זה" contenteditable="false">🗑</button></div>
 
 <div class="obj draggable-block" data-block-wired="1">
-<div class="q edit-unit" contenteditable="false">"למה רוב ה-Add-ons נעלמו?"</div>
-<div class="a edit-unit" contenteditable="false">"הם גרמו לבלבול מתמיד לגבי מה שהלקוח בעצם צריך. עכשיו כמעט הכל מגיע מובנה בתוך החבילה שאליה הוא שייך, ללא הגבלה, כך שהחלטת הרכישה היא רק 'איזו חבילה', לא 'איזו חבילה ואיזה Add-on'."</div>
+<div class="q edit-unit" contenteditable="true">"מה ההבדל האמיתי בין RBAC ב-Team ל-RBAC ב-Enterprise?"</div>
+<div class="a edit-unit" contenteditable="true">"RBAC ב-Team הוא ברמת ה-workspace - כמו ב-Professional הישן. RBAC ב-Enterprise הוא ארגוני ומתקדם - קבוצות משתמשים, תפקידים בגובה API, Governance ותפקידי מנהל רשת."</div>
 <span class="block-drag-grip" title="גרור כדי להזיז" contenteditable="false" draggable="true">⠿</span><button type="button" class="block-delete-btn" title="מחק בלוק זה" contenteditable="false">🗑</button></div>
 
 <div class="obj draggable-block" data-block-wired="1">
-<div class="q edit-unit" contenteditable="false">"קרדיטי ה-AI באמת ללא הגבלה?"</div>
-<div class="a edit-unit" contenteditable="false">"אין חבילה עם הגבלה אינסופית, אבל בכל חבילה יש בסיס שרוב המשתמשים לא מגיעים אליו, ותמחור לפי צריכה נכנס לתמונה רק מעל לזה - זה שסתום ביטחון, לא חוויית ברירת המחדל, והמנהל בוחר אם חיוב חריגה מופעל בכלל." <br><b>מספרים:</b> Free 50 / Solo ו-Team 400 / Enterprise 800 (pooled), הכל לחודש למשתמש; חריגה: Solo $0.05, Team $0.04, Enterprise $0.035 לקרדיט (ב-Free חייבים לשדרג).</div>
+<div class="q edit-unit" contenteditable="true">"למה רוב ה-Add-ons נעלמו?"</div>
+<div class="a edit-unit" contenteditable="true">"הם גרמו לבלבול מתמיד לגבי מה שהלקוח בעצם צריך. עכשיו כמעט הכל מגיע מובנה בתוך החבילה שאליה הוא שייך, ללא הגבלה, כך שהחלטת הרכישה היא רק 'איזו חבילה', לא 'איזו חבילה ואיזה Add-on'."</div>
 <span class="block-drag-grip" title="גרור כדי להזיז" contenteditable="false" draggable="true">⠿</span><button type="button" class="block-delete-btn" title="מחק בלוק זה" contenteditable="false">🗑</button></div>
 
 <div class="obj draggable-block" data-block-wired="1">
-<div class="q edit-unit" contenteditable="false">"מה Postman מוסיף מעבר ל-WAF, DDoS ו-Authentication שיש לנו?"</div>
-<div class="a edit-unit" contenteditable="false">"Postman לא מתחרה ב-WAF/DDoS/authentication — הוא מוסיף שכבת אבטחה שממוקדת ב-API lifecycle: Secret Scanner שמאתר סודות ומפתחות שדלפו בקוד ובקולקציות, security scorecards ב-API Catalog, וגישת shift-left testing." <br><b>לזכור:</b> לא להתווכח עם ה-stack הקיים. לברר איפה יש gaps ב-lifecycle, Governance, secrets ו-testing.</div>
+<div class="q edit-unit" contenteditable="true">"קרדיטי ה-AI באמת ללא הגבלה?"</div>
+<div class="a edit-unit" contenteditable="true">"אין חבילה עם הגבלה אינסופית, אבל בכל חבילה יש בסיס שרוב המשתמשים לא מגיעים אליו, ותמחור לפי צריכה נכנס לתמונה רק מעל לזה - זה שסתום ביטחון, לא חוויית ברירת המחדל, והמנהל בוחר אם חיוב חריגה מופעל בכלל." <br><b>מספרים:</b> Free 50 / Solo ו-Team 400 / Enterprise 800 (pooled), הכל לחודש למשתמש; חריגה: Solo $0.05, Team $0.04, Enterprise $0.035 לקרדיט (ב-Free חייבים לשדרג).</div>
 <span class="block-drag-grip" title="גרור כדי להזיז" contenteditable="false" draggable="true">⠿</span><button type="button" class="block-delete-btn" title="מחק בלוק זה" contenteditable="false">🗑</button></div>
 
 <div class="obj draggable-block" data-block-wired="1">
-<div class="q edit-unit" contenteditable="false">"אנחנו עובדים עם MuleSoft — איפה Postman נכנס?"</div>
-<div class="a edit-unit" contenteditable="false">"Postman לא מחליף את MuleSoft כפלטפורמת אינטגרציה — MuleSoft/Anypoint הוא integration platform בפני עצמו עם ה-Catalog שלו. הכיוון הרלוונטי הוא self-service API publishing מ-Postman, עם Governance ו-approval flow, שממלא את הפער של המתנה ארוכה ליצירת APIs חדשים. אינטגרציה טכנית ישירה וספציפית מול MuleSoft טרם אושרה במלואה." <br><b>לזכור:</b> לא להבטיח capability שלא הוצגה בפועל — לקבוע follow-up טכני עם SE.</div>
+<div class="q edit-unit" contenteditable="true">"מה Postman מוסיף מעבר ל-WAF, DDoS ו-Authentication שיש לנו?"</div>
+<div class="a edit-unit" contenteditable="true">"Postman לא מתחרה ב-WAF/DDoS/authentication — הוא מוסיף שכבת אבטחה שממוקדת ב-API lifecycle: Secret Scanner שמאתר סודות ומפתחות שדלפו בקוד ובקולקציות, security scorecards ב-API Catalog, וגישת shift-left testing." <br><b>לזכור:</b> לא להתווכח עם ה-stack הקיים. לברר איפה יש gaps ב-lifecycle, Governance, secrets ו-testing.</div>
 <span class="block-drag-grip" title="גרור כדי להזיז" contenteditable="false" draggable="true">⠿</span><button type="button" class="block-delete-btn" title="מחק בלוק זה" contenteditable="false">🗑</button></div>
 
 <div class="obj draggable-block" data-block-wired="1">
-<div class="q edit-unit" contenteditable="false">"אנחנו כבר משתמשים ב-Postman ל-testing — מה עוד נקבל?"</div>
-<div class="a edit-unit" contenteditable="false">"Enterprise מרחיב שימוש נקודתי ב-testing לכל ה-API lifecycle: design, Governance, ו-visibility ארגוני על כל ה-APIs בחברה — לא רק על אלה שכבר נבדקים." <br><b>לזכור:</b> להתחיל ממה שהם כבר עושים עם Postman, ואז לזהות מה חסר סביבו.</div>
+<div class="q edit-unit" contenteditable="true">"אנחנו עובדים עם MuleSoft — איפה Postman נכנס?"</div>
+<div class="a edit-unit" contenteditable="true">"Postman לא מחליף את MuleSoft כפלטפורמת אינטגרציה — MuleSoft/Anypoint הוא integration platform בפני עצמו עם ה-Catalog שלו. הכיוון הרלוונטי הוא self-service API publishing מ-Postman, עם Governance ו-approval flow, שממלא את הפער של המתנה ארוכה ליצירת APIs חדשים. אינטגרציה טכנית ישירה וספציפית מול MuleSoft טרם אושרה במלואה." <br><b>לזכור:</b> לא להבטיח capability שלא הוצגה בפועל — לקבוע follow-up טכני עם SE.</div>
 <span class="block-drag-grip" title="גרור כדי להזיז" contenteditable="false" draggable="true">⠿</span><button type="button" class="block-delete-btn" title="מחק בלוק זה" contenteditable="false">🗑</button></div>
 
-<div class="group-title edit-unit draggable-block" contenteditable="false" data-block-wired="1">10 שאלות שכדאי להיות מוכן אליהן בכל First Call<span class="block-drag-grip" title="גרור כדי להזיז" contenteditable="false" draggable="true">⠿</span><button type="button" class="block-delete-btn" title="מחק בלוק זה" contenteditable="false">🗑</button></div>
+<div class="obj draggable-block" data-block-wired="1">
+<div class="q edit-unit" contenteditable="true">"אנחנו כבר משתמשים ב-Postman ל-testing — מה עוד נקבל?"</div>
+<div class="a edit-unit" contenteditable="true">"Enterprise מרחיב שימוש נקודתי ב-testing לכל ה-API lifecycle: design, Governance, ו-visibility ארגוני על כל ה-APIs בחברה — לא רק על אלה שכבר נבדקים." <br><b>לזכור:</b> להתחיל ממה שהם כבר עושים עם Postman, ואז לזהות מה חסר סביבו.</div>
+<span class="block-drag-grip" title="גרור כדי להזיז" contenteditable="false" draggable="true">⠿</span><button type="button" class="block-delete-btn" title="מחק בלוק זה" contenteditable="false">🗑</button></div>
+
+<div class="group-title edit-unit draggable-block" contenteditable="true" data-block-wired="1">10 שאלות שכדאי להיות מוכן אליהן בכל First Call<span class="block-drag-grip" title="גרור כדי להזיז" contenteditable="false" draggable="true">⠿</span><button type="button" class="block-delete-btn" title="מחק בלוק זה" contenteditable="false">🗑</button></div>
 <ul class="panel-list draggable-block" data-block-wired="1">
-<li class="edit-unit" contenteditable="false">אני כבר משתמש ב-Free — למה Enterprise?</li>
-<li class="edit-unit" contenteditable="false">האם אתם מחליפים את ה-API Gateway?</li>
-<li class="edit-unit" contenteditable="false">האם אתם מתחברים ל-API Management / Cloud / GitHub?</li>
-<li class="edit-unit" contenteditable="false">איך אתם מגלים APIs שאני בכלל לא יודע שקיימים?</li>
-<li class="edit-unit" contenteditable="false">האם אתם יושבים באמצע התעבורה?</li>
-<li class="edit-unit" contenteditable="false">מה ההבדל בין API Catalog ל-API Management?</li>
-<li class="edit-unit" contenteditable="false">איך אתם אוכפים OpenAPI / Governance?</li>
-<li class="edit-unit" contenteditable="false">מה אתם מוסיפים מעבר ל-WAF / DDoS / Security tools?</li>
-<li class="edit-unit" contenteditable="false">איך מוכיחים ROI?</li>
-<li class="edit-unit" contenteditable="false">אפשר להתחיל קטן / Trial / POC?</li>
+<li class="edit-unit" contenteditable="true">אני כבר משתמש ב-Free — למה Enterprise?</li>
+<li class="edit-unit" contenteditable="true">האם אתם מחליפים את ה-API Gateway?</li>
+<li class="edit-unit" contenteditable="true">האם אתם מתחברים ל-API Management / Cloud / GitHub?</li>
+<li class="edit-unit" contenteditable="true">איך אתם מגלים APIs שאני בכלל לא יודע שקיימים?</li>
+<li class="edit-unit" contenteditable="true">האם אתם יושבים באמצע התעבורה?</li>
+<li class="edit-unit" contenteditable="true">מה ההבדל בין API Catalog ל-API Management?</li>
+<li class="edit-unit" contenteditable="true">איך אתם אוכפים OpenAPI / Governance?</li>
+<li class="edit-unit" contenteditable="true">מה אתם מוסיפים מעבר ל-WAF / DDoS / Security tools?</li>
+<li class="edit-unit" contenteditable="true">איך מוכיחים ROI?</li>
+<li class="edit-unit" contenteditable="true">אפשר להתחיל קטן / Trial / POC?</li>
 <span class="block-drag-grip" title="גרור כדי להזיז" contenteditable="false" draggable="true">⠿</span><button type="button" class="block-delete-btn" title="מחק בלוק זה" contenteditable="false">🗑</button></ul>
 
   <button type="button" class="add-block-btn">+ הוסף בלוק טקסט</button></div>
@@ -2731,6 +2703,16 @@
       btn.disabled = false;
       setTimeout(()=>{ btn.textContent = '💾 שמור ותרגם לאנגלית'; }, 3000);
     }
+    // The English tab is a separate iframe that's already loaded — it only
+    // reads these translated values from localStorage when IT loads, not
+    // live. Reload it now (via the parent page) so the translation actually
+    // becomes visible without the person having to hard-refresh manually.
+    if(done - failed > 0){
+      try{
+        const enIframe = window.parent.document.querySelector('#panel-explaineren iframe');
+        if(enIframe) enIframe.contentWindow.location.reload();
+      }catch(e){}
+    }
   };
 })();
 
@@ -2741,14 +2723,34 @@
 // already auto-saves via the block-persistence system above — Save just
 // flushes focus and gives a visible confirmation.
 (function(){
+  function adjustFontSize(delta){
+    const sel = window.getSelection();
+    if(!sel || sel.rangeCount === 0 || sel.isCollapsed) return;
+    const range = sel.getRangeAt(0);
+    const refNode = range.startContainer.nodeType === 3 ? range.startContainer.parentElement : range.startContainer;
+    const currentSize = parseFloat(window.getComputedStyle(refNode).fontSize) || 15;
+    const value = Math.max(10, Math.min(40, currentSize + delta)) + 'px';
+    const span = document.createElement('span');
+    span.style.fontSize = value;
+    span.appendChild(range.extractContents());
+    range.insertNode(span);
+    sel.removeAllRanges();
+    const newRange = document.createRange();
+    newRange.selectNodeContents(span);
+    sel.addRange(newRange);
+  }
   document.addEventListener('mousedown', (e)=>{
-    if(e.target.closest('.ptb-bold, .ptb-italic, .ptb-save')) e.preventDefault();
+    if(e.target.closest('.ptb-bold, .ptb-italic, .ptb-save, .ptb-decfont, .ptb-incfont')) e.preventDefault();
   });
   document.addEventListener('click', (e)=>{
     const boldBtn = e.target.closest('.ptb-bold');
     if(boldBtn){ document.execCommand('bold'); return; }
     const italicBtn = e.target.closest('.ptb-italic');
     if(italicBtn){ document.execCommand('italic'); return; }
+    const decBtn = e.target.closest('.ptb-decfont');
+    if(decBtn){ adjustFontSize(-2); return; }
+    const incBtn = e.target.closest('.ptb-incfont');
+    if(incBtn){ adjustFontSize(2); return; }
     const saveBtn = e.target.closest('.ptb-save');
     if(saveBtn){
       if(document.activeElement && document.activeElement.blur) document.activeElement.blur();
