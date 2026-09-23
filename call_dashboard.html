@@ -1852,6 +1852,7 @@ The Enterprise plan is built for organizations managing APIs at broad scale — 
 &lt;li&gt;&lt;b&gt;Audit Logs, Reporting, and API usage visibility&lt;/b&gt; — full transparency into who did what, when, and how APIs are used.&lt;/li&gt;
 &lt;li&gt;&lt;b&gt;Private Test and Flows Runners&lt;/b&gt; — running tests and Flows inside the organization's private environment, without sending data externally.&lt;/li&gt;
 &lt;li&gt;&lt;b&gt;Insights&lt;/b&gt; — a clear picture of API activity, usage, traffic, and patterns.&lt;/li&gt;
+&lt;li&gt;&lt;b&gt;AI Capabilities&lt;/b&gt; — AI-driven capabilities that help developers and teams across different stages of the API lifecycle, including Design, Testing, Documentation, Governance, and Development.&lt;/li&gt;
 &lt;li&gt;&lt;b&gt;800 pooled AI credits per user/month&lt;/b&gt; — monthly credits for Postman's AI capabilities, shared across the organization.&lt;/li&gt;
 &lt;/ul&gt;
 &lt;div class=&quot;cross-box edit-unit&quot; contenteditable=&quot;false&quot;&gt;
@@ -1859,9 +1860,11 @@ A few additional capabilities that can be relevant, depending on the customer's 
 &lt;br/&gt;&lt;br/&gt;
 &lt;b&gt;Advanced Security Administration (ASA)&lt;/b&gt; — an add-on that adds an extra layer of security and control: Domain Capture, Account Discovery and Control, org-wide visibility into Secret Scanner, integration with Azure Key Vault, AWS Secrets Manager, and HashiCorp Vault, and BYOK.
 &lt;br/&gt;&lt;br/&gt;
-&lt;b&gt;Passport&lt;/b&gt; — an add-on focused on how developers, applications, and AI Agents discover APIs in the organization and get access to them — instead of asking in Slack who can send an API key and then storing it in code, you get an orderly process: find the API, request access, get approved, and use it securely, without necessarily ever holding the secret itself.
+&lt;b&gt;Passport&lt;/b&gt; — an add-on focused on how developers, applications, and AI Agents discover APIs in the organization and get access to them — instead of asking in Slack who can send an API key and then storing it in code, you get an orderly process: find the API, request access, get approved, and use it securely, without necessarily ever holding the secret itself. Passport doesn't replace your existing Vault — it adds a Discovery and Governance layer around API access and consumption.
 &lt;br/&gt;&lt;br/&gt;
-&lt;b&gt;Fabric&lt;/b&gt; — a central control layer for AI in the organization. As more teams work with different LLMs, build AI Agents, and connect AI to internal systems, Fabric gives you one central layer to control that traffic, secure it, define what Agents can access, manage credentials, and control costs and token usage.
+&lt;b&gt;Fabric&lt;/b&gt; — a central control layer for AI in the organization. As more teams work with different LLMs, build AI Agents, and connect AI to internal systems, Fabric gives you one central layer to control that traffic, secure it, define what Agents can access, manage credentials, and control costs and token usage. It isn't meant to replace your existing API Gateway — it adds a Governance layer dedicated to the AI world.
+&lt;br&gt;&lt;br&gt;
+&lt;b&gt;Fern&lt;/b&gt; — a separate platform (acquired by Postman in January 2026) that turns an existing API into a complete Developer Experience: it automatically generates documentation, SDKs in major languages, a CLI, and MCP servers from the same single API definition, so they never drift out of sync with each other. It sits on the Consumption side (how the API is consumed), not the Governance side — and is currently sold as its own standalone product, not part of a Postman plan.
 &lt;/div&gt;
 
 &lt;/section&gt;
@@ -4799,6 +4802,7 @@ document.addEventListener('keydown', (e)=&gt;{
 &lt;li&gt;&lt;b&gt;Audit Logs, Reporting ו-API usage visibility&lt;/b&gt; — שקיפות מלאה על מי עשה מה, מתי, ואיך משתמשים ב-APIs.&lt;/li&gt;
 &lt;li&gt;&lt;b&gt;Private Test and Flows Runners&lt;/b&gt; — הרצת בדיקות ו-Flows בתוך הסביבה הפרטית של הארגון, בלי לשלוח מידע לחוץ.&lt;/li&gt;
 &lt;li&gt;&lt;b&gt;Insights&lt;/b&gt; — תמונה ברורה של פעילות ה-APIs, שימוש, תעבורה ודפוסי פעילות.&lt;/li&gt;
+&lt;li&gt;&lt;b&gt;AI Capabilities&lt;/b&gt; — יכולות מבוססות AI שמסייעות למפתחים ולצוותים בתהליכים שונים לאורך מחזור החיים של ה-API, כולל Design, Testing, Documentation, Governance ו-Development.&lt;/li&gt;
 &lt;li&gt;&lt;b&gt;800 קרדיטי AI משותפים למשתמש/חודש&lt;/b&gt; — קרדיטים חודשיים ליכולות ה-AI, משותפים בתוך הארגון.&lt;/li&gt;
 &lt;/ul&gt;
 &lt;div class=&quot;cross-box edit-unit&quot; contenteditable=&quot;false&quot;&gt;
@@ -4806,9 +4810,11 @@ document.addEventListener('keydown', (e)=&gt;{
 &lt;br/&gt;&lt;br/&gt;
 &lt;b&gt;Advanced Security Administration (ASA)&lt;/b&gt; — תוסף שמוסיף שכבת אבטחה ושליטה מתקדמת: Domain Capture, Account Discovery ו-Control, נראות ארגונית על Secret Scanner, אינטגרציה עם Azure Key Vault, AWS Secrets Manager ו-HashiCorp Vault, ו-BYOK.
 &lt;br/&gt;&lt;br/&gt;
-&lt;b&gt;Passport&lt;/b&gt; — תוסף שמתמקד באיך מפתחים, אפליקציות ו-AI Agents מוצאים APIs בארגון ומקבלים אליהם גישה — במקום לשאול ב-Slack מי יכול לשלוח API Key ולשמור אותו בקוד, מקבלים תהליך מסודר: למצוא, לבקש גישה, לקבל אישור, ולהשתמש בצורה מאובטחת, בלי לקבל את ה-Secret עצמו.
+&lt;b&gt;Passport&lt;/b&gt; — תוסף שמתמקד באיך מפתחים, אפליקציות ו-AI Agents מוצאים APIs בארגון ומקבלים אליהם גישה — במקום לשאול ב-Slack מי יכול לשלוח API Key ולשמור אותו בקוד, מקבלים תהליך מסודר: למצוא, לבקש גישה, לקבל אישור, ולהשתמש בצורה מאובטחת, בלי לקבל את ה-Secret עצמו. Passport לא מחליף את ה-Vault הקיים, אלא מוסיף שכבת Discovery ו-Governance סביב הגישה והצריכה של APIs.
 &lt;br/&gt;&lt;br/&gt;
-&lt;b&gt;Fabric&lt;/b&gt; — שכבת בקרה מרכזית לעולם ה-AI בארגון. ככל שיותר צוותים עובדים עם מודלי LLM שונים, בונים AI Agents ומחברים AI למערכות פנימיות, Fabric נותן שכבה מרכזית לשלוט בתעבורה הזו, לאבטח אותה, להגדיר מה Agents יכולים לגשת אליו, לנהל Credentials, ולשלוט בעלויות ובצריכת Tokens.
+&lt;b&gt;Fabric&lt;/b&gt; — שכבת בקרה מרכזית לעולם ה-AI בארגון. ככל שיותר צוותים עובדים עם מודלי LLM שונים, בונים AI Agents ומחברים AI למערכות פנימיות, Fabric נותן שכבה מרכזית לשלוט בתעבורה הזו, לאבטח אותה, להגדיר מה Agents יכולים לגשת אליו, לנהל Credentials, ולשלוט בעלויות ובצריכת Tokens. הוא לא בא להחליף את ה-API Gateway הקיים, אלא מוסיף שכבת Governance ייעודית לעולם ה-AI.
+&lt;br&gt;&lt;br&gt;
+&lt;b&gt;Fern&lt;/b&gt; — פלטפורמה נפרדת (נרכשה על ידי Postman בינואר 2026) שהופכת API קיים ל-Developer Experience מלא: מייצרת אוטומטית תיעוד, SDKs בשפות מרכזיות, CLI ו-MCP servers מתוך אותה הגדרת API אחת, כך שהם לא יוצאים מסונכרון אלה מאלה. פונה לצד ה-Consumption (איך צורכים את ה-API), לא לצד ה-Governance - ונמכרת כרגע כמוצר עצמאי, לא כחלק מחבילת Postman.
 &lt;/div&gt;
 
 &lt;/section&gt;
