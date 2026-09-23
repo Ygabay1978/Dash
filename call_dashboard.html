@@ -992,6 +992,7 @@
     cursor:grab;font-size:16px;color:var(--grey);
     user-select:none;
     touch-action:none;
+    -webkit-user-drag:element;
   }
   .reorderable-card .drag-grip:hover{background:var(--orange);color:#fff;}
   .reorderable-card .drag-grip:active{cursor:grabbing;}
@@ -1040,6 +1041,7 @@
     cursor:grab;font-size:16px;color:var(--grey);
     user-select:none;
     touch-action:none;
+    -webkit-user-drag:element;
   }
   .block-drag-grip:hover{background:var(--orange);color:#fff;}
   .block-drag-grip:active{cursor:grabbing;}
@@ -1242,14 +1244,9 @@
   #left-nav .nav-item:hover{background:#FFF6F1;color:var(--orange);}
   #left-nav .nav-item.active{background:#FFF1E8;color:var(--orange);border-left:3px solid var(--orange);padding-left:7px;}
   .nav-reorder-item{display:flex;align-items:center;gap:2px;}
-  .nav-reorder-item &gt; .nav-item, .nav-reorder-item &gt; .nav-item-row{flex:1;min-width:0;}
-  .nav-reorder-item .nav-item-row{display:flex;align-items:center;gap:2px;flex:1;min-width:0;}
-  .nav-reorder-item .nav-item-row .nav-item{
-    width:auto;flex:1;min-width:0;
-    white-space:nowrap;overflow:hidden;text-overflow:ellipsis;
-    padding-right:6px;padding-left:2px;
-  }
-  .nav-reorder-item .nav-item-row .chevron-btn{padding:6px 2px;flex-shrink:0;}
+  .nav-reorder-item &gt; .nav-item{flex:1;min-width:0;}
+  .nav-item-label{overflow:hidden;text-overflow:ellipsis;white-space:nowrap;min-width:0;}
+  .nav-item .chevron-btn{flex-shrink:0;margin-left:4px;}
   .reorder-arrows{display:flex;flex-direction:column;flex-shrink:0;}
   .reorder-up, .reorder-down{
     border:none;background:transparent;color:var(--grey);cursor:pointer;
@@ -1708,12 +1705,10 @@
 &lt;div class=&quot;nav-reorder-item&quot; data-reorder-id=&quot;process&quot;&gt;&lt;button class=&quot;nav-item&quot; data-scroll=&quot;sec-process&quot;&gt;The Process&lt;/button&gt;&lt;span class=&quot;reorder-arrows&quot;&gt;&lt;button class=&quot;reorder-up&quot; title=&quot;Move up&quot;&gt;▲&lt;/button&gt;&lt;button class=&quot;reorder-down&quot; title=&quot;Move down&quot;&gt;▼&lt;/button&gt;&lt;/span&gt;&lt;/div&gt;
 &lt;div class=&quot;nav-reorder-item&quot; data-reorder-id=&quot;ai&quot;&gt;&lt;button class=&quot;nav-item&quot; data-scroll=&quot;sec-ai&quot;&gt;AI&lt;/button&gt;&lt;span class=&quot;reorder-arrows&quot;&gt;&lt;button class=&quot;reorder-up&quot; title=&quot;Move up&quot;&gt;▲&lt;/button&gt;&lt;button class=&quot;reorder-down&quot; title=&quot;Move down&quot;&gt;▼&lt;/button&gt;&lt;/span&gt;&lt;/div&gt;
 &lt;div class=&quot;nav-reorder-item&quot; data-reorder-id=&quot;stages&quot;&gt;&lt;button class=&quot;nav-item&quot; data-scroll=&quot;sec-stages&quot;&gt;What We Offer&lt;/button&gt;&lt;span class=&quot;reorder-arrows&quot;&gt;&lt;button class=&quot;reorder-up&quot; title=&quot;Move up&quot;&gt;▲&lt;/button&gt;&lt;button class=&quot;reorder-down&quot; title=&quot;Move down&quot;&gt;▼&lt;/button&gt;&lt;/span&gt;&lt;/div&gt;
-&lt;div class=&quot;nav-reorder-item&quot; data-reorder-id=&quot;products&quot;&gt;
 &lt;div class=&quot;nav-item-row&quot;&gt;
 &lt;button class=&quot;nav-item&quot; data-scroll=&quot;sec-products&quot;&gt;Core Products&lt;/button&gt;
 &lt;button class=&quot;chevron-btn&quot; data-toggle=&quot;submenu-products&quot; title=&quot;Show all products&quot;&gt;⌄&lt;/button&gt;
 &lt;/div&gt;
-&lt;span class=&quot;reorder-arrows&quot;&gt;&lt;button class=&quot;reorder-up&quot; title=&quot;Move up&quot;&gt;▲&lt;/button&gt;&lt;button class=&quot;reorder-down&quot; title=&quot;Move down&quot;&gt;▼&lt;/button&gt;&lt;/span&gt;
 &lt;div class=&quot;nav-submenu&quot; id=&quot;submenu-products&quot;&gt;
 &lt;button class=&quot;nav-subitem&quot; data-scroll=&quot;prod-organizations&quot;&gt;Organizations&lt;/button&gt;
 &lt;button class=&quot;nav-subitem&quot; data-scroll=&quot;prod-api-catalog&quot;&gt;API Catalog&lt;/button&gt;
@@ -1731,7 +1726,6 @@
 &lt;button class=&quot;nav-subitem&quot; data-scroll=&quot;prod-asa&quot;&gt;ASA&lt;/button&gt;
 &lt;button class=&quot;nav-subitem&quot; data-scroll=&quot;prod-fabric-inline&quot;&gt;Fabric&lt;/button&gt;
 &lt;button class=&quot;nav-subitem&quot; data-scroll=&quot;prod-passport-inline&quot;&gt;Passport&lt;/button&gt;
-&lt;/div&gt;
 &lt;/div&gt;
 &lt;div class=&quot;nav-sep&quot;&gt;&lt;/div&gt;
 &lt;div class=&quot;nav-reorder-item&quot; data-reorder-id=&quot;panel-objections&quot;&gt;&lt;button class=&quot;nav-item nav-panel&quot; data-open-panel=&quot;panel-objections&quot;&gt;&lt;span&gt;Positioning &amp;amp; Objections&lt;/span&gt;&lt;span class=&quot;arrow&quot;&gt;↗&lt;/span&gt;&lt;/button&gt;&lt;span class=&quot;reorder-arrows&quot;&gt;&lt;button class=&quot;reorder-up&quot; title=&quot;Move up&quot;&gt;▲&lt;/button&gt;&lt;button class=&quot;reorder-down&quot; title=&quot;Move down&quot;&gt;▼&lt;/button&gt;&lt;/span&gt;&lt;/div&gt;
@@ -2701,7 +2695,8 @@ A few additional capabilities that can be relevant, depending on the customer's 
 
   const scrollButtons = document.querySelectorAll('.nav-item[data-scroll]');
   scrollButtons.forEach(btn=&gt;{
-    btn.addEventListener('click', ()=&gt;{
+    btn.addEventListener('click', (e)=&gt;{
+      if(e.target.closest('.chevron-btn')) return; // handled separately below
       const target = document.getElementById(btn.dataset.scroll);
       if(target){
         target.scrollIntoView({ behavior: 'smooth', block: 'start' });
@@ -2715,7 +2710,8 @@ A few additional capabilities that can be relevant, depending on the customer's 
   // section exactly as before. Each product inside the list scrolls to that
   // specific product's own card.
   document.querySelectorAll('.chevron-btn[data-toggle]').forEach(btn=&gt;{
-    btn.addEventListener('click', ()=&gt;{
+    btn.addEventListener('click', (e)=&gt;{
+      e.stopPropagation();
       const submenu = document.getElementById(btn.dataset.toggle);
       if(!submenu) return;
       submenu.classList.toggle('open');
@@ -3241,21 +3237,25 @@ A few additional capabilities that can be relevant, depending on the customer's 
         card.dataset.wired = '1';
         card.classList.add('reorderable-card');
         card.style.position = card.style.position || 'relative';
-        card.setAttribute('draggable', 'true');
 
-        if(!card.querySelector('.drag-grip')){
-          const grip = document.createElement('div');
+        let grip = card.querySelector('.drag-grip');
+        if(!grip){
+          grip = document.createElement('div');
           grip.className = 'drag-grip';
           grip.title = 'Drag to reorder';
           grip.textContent = '⠿';
           card.appendChild(grip);
         }
+        grip.setAttribute('contenteditable', 'false');
+        grip.setAttribute('draggable', 'true');
+
         if(!card.querySelector('.card-delete-btn')){
           const del = document.createElement('button');
           del.className = 'card-delete-btn';
           del.title = 'Delete this card';
           del.type = 'button';
           del.textContent = '🗑';
+          del.setAttribute('contenteditable', 'false');
           del.addEventListener('click', (e)=&gt;{
             e.stopPropagation();
             if(window.confirm('Delete this card?')){
@@ -3266,8 +3266,11 @@ A few additional capabilities that can be relevant, depending on the customer's 
           card.appendChild(del);
         }
 
-        card.addEventListener('dragstart', ()=&gt;{ card.classList.add('dragging'); });
-        card.addEventListener('dragend', ()=&gt;{ card.classList.remove('dragging'); saveSnapshot(); });
+        grip.addEventListener('dragstart', (e)=&gt;{
+          e.dataTransfer.setData('text/plain', '');
+          card.classList.add('dragging');
+        });
+        grip.addEventListener('dragend', ()=&gt;{ card.classList.remove('dragging'); saveSnapshot(); });
       }
       checkEmptyCard(card);
     }
@@ -3404,12 +3407,17 @@ A few additional capabilities that can be relevant, depending on the customer's 
       if(!el.dataset.blockWired){
         el.dataset.blockWired = '1';
         el.classList.add('draggable-block');
-        el.setAttribute('draggable', 'true');
+        // NOT draggable on the whole block — only the grip is a drag
+        // source. The block is contenteditable, so making the whole thing
+        // draggable made any drag gesture over the text start a native
+        // text-selection drag instead of moving the block.
 
         const grip = document.createElement('span');
         grip.className = 'block-drag-grip';
         grip.title = 'Drag to move';
         grip.textContent = '⠿';
+        grip.setAttribute('contenteditable', 'false');
+        grip.setAttribute('draggable', 'true');
         el.appendChild(grip);
 
         const del = document.createElement('button');
@@ -3417,6 +3425,7 @@ A few additional capabilities that can be relevant, depending on the customer's 
         del.className = 'block-delete-btn';
         del.title = 'Delete this block';
         del.textContent = '🗑';
+        del.setAttribute('contenteditable', 'false');
         del.addEventListener('click', (e)=&gt;{
           e.stopPropagation();
           if(window.confirm('Delete this block?')){
@@ -3426,8 +3435,11 @@ A few additional capabilities that can be relevant, depending on the customer's 
         });
         el.appendChild(del);
 
-        el.addEventListener('dragstart', ()=&gt;{ el.classList.add('dragging'); });
-        el.addEventListener('dragend', ()=&gt;{ el.classList.remove('dragging'); saveSnapshot(); });
+        grip.addEventListener('dragstart', (e)=&gt;{
+          e.dataTransfer.setData('text/plain', '');
+          el.classList.add('dragging');
+        });
+        grip.addEventListener('dragend', ()=&gt;{ el.classList.remove('dragging'); saveSnapshot(); });
       }
       checkEmptyBlock(el);
     }
@@ -3768,6 +3780,7 @@ document.addEventListener('keydown', (e)=&gt;{
     cursor:grab;font-size:16px;color:var(--grey);
     user-select:none;
     touch-action:none;
+    -webkit-user-drag:element;
   }
   .reorderable-card .drag-grip:hover{background:var(--orange);color:#fff;}
   .reorderable-card .drag-grip:active{cursor:grabbing;}
@@ -3816,6 +3829,7 @@ document.addEventListener('keydown', (e)=&gt;{
     cursor:grab;font-size:16px;color:var(--grey);
     user-select:none;
     touch-action:none;
+    -webkit-user-drag:element;
   }
   .block-drag-grip:hover{background:var(--orange);color:#fff;}
   .block-drag-grip:active{cursor:grabbing;}
@@ -4022,14 +4036,9 @@ document.addEventListener('keydown', (e)=&gt;{
   #left-nav .nav-item:hover{background:#FFF6F1;color:var(--orange);}
   #left-nav .nav-item.active{background:#FFF1E8;color:var(--orange);border-right:3px solid var(--orange);padding-right:7px;}
   .nav-reorder-item{display:flex;align-items:center;gap:2px;}
-  .nav-reorder-item &gt; .nav-item, .nav-reorder-item &gt; .nav-item-row{flex:1;min-width:0;}
-  .nav-reorder-item .nav-item-row{display:flex;align-items:center;gap:2px;flex:1;min-width:0;}
-  .nav-reorder-item .nav-item-row .nav-item{
-    width:auto;flex:1;min-width:0;
-    white-space:nowrap;overflow:hidden;text-overflow:ellipsis;
-    padding-right:6px;padding-left:2px;
-  }
-  .nav-reorder-item .nav-item-row .chevron-btn{padding:6px 2px;flex-shrink:0;}
+  .nav-reorder-item &gt; .nav-item{flex:1;min-width:0;}
+  .nav-item-label{overflow:hidden;text-overflow:ellipsis;white-space:nowrap;min-width:0;}
+  .nav-item .chevron-btn{flex-shrink:0;margin-right:4px;}
   .reorder-arrows{display:flex;flex-direction:column;flex-shrink:0;}
   .reorder-up, .reorder-down{
     border:none;background:transparent;color:var(--grey);cursor:pointer;
@@ -4482,12 +4491,10 @@ document.addEventListener('keydown', (e)=&gt;{
 &lt;div class=&quot;nav-reorder-item&quot; data-reorder-id=&quot;process&quot;&gt;&lt;button class=&quot;nav-item&quot; data-scroll=&quot;sec-process&quot;&gt;התהליך&lt;/button&gt;&lt;span class=&quot;reorder-arrows&quot;&gt;&lt;button class=&quot;reorder-up&quot; title=&quot;הזז מעלה&quot;&gt;▲&lt;/button&gt;&lt;button class=&quot;reorder-down&quot; title=&quot;הזז מטה&quot;&gt;▼&lt;/button&gt;&lt;/span&gt;&lt;/div&gt;
 &lt;div class=&quot;nav-reorder-item&quot; data-reorder-id=&quot;ai&quot;&gt;&lt;button class=&quot;nav-item&quot; data-scroll=&quot;sec-ai&quot;&gt;AI&lt;/button&gt;&lt;span class=&quot;reorder-arrows&quot;&gt;&lt;button class=&quot;reorder-up&quot; title=&quot;הזז מעלה&quot;&gt;▲&lt;/button&gt;&lt;button class=&quot;reorder-down&quot; title=&quot;הזז מטה&quot;&gt;▼&lt;/button&gt;&lt;/span&gt;&lt;/div&gt;
 &lt;div class=&quot;nav-reorder-item&quot; data-reorder-id=&quot;stages&quot;&gt;&lt;button class=&quot;nav-item&quot; data-scroll=&quot;sec-stages&quot;&gt;מה אנחנו מציעים&lt;/button&gt;&lt;span class=&quot;reorder-arrows&quot;&gt;&lt;button class=&quot;reorder-up&quot; title=&quot;הזז מעלה&quot;&gt;▲&lt;/button&gt;&lt;button class=&quot;reorder-down&quot; title=&quot;הזז מטה&quot;&gt;▼&lt;/button&gt;&lt;/span&gt;&lt;/div&gt;
-&lt;div class=&quot;nav-reorder-item&quot; data-reorder-id=&quot;products&quot;&gt;
 &lt;div class=&quot;nav-item-row&quot;&gt;
 &lt;button class=&quot;nav-item&quot; data-scroll=&quot;sec-products&quot;&gt;מוצרי הליבה&lt;/button&gt;
 &lt;button class=&quot;chevron-btn&quot; data-toggle=&quot;submenu-products&quot; title=&quot;הצג את כל המוצרים&quot;&gt;⌄&lt;/button&gt;
 &lt;/div&gt;
-&lt;span class=&quot;reorder-arrows&quot;&gt;&lt;button class=&quot;reorder-up&quot; title=&quot;הזז מעלה&quot;&gt;▲&lt;/button&gt;&lt;button class=&quot;reorder-down&quot; title=&quot;הזז מטה&quot;&gt;▼&lt;/button&gt;&lt;/span&gt;
 &lt;div class=&quot;nav-submenu&quot; id=&quot;submenu-products&quot;&gt;
 &lt;button class=&quot;nav-subitem&quot; data-scroll=&quot;prod-organizations&quot;&gt;Organizations&lt;/button&gt;
 &lt;button class=&quot;nav-subitem&quot; data-scroll=&quot;prod-api-catalog&quot;&gt;API Catalog&lt;/button&gt;
@@ -4505,7 +4512,6 @@ document.addEventListener('keydown', (e)=&gt;{
 &lt;button class=&quot;nav-subitem&quot; data-scroll=&quot;prod-asa&quot;&gt;ASA&lt;/button&gt;
 &lt;button class=&quot;nav-subitem&quot; data-scroll=&quot;prod-fabric-inline&quot;&gt;Fabric&lt;/button&gt;
 &lt;button class=&quot;nav-subitem&quot; data-scroll=&quot;prod-passport-inline&quot;&gt;Passport&lt;/button&gt;
-&lt;/div&gt;
 &lt;/div&gt;
 &lt;div class=&quot;nav-sep&quot;&gt;&lt;/div&gt;
 &lt;div class=&quot;nav-reorder-item&quot; data-reorder-id=&quot;panel-objections&quot;&gt;&lt;button class=&quot;nav-item nav-panel&quot; data-open-panel=&quot;panel-objections&quot;&gt;&lt;span&gt;מיצוב והתנגדויות&lt;/span&gt;&lt;span class=&quot;arrow&quot;&gt;↗&lt;/span&gt;&lt;/button&gt;&lt;span class=&quot;reorder-arrows&quot;&gt;&lt;button class=&quot;reorder-up&quot; title=&quot;הזז מעלה&quot;&gt;▲&lt;/button&gt;&lt;button class=&quot;reorder-down&quot; title=&quot;הזז מטה&quot;&gt;▼&lt;/button&gt;&lt;/span&gt;&lt;/div&gt;
@@ -5479,7 +5485,8 @@ document.addEventListener('keydown', (e)=&gt;{
 
   const scrollButtons = document.querySelectorAll('.nav-item[data-scroll]');
   scrollButtons.forEach(btn=&gt;{
-    btn.addEventListener('click', ()=&gt;{
+    btn.addEventListener('click', (e)=&gt;{
+      if(e.target.closest('.chevron-btn')) return; // handled separately below
       const target = document.getElementById(btn.dataset.scroll);
       if(target){
         target.scrollIntoView({ behavior: 'smooth', block: 'start' });
@@ -5493,7 +5500,8 @@ document.addEventListener('keydown', (e)=&gt;{
   // section exactly as before. Each product inside the list scrolls to that
   // specific product's own card.
   document.querySelectorAll('.chevron-btn[data-toggle]').forEach(btn=&gt;{
-    btn.addEventListener('click', ()=&gt;{
+    btn.addEventListener('click', (e)=&gt;{
+      e.stopPropagation();
       const submenu = document.getElementById(btn.dataset.toggle);
       if(!submenu) return;
       submenu.classList.toggle('open');
@@ -6032,21 +6040,28 @@ document.addEventListener('keydown', (e)=&gt;{
         card.dataset.wired = '1';
         card.classList.add('reorderable-card');
         card.style.position = card.style.position || 'relative';
-        card.setAttribute('draggable', 'true');
+        // NOT draggable on the whole card — only the grip is a drag source
+        // (see the block version's comment for why: cards contain
+        // contenteditable text, and a draggable card fights text selection).
 
-        if(!card.querySelector('.drag-grip')){
-          const grip = document.createElement('div');
+        let grip = card.querySelector('.drag-grip');
+        if(!grip){
+          grip = document.createElement('div');
           grip.className = 'drag-grip';
           grip.title = 'גרור כדי לשנות סדר';
           grip.textContent = '⠿';
           card.appendChild(grip);
         }
+        grip.setAttribute('contenteditable', 'false');
+        grip.setAttribute('draggable', 'true');
+
         if(!card.querySelector('.card-delete-btn')){
           const del = document.createElement('button');
           del.className = 'card-delete-btn';
           del.title = 'מחק כרטיס זה';
           del.type = 'button';
           del.textContent = '🗑';
+          del.setAttribute('contenteditable', 'false');
           del.addEventListener('click', (e)=&gt;{
             e.stopPropagation();
             if(window.confirm('למחוק את הכרטיס הזה?')){
@@ -6057,8 +6072,11 @@ document.addEventListener('keydown', (e)=&gt;{
           card.appendChild(del);
         }
 
-        card.addEventListener('dragstart', ()=&gt;{ card.classList.add('dragging'); });
-        card.addEventListener('dragend', ()=&gt;{ card.classList.remove('dragging'); saveSnapshot(); });
+        grip.addEventListener('dragstart', (e)=&gt;{
+          e.dataTransfer.setData('text/plain', '');
+          card.classList.add('dragging');
+        });
+        grip.addEventListener('dragend', ()=&gt;{ card.classList.remove('dragging'); saveSnapshot(); });
       }
       checkEmptyCard(card);
     }
@@ -6201,12 +6219,17 @@ document.addEventListener('keydown', (e)=&gt;{
       if(!el.dataset.blockWired){
         el.dataset.blockWired = '1';
         el.classList.add('draggable-block');
-        el.setAttribute('draggable', 'true');
+        // NOT draggable on the whole block — only the grip is a drag
+        // source. The block is contenteditable, so making the whole thing
+        // draggable made any drag gesture over the text start a native
+        // text-selection drag instead of moving the block.
 
         const grip = document.createElement('span');
         grip.className = 'block-drag-grip';
         grip.title = 'גרור כדי להזיז';
         grip.textContent = '⠿';
+        grip.setAttribute('contenteditable', 'false');
+        grip.setAttribute('draggable', 'true');
         el.appendChild(grip);
 
         const del = document.createElement('button');
@@ -6214,6 +6237,7 @@ document.addEventListener('keydown', (e)=&gt;{
         del.className = 'block-delete-btn';
         del.title = 'מחק בלוק זה';
         del.textContent = '🗑';
+        del.setAttribute('contenteditable', 'false');
         del.addEventListener('click', (e)=&gt;{
           e.stopPropagation();
           if(window.confirm('למחוק את הבלוק הזה?')){
@@ -6223,8 +6247,11 @@ document.addEventListener('keydown', (e)=&gt;{
         });
         el.appendChild(del);
 
-        el.addEventListener('dragstart', ()=&gt;{ el.classList.add('dragging'); });
-        el.addEventListener('dragend', ()=&gt;{ el.classList.remove('dragging'); saveSnapshot(); });
+        grip.addEventListener('dragstart', (e)=&gt;{
+          e.dataTransfer.setData('text/plain', ''); // Firefox needs this to allow the drag
+          el.classList.add('dragging');
+        });
+        grip.addEventListener('dragend', ()=&gt;{ el.classList.remove('dragging'); saveSnapshot(); });
       }
       // Always re-check emptiness — even for a block restored from a saved
       // snapshot that was already wired (and already empty) in a past
