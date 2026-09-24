@@ -23,7 +23,7 @@ body{
   margin:0;
   background:var(--bg-page);
   color:var(--ink);
-  font-family:"Segoe UI","Arial Hebrew","Noto Sans Hebrew",Arial,sans-serif;
+  font-family:"Segoe UI",Arial,sans-serif;
   line-height:1.75;
   padding:0 5vw 100px;
 }
@@ -54,7 +54,7 @@ main{max-width:820px;margin:0 auto;}
 body.edit-mode .block{cursor:default;box-shadow:0 0 0 1px transparent;}
 body.edit-mode .block:hover{box-shadow:0 0 0 1px #FFD9C7;}
 .drag-handle{
-  display:none;position:absolute;top:6px;left:-30px;width:24px;height:24px;
+  display:none;position:absolute;top:6px;right:-30px;width:24px;height:24px;
   border-radius:6px;background:var(--cream);color:var(--orange-dark);
   align-items:center;justify-content:center;cursor:grab;font-size:14px;user-select:none;
 }
@@ -71,10 +71,10 @@ body.edit-mode .block-content:focus{outline-color:var(--orange);background:#FFFD
   text-transform:uppercase;letter-spacing:.04em;margin:6px 0 8px;
 }
 
-.say{background:#F3F7F5;border-right:3px solid var(--green);border-radius:6px;padding:14px 18px;margin:16px 0;font-size:15.5px;}
+.say{background:#F3F7F5;border-left:3px solid var(--green);border-radius:6px;padding:14px 18px;margin:16px 0;font-size:15.5px;}
 .say b.tag{color:var(--green);display:block;font-size:12px;margin-bottom:6px;}
 
-.say-critical{background:#FDECEC;border-right:4px solid var(--bad);border-radius:6px;padding:14px 18px;margin:0 0 12px;font-size:15px;}
+.say-critical{background:#FDECEC;border-left:4px solid var(--bad);border-radius:6px;padding:14px 18px;margin:0 0 12px;font-size:15px;}
 .say-critical b.tag{color:var(--bad);display:block;font-size:12px;margin-bottom:6px;text-transform:uppercase;}
 .say-critical:last-of-type{margin-bottom:18px;}
 
@@ -92,7 +92,7 @@ body.edit-mode .block-content:focus{outline-color:var(--orange);background:#FFFD
   cursor:pointer;margin:4px 4px 4px 0;transition:.15s;
 }
 .chip:hover{background:var(--orange);color:#fff;border-color:var(--orange);}
-.chip::before{content:"↗";font-size:12px;}
+.chip::after{content:"↗";font-size:12px;margin-left:4px;}
 .chip-row{margin:4px 0;}
 
 .stage-row{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin:12px 0 6px;}
@@ -117,22 +117,22 @@ body.edit-mode .panel-body:hover{outline-color:#FFD9C7;}
 body.edit-mode .panel-body:focus{outline-color:var(--orange);}
 
 table.bt{width:100%;border-collapse:collapse;font-size:13.5px;margin-top:10px;}
-table.bt th{text-align:right;background:var(--cream);padding:9px 12px;font-size:11.5px;text-transform:uppercase;letter-spacing:.02em;color:var(--grey);}
+table.bt th{text-align:left;background:var(--cream);padding:9px 12px;font-size:11.5px;text-transform:uppercase;letter-spacing:.02em;color:var(--grey);}
 table.bt td{padding:9px 12px;border-top:1px solid var(--line);vertical-align:top;}
 table.bt tr:nth-child(even) td{background:#FCFCFB;}
-table.bt caption{text-align:right;font-size:13px;color:var(--grey);margin-bottom:6px;caption-side:top;}
+table.bt caption{text-align:left;font-size:13px;color:var(--grey);margin-bottom:6px;caption-side:top;}
 .fit-high{color:var(--good);font-weight:700;}
 .fit-mid{color:#B8860B;font-weight:700;}
 .fit-low{color:var(--bad);font-weight:700;}
 
-.bubble{border-radius:8px;padding:11px 15px;margin-bottom:8px;font-size:14px;line-height:1.55;border-right:3px solid transparent;}
+.bubble{border-radius:8px;padding:11px 15px;margin-bottom:8px;font-size:14px;line-height:1.55;border-left:3px solid transparent;}
 .bubble:last-child{margin-bottom:0;}
-.bubble.ae{background:var(--cream);border-right-color:var(--orange);}
+.bubble.ae{background:var(--cream);border-left-color:var(--orange);}
 .bubble .bubble-role{font-size:10px;text-transform:uppercase;letter-spacing:.05em;display:block;margin-bottom:4px;color:var(--grey);font-weight:800;}
 .bubble.ae .bubble-role{color:var(--orange-dark);}
 .obj-wrap{border:1px solid var(--line);border-radius:8px;padding:14px 16px;margin-bottom:12px;background:var(--bg-page);}
 .obj-wrap .q{font-weight:700;margin-bottom:8px;}
-ul.clean{margin:0;padding-right:18px;}
+ul.clean{margin:0;padding-left:18px;}
 ul.clean li{margin-bottom:8px;font-size:14.5px;}
 
 /* format toolbar */
@@ -146,7 +146,7 @@ body.edit-mode #fmtbar{transform:translateX(-50%) translateY(0);}
 #fmtbar button:hover{background:var(--cream);color:var(--orange-dark);}
 #fmtbar .lbl{font-size:11px;color:var(--grey);padding:0 6px;}
 
-@media(max-width:760px){.stage-row{grid-template-columns:repeat(2,1fr);} .drag-handle{left:-4px;top:-4px;position:relative;margin-bottom:4px;}}
+@media(max-width:760px){.stage-row{grid-template-columns:repeat(2,1fr);} .drag-handle{right:-4px;top:-4px;position:relative;margin-bottom:4px;}}
 </style>
 </head>
 <body>
@@ -154,7 +154,7 @@ body.edit-mode #fmtbar{transform:translateX(-50%) translateY(0);}
 <header class="top">
   <div class="htext">
     <h1>Fern</h1>
-    <p>Postman helps you build a good API. Fern helps make it actually get used — by developers and by AI Agents.</p>
+    <p>Postman helps you build a good API. Fern helps make it actually get consumed — by developers, and by AI Agents.</p>
   </div>
   <div class="toolbar">
     <button class="tbtn" id="editToggle" onclick="toggleEdit()">✏️ Edit</button>
@@ -169,24 +169,25 @@ body.edit-mode #fmtbar{transform:translateX(-50%) translateY(0);}
 <div class="block" data-id="b1">
   <span class="drag-handle">⠿</span>
   <div class="block-content script">
-    <p>Think about it this way, and open the conversation right at this point: <b>Postman helps you build, test, and manage an API. Fern takes that same API and does something completely different with it — it makes it easy to consume, both by developers and by AI Agents.</b></p>
-    <p>The customer's API can be technically excellent, but the moment an external or internal developer needs to use it, they ask simple questions: where is the API? How do I connect? What SDK exists in my language? Is the documentation even up to date? <b>Fern sits exactly at this point</b> — on the Consumption side, not the Governance side. It takes the API Specification and automatically builds around it documentation, SDKs, a command-line tool, and MCP servers for AI Agents.</p>
+    <p>Think of it this way, and open the conversation exactly at this point: <b>Postman helps you build, test and manage an API. Fern takes that same API and does something completely different with it — it makes it easy to consume, both for developers and for AI Agents.</b></p>
+    <p>A customer's API can be technically excellent, but the moment an external or internal developer needs to use it, they ask simple questions: where's the API? How do I connect? Which SDK is there in my language? Is the documentation even up to date? <b>Fern sits exactly at that point</b> — on the Consumption side, not the Governance side. It takes the API Specification and automatically builds around it: documentation, SDKs, a command-line tool, and MCP servers for AI Agents.</p>
     <div class="stage-row">
-      <div class="stage core"><div class="t">Documentation</div><div class="d">endpoints, code examples, authentication</div></div>
-      <div class="stage core"><div class="t">SDKs</div><div class="d">ready-made library in the developer's language</div></div>
-      <div class="stage"><div class="t">CLI</div><div class="d">API access from the command line</div></div>
-      <div class="stage"><div class="t">MCP Servers</div><div class="d">structured connection for AI Agents</div></div>
+      <div class="stage core"><div class="t">Documentation</div><div class="d">Docs-as-code — lives in Git next to the code, auto-updates on every API change via CI/CD</div></div>
+      <div class="stage core"><div class="t">SDKs</div><div class="d">9 languages — the only vendor with production Swift. A deterministic, consistent way to connect to the API, so no developer (or agent) has to invent Auth and Pagination on their own</div></div>
+      <div class="stage"><div class="t">CLI</div><div class="d">Command-line access to the API — an organized function tree, for agents too. There's also <code>fern diff</code> — a command that shows exactly where the API, the SDK and the Docs have drifted out of sync</div></div>
+      <div class="stage"><div class="t">MCP Servers</div><div class="d">A full MCP server for the API itself, not just for the docs</div></div>
     </div>
-    <p>One sentence worth memorizing: <b>Fern takes an existing API and turns it into a complete Developer Experience</b> — not just a document that describes it.</p>
+    <p>Worth saying: the documentation is served as Markdown on the server side (not the client side), so Claude Code, Codex and Cursor can read it and work with it directly. The SDK in particular matters for agents: an agent building against an API with no SDK makes inconsistent decisions (Auth, Pagination), which raises token spend and lengthens development time.</p>
+    <p>The one sentence worth knowing by heart: <b>Fern takes an existing API and turns it into a full Developer Experience</b> — not just a document describing it.</p>
   </div>
 </div>
 
 <div class="block" data-id="b2">
   <span class="drag-handle">⠿</span>
   <div class="block-content script">
-    <span class="eyebrow">From here you move to the problem</span>
-    <p>Say a company built an API. From the dev team's point of view — it exists, it works, all good. But an external developer coming from outside asks completely different questions: where is the API, how does Authentication work, which Endpoint is relevant, how is Pagination handled, which SDK do I need, and where are the examples at all. And as the API changes — which is good, it's a sign the business is alive — another problem appears: the layers <b>API → Documentation → SDK → Examples</b> drift out of sync with each other. That's <b>Drift</b>, and it's the central pain most organizations experience without having a name for it.</p>
-    <p>The customer isn't really buying Documentation. They're buying <b>a way to turn APIs into a product that's easier to consume</b>. Documentation is usually the entry point, but Fern gives much more than that around the same API — and that's what makes it far broader than just a documentation tool.</p>
+    <span class="eyebrow">From here, move to the problem</span>
+    <p>Say a company built an API. From the engineering team's point of view — it exists, it works, all is fine. But an external developer coming from outside asks completely different questions: where's the API, how do I do Authentication, which Endpoint is relevant, how do I handle Pagination, which SDK do I need, and where are the examples at all. And the more the API changes — which is good, it's a sign the business is alive — another problem appears: the layers <b>API → Documentation → SDK → Examples</b> drift out of sync with each other. That's <b>Drift</b>, and it's the core pain most organizations feel without ever naming it.</p>
+    <p>The customer isn't really buying Documentation. They're buying <b>a way to turn APIs into a product that's easier to consume</b>. Documentation is usually the entry point, but Fern gives much more than that around the same API — which is what makes it far broader than a documentation tool alone.</p>
     <div class="chip-row"><span class="chip" onclick="openPanel('panel-discovery')">Discovery questions — including the money question</span></div>
   </div>
 </div>
@@ -197,12 +198,13 @@ body.edit-mode #fmtbar{transform:translateX(-50%) translateY(0);}
     <span class="eyebrow">First scenario you can lay out: an insurance company</span>
     <div class="prod">
       <div class="t">A large insurance company</div>
-      <p>It has APIs for customers, policies, claims, quotes, and agents — and it lets partners and insurance agencies connect to them. The situation: hundreds of APIs, documentation scattered across different places, hand-built SDKs, and every API change requires updating several places.</p>
-      <p>The business problem: <b>a new agency wants to connect.</b> They need to go through documentation → understand Authentication → understand Endpoints → build the integration → troubleshoot. Fern can deliver: <b>API Specification → Documentation + SDKs + Examples</b> — and the key takes away a far more organized path to start working.</p>
-      <p>And because this is an insurance company, Fern's ability to run <b>Self-Hosted</b> (running the Documentation and SDK generation inside the customer's own infrastructure, including On-Prem or Private Cloud) can be a meaningful part of the conversation — worth raising it early, not waiting to be asked.</p>
+      <p>It has APIs for customers, policies, claims, quotes and agents — and it lets partners and insurance agencies connect to them. The typical state: hundreds of APIs, documentation scattered in different places, SDKs built by hand, and every API change requires updating several places.</p>
+      <p>The business problem shows up the moment <b>a new agency wants to connect.</b> They need to go through documentation → understand Authentication → understand Endpoints → build an integration → troubleshoot. Fern can give: <b>API Specification → Documentation + SDKs + Examples</b> — and the partner gets a much more organized way to start working.</p>
+      <p>And because this is an insurance company, Fern's ability to run <b>Self-Hosted</b> (running the Documentation and SDK generation inside the customer's own infrastructure, including On-Prem or Private Cloud) can be a meaningful part of the conversation — worth raising early, not waiting for them to ask. This is mainly relevant for regulated industries — banking, insurance, payments, defense (companies like Bloomberg, Anduril and Intuit run Self-Hosted). Point worth remembering: in practice, many of these customers move to Hosted later on, once they've seen for themselves the Compliance and Performance of the managed environment — so you can start Self-Hosted with no hesitation, and let it evolve.</p>
+      <p style="color:var(--grey);font-size:13px;"><b>Who to target at an insurance company like this:</b> Head of Open Banking/API or Head of API Product (the Lead), Head of Developer Portal (second role). CISO/Compliance enters the picture once a regulatory Audit (DORA/PSD3) comes up — that's exactly the moment Self-Hosted moves from a theoretical question to a requirement.</p>
       <div class="say" style="margin-top:12px;">
         <b class="tag">Discovery question to close the scenario</b>
-        "How long does it take today for a new partner to go from getting API access to their first integration actually working?"
+        "How long does it take today for a new partner to go from getting access to the API to their first integration actually working?"
       </div>
     </div>
   </div>
@@ -213,10 +215,11 @@ body.edit-mode #fmtbar{transform:translateX(-50%) translateY(0);}
   <div class="block-content script">
     <span class="eyebrow">Second scenario: a credit / payments company</span>
     <div class="prod">
-      <div class="t">A credit company that lets merchants connect to Payment APIs</div>
-      <p>It has: Payment API, Refund API, Customer API, Transaction API, Fraud API, and Webhooks — and it wants Partners and Developers to connect quickly.</p>
+      <div class="t">A credit card company that lets merchants connect to Payment APIs</div>
+      <p>It has: a Payment API, Refund API, Customer API, Transaction API, Fraud API, and Webhooks — and it wants Partners and Developers to connect quickly.</p>
       <p><b>The problem:</b> the API changes frequently. Every change requires updating Docs + SDK + Examples + Code Samples — and this is usually done manually.</p>
-      <p>Fern can turn the API Specification into the source from which the SDKs and Documentation are generated — so the update happens in one place, not in twenty separate places every time the financial API changes.</p>
+      <p>Fern can turn the API Specification into the source that the SDKs and Documentation are generated from — so the update happens in one place, instead of twenty separate places every time the financial API changes.</p>
+      <p style="color:var(--grey);font-size:13px;"><b>Who to target at a credit company like this:</b> Head of API Product/Platform (the Lead), VP Engineering (second role). A good signal to check beforehand: search GitHub for "unofficial [company name] SDK" — if "unofficial" community-built SDKs exist, it means they don't have a good official SDK, and that's exactly the gap Fern closes.</p>
     </div>
   </div>
 </div>
@@ -225,9 +228,9 @@ body.edit-mode #fmtbar{transform:translateX(-50%) translateY(0);}
   <span class="drag-handle">⠿</span>
   <div class="block-content script">
     <span class="eyebrow">How to close the pitch</span>
-    <p>The important distinction to remember, if a question comes up about Postman itself: <b>Governance / Management / Discovery → Postman. Consumption / Developer Experience → Fern.</b> Fern doesn't replace the API Catalog — it sits downstream, the broader layer around the APIs: business context, Guides, examples, Troubleshooting. If the customer is a Postman customer, Postman stays their first point of contact.</p>
+    <p>The important distinction to remember, if a question about Postman itself comes up: <b>Governance / Management / Discovery → Postman. Consumption / Developer Experience → Fern.</b> Fern doesn't replace the API Catalog — it sits downstream, the broader layer around the APIs: business context, Guides, examples, Troubleshooting. If the customer is a Postman customer, Postman stays their first touchpoint.</p>
     <div class="chip-row">
-      <span class="chip" onclick="openPanel('panel-fit')">Who Fern fits, and who it doesn't</span>
+      <span class="chip" onclick="openPanel('panel-fit')">Who Fern fits — and who it doesn't</span>
       <span class="chip" onclick="openPanel('panel-signals')">Buying Signals — what to listen for</span>
       <span class="chip" onclick="openPanel('panel-ecosystem')">Fern vs. Catalog / Passport / Fabric</span>
       <span class="chip" onclick="openPanel('panel-objections')">Common objections</span>
@@ -239,7 +242,7 @@ body.edit-mode #fmtbar{transform:translateX(-50%) translateY(0);}
 
 </div>
 
-<div class="closing">Fern takes an existing API and turns it into a complete Developer Experience — Documentation + SDKs + CLI + MCP.</div>
+<div class="closing">Fern takes an existing API and turns it into a full Developer Experience — Documentation + SDKs + CLI + MCP.</div>
 </main>
 
 <div id="fmtbar">
@@ -250,7 +253,7 @@ body.edit-mode #fmtbar{transform:translateX(-50%) translateY(0);}
   <button onclick="document.execCommand('foreColor', false, '#E15A28')" title="Orange" style="color:#E15A28;">●</button>
   <button onclick="document.execCommand('foreColor', false, '#D64545')" title="Red" style="color:#D64545;">●</button>
   <button onclick="document.execCommand('foreColor', false, '#1C1C1E')" title="Black" style="color:#1C1C1E;">●</button>
-  <span class="lbl">Drag the ⠿ handle to reposition</span>
+  <span class="lbl">Drag the ⠿ handle to reorder</span>
 </div>
 
 <!-- ================= POPUP PANELS ================= -->
@@ -260,69 +263,89 @@ body.edit-mode #fmtbar{transform:translateX(-50%) translateY(0);}
   <div class="panel-head"><h3>Discovery Questions</h3><button class="panel-close" onclick="closeAllPanels()">✕</button></div>
   <div class="panel-body">
     <div class="say-critical">
-      <b class="tag">Main question #1 — then stay silent</b>
-      "Why are you talking to me specifically now?" This is the question that reveals the real pain — ask it, and leave the silence alone. Don't fill it.
+      <b class="tag">Key question #1 — then be quiet</b>
+      "Why are you talking to me right now?" This is the question that surfaces the real pain — ask it, and leave the silence alone. Don't fill it. <span style="color:var(--grey);font-weight:400;">Backup data if you need it: at Unleash, over 50% of website traffic now comes from Agents, and their agent traffic grew 12x since moving to Fern — "agent-readiness" isn't a theory.</span>
     </div>
     <div class="say-critical">
-      <b class="tag">Main question #2 — this is the money question</b>
-      "Is there Drift between your API, SDKs, and Docs? How often?" The customer will say self-maintenance only costs them a few hours of Engineering — the Drift is your answer. Follow-up question: what happens when something more urgent comes up? How long does it actually take to fix the gap? What breaks for the partner in the meantime?
+      <b class="tag">Key question #2 — this is the money one</b>
+      "Is there drift between your API, your SDKs and your docs? How often?" The customer will say self-maintenance costs them just a few engineering hours — Drift is your answer to that. Follow-up: what happens when something more urgent comes up instead? How long does it actually take to fix the gap? What breaks for a partner in the meantime?
     </div>
     <ul class="clean">
       <li>If a developer wants to use one of your APIs today, how do they find the information they need?</li>
-      <li>How easy is it for a developer to go from discovering the API to their first API call?</li>
-      <li>Who at your company owns the Developer Experience of the APIs?</li>
-      <li>Do you maintain the SDKs yourselves? If so — how much of that work is manual?</li>
-      <li>Are you already thinking about AI Agents that will consume your APIs? Building MCP Servers today?</li>
-      <li>How long does it take today for a new partner to go from getting API access to their first integration actually working?</li>
+      <li>How easy is it for a developer to go from discovering the API to their first successful API call?</li>
+      <li>Who owns the Developer Experience of your APIs?</li>
+      <li>Do you maintain your SDKs yourselves? If so — how much of that work is manual?</li>
+      <li>Are you already thinking about AI Agents consuming your APIs? Building MCP Servers today?</li>
+      <li>How long does it take today for a new partner to go from getting access to the API to their first integration actually working?</li>
     </ul>
   </div>
 </div>
 
 <div class="panel" id="panel-fit">
-  <div class="panel-head"><h3>Who Fern fits — and who it fits less</h3><button class="panel-close" onclick="closeAllPanels()">✕</button></div>
+  <div class="panel-head"><h3>Who Fern fits — and who it doesn't</h3><button class="panel-close" onclick="closeAllPanels()">✕</button></div>
   <div class="panel-body">
+  <div class="cross-box" style="margin-top:0;">
+    <b>Titles to look for:</b> Developer Experience / DevRel (Head of DevRel, Director of Developer Platforms) · API Product Owners (PM, Engineering Manager, Director of Engineering) · Platform Engineering (mainly for the internal use case). All of them roll up to VP Engineering — an exec-level conversation works well too.
+  </div>
+  <div class="cross-box">
+    <b>The real sweet spot:</b> not a company that never thought about this — a company that's already trying to solve it themselves and falling behind. Twilio, for example: 10 people maintaining SDKs, 10 maintaining Docs, two Major Versions behind their own OpenAPI — and they still signed a six-figure deal. That's the tell: heavy manual effort + a lagging result.
+  </div>
+  <div class="cross-box">
+    <b>Internal APIs have real pain too (Platform Engineering):</b> in a typical internal case, engineers waste time on Slack asking colleagues how an internal API works, and Agents can't pull that information reliably themselves. Non-technical teams (Sales, Analysts) also get stuck without understanding the API's Intent. Fern solves both sides — faster development, less cross-team friction. Worth remembering: AEO (exposure to external AI) is only relevant to public Docs — internal Docs don't need models to "learn" from them, but still benefit from MCP with Auth Passthrough, from llms.txt, and from internal AI search.
+  </div>
   <table class="bt">
     <tr><th>Profile</th><th>Why</th></tr>
-    <tr><td>Growing tech-forward companies, ~50+ employees, with an API or a developer/consumer-facing product</td><td><span class="fit-high">High</span> — an external API is ideal (revenue connects to it), but internal works too</td></tr>
-    <tr><td>Financial, insurance, payments, SaaS, AI, Marketplace companies</td><td><span class="fit-high">High</span></td></tr>
+    <tr><td>Tech-forward, growing companies, roughly 50+ employees, with an API or a developer/consumer-facing product</td><td><span class="fit-high">High</span> — external API is ideal (revenue attaches to it), but internal works too — harder to sell outbound</td></tr>
+    <tr><td>Fintech, insurance, payments, SaaS, AI, marketplace companies</td><td><span class="fit-high">High</span></td></tr>
     <tr><td>API Product Teams — the API is part of the product</td><td><span class="fit-high">High</span></td></tr>
-    <tr><td>Developer Experience / Platform Engineering teams</td><td><span class="fit-mid">High-Medium</span></td></tr>
-    <tr><td>General IT personas with no ownership of API / Developer Experience</td><td><span class="fit-low">Low</span> — this is a Postman/Governance conversation</td></tr>
-    <tr><td>Very early-stage companies (fresh out of YC)</td><td><span class="fit-low">Low</span> — the Free tier covers them</td></tr>
-    <tr><td>Only need API Governance / only Discovery</td><td><span class="fit-low">Low</span> — probably Postman / Catalog</td></tr>
+    <tr><td>Developer Experience / Platform Engineering teams</td><td><span class="fit-mid">High-medium</span></td></tr>
+    <tr><td>General IT personas with no ownership of the API / Developer Experience</td><td><span class="fit-low">Low</span> — that's a Postman/Governance conversation</td></tr>
+    <tr><td>Series A-stage companies</td><td><span class="fit-low">Low</span> — probably not yet focused on internal docs, the Free tier covers them</td></tr>
+    <tr><td>Only needs API Governance / only Discovery</td><td><span class="fit-low">Low</span> — probably Postman / Catalog</td></tr>
   </table>
   </div>
 </div>
 
 <div class="panel" id="panel-signals">
-  <div class="panel-head"><h3>Buying Signals + Opportunity Identification</h3><button class="panel-close" onclick="closeAllPanels()">✕</button></div>
+  <div class="panel-head"><h3>Buying Signals + Opportunity Mapping</h3><button class="panel-close" onclick="closeAllPanels()">✕</button></div>
   <div class="panel-body">
-  <p style="font-size:14px;color:var(--grey);">The word that identifies an immediate customer: <b style="color:var(--orange-dark);">"External consumers"</b> — the moment there are external consumers of the API, the docs site, the SDKs, and the CLI are immediately relevant.</p>
+  <p style="font-size:14px;color:var(--grey);">The word that flags an instant fit: <b style="color:var(--orange-dark);">"External consumers"</b> — the moment there are external consumers of the API, the docs site, SDKs and CLI are immediately relevant.</p>
   <table class="bt">
+    <caption>Check before the call (Signals Library)</caption>
+    <tr><th>Where to check</th><th>What it means</th></tr>
+    <tr><td>A public Developer Portal / API Reference exists (developer.&lt;company&gt;)</td><td><span class="fit-high">External consumers exist — a live revenue play</span></td></tr>
+    <tr><td>GitHub search: "unofficial &lt;company&gt; SDK"</td><td>No good official SDK in one of the languages — a Fern land</td></tr>
+    <tr><td>How many separate SDK repos the company has on GitHub</td><td>Maintenance/sync burden — Fern's core pain</td></tr>
+    <tr><td>Was a Stainless customer (SDK README / generator headers)</td><td><span class="fit-high">Critical</span> — their regeneration stopped on 18 May 2026; their SDKs will "rot" on the next API change</td></tr>
+    <tr><td>Open DevRel / "Docs" job posts on LinkedIn / careers pages</td><td>Investing in DX right now — timing + budget</td></tr>
+    <tr><td>llms.txt / MCP mention / "AI-ready docs" in the site footer</td><td>Chasing agent-readiness — open with that</td></tr>
+    <tr><td>Current docs stack (identified from Page Source: Mintlify/ReadMe/Docusaurus/Scalar)</td><td>Reveals who the current competitor is to displace/complement</td></tr>
+  </table>
+  <table class="bt" style="margin-top:16px;">
     <tr><th>The customer says...</th><th>What it means</th></tr>
     <tr><td>We have External Developers / a Developer Portal</td><td><span class="fit-high">Strong signal</span></td></tr>
     <tr><td>We maintain SDKs ourselves</td><td><span class="fit-high">Strong signal</span></td></tr>
     <tr><td>Our Docs aren't always up to date</td><td><span class="fit-high">Strong signal</span></td></tr>
-    <tr><td>It's hard for developers to start working with the API</td><td><span class="fit-high">Strong signal</span></td></tr>
+    <tr><td>It's hard for developers to get started with the API</td><td><span class="fit-high">Strong signal</span></td></tr>
     <tr><td>We're launching new APIs / lots of Partners / APIs in several languages / need MCP</td><td>Signal</td></tr>
     <tr><td>We have a lot of internal APIs</td><td><span class="fit-mid">Medium-strong signal</span></td></tr>
     <tr><td>We need API Governance</td><td>Probably Postman</td></tr>
-    <tr><td>We need to know what APIs exist</td><td>Probably API Catalog</td></tr>
+    <tr><td>We need to know which APIs exist</td><td>Probably API Catalog</td></tr>
     <tr><td>We need to control who has access</td><td>Probably Passport</td></tr>
   </table>
   <table class="bt" style="margin-top:16px;">
-    <caption>Opportunity identification — quick mapping</caption>
+    <caption>Opportunity mapping — quick reference</caption>
     <tr><th>The customer says...</th><th>The product</th></tr>
-    <tr><td>Just want to know what APIs exist in the organization</td><td>API Catalog</td></tr>
+    <tr><td>Just want to know which APIs exist in the org</td><td>API Catalog</td></tr>
     <tr><td>Need to control who gets access to APIs</td><td>Passport</td></tr>
     <tr><td>Want to control AI Agents, Models, MCP, Policies, Token Costs</td><td>Fabric</td></tr>
-    <tr><td>Have an API but developers/partners find it hard to use, maintain Docs/SDKs manually, want a more Agent-friendly API</td><td><b style="color:var(--orange-dark);">Fern</b></td></tr>
+    <tr><td>Has an API but it's hard for developers/partners to use, maintains Docs/SDKs by hand, wants a more agent-friendly API</td><td><b style="color:var(--orange-dark);">Fern</b></td></tr>
   </table>
   </div>
 </div>
 
 <div class="panel" id="panel-ecosystem">
-  <div class="panel-head"><h3>Fern inside the Postman family</h3><button class="panel-close" onclick="closeAllPanels()">✕</button></div>
+  <div class="panel-head"><h3>Fern within the Postman family</h3><button class="panel-close" onclick="closeAllPanels()">✕</button></div>
   <div class="panel-body">
   <table class="bt">
     <caption>Fern vs. Postman API Catalog</caption>
@@ -330,14 +353,14 @@ body.edit-mode #fmtbar{transform:translateX(-50%) translateY(0);}
     <tr><td>The question</td><td>What APIs do we have?</td><td>How do you use the API?</td></tr>
     <tr><td>Purpose</td><td>Discovery and Visibility</td><td>Consumption and Developer Experience</td></tr>
     <tr><td>Audience</td><td>Teams inside the organization</td><td>Developers / Partners / API Consumers</td></tr>
-    <tr><td>SDK / MCP</td><td>Not the main purpose</td><td>Yes</td></tr>
+    <tr><td>SDK / MCP</td><td>Not the main goal</td><td>Yes</td></tr>
   </table>
   <table class="bt" style="margin-top:16px;">
     <caption>Fern vs. Passport</caption>
     <tr><th></th><th>Passport</th><th>Fern</th></tr>
     <tr><td>The problem</td><td>Who has access to the API?</td><td>How do you use the API?</td></tr>
     <tr><td>Purpose</td><td>Access</td><td>Consumption</td></tr>
-    <tr><td>Permissions / Credentials</td><td>Central</td><td>Not the main purpose</td></tr>
+    <tr><td>Permissions / Credentials</td><td>Central</td><td>Not the main goal</td></tr>
   </table>
   <table class="bt" style="margin-top:16px;">
     <caption>Fern vs. Fabric</caption>
@@ -350,31 +373,31 @@ body.edit-mode #fmtbar{transform:translateX(-50%) translateY(0);}
 </div>
 
 <div class="panel" id="panel-objections">
-  <div class="panel-head"><h3>Common Objections</h3><button class="panel-close" onclick="closeAllPanels()">✕</button></div>
+  <div class="panel-head"><h3>Common objections</h3><button class="panel-close" onclick="closeAllPanels()">✕</button></div>
   <div class="panel-body">
   <div class="obj-wrap">
     <div class="q">"We already have Documentation"</div>
-    <div class="bubble ae"><span class="bubble-role">AE</span>Great. The question isn't just whether documentation exists, but how easy it is to maintain and keep in sync with the API and SDKs. How do you handle Drift today between the API, the Docs, and the SDK?</div>
+    <div class="bubble ae"><span class="bubble-role">AE</span>Great. The question isn't just whether docs exist, but how easy it is to maintain them and keep them in sync with the API and SDKs. How do you handle Drift between the API, Docs and SDK today?</div>
   </div>
   <div class="obj-wrap">
-    <div class="q">"We build this ourselves"</div>
-    <div class="bubble ae"><span class="bubble-role">AE</span>Sure, you can build this yourselves. The question is how much Engineering effort it costs you today, and how much it costs to maintain over time. What happens when there's an API change? How many places need to be updated?</div>
+    <div class="q">"We're building this ourselves"</div>
+    <div class="bubble ae"><span class="bubble-role">AE</span>Of course you can build this yourselves. The question is how much engineering effort that costs you today, and how much it costs to maintain over time. What happens when the API changes? How many places need to be updated?</div>
   </div>
   <div class="obj-wrap">
-    <div class="q">"We already have Mintlify / ReadMe / GitBook"</div>
-    <div class="bubble ae"><span class="bubble-role">AE</span>So the question is whether you're looking for just Documentation, or a broader API Consumption layer. Do you also generate SDKs? CLI? MCP? How do you keep them in sync with the API?</div>
+    <div class="q">"We already use Mintlify / ReadMe / GitBook"</div>
+    <div class="bubble ae"><span class="bubble-role">AE</span>So the question is whether you're looking for Documentation only, or a broader API Consumption layer. Are you also generating SDKs? CLI? MCP? How do you keep them in sync with the API?</div>
   </div>
   <div class="obj-wrap">
     <div class="q">"We have Postman's API Catalog"</div>
     <div class="bubble ae"><span class="bubble-role">AE</span>Great — they actually complement each other. Catalog helps you understand which APIs exist, and Fern helps a developer understand how to use each API.</div>
   </div>
   <div class="obj-wrap">
-    <div class="q">"We're a secure organization, we can't send our API Specs to the cloud"</div>
-    <div class="bubble ae"><span class="bubble-role">AE</span>That's exactly one of the reasons Self-Hosted is relevant — Fern lets you run Docs and SDK Generation on your own infrastructure, including On-Prem or Private Cloud.</div>
+    <div class="q">"We're a security-conscious org, we can't move our API specs to the cloud"</div>
+    <div class="bubble ae"><span class="bubble-role">AE</span>That's exactly why Self-Hosted is relevant — Fern lets you run Docs and SDK Generation on your own infrastructure, including On-Prem or Private Cloud. You can start that way, no pressure — in practice, a lot of regulated customers move to Hosted later on, once they see the Compliance and Performance of the managed environment.</div>
   </div>
   <div class="obj-wrap">
     <div class="q">"We don't need AI Agents"</div>
-    <div class="bubble ae"><span class="bubble-role">AE</span>That's fine — Fern doesn't have to be an AI project. The core value is Documentation, SDKs, and Developer Experience. The AI/MCP piece is an additional usage layer that can become relevant later.</div>
+    <div class="bubble ae"><span class="bubble-role">AE</span>That's fine — Fern doesn't have to be an AI project. The core value is Documentation, SDKs and Developer Experience. AI/MCP is an additional usage layer that can become relevant later.</div>
   </div>
   </div>
 </div>
@@ -383,25 +406,31 @@ body.edit-mode #fmtbar{transform:translateX(-50%) translateY(0);}
   <div class="panel-head"><h3>Competition</h3><button class="panel-close" onclick="closeAllPanels()">✕</button></div>
   <div class="panel-body">
   <div class="prod" style="border-width:1px;border-color:var(--line);">
-    <div class="t">Mintlify — the biggest competitor. Two winning arguments</div>
-    <p><b>1. Fern is a full product line, not a single Feature.</b> Documentation, SDKs, CLI, and MCP servers in one platform, where the Docs automatically link to everything else Fern generates. Mintlify is documentation only.</p>
-    <p><b>2. Fern is backed by Postman.</b> A $5.5 billion company, kept as an independent product line with its own Roadmap.</p>
+    <div class="t">Mintlify — the biggest competitor. Agent-friendly, but missing a lot</div>
+    <p>Mintlify is genuinely agent-friendly, and builds agent-readiness at a similar pace — but it has no: <b>Enterprise scale, Multi-repo, RBAC, Self-Hosting</b>, and no <b>SDKs / CLIs / MCPs</b> at all. It's docs only.</p>
+    <p><b>The winning argument:</b> Fern is a full product line — Documentation, SDKs, CLI and MCP servers on one platform, where the Docs automatically link to everything else Fern generates. And also: Fern is backed by Postman, a $5.5B company, with more capital and a faster roadmap pace.</p>
   </div>
   <table class="bt">
-    <tr><th>Competitor</th><th>What's important to know</th></tr>
-    <tr><td><b>GitBook / ReadMe</b></td><td>Established, but started UI-first and bolted on Docs-as-code later. Comes up occasionally, less than Mintlify</td></tr>
-    <tr><td><b>Redocly</b></td><td>Comes up rarely; Fern's read: a weaker product</td></tr>
-    <tr><td><b>Open Source / DIY</b></td><td>Docusaurus is the common one. Classic Build vs Buy — they own the code and every issue</td></tr>
+    <tr><th>Competitor</th><th>What to know</th></tr>
+    <tr><td><b>ReadMe / GitBook / Scalar / Redocly</b></td><td>Lightweight, not competitive at Enterprise scale. Currently trying to catch customers displaced from Stainless — worth checking if they're already there</td></tr>
+    <tr><td><b>Stoplight</b></td><td>Being deprecated by SmartBear — not competitive</td></tr>
+    <tr><td><b>OpenAPI Generator / MS Kiota</b></td><td>Open source, free, 8-50+ languages. The angle: "free, but you own the maintenance" — Fern gives idiomatic output, sync with Docs, drift detection and support — it's a TCO question, not just price</td></tr>
+    <tr><td><b>Backstage / Docusaurus (internal portals)</b></td><td>OSS for internal Docs/Portal. Fern: docs generated and auto-synced, vs. hand-written pages that drift out of sync + an MCP surface for agents</td></tr>
+    <tr><td><b>Apigee / Kong / Gravitee / Axway / Azure APIM</b></td><td>Portal built into the Gateway. Not a replacement — Fern sits <b>on top of</b> any Gateway: better DX, real SDKs, agent-readiness. "Keep the gateway, upgrade the consumption"</td></tr>
   </table>
+  <div class="cross-box">
+    <b>SDK competitors — a displacement window is open now:</b> Speakeasy — SDK only, per-language pricing, no Docs, no WebSockets/gRPC, no On-Prem. Stainless (built the SDKs for OpenAI/Anthropic/Cloudflare) — <b>acquired by Anthropic on 18 May 2026 and closed to new projects</b>: their regeneration stopped, so any former customer of theirs gets "stale" SDKs on the next API change. If you spot a company that was a Stainless customer — that's an urgent displacement window, not just a signal. API-Matic (Australian) is more of a services firm than a real SaaS — not serious competition.
+  </div>
   </div>
 </div>
 
 <div class="panel" id="panel-pricing">
   <div class="panel-head"><h3>Pricing</h3><button class="panel-close" onclick="closeAllPanels()">✕</button></div>
   <div class="panel-body">
-  <p style="font-size:14.5px;">Per product, and value-based — by API complexity, scale (surface area for an external API, number of Microservices for internal), and company size/revenue.</p>
-  <p style="font-size:14.5px;"><b>Documentation:</b> from $4,000 (Enterprise floor) up to $800,000 for a large, technologically spread-out organization. <b>SDKs:</b> similar floor, up to $500,000 per language. <b>Discount:</b> up to 50% off list price.</p>
-  <div class="say"><b class="tag">If price comes up in the first call</b>"It's based on the size and complexity of your API, and we'll dive into that during the assessment."</div>
+  <p style="font-size:14.5px;">Per product, value-based — driven by API complexity, scale (surface area for an external API, number of microservices for internal), and company size/revenue.</p>
+  <p style="font-size:14.5px;"><b>Documentation:</b> from $4,000 (Enterprise floor) up to $800,000 for a large, technologically sprawling organization. <b>SDKs:</b> a similar floor, up to $500,000 per language, priced <b>separately</b> from Documentation. An SDK for an internal API is priced <b>lower</b> than one for an external API. <b>Discount:</b> up to 50% off list price.</p>
+  <div class="cross-box"><b>Reference point:</b> a Series B/C company with 200-500 endpoints, in TypeScript + Python + Java, comes out around $30,000 (about $10,000 per language). NVIDIA-scale deals (150-300 products, complex parsing) go much higher. Always use the pricing calculator for ranges, and bring in a specialist before a formal quote.</div>
+  <div class="say"><b class="tag">If price comes up on the first call</b>"That's based on the size and complexity of your API, and we'll dig into that during the evaluation."</div>
   </div>
 </div>
 
@@ -444,28 +473,28 @@ document.getElementById('mainBlocks').addEventListener('dragover', function(e){
 });
 
 function saveAll(){
-  localStorage.setItem('fern_main_v1_en', document.getElementById('mainBlocks').innerHTML);
+  localStorage.setItem('fernEN_main_v1', document.getElementById('mainBlocks').innerHTML);
   document.querySelectorAll('.panel').forEach(function(p){
     const body = p.querySelector('.panel-body');
-    if(body) localStorage.setItem('fern_panel_v1_en_' + p.id, body.innerHTML);
+    if(body) localStorage.setItem('fernEN_panel_v1_' + p.id, body.innerHTML);
   });
   alert('Saved in this browser ✓');
 }
 
 function resetAll(){
   if(confirm('Reset all changes saved in this browser and go back to the original version?')){
-    localStorage.removeItem('fern_main_v1_en');
-    document.querySelectorAll('.panel').forEach(function(p){ localStorage.removeItem('fern_panel_v1_en_' + p.id); });
+    localStorage.removeItem('fernEN_main_v1');
+    document.querySelectorAll('.panel').forEach(function(p){ localStorage.removeItem('fernEN_panel_v1_' + p.id); });
     location.reload();
   }
 }
 
 window.addEventListener('DOMContentLoaded', function(){
-  const m = localStorage.getItem('fern_main_v1_en');
-  if(m && m.replace(/<[^>]*>/g,'').trim() !== '') document.getElementById('mainBlocks').innerHTML = m;
+  const m = localStorage.getItem('fernEN_main_v1');
+  if(m) document.getElementById('mainBlocks').innerHTML = m;
   document.querySelectorAll('.panel').forEach(function(p){
-    const saved = localStorage.getItem('fern_panel_v1_en_' + p.id);
-    if(saved && saved.replace(/<[^>]*>/g,'').trim() !== ''){ const body = p.querySelector('.panel-body'); if(body) body.innerHTML = saved; }
+    const saved = localStorage.getItem('fernEN_panel_v1_' + p.id);
+    if(saved){ const body = p.querySelector('.panel-body'); if(body) body.innerHTML = saved; }
   });
   attachDnD();
 });

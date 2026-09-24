@@ -599,7 +599,7 @@
   </div>
   <div class="header-right">
     <h1 class="header-client-name" id="clientNameTag">Global-E</h1>
-    <span id="clock">19:18:48</span>
+    <span id="clock">17:33:20</span>
     <button class="hbtn" id="editToggle" onclick="toggleEditMode()">✏️ Edit</button>
     <button class="hbtn" onclick="resetAllContent()" title="Wipe saved edits/notes in this browser and reload Claude's latest text">↺ Reset</button>
     <button class="hbtn primary" onclick="downloadCopy()">⬇ Save copy</button>
@@ -608,8 +608,8 @@
 
 <nav class="tabs" id="tabNav" style="top: 57px;" data-drag-bound="1">
   <button class="tab-btn" data-tab="discovery"><span class="icon">🔍</span>Discovery</button>
-  <button class="tab-btn" data-tab="explaineren"><span class="icon">📘</span>Explainer (EN)</button>
-  <button class="tab-btn active" data-tab="explainerhe"><span class="icon">📗</span>Explainer (HE)</button>
+  <button class="tab-btn active" data-tab="explaineren"><span class="icon">📘</span>Explainer (EN)</button>
+  <button class="tab-btn" data-tab="explainerhe"><span class="icon">📗</span>Explainer (HE)</button>
   <button class="tab-btn" data-tab="objections"><span class="icon">🛡️</span>Objections &amp; Battlecards</button>
   <button class="tab-btn" data-tab="plans"><span class="icon">📊</span>Enterprise + ASA</button>
   <button class="tab-btn" data-tab="wiki"><span class="icon">📖</span>Plans &amp; Products</button>
@@ -923,9 +923,9 @@
   </section>
 
   <!-- ================= PITCH TAB ================= -->
-  <section class="panel" id="panel-explaineren" data-sortable-bound="1">
+  <section class="panel active" id="panel-explaineren" data-sortable-bound="1">
     <div class="full-width" style="padding:0;">
-      <iframe style="width:100%;height:calc(100vh - 200px);border:none;" srcdoc="&lt;!DOCTYPE html&gt;
+      <iframe style="width: 100%; height: 759px; border-width: medium; border-style: none; border-color: currentcolor; border-image: none;" srcdoc="&lt;!DOCTYPE html&gt;
 
 &lt;html dir=&quot;ltr&quot; lang=&quot;en&quot;&gt;
 &lt;head&gt;
@@ -3877,9 +3877,9 @@ document.addEventListener('keydown', (e)=&gt;{
     </div>
   </section>
 
-  <section class="panel active" id="panel-explainerhe" data-sortable-bound="1">
+  <section class="panel" id="panel-explainerhe" data-sortable-bound="1">
     <div class="full-width" style="padding:0;">
-      <iframe style="width:100%;height:calc(100vh - 200px);border:none;" srcdoc="&lt;!DOCTYPE html&gt;
+      <iframe style="width: 100%; height: 759px; border-width: medium; border-style: none; border-color: currentcolor; border-image: none;" srcdoc="&lt;!DOCTYPE html&gt;
 
 &lt;html dir=&quot;rtl&quot; lang=&quot;he&quot;&gt;
 &lt;head&gt;
@@ -4836,7 +4836,7 @@ document.addEventListener('keydown', (e)=&gt;{
 &lt;/div&gt;
 &lt;div class=&quot;say edit-unit&quot; contenteditable=&quot;false&quot;&gt;
 &lt;b class=&quot;tag&quot;&gt;איך אני ממשיך לחלק ה-AI של המוצר שלנו עצמו&lt;/b&gt;
-      &quot;וזה מוביל אותי לנקודה שהלקוחות שלנו הכי אוהבים: ה-AI שבתוך Postman הוא לא כמו ChatGPT כללי. אנחנו קוראים לו &lt;b&gt;Agent Mode&lt;/b&gt;  והוא בנוי במיוחד לעולם ה-API. &lt;div&gt;הוא רץ בתוך הסביבה שלכם ב-Postman, מכיר את כל הפרויקטים, הבדיקות וההתראות שכבר קיימים אצלכם, ולא רק עונה על שאלות אלא גם מבצע פעולות בפועל: כותב חוזים חדשים, מתקן בדיקות שנשברו, ומזהה מתי גרסה חדשה שוברת הבטחה שנתנו למישהו בעבר.&lt;/div&gt;&lt;div&gt;&lt;br/&gt;&lt;/div&gt;&lt;div&gt;יש גם &lt;b&gt;AI Engineer&lt;/b&gt;, שמתחבר למקום שבו שמור כל הקוד וההיסטוריה שלו (Git) ועושה עבודה עצמאית יותר/&lt;/div&gt;&lt;div&gt;לדוגמה, לעבור על כל ה-API-ים שלכם ולסמן אילו מהם כדאי להוציא משימוש כי הם ישנים או לא בשימוש, או לבדוק אוטומטית כל שינוי קוד חדש שמפתח מעלה למערכת, לפני שהוא מתקבל. &lt;/div&gt;&lt;div&gt;ואתם יכולים גם לבנות את כללי ה-Governance עצמם בעזרת AI — לכתוב אותם ב-Claude או ב-ChatGPT, ו-Postman הוא זה שבפועל אוכף אותם אוטומטית, על כל הפרויקטים, כל הזמן. &lt;/div&gt;&lt;div&gt;וזה בעצם ההבדל האמיתי: &lt;b&gt;אתם יכולים לעשות חלק מזה בעצמכם, או לקנות כמה כלים נפרדים — אבל אנחנו שמים את הכל תחת קורת גג אחת.&quot;
+      &quot;וזה מוביל אותי לנקודה שהלקוחות שלנו הכי אוהבים: ה-AI שבתוך Postman הוא לא כמו ChatGPT כללי. אנחנו קוראים לו&nbsp;&lt;b&gt;Agent Mode&lt;/b&gt;&nbsp; והוא בנוי במיוחד לעולם ה-API.&nbsp;&lt;div&gt;הוא רץ בתוך הסביבה שלכם ב-Postman, מכיר את כל הפרויקטים, הבדיקות וההתראות שכבר קיימים אצלכם, ולא רק עונה על שאלות אלא גם מבצע פעולות בפועל: כותב חוזים חדשים, מתקן בדיקות שנשברו, ומזהה מתי גרסה חדשה שוברת הבטחה שנתנו למישהו בעבר.&lt;/div&gt;&lt;div&gt;&lt;br/&gt;&lt;/div&gt;&lt;div&gt;יש גם &lt;b&gt;AI Engineer&lt;/b&gt;, שמתחבר למקום שבו שמור כל הקוד וההיסטוריה שלו (Git) ועושה עבודה עצמאית יותר/&lt;/div&gt;&lt;div&gt;לדוגמה, לעבור על כל ה-API-ים שלכם ולסמן אילו מהם כדאי להוציא משימוש כי הם ישנים או לא בשימוש, או לבדוק אוטומטית כל שינוי קוד חדש שמפתח מעלה למערכת, לפני שהוא מתקבל.&nbsp;&lt;/div&gt;&lt;div&gt;ואתם יכולים גם לבנות את כללי ה-Governance עצמם בעזרת AI — לכתוב אותם ב-Claude או ב-ChatGPT, ו-Postman הוא זה שבפועל אוכף אותם אוטומטית, על כל הפרויקטים, כל הזמן.&nbsp;&lt;/div&gt;&lt;div&gt;וזה בעצם ההבדל האמיתי: &lt;b&gt;אתם יכולים לעשות חלק מזה בעצמכם, או לקנות כמה כלים נפרדים — אבל אנחנו שמים את הכל תחת קורת גג אחת.&quot;
     &lt;/b&gt;&lt;/div&gt;
 &lt;/div&gt;&lt;/section&gt;
 &lt;!-- SECTION 3: WHAT POSTMAN OFFERS PER STAGE --&gt;
@@ -4862,7 +4862,7 @@ document.addEventListener('keydown', (e)=&gt;{
 &lt;/div&gt;
 &lt;/div&gt;
 &lt;div class=&quot;cross-box edit-unit&quot; contenteditable=&quot;false&quot;&gt;&lt;b&gt;
-      &quot;שני דברים חשוב שתדעו — הם לא שייכים לשלב אחד, הם רצים על פני כולם: &lt;/b&gt;&lt;div&gt;&lt;b&gt;API Catalog&lt;/b&gt; נותן לכם תצוגה אחת של כל ה-APIs שבפיתוח בארגון — לא רק אלה שכבר חיים ב-gateway בפרודקשן. זה ההבדל המרכזי בינינו ל-Kong, Apigee או Boomi — הם מראים לכם רק מה שכבר רץ, אנחנו מראים לכם גם מה שבבנייה.&lt;/div&gt;&lt;div&gt; ו&lt;b&gt;Agent Mode&lt;/b&gt; עם &lt;b&gt;AI Engineer&lt;/b&gt; זמינים בכל שלב — לא עוזרים כלליים, אלא כלים שמכירים את הקונטקסט שלכם ובפועל מבצעים פעולות.&quot;
+      &quot;שני דברים חשוב שתדעו — הם לא שייכים לשלב אחד, הם רצים על פני כולם:&nbsp;&lt;/b&gt;&lt;div&gt;&lt;b&gt;API Catalog&lt;/b&gt; נותן לכם תצוגה אחת של כל ה-APIs שבפיתוח בארגון — לא רק אלה שכבר חיים ב-gateway בפרודקשן. זה ההבדל המרכזי בינינו ל-Kong, Apigee או Boomi — הם מראים לכם רק מה שכבר רץ, אנחנו מראים לכם גם מה שבבנייה.&lt;/div&gt;&lt;div&gt;&nbsp;ו&lt;b&gt;Agent Mode&lt;/b&gt; עם &lt;b&gt;AI Engineer&lt;/b&gt; זמינים בכל שלב — לא עוזרים כלליים, אלא כלים שמכירים את הקונטקסט שלכם ובפועל מבצעים פעולות.&quot;
     &lt;/div&gt;&lt;/div&gt;
 &lt;/section&gt;
 &lt;!-- SECTION 4: CORE PRODUCTS --&gt;
@@ -7157,7 +7157,7 @@ document.addEventListener('keydown', (e)=&gt;{
 
 </main>
 
-<footer>Postman · Confidential · Internal call companion - not for external distribution</footer>
+<footer style="display: none;">Postman · Confidential · Internal call companion - not for external distribution</footer>
 
 <!-- floating format toolbar -->
 <!-- persistent side panel: Best Reverse Questions -->
@@ -7167,6 +7167,7 @@ document.addEventListener('keydown', (e)=&gt;{
     <span>↩ Reverse Questions</span>
     <button class="side-panel-close" onclick="toggleSidePanel()">✕</button>
   </div>
+  <div data-editable="true" contenteditable="false">
   <ul class="clean">
     <li>If I joined as a developer tomorrow, how would I find the APIs I need?</li>
     <li>If your CTO joined this call, what would they want fixed first?</li>
@@ -7179,6 +7180,7 @@ document.addEventListener('keydown', (e)=&gt;{
     <li>Would a REST-first tool actually cover what you're running, or would it miss a chunk of your traffic?</li>
   </ul>
   <p class="side-panel-hint">Pinned here so you can glance at it while running Discovery, no matter which tab or how far you've scrolled.</p>
+  </div>
 </aside>
 
 <!-- ASA info side panel (triggered from Pricing Reference) -->
@@ -7187,6 +7189,7 @@ document.addEventListener('keydown', (e)=&gt;{
     <span>Advanced Security Administration (ASA)</span>
     <button class="side-panel-close" onclick="closeAsaModal()">✕</button>
   </div>
+  <div data-editable="true" contenteditable="false">
   <p class="muted">Pitch angle: base Enterprise gives you control over what your licensed users do. ASA gives you control over the shadow usage you don't even know about yet.</p>
   <ul class="clean">
     <li><b>Domain Capture</b> - any user who signs up with your company email is automatically routed into your managed org; existing and new free accounts under your domain are prompted to request access, giving admins full control and visibility</li>
@@ -7196,6 +7199,7 @@ document.addEventListener('keydown', (e)=&gt;{
     <li><b>Advanced secret controls</b> - deeper Cloud Secret Detection with an analytics dashboard and alerts across all workspace types</li>
     <li><b>BYOK encryption</b> - protect sensitive Postman data with your own customer-managed key in AWS KMS; revoke or restore Postman's encryption permissions at any time</li>
   </ul>
+  </div>
 </aside>
 
 <!-- Reusable product explainer panel (Fabric / ASA / Passport - EN + Hebrew) -->
@@ -7204,7 +7208,7 @@ document.addEventListener('keydown', (e)=&gt;{
     <span id="productPanelTitle">Product</span>
     <button class="side-panel-close" onmousedown="event.stopPropagation()" onclick="closeProductExplainer()">✕</button>
   </div>
-  <div id="productPanelBody"></div>
+  <div id="productPanelBody" data-editable="true" contenteditable="false"></div>
 </aside>
 
 <div id="fmtbar">
