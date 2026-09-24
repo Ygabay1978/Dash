@@ -172,11 +172,12 @@ body.edit-mode #fmtbar{transform:translateX(-50%) translateY(0);}
     <p>תחשוב על זה כך, ותפתח את השיחה בדיוק בנקודה הזו: <b>Postman עוזר לך לבנות, לבדוק ולנהל API. Fern לוקח את אותו API ועושה לו משהו אחר לגמרי — הוא הופך אותו לקל לצריכה, גם על ידי מפתחים וגם על ידי AI Agents.</b></p>
     <p>ה-API של הלקוח יכול להיות מצוין מבחינה טכנית, אבל ברגע שמפתח חיצוני או פנימי צריך להשתמש בו, הוא שואל שאלות פשוטות: איפה ה-API? איך אני מתחבר? איזה SDK יש בשפה שלי? האם התיעוד בכלל מעודכן? <b>Fern יושב בדיוק בנקודה הזו</b> — בצד ה-Consumption, לא ה-Governance. הוא לוקח את ה-API Specification ובונה סביבו אוטומטית תיעוד, SDKs, כלי שורת פקודה, ושרתי MCP ל-AI Agents.</p>
     <div class="stage-row">
-      <div class="stage core"><div class="t">Documentation</div><div class="d">endpoints, דוגמאות קוד, authentication</div></div>
-      <div class="stage core"><div class="t">SDKs</div><div class="d">ספרייה מוכנה בשפת המפתח</div></div>
-      <div class="stage"><div class="t">CLI</div><div class="d">גישה ל-API משורת פקודה</div></div>
-      <div class="stage"><div class="t">MCP Servers</div><div class="d">חיבור מסודר ל-AI Agents</div></div>
+      <div class="stage core"><div class="t">Documentation</div><div class="d">Docs-as-code — חי ב-Git לצד הקוד, מתעדכן אוטומטית בכל שינוי ב-API דרך CI/CD</div></div>
+      <div class="stage core"><div class="t">SDKs</div><div class="d">9 שפות — ה-Vendor היחיד עם Swift ל-Production. דרך דטרמיניסטית ואחידה להתחבר ל-API — לא כל מפתח (או Agent) ממציא Auth ו-Pagination בעצמו</div></div>
+      <div class="stage"><div class="t">CLI</div><div class="d">גישה ל-API משורת פקודה — עץ פונקציות מסודר, גם ל-Agents. יש גם <code>fern diff</code> — פקודה שמראה בדיוק איפה ה-API, ה-SDK וה-Docs יצאו מסונכרון</div></div>
+      <div class="stage"><div class="t">MCP Servers</div><div class="d">שרת MCP מלא ל-API עצמו, לא רק לתיעוד</div></div>
     </div>
+    <p>נקודה שווה להגיד: התיעוד מוגש כ-Markdown בצד השרת (לא ב-Client), כך ש-Claude Code, Codex ו-Cursor יכולים לקרוא אותו ולעבוד איתו ישירות — וה-SDK בפרט חשוב ל-Agents: Agent שבונה מול API בלי SDK מקבל החלטות לא עקביות (Auth, Pagination), מה שמעלה צריכת Token ומאריך זמן פיתוח.</p>
     <p>במשפט אחד שכדאי לך לזכור בעל פה: <b>Fern לוקח API קיים והופך אותו ל-Developer Experience מלא</b> — לא רק מסמך שמתאר אותו.</p>
   </div>
 </div>
@@ -199,7 +200,8 @@ body.edit-mode #fmtbar{transform:translateX(-50%) translateY(0);}
       <div class="t">חברת ביטוח גדולה</div>
       <p>יש לה APIs עבור לקוחות, פוליסות, תביעות, הצעות מחיר וסוכנים — והיא מאפשרת לשותפים ולסוכנויות ביטוח להתחבר אליהם. המצב: מאות APIs, תיעוד במקומות שונים, SDKs שנבנים ידנית, וכל שינוי ב-API דורש לעדכן כמה מקומות.</p>
       <p>הבעיה העסקית: <b>סוכנות חדשה רוצה להתחבר.</b> היא צריכה לעבור תיעוד → להבין Authentication → להבין Endpoints → לבנות אינטגרציה → לפתור בעיות. Fern יכול לתת: <b>API Specification → Documentation + SDKs + Examples</b> — וה-Key מקבל דרך הרבה יותר מסודרת להתחיל לעבוד.</p>
-      <p>ובגלל שמדובר בחברת ביטוח, היכולת של Fern לרוץ <b>Self-Hosted</b> (להריץ את יצירת ה-Documentation וה-SDKs בתוך התשתית של הלקוח, כולל On-Prem או Private Cloud) יכולה להיות חלק משמעותי מהשיחה — שווה להעלות את זה מוקדם, לא לחכות שישאלו.</p>
+      <p>ובגלל שמדובר בחברת ביטוח, היכולת של Fern לרוץ <b>Self-Hosted</b> (להריץ את יצירת ה-Documentation וה-SDKs בתוך התשתית של הלקוח, כולל On-Prem או Private Cloud) יכולה להיות חלק משמעותי מהשיחה — שווה להעלות את זה מוקדם, לא לחכות שישאלו. זה רלוונטי בעיקר לתעשיות מוסדרות — בנקאות, ביטוח, תשלומים, ביטחוני (חברות כמו Bloomberg, Anduril ו-Intuit עובדות ב-Self-Hosted). נקודה שכדאי לזכור: בפועל, הרבה מהלקוחות האלה עוברים ל-Hosted בהמשך, לאחר שהם רואים בעצמם את ה-Compliance וה-Performance של הסביבה המנוהלת — אז אפשר להתחיל Self-Hosted בלי חשש, ולתת לזה להתפתח.</p>
+      <p style="color:var(--grey);font-size:13px;"><b>למי לפנות בחברת ביטוח כזו:</b> Head of Open Banking/API או Head of API Product (ה-Lead), Head of Developer Portal (תפקיד שני). CISO/Compliance נכנס לתמונה כשעולה Audit רגולטורי (DORA/PSD3) — זה בדיוק הרגע שבו Self-Hosted עובר משאלה תיאורטית לדרישה.</p>
       <div class="say" style="margin-top:12px;">
         <b class="tag">שאלת Discovery לסגירת התרחיש</b>
         "כמה זמן לוקח היום לשותף חדש לעבור מהשלב שבו הוא מקבל גישה ל-API עד שהאינטגרציה הראשונה שלו עובדת?"
@@ -217,6 +219,7 @@ body.edit-mode #fmtbar{transform:translateX(-50%) translateY(0);}
       <p>יש לה: Payment API, Refund API, Customer API, Transaction API, Fraud API, ו-Webhooks — והיא רוצה ש-Partners ו-Developers יתחברו במהירות.</p>
       <p><b>הבעיה:</b> ה-API משתנה לעיתים קרובות. כל שינוי דורש לעדכן Docs + SDK + Examples + Code Samples — וזה בדרך כלל נעשה באופן ידני.</p>
       <p>Fern יכול להפוך את ה-API Specification למקור שממנו נוצרים ה-SDKs וה-Documentation — כך שהעדכון קורה במקום אחד, ולא בעשרים מקומות בנפרד בכל פעם שה-API הפיננסי משתנה.</p>
+      <p style="color:var(--grey);font-size:13px;"><b>למי לפנות בחברת אשראי כזו:</b> Head of API Product/Platform (ה-Lead), VP Engineering (תפקיד שני). סיגנל טוב לבדוק מראש: חיפוש ב-GitHub של "unofficial [שם החברה] SDK" — אם קיימים SDKs "לא רשמיים" שהקהילה בנתה, זה אומר שאין להם SDK רשמי טוב, וזה בדיוק הפער ש-Fern סוגר.</p>
     </div>
   </div>
 </div>
@@ -261,7 +264,7 @@ body.edit-mode #fmtbar{transform:translateX(-50%) translateY(0);}
   <div class="panel-body">
     <div class="say-critical">
       <b class="tag">השאלה הראשית #1 — ואז שתוק</b>
-      "למה אתה מדבר איתי דווקא עכשיו?" זו השאלה שמגלה את הכאב האמיתי — תשאל, ותשאיר את השקט לבדו. אל תמלא אותו.
+      "למה אתה מדבר איתי דווקא עכשיו?" זו השאלה שמגלה את הכאב האמיתי — תשאל, ותשאיר את השקט לבדו. אל תמלא אותו. <span style="color:var(--grey);font-weight:400;">נתון לגיבוי אם צריך: אצל Unleash, יותר מ-50% מתנועת האתר מגיעה כיום מ-Agents, ותנועת ה-Agents שלהם גדלה פי 12 מאז שעברו ל-Fern — "agent-readiness" זו לא תיאוריה.</span>
     </div>
     <div class="say-critical">
       <b class="tag">השאלה הראשית #2 — זו הכסף</b>
@@ -281,14 +284,23 @@ body.edit-mode #fmtbar{transform:translateX(-50%) translateY(0);}
 <div class="panel" id="panel-fit">
   <div class="panel-head"><h3>למי Fern מתאים — ולמי פחות</h3><button class="panel-close" onclick="closeAllPanels()">✕</button></div>
   <div class="panel-body">
+  <div class="cross-box" style="margin-top:0;">
+    <b>תפקידים לחפש:</b> Developer Experience / DevRel (Head of DevRel, Director of Developer Platforms) · API Product Owners (PM, Engineering Manager, Director of Engineering) · Platform Engineering (בעיקר ל-Use Case פנימי). כולם מתגלגלים ל-VP Engineering — גם שיחה על רמת Exec עובדת טוב.
+  </div>
+  <div class="cross-box">
+    <b>ה-Sweet Spot האמיתי:</b> לא חברה שמעולם לא חשבה על זה — חברה שכבר מנסה לפתור את זה בעצמה ומפגרת. Twilio, לדוגמה: 10 אנשים מתחזקים SDKs, 10 מתחזקים Docs, שני Major Versions מאחורי ה-OpenAPI שלהם — ובכל זאת חתמו על עסקה בת שישה ספרות. זה הסימן: מאמץ ידני גדול + תוצאה מפגרת.
+  </div>
+  <div class="cross-box">
+    <b>גם ל-API פנימי יש כאב אמיתי (Platform Engineering):</b> ב-Case פנימי טיפוסי, מהנדסים מבזבזים זמן ב-Slack כדי לשאול עמיתים איך API פנימי עובד, ו-Agents לא מצליחים לשלוף את זה בעצמם. גם צוותים לא-טכניים (Sales, Analysts) נתקעים בלי להבין את ה-Intent של ה-API. Fern פותר את שני הצדדים — פיתוח מהיר יותר, פחות חיכוך בין צוותים. חשוב לזכור: AEO (הגלוי ל-AI חיצוני) רלוונטי רק ל-Docs פומביים — Docs פנימיים לא צריכים שמודלים "ילמדו" מהם, אבל עדיין מרוויחים מ-MCP עם Auth Passthrough, מ-llms.txt ומחיפוש AI פנימי.
+  </div>
   <table class="bt">
     <tr><th>פרופיל</th><th>למה</th></tr>
-    <tr><td>חברות Tech-forward בצמיחה, ~50 עובדים ומעלה, עם API או מוצר פונה-מפתחים/צרכן</td><td><span class="fit-high">גבוהה</span> — API חיצוני אידיאלי (הכנסה מתחברת אליו), אבל גם פנימי עובד</td></tr>
+    <tr><td>חברות Tech-forward בצמיחה, ~50 עובדים ומעלה, עם API או מוצר פונה-מפתחים/צרכן</td><td><span class="fit-high">גבוהה</span> — API חיצוני אידיאלי (הכנסה מתחברת אליו), אבל גם פנימי עובד — קשה יותר למכור Outbound</td></tr>
     <tr><td>חברות פיננסיות, ביטוח, תשלומים, SaaS, AI, Marketplace</td><td><span class="fit-high">גבוהה</span></td></tr>
     <tr><td>API Product Teams — ה-API חלק מהמוצר</td><td><span class="fit-high">גבוהה</span></td></tr>
     <tr><td>צוותי Developer Experience / Platform Engineering</td><td><span class="fit-mid">גבוהה-בינונית</span></td></tr>
     <tr><td>פרסונות IT כלליות בלי בעלות על API / Developer Experience</td><td><span class="fit-low">נמוכה</span> — זו שיחת Postman/Governance</td></tr>
-    <tr><td>חברות בשלב מוקדם מאוד (טרי מ-YC)</td><td><span class="fit-low">נמוכה</span> — Free tier מכסה אותן</td></tr>
+    <tr><td>חברות בשלב Series A</td><td><span class="fit-low">נמוכה</span> — כנראה לא עסוקות עדיין ב-Docs פנימיים, Free tier מכסה אותן</td></tr>
     <tr><td>רק צורך ב-API Governance / רק Discovery</td><td><span class="fit-low">נמוכה</span> — כנראה Postman / Catalog</td></tr>
   </table>
   </div>
@@ -299,6 +311,17 @@ body.edit-mode #fmtbar{transform:translateX(-50%) translateY(0);}
   <div class="panel-body">
   <p style="font-size:14px;color:var(--grey);">המילה שמזהה לקוח מיידי: <b style="color:var(--orange-dark);">"External consumers"</b> — ברגע שיש צרכנים חיצוניים ל-API, אתר התיעוד, ה-SDKs וה-CLI רלוונטיים באופן מיידי.</p>
   <table class="bt">
+    <caption>לבדוק לפני השיחה (Signals Library)</caption>
+    <tr><th>איפה בודקים</th><th>מה זה אומר</th></tr>
+    <tr><td>יש Developer Portal / API Reference פומבי (developer.&lt;company&gt;)</td><td><span class="fit-high">צרכנים חיצוניים קיימים — Revenue play חי</span></td></tr>
+    <tr><td>חיפוש ב-GitHub: "unofficial &lt;company&gt; SDK"</td><td>אין SDK רשמי טוב באחת השפות — Fern land</td></tr>
+    <tr><td>כמה Repos נפרדים של SDKs בארגון של החברה ב-GitHub</td><td>עומס תחזוקה/סנכרון — הכאב המרכזי של Fern</td></tr>
+    <tr><td>היו לקוח של Stainless (README של ה-SDK / כותרות הגנרטור)</td><td><span class="fit-high">קריטי</span> — ה-Regeneration שלהם הופסק ב-18.5.2026, ה-SDKs שלהם "יתקלקלו" בשינוי הבא ל-API</td></tr>
+    <tr><td>משרות פתוחות ל-DevRel / "Docs" ב-LinkedIn / דפי קריירה</td><td>משקיעים ב-DX עכשיו — טיימינג + תקציב</td></tr>
+    <tr><td>llms.txt / אזכור MCP / "AI-ready docs" בפוטר האתר</td><td>רודפים אחרי Agent-readiness — לפתוח בזה</td></tr>
+    <tr><td>ה-Stack הנוכחי של ה-Docs (מזוהה מ-Page Source: Mintlify/ReadMe/Docusaurus/Scalar)</td><td>מגלה מי המתחרה הנוכחי להזיז/להשלים</td></tr>
+  </table>
+  <table class="bt" style="margin-top:16px;">
     <tr><th>הלקוח אומר...</th><th>מה זה אומר</th></tr>
     <tr><td>יש לנו External Developers / Developer Portal</td><td><span class="fit-high">Signal חזק</span></td></tr>
     <tr><td>אנחנו מתחזקים SDKs בעצמנו</td><td><span class="fit-high">Signal חזק</span></td></tr>
@@ -370,7 +393,7 @@ body.edit-mode #fmtbar{transform:translateX(-50%) translateY(0);}
   </div>
   <div class="obj-wrap">
     <div class="q">"אנחנו ארגון מאובטח, אי אפשר להעביר את ה-API Specs שלנו לענן"</div>
-    <div class="bubble ae"><span class="bubble-role">AE</span>זו בדיוק אחת הסיבות ש-Self-Hosted רלוונטי — Fern מאפשר להריץ את Docs ואת SDK Generation על התשתית שלכם, כולל On-Prem או Private Cloud.</div>
+    <div class="bubble ae"><span class="bubble-role">AE</span>זו בדיוק אחת הסיבות ש-Self-Hosted רלוונטי — Fern מאפשר להריץ את Docs ואת SDK Generation על התשתית שלכם, כולל On-Prem או Private Cloud. אפשר להתחיל כך, בלי לחץ — בפועל הרבה לקוחות מוסדרים עוברים בהמשך ל-Hosted כשהם רואים את ה-Compliance וה-Performance של הסביבה המנוהלת.</div>
   </div>
   <div class="obj-wrap">
     <div class="q">"אנחנו לא צריכים AI Agents"</div>
@@ -383,16 +406,21 @@ body.edit-mode #fmtbar{transform:translateX(-50%) translateY(0);}
   <div class="panel-head"><h3>תחרות</h3><button class="panel-close" onclick="closeAllPanels()">✕</button></div>
   <div class="panel-body">
   <div class="prod" style="border-width:1px;border-color:var(--line);">
-    <div class="t">Mintlify — המתחרה הכי גדול. שני טיעונים מנצחים</div>
-    <p><b>1. Fern הוא קו מוצרים מלא, לא Feature בודד.</b> Documentation, SDKs, CLI ו-MCP servers בפלטפורמה אחת, שבה ה-Docs מפנים אוטומטית לכל מה שעוד Fern מייצר. Mintlify זה תיעוד בלבד.</p>
-    <p><b>2. Fern מגובה על ידי Postman.</b> חברה בשווי 5.5 מיליארד דולר, נשמר כקו מוצרים עצמאי עם Roadmap משלו.</p>
+    <div class="t">Mintlify — המתחרה הכי גדול. אג'נט-פרנדלי, אבל חסר לו הרבה</div>
+    <p>Mintlify כן Agent-friendly, ובונה agent-readiness בקצב דומה — אבל אין לו: <b>Enterprise scale, Multi-repo, RBAC, Self-Hosting</b>, ואין לו בכלל <b>SDKs / CLIs / MCPs</b>. זה תיעוד בלבד.</p>
+    <p><b>הטיעון המנצח:</b> Fern הוא קו מוצרים מלא — Documentation, SDKs, CLI ו-MCP servers בפלטפורמה אחת, שבה ה-Docs מפנים אוטומטית לכל מה שעוד Fern מייצר. וגם: Fern מגובה על ידי Postman, חברה בשווי 5.5 מיליארד דולר, עם יותר הון וקצב Roadmap מהיר יותר.</p>
   </div>
   <table class="bt">
     <tr><th>מתחרה</th><th>מה חשוב לדעת</th></tr>
-    <tr><td><b>GitBook / ReadMe</b></td><td>מבוססים, אבל התחילו UI-first והדביקו Docs-as-code מאוחר יותר. מגיע לעיתים, פחות מ-Mintlify</td></tr>
-    <tr><td><b>Redocly</b></td><td>מגיע לעיתים רחוקות, קריאה של Fern: מוצר חלש יותר</td></tr>
-    <tr><td><b>Open Source / DIY</b></td><td>Docusaurus הוא הנפוץ. Build vs Buy קלאסי — הם מחזיקים בקוד ובכל תקלה</td></tr>
+    <tr><td><b>ReadMe / GitBook / Scalar / Redocly</b></td><td>קלים (Lightweight), לא תחרותיים בסקאלת Enterprise. כרגע מנסים "לצוד" לקוחות שנפלטו מ-Stainless — שווה לבדוק אם התחרות כבר שם</td></tr>
+    <tr><td><b>Stoplight</b></td><td>SmartBear מפרקת אותו (being deprecated) — לא תחרותי</td></tr>
+    <tr><td><b>OpenAPI Generator / MS Kiota</b></td><td>קוד פתוח, חינמי, 8-50+ שפות. הטיעון: "חינמי אבל אתה מחזיק בתחזוקה" — Fern נותן פלט אידיומטי, סנכרון עם Docs, גילוי Drift ותמיכה — זו שאלת TCO, לא רק מחיר</td></tr>
+    <tr><td><b>Backstage / Docusaurus (פורטלים פנימיים)</b></td><td>OSS ל-Docs/Portal פנימי. Fern: תיעוד מיוצר ומסונכרן אוטומטית מול עמודים שנכתבים ביד ויוצאים מסונכרון + משטח MCP ל-Agents</td></tr>
+    <tr><td><b>Apigee / Kong / Gravitee / Axway / Azure APIM</b></td><td>פורטל מובנה בתוך ה-Gateway. לא להחליף — Fern יושב <b>מעל</b> כל Gateway: DX טוב יותר, SDKs אמיתיים, Agent-readiness. "תשאירו את ה-Gateway, תשדרגו את הצריכה"</td></tr>
   </table>
+  <div class="cross-box">
+    <b>מתחרי SDK — Displacement Window פתוח עכשיו:</b> Speakeasy — SDK בלבד, תמחור לפי שפה, אין Docs, אין WebSockets/gRPC, אין On-Prem. Stainless (בנו את ה-SDKs של OpenAI/Anthropic/Cloudflare) — <b>נרכשו על ידי Anthropic ב-18.5.2026 וסגורים לפרויקטים חדשים</b>: ה-Regeneration שלהם הופסק, כך שכל לקוח קודם שלהם יקבל SDKs "מיושנים" בשינוי ה-API הבא. אם אתה מזהה שחברה הייתה לקוחה של Stainless — זה חלון Displacement דחוף, לא רק Signal. API-Matic (אוסטרלית) יותר חברת שירותים מ-SaaS אמיתי — לא תחרות רצינית.
+  </div>
   </div>
 </div>
 
@@ -400,7 +428,8 @@ body.edit-mode #fmtbar{transform:translateX(-50%) translateY(0);}
   <div class="panel-head"><h3>תמחור</h3><button class="panel-close" onclick="closeAllPanels()">✕</button></div>
   <div class="panel-body">
   <p style="font-size:14.5px;">לפי מוצר, ומבוסס-ערך — לפי מורכבות ה-API, סקאלה (שטח פנים ל-API חיצוני, מספר Microservices לפנימי), וגודל/הכנסות החברה.</p>
-  <p style="font-size:14.5px;"><b>Documentation:</b> מ-4,000$ (רצפת Enterprise) ועד 800,000$ לארגון גדול ומפוזר טכנולוגית. <b>SDKs:</b> רצפה דומה, עד 500,000$ לשפה. <b>הנחה:</b> עד 50% ממחיר הליסט.</p>
+  <p style="font-size:14.5px;"><b>Documentation:</b> מ-4,000$ (רצפת Enterprise) ועד 800,000$ לארגון גדול ומפוזר טכנולוגית. <b>SDKs:</b> רצפה דומה, עד 500,000$ לשפה, ומתומחרים <b>בנפרד</b> מה-Documentation. SDK ל-API פנימי מתומחר <b>זול יותר</b> מ-SDK ל-API חיצוני. <b>הנחה:</b> עד 50% ממחיר הליסט.</p>
+  <div class="cross-box"><b>נקודת ייחוס:</b> חברת Series B/C עם 200-500 Endpoints, ב-TypeScript + Python + Java, יוצאת בסביבות 30,000$ (כ-10,000$ לשפה). עסקאות בסקאלת NVIDIA (150-300 מוצרים, Parsing מורכב) הולכות הרבה יותר גבוה. תמיד להשתמש במחשבון התמחור לטווחים, ולהכניס Specialist לפני הצעת מחיר פורמלית.</div>
   <div class="say"><b class="tag">אם המחיר עולה בשיחה הראשונה</b>"זה מבוסס על הגודל והמורכבות של ה-API שלכם, ונצלול לזה במהלך ההערכה."</div>
   </div>
 </div>
@@ -444,28 +473,28 @@ document.getElementById('mainBlocks').addEventListener('dragover', function(e){
 });
 
 function saveAll(){
-  localStorage.setItem('fern_main_v1_he', document.getElementById('mainBlocks').innerHTML);
+  localStorage.setItem('fern_main_v3', document.getElementById('mainBlocks').innerHTML);
   document.querySelectorAll('.panel').forEach(function(p){
     const body = p.querySelector('.panel-body');
-    if(body) localStorage.setItem('fern_panel_v1_he_' + p.id, body.innerHTML);
+    if(body) localStorage.setItem('fern_panel_v3_' + p.id, body.innerHTML);
   });
   alert('נשמר בדפדפן הזה ✓');
 }
 
 function resetAll(){
   if(confirm('לאפס את כל השינויים שנשמרו בדפדפן הזה ולחזור לגרסה המקורית?')){
-    localStorage.removeItem('fern_main_v1_he');
-    document.querySelectorAll('.panel').forEach(function(p){ localStorage.removeItem('fern_panel_v1_he_' + p.id); });
+    localStorage.removeItem('fern_main_v3');
+    document.querySelectorAll('.panel').forEach(function(p){ localStorage.removeItem('fern_panel_v3_' + p.id); });
     location.reload();
   }
 }
 
 window.addEventListener('DOMContentLoaded', function(){
-  const m = localStorage.getItem('fern_main_v1_he');
-  if(m && m.replace(/<[^>]*>/g,'').trim() !== '') document.getElementById('mainBlocks').innerHTML = m;
+  const m = localStorage.getItem('fern_main_v3');
+  if(m) document.getElementById('mainBlocks').innerHTML = m;
   document.querySelectorAll('.panel').forEach(function(p){
-    const saved = localStorage.getItem('fern_panel_v1_he_' + p.id);
-    if(saved && saved.replace(/<[^>]*>/g,'').trim() !== ''){ const body = p.querySelector('.panel-body'); if(body) body.innerHTML = saved; }
+    const saved = localStorage.getItem('fern_panel_v3_' + p.id);
+    if(saved){ const body = p.querySelector('.panel-body'); if(body) body.innerHTML = saved; }
   });
   attachDnD();
 });
