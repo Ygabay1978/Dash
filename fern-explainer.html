@@ -247,6 +247,7 @@ body.edit-mode #fmtbar{transform:translateX(-50%) translateY(0);}
   <span class="drag-handle">⠿</span>
   <div class="block-content script" contenteditable="false">
     <span class="eyebrow">איך תסגור את הפיץ'</span>
+    <p>ההבחנה החשובה:</p>
     <p><b>Governance / Management / Discovery → Postman.&nbsp;</b></p><p><b>Consumption / Developer Experience → Fern.</b>&nbsp;</p><p>Fern לא מחליף את ה-API Catalog — הוא יושב במורד הזרם, השכבה הרחבה יותר סביב ה-APIs: קונטקסט עסקי, Guides, דוגמאות, Troubleshooting.&nbsp;</p><p>אם הלקוח הוא לקוח Postman, Postman נשאר נקודת המגע הראשונה שלו.</p>
     <div class="chip-row">
       <span class="chip" onclick="openPanel('panel-fit')">למי Fern מתאים ולמי לא</span>
@@ -289,15 +290,14 @@ body.edit-mode #fmtbar{transform:translateX(-50%) translateY(0);}
 <div class="panel" id="panel-discovery">
   <div class="panel-head"><h3>שאלות Discovery</h3><button class="panel-close" onclick="closeAllPanels()">✕</button></div>
   <div class="panel-body">
-    <div class="say-critical">
-      <b class="tag">השאלה הראשית #1 — ואז שתוק</b>
-      "למה אתה מדבר איתי דווקא עכשיו?" זו השאלה שמגלה את הכאב האמיתי — תשאל, ותשאיר את השקט לבדו. אל תמלא אותו. <span style="color:var(--grey);font-weight:400;">נתון לגיבוי אם צריך: אצל Unleash, יותר מ-50% מתנועת האתר מגיעה כיום מ-Agents, ותנועת ה-Agents שלהם גדלה פי 12 מאז שעברו ל-Fern — "agent-readiness" זו לא תיאוריה.</span>
-    </div>
-    <div class="say-critical">
-      <b class="tag">השאלה הראשית #2 — זו הכסף</b>
-      "יש Drift בין ה-API שלכם, ה-SDKs וה-Docs? כל כמה זמן?" הלקוח יגיד שתחזוקה עצמית עולה לו רק כמה שעות Engineering — ה-Drift הוא התשובה שלך. שאלת המשך: מה קורה כשמשהו דחוף יותר נופל? כמה זמן זה בפועל לוקח לתקן את הפער? מה נשבר לשותף בינתיים?
-    </div>
     <ul class="clean">
+      <li>למה אתה מדבר איתי דווקא עכשיו?
+        <div style="color:var(--grey);font-size:13px;margin-top:4px;">זו השאלה שמגלה את הכאב האמיתי.<br>נתון לגיבוי אם צריך: אצל Unleash, יותר מ-50% מתנועת האתר מגיעה כיום מ-Agents, ותנועת ה-Agents שלהם גדלה פי 12 מאז שעברו ל-Fern — "agent-readiness" זו לא תיאוריה.</div>
+      </li>
+      <li>יש Drift בין ה-API שלכם, ה-SDKs וה-Docs? כל כמה זמן?
+        <div style="color:var(--grey);font-size:13px;margin-top:4px;">אם הלקוח יגיד שתחזוקה עצמית עולה לו רק כמה שעות Engineering — ה-Drift הוא התשובה שלך.</div>
+      </li>
+      <li><b>שאלת המשך:</b> מה קורה כשמשהו דחוף יותר נופל? כמה זמן זה בפועל לוקח לתקן את הפער? מה נשבר לשותף בינתיים?</li>
       <li>אם מפתח רוצה להשתמש היום באחד ה-APIs שלכם, איך הוא מוצא את המידע שהוא צריך?</li>
       <li>כמה קל למפתח להגיע מהשלב שבו הוא מגלה את ה-API עד ל-API Call הראשון?</li>
       <li>מי אחראי אצלכם על ה-Developer Experience של ה-APIs?</li>

@@ -251,7 +251,10 @@ body.edit-mode #fmtbar{transform:translateX(-50%) translateY(0);}
   <span class="drag-handle">⠿</span>
   <div class="block-content script">
     <span class="eyebrow">How to close the pitch</span>
-    <p>The important distinction to remember, if a question about Postman itself comes up: <b>Governance / Management / Discovery → Postman. Consumption / Developer Experience → Fern.</b> Fern doesn't replace the API Catalog — it sits downstream, the broader layer around the APIs: business context, Guides, examples, Troubleshooting. If the customer is a Postman customer, Postman stays their first touchpoint.</p>
+    <p>The important distinction:</p>
+    <p><b>Governance / Management / Discovery → Postman</b></p>
+    <p><b>Consumption / Developer Experience → Fern</b></p>
+    <p>Fern doesn't replace the API Catalog — it sits downstream, the broader layer around the APIs: business context, Guides, examples, Troubleshooting. If the customer is a Postman customer, Postman stays their first touchpoint.</p>
     <div class="chip-row">
       <span class="chip" onclick="openPanel('panel-fit')">Who Fern fits — and who it doesn't</span>
       <span class="chip" onclick="openPanel('panel-signals')">Buying Signals — what to listen for</span>
@@ -293,15 +296,14 @@ body.edit-mode #fmtbar{transform:translateX(-50%) translateY(0);}
 <div class="panel" id="panel-discovery">
   <div class="panel-head"><h3>Discovery Questions</h3><button class="panel-close" onclick="closeAllPanels()">✕</button></div>
   <div class="panel-body">
-    <div class="say-critical">
-      <b class="tag">Key question #1 — then be quiet</b>
-      "Why are you talking to me right now?" This is the question that surfaces the real pain — ask it, and leave the silence alone. Don't fill it. <span style="color:var(--grey);font-weight:400;">Backup data if you need it: at Unleash, over 50% of website traffic now comes from Agents, and their agent traffic grew 12x since moving to Fern — "agent-readiness" isn't a theory.</span>
-    </div>
-    <div class="say-critical">
-      <b class="tag">Key question #2 — this is the money one</b>
-      "Is there drift between your API, your SDKs and your docs? How often?" The customer will say self-maintenance costs them just a few engineering hours — Drift is your answer to that. Follow-up: what happens when something more urgent comes up instead? How long does it actually take to fix the gap? What breaks for a partner in the meantime?
-    </div>
     <ul class="clean">
+      <li>Why are you talking to me right now?
+        <div style="color:var(--grey);font-size:13px;margin-top:4px;">This is the question that surfaces the real pain.<br>Backup data if you need it: at Unleash, over 50% of website traffic now comes from Agents, and their agent traffic grew 12x since moving to Fern, "agent-readiness" isn't a theory.</div>
+      </li>
+      <li>Is there drift between your API, your SDKs and your docs? How often?
+        <div style="color:var(--grey);font-size:13px;margin-top:4px;">If the customer will say self-maintenance costs them just a few engineering hours — Drift is your answer to that.</div>
+      </li>
+      <li><b>Follow-up question:</b> what happens when something more urgent comes up instead? How long does it actually take to fix the gap? What breaks for a partner in the meantime?</li>
       <li>If a developer wants to use one of your APIs today, how do they find the information they need?</li>
       <li>How easy is it for a developer to go from discovering the API to their first successful API call?</li>
       <li>Who owns the Developer Experience of your APIs?</li>

@@ -1,0 +1,468 @@
+<!DOCTYPE html>
+<html dir="ltr" lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Fabric — Call Script</title>
+<style>
+:root{
+  --orange:#FF6C37;
+  --orange-dark:#E15A28;
+  --ink:#1C1C1E;
+  --grey:#5B5F66;
+  --line:#E6E4E0;
+  --bg-card:#FBFAF8;
+  --bg-page:#FFFFFF;
+  --cream:#FFF6EE;
+  --green:#2E7D5B;
+  --good:#1E8E5A;
+  --bad:#D64545;
+}
+*{box-sizing:border-box;}
+body{
+  margin:0;
+  background:var(--bg-page);
+  color:var(--ink);
+  font-family:"Segoe UI",Arial,sans-serif;
+  line-height:1.75;
+  padding:0 5vw 100px;
+}
+header.top{
+  padding:20px 0 20px;
+  border-bottom:3px solid var(--orange);
+  margin-bottom:26px;
+  display:flex;justify-content:space-between;align-items:flex-end;flex-wrap:wrap;gap:14px;
+}
+header.top .htext{padding-top:14px;}
+header.top h1{font-size:30px;margin:0 0 8px;}
+header.top p{color:var(--grey);margin:0;font-size:15.5px;max-width:700px;}
+.toolbar{display:flex;gap:8px;flex-wrap:wrap;}
+.tbtn{
+  appearance:none;border:1px solid var(--line);background:#fff;color:var(--ink);
+  font-size:12.5px;font-weight:600;padding:8px 14px;border-radius:8px;cursor:pointer;
+  display:flex;align-items:center;gap:6px;transition:.15s;
+}
+.tbtn:hover{border-color:var(--orange);color:var(--orange-dark);}
+.tbtn.on{background:var(--orange-dark);color:#fff;border-color:var(--orange-dark);}
+.tbtn.save{background:var(--orange);color:#fff;border-color:var(--orange);}
+.tbtn.save:hover{background:var(--orange-dark);}
+
+main{max-width:820px;margin:0 auto;}
+
+/* ---------- draggable + editable blocks ---------- */
+.block{position:relative;margin-bottom:6px;border-radius:8px;transition:box-shadow .15s;}
+body.edit-mode .block{cursor:default;box-shadow:0 0 0 1px transparent;}
+body.edit-mode .block:hover{box-shadow:0 0 0 1px #FFD9C7;}
+.drag-handle{
+  display:none;position:absolute;top:6px;right:-30px;width:24px;height:24px;
+  border-radius:6px;background:var(--cream);color:var(--orange-dark);
+  align-items:center;justify-content:center;cursor:grab;font-size:14px;user-select:none;
+}
+body.edit-mode .drag-handle{display:flex;}
+.block.dragging{opacity:.4;}
+.block-content[contenteditable="true"]{outline:1px dashed transparent;border-radius:6px;padding:2px 4px;}
+body.edit-mode .block-content:hover{outline-color:#FFD9C7;}
+body.edit-mode .block-content:focus{outline-color:var(--orange);background:#FFFDF9;}
+
+.script p{font-size:16px;margin:0 0 16px;}
+.script p:last-child{margin-bottom:0;}
+.eyebrow{
+  display:block;color:var(--orange-dark);font-weight:700;font-size:12.5px;
+  text-transform:uppercase;letter-spacing:.04em;margin:6px 0 8px;
+}
+
+.say{background:#F3F7F5;border-left:3px solid var(--green);border-radius:6px;padding:14px 18px;margin:16px 0;font-size:15.5px;}
+.say b.tag{color:var(--green);display:block;font-size:12px;margin-bottom:6px;}
+
+.say-critical{background:#FDECEC;border-left:4px solid var(--bad);border-radius:6px;padding:14px 18px;margin:0 0 12px;font-size:15px;}
+.say-critical b.tag{color:var(--bad);display:block;font-size:12px;margin-bottom:6px;text-transform:uppercase;}
+.say-critical:last-of-type{margin-bottom:18px;}
+
+.cross-box{background:var(--cream);border:1px solid #FFD9C7;border-radius:8px;padding:16px 20px;margin:16px 0;font-size:14.5px;}
+.cross-box b{color:var(--orange-dark);}
+
+.prod{border:2px solid var(--orange);border-radius:10px;padding:20px 22px;margin:18px 0;background:var(--bg-card);}
+.prod .t{font-weight:800;color:var(--orange-dark);font-size:17px;margin-bottom:10px;}
+.prod p{font-size:14.5px;margin:0 0 10px;}
+.prod p:last-child{margin-bottom:0;}
+
+.chip{
+  display:inline-flex;align-items:center;gap:6px;background:var(--cream);border:1px solid #FFD9C7;
+  color:var(--orange-dark);font-size:13px;font-weight:700;padding:7px 14px;border-radius:20px;
+  cursor:pointer;margin:4px 4px 4px 0;transition:.15s;
+}
+.chip:hover{background:var(--orange);color:#fff;border-color:var(--orange);}
+.chip::after{content:"↗";font-size:12px;margin-left:4px;}
+.chip-row{margin:4px 0;}
+
+.stage-row{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin:12px 0 6px;}
+.stage{background:var(--bg-card);border:1px solid var(--line);border-radius:8px;padding:12px 10px;}
+.stage.core{border-color:var(--orange);background:var(--cream);}
+.stage .t{font-weight:700;font-size:14px;margin:0 0 4px;}
+.stage .d{font-size:12.5px;color:var(--grey);}
+
+.closing{margin-top:30px;text-align:center;padding:22px 20px;background:var(--cream);border:1px solid #FFD9C7;border-radius:10px;font-size:16.5px;font-weight:700;color:var(--orange-dark);}
+
+/* ---------- popup panels ---------- */
+#backdrop{position:fixed;inset:0;background:rgba(28,28,30,.45);opacity:0;visibility:hidden;transition:opacity .2s;z-index:200;}
+#backdrop.show{opacity:1;visibility:visible;}
+.panel{position:fixed;top:0;right:-92vw;width:640px;max-width:92vw;height:100vh;background:var(--bg-page);box-shadow:-14px 0 34px rgba(0,0,0,.2);z-index:201;transition:right .25s ease;overflow-y:auto;padding:22px 26px 60px;}
+.panel.open{right:0;}
+.panel-head{display:flex;justify-content:space-between;align-items:center;border-bottom:2px solid var(--orange);padding-bottom:12px;margin-bottom:16px;}
+.panel-head h3{font-size:18px;margin:0;color:var(--ink);}
+.panel-close{border:none;background:var(--cream);color:var(--orange-dark);width:30px;height:30px;border-radius:50%;font-size:15px;cursor:pointer;}
+.panel-close:hover{background:var(--orange);color:#fff;}
+.panel-body[contenteditable="true"]{outline:1px dashed transparent;}
+body.edit-mode .panel-body:hover{outline-color:#FFD9C7;}
+body.edit-mode .panel-body:focus{outline-color:var(--orange);}
+
+table.bt{width:100%;border-collapse:collapse;font-size:13.5px;margin-top:10px;}
+table.bt th{text-align:left;background:var(--cream);padding:9px 12px;font-size:11.5px;text-transform:uppercase;letter-spacing:.02em;color:var(--grey);}
+table.bt td{padding:9px 12px;border-top:1px solid var(--line);vertical-align:top;}
+table.bt tr:nth-child(even) td{background:#FCFCFB;}
+table.bt caption{text-align:left;font-size:13px;color:var(--grey);margin-bottom:6px;caption-side:top;}
+.fit-high{color:var(--good);font-weight:700;}
+.fit-mid{color:#B8860B;font-weight:700;}
+.fit-low{color:var(--bad);font-weight:700;}
+
+.bubble{border-radius:8px;padding:11px 15px;margin-bottom:8px;font-size:14px;line-height:1.55;border-left:3px solid transparent;}
+.bubble:last-child{margin-bottom:0;}
+.bubble.ae{background:var(--cream);border-left-color:var(--orange);}
+.bubble .bubble-role{font-size:10px;text-transform:uppercase;letter-spacing:.05em;display:block;margin-bottom:4px;color:var(--grey);font-weight:800;}
+.bubble.ae .bubble-role{color:var(--orange-dark);}
+.obj-wrap{border:1px solid var(--line);border-radius:8px;padding:14px 16px;margin-bottom:12px;background:var(--bg-page);}
+.obj-wrap .q{font-weight:700;margin-bottom:8px;}
+ul.clean{margin:0;padding-left:18px;}
+ul.clean li{margin-bottom:8px;font-size:14.5px;}
+
+/* format toolbar */
+#fmtbar{
+  position:fixed;bottom:20px;left:50%;transform:translateX(-50%) translateY(120%);
+  background:#fff;border:1px solid var(--line);border-radius:12px;padding:9px 12px;
+  display:flex;gap:7px;align-items:center;flex-wrap:wrap;max-width:94vw;
+  box-shadow:0 8px 24px rgba(0,0,0,.16);z-index:250;transition:transform .2s ease;
+}
+body.edit-mode #fmtbar{transform:translateX(-50%) translateY(0);}
+#fmtbar .ftxt{appearance:none;border:1px solid var(--line);background:#fff;border-radius:6px;min-width:32px;height:32px;padding:0 9px;cursor:pointer;font-size:13.5px;font-weight:700;color:var(--ink);}
+#fmtbar .ftxt:hover{background:var(--cream);border-color:var(--orange);color:var(--orange-dark);}
+#fmtbar .fswatch{width:36px;height:24px;border-radius:5px;border:1px solid var(--line);cursor:pointer;padding:0;}
+#fmtbar .fswatch:hover{border-color:var(--ink);transform:scale(1.08);}
+#fmtbar .fsep{width:1px;height:24px;background:var(--line);margin:0 2px;}
+#fmtbar .lbl{font-size:10.5px;color:var(--grey);padding:0 4px;}
+
+@media(max-width:760px){.stage-row{grid-template-columns:repeat(2,1fr);} .drag-handle{right:-4px;top:-4px;position:relative;margin-bottom:4px;}}
+</style>
+</head>
+<body>
+
+<header class="top">
+  <div class="htext">
+    <h1>Fabric</h1>
+    <p>Fabric is the organization's central control layer for the AI world — Models, Agents, MCP Servers and internal APIs, all under one roof.</p>
+  </div>
+  <div class="toolbar">
+    <button class="tbtn" id="editToggle" onclick="toggleEdit()">✏️ Edit</button>
+    <button class="tbtn save" onclick="saveAll()">💾 Save</button>
+    <button class="tbtn" onclick="downloadStandalone()">⬇ Download</button>
+    <button class="tbtn" onclick="resetAll()">↺ Reset</button>
+  </div>
+</header>
+
+<main>
+<div id="mainBlocks">
+<div class="block" data-id="b1">
+  <span class="drag-handle">⠿</span>
+  <div class="block-content script">
+    
+    
+<p>Think of it this way: the more teams start building AI Agents and connecting to different models — OpenAI, Claude, Gemini — and to MCP servers and internal APIs, the more each team starts managing its own connections, permissions and Credentials on its own. <b>Fabric takes all of that traffic and routes it through a single control point</b> — giving the organization visibility into where AI requests are going, which models and APIs they can reach, how secrets are managed, what it costs, and what actually happened — all under one unified governance layer.</p>
+<div class="stage-row">
+  <div class="stage core"><div class="t">Routing & Reliability</div><div class="d">Routes requests between models, automatic fallback when a model goes down, picks the right model for each request</div></div>
+  <div class="stage core"><div class="t">Security & Credentials</div><div class="d">The Agent never needs to see or hold the keys itself</div></div>
+  <div class="stage"><div class="t">Agent Governance</div><div class="d">Decide exactly which APIs, tools or MCP Servers each Agent is authorized to reach</div></div>
+  <div class="stage"><div class="t">Cost & Audit</div><div class="d">See who's consuming how many tokens at what cost, and a full record of who ran which Agent, on which model, against which API, and which policy fired</div></div>
+</div>
+<p>In one sentence: <b>Fabric is the central control layer that connects AI models, Agents, MCP servers and APIs — giving you control over traffic, security, permissions, cost and audit, instead of managing each one separately.</b></p>
+
+  </div>
+</div>
+<div class="block" data-id="b2">
+  <span class="drag-handle">⠿</span>
+  <div class="block-content script">
+    <span class="eyebrow">From here, move to the problem</span>
+    
+<p>Say one team works with OpenAI, another with Claude, and an Agent connects to an MCP server — and they all need access to internal systems. Today each of them holds its own keys, permissions and logs, and there's no central layer that sees all the traffic. That's not just a technical problem — it's <b>Shadow AI</b>: the organization doesn't actually know who's talking to whom, at what cost, or under what authority.</p>
+<div class="chip-row"><span class="chip" onclick="openPanel('panel-discovery')">Discovery questions — including the two key questions</span></div>
+
+  </div>
+</div>
+<div class="block" data-id="b3">
+  <span class="drag-handle">⠿</span>
+  <div class="block-content script">
+    <span class="eyebrow">First scenario: an insurance company</span>
+    
+<div class="prod">
+  <div class="t">An insurance company with claims-handling Agents</div>
+  <p>AI Agents review claims and touch sensitive internal APIs (policies, customers, claims history) — sometimes several Agents across several different models, each with its own keys and permissions.</p>
+  <p>The problem: if an Agent "misbehaves" or accidentally accesses data it shouldn't (a customer's PII), there's no central way to block it, see who's responsible, or show a regulator exactly what happened. Fabric gives a full audit trail — who ran the Agent, on which model, which API it touched, and which policy allowed or blocked the request.</p>
+  <p style="color:var(--grey);font-size:13px;"><b>Who to target:</b> Head of AI/Platform Engineering (the Lead), CISO/Compliance (involved early because of the PII).</p>
+  <div class="say" style="margin-top:12px;"><b class="tag">Discovery question to close the scenario</b>"If an Agent accesses a customer's sensitive data right now, do you have a way to know that in real time, or do you only find out at the next audit?"</div>
+</div>
+
+  </div>
+</div>
+<div class="block" data-id="b4">
+  <span class="drag-handle">⠿</span>
+  <div class="block-content script">
+    <span class="eyebrow">Second scenario: a credit card company</span>
+    
+<div class="prod">
+  <div class="t">A credit card company with fraud-detection Agents</div>
+  <p>The Fraud team runs Agents that use several models in parallel (say, GPT for text analysis, Claude for pattern detection) to raise accuracy, lower false positives, and avoid depending on a single vendor if something breaks.</p>
+  <p>The problem: managing fallback between models by hand is messy, and nobody actually knows how many tokens each fraud check costs — and at millions of checks a month, that's a real dollar figure. Fabric gives automatic routing and fallback between models, and a full cost picture by team or use case.</p>
+  <p style="color:var(--grey);font-size:13px;"><b>Who to target:</b> VP Engineering / Head of Fraud & Risk (the Lead), FinOps/Platform (cost control).</p>
+</div>
+
+  </div>
+</div>
+<div class="block" data-id="b4b">
+  <span class="drag-handle">⠿</span>
+  <div class="block-content script">
+    <span class="eyebrow">Third scenario: a bank</span>
+    
+<div class="prod">
+  <div class="t">A bank with dozens of internal dev teams and Agents</div>
+  <p>At a large bank, dozens of dev teams each run an Agent or two, each independently deciding which model to use and which internal APIs to connect to. There's no single organizational picture.</p>
+  <p>The problem: banking regulation (things like SOC 2 / ISO / Model Risk requirements) demands a full audit trail for any AI action touching customer data — not "roughly know," but exact proof. Fabric gives that one unified governance layer across every team, without blocking any team from picking the model that fits them.</p>
+  <p style="color:var(--grey);font-size:13px;"><b>Who to target:</b> Head of AI Platform / Architecture (the Lead), Model Risk / Compliance (a critical partner).</p>
+</div>
+
+  </div>
+</div>
+<div class="block" data-id="b5">
+  <span class="drag-handle">⠿</span>
+  <div class="block-content script">
+    <span class="eyebrow">How to close the pitch</span>
+    
+<p>The important distinction:</p>
+<p><b>Fabric controls AI Traffic (Agents/Models/MCP)</b></p>
+<p><b>Fern helps consume a regular API</b></p>
+<p><b>Passport controls access</b></p>
+<p><b>Catalog gives Discovery</b></p>
+<p>They're not competing — each is a different layer.</p>
+<div class="chip-row">
+  <span class="chip" onclick="openPanel('panel-fit')">Who Fabric fits + Buying Signals</span>
+  <span class="chip" onclick="openPanel('panel-ecosystem')">Fabric vs. Fern / Passport / Catalog</span>
+  <span class="chip" onclick="openPanel('panel-objections')">Common objections</span>
+  <span class="chip" onclick="openPanel('panel-pricing')">Pricing</span>
+</div>
+
+  </div>
+</div>
+
+</div>
+
+<div class="closing">Fabric connects the organization's AI models, Agents, MCP servers and APIs under one control layer — traffic, security, permissions, cost and audit.</div>
+</main>
+
+<div id="fmtbar">
+  <button class="ftxt" onclick="document.execCommand('bold')" title="Bold"><b>B</b></button>
+  <button class="ftxt" onclick="document.execCommand('italic')" title="Italic"><i>I</i></button>
+  <button class="ftxt" onclick="document.execCommand('underline')" title="Underline"><u>U</u></button>
+  <button class="ftxt" onclick="adjustFontSize(-2)" title="Smaller text">A-</button>
+  <button class="ftxt" onclick="adjustFontSize(2)" title="Larger text">A+</button>
+  <span class="fsep"></span>
+  <button class="ftxt" onclick="document.execCommand('insertUnorderedList')" title="Bullet list">•</button>
+  <button class="ftxt" onclick="document.execCommand('insertOrderedList')" title="Numbered list">1.</button>
+  <span class="fsep"></span>
+  <button class="fswatch" style="background:#1C1C1E;" onclick="document.execCommand('foreColor', false, '#1C1C1E')" title="Black"></button>
+  <button class="fswatch" style="background:#E15A28;" onclick="document.execCommand('foreColor', false, '#E15A28')" title="Orange"></button>
+  <button class="fswatch" style="background:#D64545;" onclick="document.execCommand('foreColor', false, '#D64545')" title="Red"></button>
+  <button class="fswatch" style="background:#2E7D5B;" onclick="document.execCommand('foreColor', false, '#2E7D5B')" title="Green"></button>
+  <button class="fswatch" style="background:#2F6FED;" onclick="document.execCommand('foreColor', false, '#2F6FED')" title="Blue"></button>
+  <button class="fswatch" style="background:#5B5F66;" onclick="document.execCommand('foreColor', false, '#5B5F66')" title="Grey"></button>
+  <span class="lbl">Drag ⠿ to reorder</span>
+</div>
+
+<div id="backdrop" onclick="closeAllPanels()"></div>
+
+<div class="panel" id="panel-discovery">
+  <div class="panel-head"><h3>Discovery Questions</h3><button class="panel-close" onclick="closeAllPanels()">✕</button></div>
+  <div class="panel-body">
+  
+<ul class="clean">
+  <li>How much are you actually spending on token usage today, and who in the organization sees that number?
+    <div style="color:var(--grey);font-size:13px;margin-top:4px;">At most organizations the honest answer is "nobody knows exactly" — that's the gap Fabric closes.</div>
+  </li>
+  <li>If an Agent accesses a sensitive internal API right now, do you have a full audit trail on that, in real time?</li>
+  <li>How many teams are building or running AI applications or Agents today, and how is that managed?</li>
+  <li>How do your Agents access LLMs, MCP servers and internal APIs today?</li>
+  <li>As AI usage grows, are there concerns about security, Agent access, Credentials, Governance or costs?</li>
+  <li>Are you using more than one AI model? How do you decide which model gets which request?</li>
+</ul>
+
+  </div>
+</div>
+<div class="panel" id="panel-fit">
+  <div class="panel-head"><h3>Who Fabric fits + Buying Signals</h3><button class="panel-close" onclick="closeAllPanels()">✕</button></div>
+  <div class="panel-body">
+  
+<table class="bt">
+  <tr><th>Signal</th><th>🟢 Good fit</th><th>🔴 Probably not a fit</th></tr>
+  <tr><td>Org size</td><td>Enterprise, several AI initiatives</td><td>A single developer or a very small team</td></tr>
+  <tr><td>AI Agents</td><td>Building/running several Agents</td><td>No Agents</td></tr>
+  <tr><td>LLM strategy</td><td>Several models/providers</td><td>One simple integration</td></tr>
+  <tr><td>MCP</td><td>Using or planning several MCP Servers</td><td>No use/plan for MCP</td></tr>
+  <tr><td>Internal APIs</td><td>Agents need secure access to internal APIs</td><td>Agents don't touch org systems</td></tr>
+  <tr><td>AI costs</td><td>Needs visibility and control over spend</td><td>AI costs aren't significant</td></tr>
+</table>
+<table class="bt" style="margin-top:16px;">
+  <tr><th>The customer says...</th><th>What it means</th></tr>
+  <tr><td>We have several teams, each with its own model</td><td><span class="fit-high">Strong signal</span></td></tr>
+  <tr><td>We don't actually know how much we're spending on tokens</td><td><span class="fit-high">Strong signal</span></td></tr>
+  <tr><td>Security is asking how Agents access Credentials</td><td><span class="fit-high">Very strong signal</span></td></tr>
+  <tr><td>We're building MCP Servers</td><td><span class="fit-high">Strong signal</span></td></tr>
+</table>
+
+  </div>
+</div>
+<div class="panel" id="panel-ecosystem">
+  <div class="panel-head"><h3>Fabric within the Postman family</h3><button class="panel-close" onclick="closeAllPanels()">✕</button></div>
+  <div class="panel-body">
+  
+<div class="cross-box">Positioning note: don't sell Fabric as a replacement for Kong/Apigee — it's an AI-specific governance layer that sits alongside your existing API infrastructure.</div>
+<table class="bt">
+  <caption>Fabric vs. Fern</caption>
+  <tr><th></th><th>Fabric</th><th>Fern</th></tr>
+  <tr><td>The problem</td><td>Managing AI Agents and AI consumption</td><td>Making APIs easy to consume</td></tr>
+  <tr><td>Focus</td><td>AI Control Layer</td><td>API Consumption Layer</td></tr>
+</table>
+<table class="bt" style="margin-top:16px;">
+  <caption>Fabric vs. Passport</caption>
+  <tr><th></th><th>Fabric</th><th>Passport</th></tr>
+  <tr><td>The problem</td><td>Controlling AI traffic (Models/Agents/MCP)</td><td>Who has access to an API, without exposing Secrets</td></tr>
+</table>
+
+  </div>
+</div>
+<div class="panel" id="panel-objections">
+  <div class="panel-head"><h3>Common objections</h3><button class="panel-close" onclick="closeAllPanels()">✕</button></div>
+  <div class="panel-body">
+  
+<div class="obj-wrap"><div class="q">"We just use ChatGPT/Copilot"</div><div class="bubble ae"><span class="bubble-role">AE</span>Then Fabric is less critical right now — it becomes relevant once there's more than one Agent/model, MCP Servers, or Agents touching internal APIs.</div></div>
+<div class="obj-wrap"><div class="q">"We already have an LLM Gateway"</div><div class="bubble ae"><span class="bubble-role">AE</span>A regular gateway routes requests to a model. Fabric adds a governance layer on top for the Agents themselves — who's allowed to reach which API/tool, not just which model.</div></div>
+<div class="obj-wrap"><div class="q">"We're not building Agents yet"</div><div class="bubble ae"><span class="bubble-role">AE</span>That's fine — it's worth knowing about early, because in most organizations this happens faster than expected, usually with no governance in place yet.</div></div>
+
+  </div>
+</div>
+<div class="panel" id="panel-pricing">
+  <div class="panel-head"><h3>Pricing</h3><button class="panel-close" onclick="closeAllPanels()">✕</button></div>
+  <div class="panel-body">
+  
+<p style="font-size:14.5px;">Pricing depends on the scale of AI usage (token volume, number of connected Agents/models) and org size — there's no single generic number worth quoting on a first call.</p>
+<div class="say"><b class="tag">If price comes up on the first call</b>"It depends on your scale of AI usage — how many Agents, how many models, what token volume. We'll dig into that with a Specialist during the evaluation."</div>
+
+  </div>
+</div>
+
+
+<script>
+let editMode = false;
+
+function toggleEdit(){
+  editMode = !editMode;
+  document.body.classList.toggle('edit-mode', editMode);
+  document.getElementById('editToggle').classList.toggle('on', editMode);
+  document.querySelectorAll('.block-content, .panel-body').forEach(function(el){ el.contentEditable = editMode; });
+  document.querySelectorAll('.block').forEach(function(el){ el.draggable = editMode; });
+}
+
+function openPanel(id){
+  closeAllPanels();
+  document.getElementById(id).classList.add('open');
+  document.getElementById('backdrop').classList.add('show');
+}
+function closeAllPanels(){
+  document.querySelectorAll('.panel').forEach(function(p){p.classList.remove('open');});
+  document.getElementById('backdrop').classList.remove('show');
+}
+
+let dragEl = null;
+function attachDnD(){
+  document.querySelectorAll('#mainBlocks .block').forEach(function(el){
+    el.addEventListener('dragstart', function(){ dragEl = el; setTimeout(function(){ el.classList.add('dragging'); }, 0); });
+    el.addEventListener('dragend', function(){ el.classList.remove('dragging'); dragEl = null; });
+  });
+}
+document.getElementById('mainBlocks').addEventListener('dragover', function(e){
+  e.preventDefault();
+  if(!dragEl) return;
+  const target = e.target.closest('.block');
+  if(!target || target === dragEl) return;
+  const rect = target.getBoundingClientRect();
+  const before = (e.clientY - rect.top) < rect.height / 2;
+  this.insertBefore(dragEl, before ? target : target.nextSibling);
+});
+
+function saveAll(){
+  localStorage.setItem('fabricEN_main_v1', document.getElementById('mainBlocks').innerHTML);
+  document.querySelectorAll('.panel').forEach(function(p){
+    const body = p.querySelector('.panel-body');
+    if(body) localStorage.setItem('fabricEN_panel_v1_' + p.id, body.innerHTML);
+  });
+  alert('Saved in this browser ✓');
+}
+
+function resetAll(){
+  if(confirm('Reset all changes saved in this browser and go back to the original version?')){
+    localStorage.removeItem('fabricEN_main_v1');
+    document.querySelectorAll('.panel').forEach(function(p){ localStorage.removeItem('fabricEN_panel_v1_' + p.id); });
+    location.reload();
+  }
+}
+
+function adjustFontSize(delta){
+  const sel = window.getSelection();
+  if(!sel.rangeCount || sel.isCollapsed) return;
+  const range = sel.getRangeAt(0);
+  const parentEl = range.commonAncestorContainer.nodeType === 1 ? range.commonAncestorContainer : range.commonAncestorContainer.parentElement;
+  const current = parseFloat(window.getComputedStyle(parentEl).fontSize) || 16;
+  const span = document.createElement('span');
+  span.style.fontSize = Math.max(10, current + delta) + 'px';
+  span.appendChild(range.extractContents());
+  range.insertNode(span);
+  sel.removeAllRanges();
+  const r2 = document.createRange();
+  r2.selectNodeContents(span);
+  sel.addRange(r2);
+}
+
+function downloadStandalone(){
+  const wasEditing = editMode;
+  if(wasEditing) toggleEdit(); // exit edit mode so the download opens clean, not mid-edit
+  closeAllPanels();
+  const html = '<!DOCTYPE html>\n' + document.documentElement.outerHTML;
+  const blob = new Blob([html], {type:'text/html'});
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url;
+  a.download = 'fabric-explainer-en.html';
+  document.body.appendChild(a);
+  a.click();
+  a.remove();
+  URL.revokeObjectURL(url);
+  if(wasEditing) toggleEdit();
+}
+
+window.addEventListener('DOMContentLoaded', function(){
+  const m = localStorage.getItem('fabricEN_main_v1');
+  if(m) document.getElementById('mainBlocks').innerHTML = m;
+  document.querySelectorAll('.panel').forEach(function(p){
+    const saved = localStorage.getItem('fabricEN_panel_v1_' + p.id);
+    if(saved){ const body = p.querySelector('.panel-body'); if(body) body.innerHTML = saved; }
+  });
+  attachDnD();
+});
+</script>
+</body>
+</html>
