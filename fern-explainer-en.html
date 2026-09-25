@@ -159,6 +159,7 @@ body.edit-mode #fmtbar{transform:translateX(-50%) translateY(0);}
   <div class="toolbar">
     <button class="tbtn" id="editToggle" onclick="toggleEdit()">✏️ Edit</button>
     <button class="tbtn save" onclick="saveAll()">💾 Save</button>
+    <button class="tbtn" onclick="downloadStandalone()">⬇ Download</button>
     <button class="tbtn" onclick="resetAll()">↺ Reset</button>
   </div>
 </header>
@@ -487,6 +488,23 @@ function resetAll(){
     document.querySelectorAll('.panel').forEach(function(p){ localStorage.removeItem('fernEN_panel_v1_' + p.id); });
     location.reload();
   }
+}
+
+function downloadStandalone(){
+  const wasEditing = editMode;
+  if(wasEditing) toggleEdit(); // exit edit mode so the download opens clean, not mid-edit
+  closeAllPanels();
+  const html = '<!DOCTYPE html>\n' + document.documentElement.outerHTML;
+  const blob = new Blob([html], {type:'text/html'});
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url;
+  a.download = 'fern-explainer-en.html';
+  document.body.appendChild(a);
+  a.click();
+  a.remove();
+  URL.revokeObjectURL(url);
+  if(wasEditing) toggleEdit();
 }
 
 window.addEventListener('DOMContentLoaded', function(){

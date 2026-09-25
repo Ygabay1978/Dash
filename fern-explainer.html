@@ -159,6 +159,7 @@ body.edit-mode #fmtbar{transform:translateX(-50%) translateY(0);}
   <div class="toolbar">
     <button class="tbtn" id="editToggle" onclick="toggleEdit()">✏️ ערוך</button>
     <button class="tbtn save" onclick="saveAll()">💾 שמור</button>
+    <button class="tbtn" onclick="downloadStandalone()">⬇ הורדה</button>
     <button class="tbtn" onclick="resetAll()">↺ אפס</button>
   </div>
 </header>
@@ -487,6 +488,23 @@ function resetAll(){
     document.querySelectorAll('.panel').forEach(function(p){ localStorage.removeItem('fern_panel_v3_' + p.id); });
     location.reload();
   }
+}
+
+function downloadStandalone(){
+  const wasEditing = editMode;
+  if(wasEditing) toggleEdit();
+  closeAllPanels();
+  const html = '<!DOCTYPE html>\n' + document.documentElement.outerHTML;
+  const blob = new Blob([html], {type:'text/html'});
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url;
+  a.download = 'fern-explainer.html';
+  document.body.appendChild(a);
+  a.click();
+  a.remove();
+  URL.revokeObjectURL(url);
+  if(wasEditing) toggleEdit();
 }
 
 window.addEventListener('DOMContentLoaded', function(){
