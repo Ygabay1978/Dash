@@ -1,0 +1,457 @@
+<!DOCTYPE html>
+<html dir="rtl" lang="he">
+<head>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Passport — תרחיש שיחה</title>
+<style>
+:root{
+  --orange:#FF6C37;
+  --orange-dark:#E15A28;
+  --ink:#1C1C1E;
+  --grey:#5B5F66;
+  --line:#E6E4E0;
+  --bg-card:#FBFAF8;
+  --bg-page:#FFFFFF;
+  --cream:#FFF6EE;
+  --green:#2E7D5B;
+  --good:#1E8E5A;
+  --bad:#D64545;
+}
+*{box-sizing:border-box;}
+body{
+  margin:0;
+  background:var(--bg-page);
+  color:var(--ink);
+  font-family:"Segoe UI","Arial Hebrew","Noto Sans Hebrew",Arial,sans-serif;
+  line-height:1.75;
+  padding:0 5vw 100px;
+}
+header.top{
+  padding:20px 0 20px;
+  border-bottom:3px solid var(--orange);
+  margin-bottom:26px;
+  display:flex;justify-content:space-between;align-items:flex-end;flex-wrap:wrap;gap:14px;
+}
+header.top .htext{padding-top:14px;}
+header.top h1{font-size:30px;margin:0 0 8px;}
+header.top p{color:var(--grey);margin:0;font-size:15.5px;max-width:700px;}
+.toolbar{display:flex;gap:8px;flex-wrap:wrap;}
+.tbtn{
+  appearance:none;border:1px solid var(--line);background:#fff;color:var(--ink);
+  font-size:12.5px;font-weight:600;padding:8px 14px;border-radius:8px;cursor:pointer;
+  display:flex;align-items:center;gap:6px;transition:.15s;
+}
+.tbtn:hover{border-color:var(--orange);color:var(--orange-dark);}
+.tbtn.on{background:var(--orange-dark);color:#fff;border-color:var(--orange-dark);}
+.tbtn.save{background:var(--orange);color:#fff;border-color:var(--orange);}
+.tbtn.save:hover{background:var(--orange-dark);}
+
+main{max-width:820px;margin:0 auto;}
+
+/* ---------- draggable + editable blocks ---------- */
+.block{position:relative;margin-bottom:6px;border-radius:8px;transition:box-shadow .15s;}
+body.edit-mode .block{cursor:default;box-shadow:0 0 0 1px transparent;}
+body.edit-mode .block:hover{box-shadow:0 0 0 1px #FFD9C7;}
+.drag-handle{
+  display:none;position:absolute;top:6px;left:-30px;width:24px;height:24px;
+  border-radius:6px;background:var(--cream);color:var(--orange-dark);
+  align-items:center;justify-content:center;cursor:grab;font-size:14px;user-select:none;
+}
+body.edit-mode .drag-handle{display:flex;}
+.block.dragging{opacity:.4;}
+.block-content[contenteditable="true"]{outline:1px dashed transparent;border-radius:6px;padding:2px 4px;}
+body.edit-mode .block-content:hover{outline-color:#FFD9C7;}
+body.edit-mode .block-content:focus{outline-color:var(--orange);background:#FFFDF9;}
+
+.script p{font-size:16px;margin:0 0 16px;}
+.script p:last-child{margin-bottom:0;}
+.eyebrow{
+  display:block;color:var(--orange-dark);font-weight:700;font-size:12.5px;
+  text-transform:uppercase;letter-spacing:.04em;margin:6px 0 8px;
+}
+
+.say{background:#F3F7F5;border-right:3px solid var(--green);border-radius:6px;padding:14px 18px;margin:16px 0;font-size:15.5px;}
+.say b.tag{color:var(--green);display:block;font-size:12px;margin-bottom:6px;}
+
+.say-critical{background:#FDECEC;border-right:4px solid var(--bad);border-radius:6px;padding:14px 18px;margin:0 0 12px;font-size:15px;}
+.say-critical b.tag{color:var(--bad);display:block;font-size:12px;margin-bottom:6px;text-transform:uppercase;}
+.say-critical:last-of-type{margin-bottom:18px;}
+
+.cross-box{background:var(--cream);border:1px solid #FFD9C7;border-radius:8px;padding:16px 20px;margin:16px 0;font-size:14.5px;}
+.cross-box b{color:var(--orange-dark);}
+
+.prod{border:2px solid var(--orange);border-radius:10px;padding:20px 22px;margin:18px 0;background:var(--bg-card);}
+.prod .t{font-weight:800;color:var(--orange-dark);font-size:17px;margin-bottom:10px;}
+.prod p{font-size:14.5px;margin:0 0 10px;}
+.prod p:last-child{margin-bottom:0;}
+
+.chip{
+  display:inline-flex;align-items:center;gap:6px;background:var(--cream);border:1px solid #FFD9C7;
+  color:var(--orange-dark);font-size:13px;font-weight:700;padding:7px 14px;border-radius:20px;
+  cursor:pointer;margin:4px 4px 4px 0;transition:.15s;
+}
+.chip:hover{background:var(--orange);color:#fff;border-color:var(--orange);}
+.chip::before{content:"↗";font-size:12px;}
+.chip-row{margin:4px 0;}
+
+.stage-row{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin:12px 0 6px;}
+.stage{background:var(--bg-card);border:1px solid var(--line);border-radius:8px;padding:12px 10px;}
+.stage.core{border-color:var(--orange);background:var(--cream);}
+.stage .t{font-weight:700;font-size:14px;margin:0 0 4px;}
+.stage .d{font-size:12.5px;color:var(--grey);}
+
+.closing{margin-top:30px;text-align:center;padding:22px 20px;background:var(--cream);border:1px solid #FFD9C7;border-radius:10px;font-size:16.5px;font-weight:700;color:var(--orange-dark);}
+
+/* ---------- popup panels ---------- */
+#backdrop{position:fixed;inset:0;background:rgba(28,28,30,.45);opacity:0;visibility:hidden;transition:opacity .2s;z-index:200;}
+#backdrop.show{opacity:1;visibility:visible;}
+.panel{position:fixed;top:0;right:-92vw;width:640px;max-width:92vw;height:100vh;background:var(--bg-page);box-shadow:-14px 0 34px rgba(0,0,0,.2);z-index:201;transition:right .25s ease;overflow-y:auto;padding:22px 26px 60px;}
+.panel.open{right:0;}
+.panel-head{display:flex;justify-content:space-between;align-items:center;border-bottom:2px solid var(--orange);padding-bottom:12px;margin-bottom:16px;}
+.panel-head h3{font-size:18px;margin:0;color:var(--ink);}
+.panel-close{border:none;background:var(--cream);color:var(--orange-dark);width:30px;height:30px;border-radius:50%;font-size:15px;cursor:pointer;}
+.panel-close:hover{background:var(--orange);color:#fff;}
+.panel-body[contenteditable="true"]{outline:1px dashed transparent;}
+body.edit-mode .panel-body:hover{outline-color:#FFD9C7;}
+body.edit-mode .panel-body:focus{outline-color:var(--orange);}
+
+table.bt{width:100%;border-collapse:collapse;font-size:13.5px;margin-top:10px;}
+table.bt th{text-align:right;background:var(--cream);padding:9px 12px;font-size:11.5px;text-transform:uppercase;letter-spacing:.02em;color:var(--grey);}
+table.bt td{padding:9px 12px;border-top:1px solid var(--line);vertical-align:top;}
+table.bt tr:nth-child(even) td{background:#FCFCFB;}
+table.bt caption{text-align:right;font-size:13px;color:var(--grey);margin-bottom:6px;caption-side:top;}
+.fit-high{color:var(--good);font-weight:700;}
+.fit-mid{color:#B8860B;font-weight:700;}
+.fit-low{color:var(--bad);font-weight:700;}
+
+.bubble{border-radius:8px;padding:11px 15px;margin-bottom:8px;font-size:14px;line-height:1.55;border-right:3px solid transparent;}
+.bubble:last-child{margin-bottom:0;}
+.bubble.ae{background:var(--cream);border-right-color:var(--orange);}
+.bubble .bubble-role{font-size:10px;text-transform:uppercase;letter-spacing:.05em;display:block;margin-bottom:4px;color:var(--grey);font-weight:800;}
+.bubble.ae .bubble-role{color:var(--orange-dark);}
+.obj-wrap{border:1px solid var(--line);border-radius:8px;padding:14px 16px;margin-bottom:12px;background:var(--bg-page);}
+.obj-wrap .q{font-weight:700;margin-bottom:8px;}
+ul.clean{margin:0;padding-right:18px;}
+ul.clean li{margin-bottom:8px;font-size:14.5px;}
+
+/* format toolbar */
+#fmtbar{
+  position:fixed;bottom:20px;left:50%;transform:translateX(-50%) translateY(120%);
+  background:#fff;border:1px solid var(--line);border-radius:12px;padding:9px 12px;
+  display:flex;gap:7px;align-items:center;flex-wrap:wrap;max-width:94vw;
+  box-shadow:0 8px 24px rgba(0,0,0,.16);z-index:250;transition:transform .2s ease;
+}
+body.edit-mode #fmtbar{transform:translateX(-50%) translateY(0);}
+#fmtbar .ftxt{appearance:none;border:1px solid var(--line);background:#fff;border-radius:6px;min-width:32px;height:32px;padding:0 9px;cursor:pointer;font-size:13.5px;font-weight:700;color:var(--ink);}
+#fmtbar .ftxt:hover{background:var(--cream);border-color:var(--orange);color:var(--orange-dark);}
+#fmtbar .fswatch{width:36px;height:24px;border-radius:5px;border:1px solid var(--line);cursor:pointer;padding:0;}
+#fmtbar .fswatch:hover{border-color:var(--ink);transform:scale(1.08);}
+#fmtbar .fsep{width:1px;height:24px;background:var(--line);margin:0 2px;}
+#fmtbar .lbl{font-size:10.5px;color:var(--grey);padding:0 4px;}
+
+@media(max-width:760px){.stage-row{grid-template-columns:repeat(2,1fr);} .drag-handle{left:-4px;top:-4px;position:relative;margin-bottom:4px;}}
+</style>
+</head>
+<body>
+
+<header class="top">
+  <div class="htext">
+    <h1>Passport</h1>
+    <p>Passport היא שכבת Governance מרכזית לגילוי, בקשת גישה, וצריכה מאובטחת של APIs בארגון — בלי לחשוף Secrets.</p>
+  </div>
+  <div class="toolbar">
+    <button class="tbtn" id="editToggle" onclick="toggleEdit()">✏️ ערוך</button>
+    <button class="tbtn save" onclick="saveAll()">💾 שמור</button>
+    <button class="tbtn" onclick="downloadStandalone()">⬇ הורדה</button>
+    <button class="tbtn" onclick="resetAll()">↺ אפס</button>
+  </div>
+</header>
+
+<main>
+<div id="mainBlocks">
+<div class="block" data-id="b1">
+  <span class="drag-handle">⠿</span>
+  <div class="block-content script">
+    
+    
+<p>תחשוב על זה כך: ככל שיש יותר APIs, ויותר אנשים, אפליקציות ו-AI Agents שצריכים להשתמש בהם, נהיה קשה יותר לדעת מי משתמש במה, למי יש גישה, ואיפה בפועל שוכבים ה-API Keys וה-Secrets. מפתח מחפש API ב-Slack או בתיעוד, מבקש גישה ממישהו, וה-Key האמיתי מסתיים בקבצי <code>.env</code>, בסקריפטים, ב-CI/CD ובעוד מקומות. <b>Passport</b> נותן שכבת Governance מרכזית לגילוי, בקשת גישה, וצריכה מאובטחת של APIs — בלי לחשוף את ה-Secrets בפועל.</p>
+<div class="stage-row">
+  <div class="stage core"><div class="t">Central Discovery</div><div class="d">מפתחים ו-AI Agents מוצאים APIs מאושרים במקום אחד</div></div>
+  <div class="stage core"><div class="t">Controlled Access Request</div><div class="d">במקום לקבל את המפתח האמיתי, הם מקבלים Passport Reference</div></div>
+  <div class="stage"><div class="t">Secretless Consumption</div><div class="d">ה-Credential האמיתי נשאר ב-Vault הקיים של הלקוח, ומתפענח רק ברגע קריאת ה-API</div></div>
+  <div class="stage"><div class="t">Full Visibility</div><div class="d">מי בקש גישה, מי אישר, ואיך ה-API בפועל נצרך</div></div>
+</div>
+<p>במשפט אחד: <b>Passport נותן לארגון דרך מרכזית לגלות APIs, לנהל גישה אליהם, ולצרוך אותם בבטחה — בלי לחשוף אף פעם את ה-Credentials האמיתיים.</b></p>
+
+  </div>
+</div>
+<div class="block" data-id="b2">
+  <span class="drag-handle">⠿</span>
+  <div class="block-content script">
+    <span class="eyebrow">מכאן אתה עובר לבעיה</span>
+    
+<p>צוות חדש בונה אפליקציה שצריכה API פנימי של לקוחות. המפתח צריך לגלות מי בעל ה-API, למי לפנות, לקבל מפתח, ולהוסיף אותו לאפליקציה. הכפל את זה בעשרות APIs ומאות מפתחים — ובשלב מסוים, הארגון פשוט לא יודע למי יש איזה מפתח או גישה לאיזה API. וככל שיותר AI Agents נכנסים לתמונה ומבקשים גישה ל-APIs, האתגר הזה רק גדל.</p>
+<div class="chip-row"><span class="chip" onclick="openPanel('panel-discovery')">שאלות Discovery — כולל שתי השאלות המרכזיות</span></div>
+
+  </div>
+</div>
+<div class="block" data-id="b3">
+  <span class="drag-handle">⠿</span>
+  <div class="block-content script">
+    <span class="eyebrow">תרחיש ראשון: חברת ביטוח</span>
+    
+<div class="prod">
+  <div class="t">חברת ביטוח עם סוכנים חיצוניים ו-AI Agents</div>
+  <p>סוכני ביטוח חיצוניים, שותפים, וגם AI Agents פנימיים צריכים גישה ל-APIs של פוליסות ותביעות. היום, הגישה מנוהלת ידנית — טיקט, אישור, מפתח שנשלח באימייל או ב-Slack.</p>
+  <p>הבעיה: כשסוכן/שותף מפסיק לעבוד, לא בטוח שמישהו זוכר לבטל את הגישה שלו. Passport נותן בקשת גישה מסודרת, אישור, ותוקף מוגבל — ומאפשר לבטל גישה במקום אחד ברגע שצריך.</p>
+  <p style="color:var(--grey);font-size:13px;"><b>למי לפנות:</b> Head of API/Platform (ה-Lead), CISO/Compliance (Audit Trail).</p>
+  <div class="say" style="margin-top:12px;"><b class="tag">שאלת Discovery לסגירת התרחיש</b>"אם סוכן חוץ מפסיק לעבוד איתכם היום — כמה זמן לוקח לדעת בוודאות שהגישה שלו ל-API בוטלה?"</div>
+</div>
+
+  </div>
+</div>
+<div class="block" data-id="b4">
+  <span class="drag-handle">⠿</span>
+  <div class="block-content script">
+    <span class="eyebrow">תרחיש שני: חברת אשראי</span>
+    
+<div class="prod">
+  <div class="t">חברת אשראי עם צוותי Fraud/Risk וגישה ל-Payment APIs</div>
+  <p>צוותי Fraud, Risk ושותפים חיצוניים צריכים גישה ל-Payment APIs רגישים. יש חשש אמיתי (ולרוב דרישת PCI) שמפתחות API יזלגו ל-Repos, ל-Logs או לקבצים מקומיים.</p>
+  <p>Passport מקטין את הצורך להפיץ את ה-Key האמיתי בכלל — במקום זאת, ה-Reference עובר, וה-Credential עצמו נשאר ב-Vault ומתפענח רק ברגע הקריאה. זה בדיוק העוגן שה-Compliance Team מחפש.</p>
+  <p style="color:var(--grey);font-size:13px;"><b>למי לפנות:</b> Head of API Platform (ה-Lead), Risk/Compliance (Sponsor שקט אבל חשוב).</p>
+</div>
+
+  </div>
+</div>
+<div class="block" data-id="b4b">
+  <span class="drag-handle">⠿</span>
+  <div class="block-content script">
+    <span class="eyebrow">תרחיש שלישי: בנק</span>
+    
+<div class="prod">
+  <div class="t">בנק עם עשרות צוותי פיתוח</div>
+  <p>בבנק עם 40 צוותי פיתוח, למשל, צריך למנוע מצוות תשלומים לגעת ב-Workspace של HR — בלי שמישהו יצטרך לנהל את זה ידנית כל יום. וככל שיותר AI Agents פנימיים נכנסים לתמונה, השאלה "מי בכלל יכול לגשת למה" נהיית קריטית יותר.</p>
+  <p>Passport נותן לארגון שכבת Governance ארגונית אחת: Discovery מרכזי, בקשת גישה מסודרת, וצריכה בלי לחשוף Secrets — עם Audit Trail מלא שרגולטור יכול לבדוק.</p>
+  <p style="color:var(--grey);font-size:13px;"><b>למי לפנות:</b> Head of API Architecture / Platform (ה-Lead), Compliance/Risk (שותף קריטי).</p>
+</div>
+
+  </div>
+</div>
+<div class="block" data-id="b5">
+  <span class="drag-handle">⠿</span>
+  <div class="block-content script">
+    <span class="eyebrow">איך תסגור את הפיץ'</span>
+    
+<p>ההבחנה החשובה: <b>Passport שולט על מי יש גישה. Fern עוזר לצרוך API בפועל. Fabric שולט על תעבורת AI. Catalog נותן Discovery בלבד, בלי Access Control.</b></p>
+<div class="chip-row">
+  <span class="chip" onclick="openPanel('panel-fit')">למי Passport מתאים + Buying Signals</span>
+  <span class="chip" onclick="openPanel('panel-ecosystem')">Passport מול Fern / Fabric / Catalog</span>
+  <span class="chip" onclick="openPanel('panel-objections')">התנגדויות נפוצות</span>
+  <span class="chip" onclick="openPanel('panel-pricing')">תמחור</span>
+</div>
+
+  </div>
+</div>
+
+</div>
+
+<div class="closing">Passport נותן לארגון דרך מרכזית לגלות APIs, לנהל גישה אליהם, ולצרוך אותם בבטחה — בלי לחשוף אף פעם את ה-Credentials.</div>
+</main>
+
+<div id="fmtbar">
+  <button class="ftxt" onclick="document.execCommand('bold')" title="הדגשה"><b>B</b></button>
+  <button class="ftxt" onclick="document.execCommand('italic')" title="נטוי"><i>I</i></button>
+  <button class="ftxt" onclick="document.execCommand('underline')" title="קו תחתי"><u>U</u></button>
+  <button class="ftxt" onclick="adjustFontSize(-2)" title="הקטן טקסט">A-</button>
+  <button class="ftxt" onclick="adjustFontSize(2)" title="הגדל טקסט">A+</button>
+  <span class="fsep"></span>
+  <button class="ftxt" onclick="document.execCommand('insertUnorderedList')" title="רשימת תבליטים">•</button>
+  <button class="ftxt" onclick="document.execCommand('insertOrderedList')" title="רשימה ממוספרת">1.</button>
+  <span class="fsep"></span>
+  <button class="fswatch" style="background:#1C1C1E;" onclick="document.execCommand('foreColor', false, '#1C1C1E')" title="שחור"></button>
+  <button class="fswatch" style="background:#E15A28;" onclick="document.execCommand('foreColor', false, '#E15A28')" title="כתום"></button>
+  <button class="fswatch" style="background:#D64545;" onclick="document.execCommand('foreColor', false, '#D64545')" title="אדום"></button>
+  <button class="fswatch" style="background:#2E7D5B;" onclick="document.execCommand('foreColor', false, '#2E7D5B')" title="ירוק"></button>
+  <button class="fswatch" style="background:#2F6FED;" onclick="document.execCommand('foreColor', false, '#2F6FED')" title="כחול"></button>
+  <button class="fswatch" style="background:#5B5F66;" onclick="document.execCommand('foreColor', false, '#5B5F66')" title="אפור"></button>
+  <span class="lbl">גרור מהידית ⠿ לשינוי מיקום</span>
+</div>
+
+<div id="backdrop" onclick="closeAllPanels()"></div>
+
+<div class="panel" id="panel-discovery">
+  <div class="panel-head"><h3>שאלות Discovery</h3><button class="panel-close" onclick="closeAllPanels()">✕</button></div>
+  <div class="panel-body">
+  
+<div class="say-critical"><b class="tag">השאלה הראשית #1</b>"אם Key דלף היום ל-Repo או ל-Log — כמה זמן ייקח לגלות את זה?" — אם התשובה לא ברורה, זה הכאב.</div>
+<div class="say-critical"><b class="tag">השאלה הראשית #2</b>"מי מאשר גישה ל-API חדש היום, ואיך זה מתועד?" — אם התשובה היא "Slack" או "תלוי מי פנוי" — זה Signal חזק.</div>
+<ul class="clean">
+  <li>איך מפתח היום מגלה ומבקש גישה ל-API פנימי?</li>
+  <li>יש לכם דרך לדעת מי מחזיק אילו Keys כרגע?</li>
+  <li>אתם משתמשים ב-HashiCorp / AWS Secrets Manager / 1Password?</li>
+  <li>AI Agents צריכים גישה ל-APIs שלכם — איך זה מנוהל היום?</li>
+</ul>
+
+  </div>
+</div>
+<div class="panel" id="panel-fit">
+  <div class="panel-head"><h3>למי Passport מתאים + Buying Signals</h3><button class="panel-close" onclick="closeAllPanels()">✕</button></div>
+  <div class="panel-body">
+  
+<table class="bt">
+  <tr><th>הלקוח אומר...</th><th>התאמה</th><th>למה זה מעניין</th></tr>
+  <tr><td>מפתחים לא יודעים לאיזה APIs פנימיים או של שותפים הם צריכים גישה</td><td>🟢 חזק</td><td>Discovery מרכזי ומבוקר</td></tr>
+  <tr><td>גישה ל-API עוברת ב-Slack, טיקטים, מייל, או ידע שבעל-פה</td><td>🟢🟢 חזק מאוד</td><td>Passport מסדיר בקשה, אישור, Scope, Audit וביטול גישה</td></tr>
+  <tr><td>חוששים ש-API Keys יזלגו ל-Variables, Repos, Logs או קבצים מקומיים</td><td>🟢🟢 חזק מאוד</td><td>Secretless Consumption מקטין את הצורך להפיץ את ה-Key עצמו</td></tr>
+  <tr><td>משתמשים ב-HashiCorp / AWS Secrets Manager / 1Password / GitGuardian</td><td>🟢 חזק</td><td>Passport משלים כלים קיימים ומוסיף שכבת Access Governance</td></tr>
+  <tr><td>AI Agents או תהליכים אוטומטיים צריכים גישה ל-APIs ולא ברור איך לנהל את זה</td><td>🟢🟢 חזק מאוד</td><td>אחד ה-Use Cases המרכזיים והצומחים ביותר של Passport</td></tr>
+</table>
+
+  </div>
+</div>
+<div class="panel" id="panel-ecosystem">
+  <div class="panel-head"><h3>Passport בתוך המשפחה של Postman</h3><button class="panel-close" onclick="closeAllPanels()">✕</button></div>
+  <div class="panel-body">
+  
+<table class="bt">
+  <caption>Passport מול Fern</caption>
+  <tr><th></th><th>Passport</th><th>Fern</th></tr>
+  <tr><td>הבעיה</td><td>למי יש גישה ל-API?</td><td>איך משתמשים ב-API?</td></tr>
+  <tr><td>מטרה</td><td>Access</td><td>Consumption</td></tr>
+</table>
+<table class="bt" style="margin-top:16px;">
+  <caption>Passport מול Fabric</caption>
+  <tr><th></th><th>Passport</th><th>Fabric</th></tr>
+  <tr><td>הבעיה</td><td>גישה מאובטחת ל-APIs, בלי לחשוף Secrets</td><td>שליטה על תעבורת AI (Models/Agents/MCP)</td></tr>
+</table>
+<table class="bt" style="margin-top:16px;">
+  <caption>Passport מול API Catalog</caption>
+  <tr><th></th><th>Catalog</th><th>Passport</th></tr>
+  <tr><td>מטרה</td><td>Discovery — אילו APIs קיימים</td><td>Access — מי מקבל גישה ואיך</td></tr>
+</table>
+
+  </div>
+</div>
+<div class="panel" id="panel-objections">
+  <div class="panel-head"><h3>התנגדויות נפוצות</h3><button class="panel-close" onclick="closeAllPanels()">✕</button></div>
+  <div class="panel-body">
+  
+<div class="obj-wrap"><div class="q">"יש לנו כבר Vault (HashiCorp/AWS/1Password)"</div><div class="bubble ae"><span class="bubble-role">AE</span>מצוין — Passport לא מחליף את ה-Vault, הוא מוסיף שכבת Access Governance מעליו: מי מבקש, מי מאשר, ואיך זה נצרך.</div></div>
+<div class="obj-wrap"><div class="q">"זה עוד שכבת אישורים שתאט אותנו"</div><div class="bubble ae"><span class="bubble-role">AE</span>המפתח עצמו לא משתנה בזמן ריצה — מה שמשתנה הוא השקיפות: מי בקש, מי אישר, ומה נצרך. זה לא מוסיף Latency לקריאת ה-API.</div></div>
+<div class="obj-wrap"><div class="q">"אנחנו סומכים על המפתחים שלנו"</div><div class="bubble ae"><span class="bubble-role">AE</span>זה לא עניין של אמון — זה עניין של מה קורה כשמישהו עוזב, כשמפתח מגיע ל-Repo ציבורי בטעות, או כשרגולטור שואל מי בדיוק ניגש למה בשנה האחרונה.</div></div>
+
+  </div>
+</div>
+<div class="panel" id="panel-pricing">
+  <div class="panel-head"><h3>תמחור</h3><button class="panel-close" onclick="closeAllPanels()">✕</button></div>
+  <div class="panel-body">
+  
+<p style="font-size:14.5px;">התמחור תלוי במספר ה-APIs וה-Users/Agents שמנוהלים ב-Passport, ובגודל הארגון. אין מספר גנרי אחד להגיד בשיחה ראשונה.</p>
+<div class="say"><b class="tag">אם המחיר עולה בשיחה הראשונה</b>"זה תלוי בהיקף — כמה APIs, כמה משתמשים ו-Agents דורשים גישה מבוקרת. נצלול לזה בהערכה עם Specialist."</div>
+
+  </div>
+</div>
+
+
+<script>
+let editMode = false;
+
+function toggleEdit(){
+  editMode = !editMode;
+  document.body.classList.toggle('edit-mode', editMode);
+  document.getElementById('editToggle').classList.toggle('on', editMode);
+  document.querySelectorAll('.block-content, .panel-body').forEach(function(el){ el.contentEditable = editMode; });
+  document.querySelectorAll('.block').forEach(function(el){ el.draggable = editMode; });
+}
+
+function openPanel(id){
+  closeAllPanels();
+  document.getElementById(id).classList.add('open');
+  document.getElementById('backdrop').classList.add('show');
+}
+function closeAllPanels(){
+  document.querySelectorAll('.panel').forEach(function(p){p.classList.remove('open');});
+  document.getElementById('backdrop').classList.remove('show');
+}
+
+let dragEl = null;
+function attachDnD(){
+  document.querySelectorAll('#mainBlocks .block').forEach(function(el){
+    el.addEventListener('dragstart', function(){ dragEl = el; setTimeout(function(){ el.classList.add('dragging'); }, 0); });
+    el.addEventListener('dragend', function(){ el.classList.remove('dragging'); dragEl = null; });
+  });
+}
+document.getElementById('mainBlocks').addEventListener('dragover', function(e){
+  e.preventDefault();
+  if(!dragEl) return;
+  const target = e.target.closest('.block');
+  if(!target || target === dragEl) return;
+  const rect = target.getBoundingClientRect();
+  const before = (e.clientY - rect.top) < rect.height / 2;
+  this.insertBefore(dragEl, before ? target : target.nextSibling);
+});
+
+function saveAll(){
+  localStorage.setItem('passport_main_v1', document.getElementById('mainBlocks').innerHTML);
+  document.querySelectorAll('.panel').forEach(function(p){
+    const body = p.querySelector('.panel-body');
+    if(body) localStorage.setItem('passport_panel_v1_' + p.id, body.innerHTML);
+  });
+  alert('נשמר בדפדפן הזה ✓');
+}
+
+function resetAll(){
+  if(confirm('לאפס את כל השינויים שנשמרו בדפדפן הזה ולחזור לגרסה המקורית?')){
+    localStorage.removeItem('passport_main_v1');
+    document.querySelectorAll('.panel').forEach(function(p){ localStorage.removeItem('passport_panel_v1_' + p.id); });
+    location.reload();
+  }
+}
+
+function adjustFontSize(delta){
+  const sel = window.getSelection();
+  if(!sel.rangeCount || sel.isCollapsed) return;
+  const range = sel.getRangeAt(0);
+  const parentEl = range.commonAncestorContainer.nodeType === 1 ? range.commonAncestorContainer : range.commonAncestorContainer.parentElement;
+  const current = parseFloat(window.getComputedStyle(parentEl).fontSize) || 16;
+  const span = document.createElement('span');
+  span.style.fontSize = Math.max(10, current + delta) + 'px';
+  span.appendChild(range.extractContents());
+  range.insertNode(span);
+  sel.removeAllRanges();
+  const r2 = document.createRange();
+  r2.selectNodeContents(span);
+  sel.addRange(r2);
+}
+
+function downloadStandalone(){
+  const wasEditing = editMode;
+  if(wasEditing) toggleEdit();
+  closeAllPanels();
+  const html = '<!DOCTYPE html>\n' + document.documentElement.outerHTML;
+  const blob = new Blob([html], {type:'text/html'});
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url;
+  a.download = 'passport-explainer.html';
+  document.body.appendChild(a);
+  a.click();
+  a.remove();
+  URL.revokeObjectURL(url);
+  if(wasEditing) toggleEdit();
+}
+
+window.addEventListener('DOMContentLoaded', function(){
+  const m = localStorage.getItem('passport_main_v1');
+  if(m) document.getElementById('mainBlocks').innerHTML = m;
+  document.querySelectorAll('.panel').forEach(function(p){
+    const saved = localStorage.getItem('passport_panel_v1_' + p.id);
+    if(saved){ const body = p.querySelector('.panel-body'); if(body) body.innerHTML = saved; }
+  });
+  attachDnD();
+});
+</script>
+</body>
+</html>

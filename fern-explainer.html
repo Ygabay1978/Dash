@@ -1,7 +1,6 @@
 <!DOCTYPE html>
-<html dir="rtl" lang="he">
-<head>
-<meta charset="utf-8"/>
+<html dir="rtl" lang="he"><head>
+<meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Fern — תרחיש שיחה</title>
 <style>
@@ -171,25 +170,22 @@ body.edit-mode #fmtbar{transform:translateX(-50%) translateY(0);}
 <main>
 <div id="mainBlocks">
 
-<div class="block" data-id="b1">
+<div class="block" data-id="b1" draggable="false">
   <span class="drag-handle">⠿</span>
-  <div class="block-content script">
-    <p>תחשוב על זה כך, ותפתח את השיחה בדיוק בנקודה הזו: <b>Postman עוזר לך לבנות, לבדוק ולנהל API. Fern לוקח את אותו API ועושה לו משהו אחר לגמרי — הוא הופך אותו לקל לצריכה, גם על ידי מפתחים וגם על ידי AI Agents.</b></p>
-    <p>ה-API של הלקוח יכול להיות מצוין מבחינה טכנית, אבל ברגע שמפתח חיצוני או פנימי צריך להשתמש בו, הוא שואל שאלות פשוטות: איפה ה-API? איך אני מתחבר? איזה SDK יש בשפה שלי? האם התיעוד בכלל מעודכן? <b>Fern יושב בדיוק בנקודה הזו</b> — בצד ה-Consumption, לא ה-Governance. הוא לוקח את ה-API Specification ובונה סביבו אוטומטית תיעוד, SDKs, כלי שורת פקודה, ושרתי MCP ל-AI Agents.</p>
+  <div class="block-content script" contenteditable="false">
+    <p><b>Postman עוזר לך לבנות, לבדוק ולנהל API.&nbsp;</b></p><p><b>Fern לוקח את אותו API ועושה לו משהו אחר לגמרי — הוא הופך אותו לקל לצריכה, גם על ידי מפתחים וגם על ידי AI Agents.</b></p>
+    <p>ה-API של הלקוח יכול להיות מצוין מבחינה טכנית, אבל ברגע שמפתח חיצוני או פנימי צריך להשתמש בו, הוא שואל שאלות פשוטות: איפה ה-API? איך אני מתחבר? איזה SDK יש בשפה שלי? האם התיעוד בכלל מעודכן?</p><p>&nbsp; <b>Fern יושב בדיוק בנקודה הזו</b> — בצד ה-Consumption, לא ה-Governance. הוא לוקח את ה-API Specification ובונה סביבו אוטומטית תיעוד, SDKs, כלי שורת פקודה, ושרתי MCP ל-AI Agents.</p><p style="font-size: medium;">התיעוד מוגש בצד השרת בפורמט Markdown (ולא בצד ה-Client), כך ש-Claude Code, Codex ו-Cursor יכולים לקרוא אותו ולעבוד איתו ישירות. ה-SDK חשוב בפרט לסוכני AI - סוכן שבונה מול API בלי SDK מקבל החלטות לא עקביות בנושאי Auth ו-Pagination — מה שמעלה את צריכת ה-Token ומאריך את זמן הפיתוח</p><p style="font-size: medium; margin: 0px;">אז&nbsp;<b>Fern לוקח API קיים והופך אותו ל-Developer Experience מלא</b> — לא רק מסמך שמתאר אותו</p>
     <div class="stage-row">
       <div class="stage core"><div class="t">Documentation</div><div class="d">Docs-as-code — חי ב-Git לצד הקוד, מתעדכן אוטומטית בכל שינוי ב-API דרך CI/CD</div></div>
       <div class="stage core"><div class="t">SDKs</div><div class="d">9 שפות — ה-Vendor היחיד עם Swift ל-Production. דרך דטרמיניסטית ואחידה להתחבר ל-API — לא כל מפתח (או Agent) ממציא Auth ו-Pagination בעצמו</div></div>
       <div class="stage"><div class="t">CLI</div><div class="d">גישה ל-API משורת פקודה — עץ פונקציות מסודר, גם ל-Agents. יש גם <code>fern diff</code> — פקודה שמראה בדיוק איפה ה-API, ה-SDK וה-Docs יצאו מסונכרון</div></div>
-      <div class="stage"><div class="t">MCP Servers</div><div class="d">שרת MCP מלא ל-API עצמו, לא רק לתיעוד</div></div>
-    </div>
-    <p>נקודה שווה להגיד: התיעוד מוגש כ-Markdown בצד השרת (לא ב-Client), כך ש-Claude Code, Codex ו-Cursor יכולים לקרוא אותו ולעבוד איתו ישירות — וה-SDK בפרט חשוב ל-Agents: Agent שבונה מול API בלי SDK מקבל החלטות לא עקביות (Auth, Pagination), מה שמעלה צריכת Token ומאריך זמן פיתוח.</p>
-    <p>במשפט אחד שכדאי לך לזכור בעל פה: <b>Fern לוקח API קיים והופך אותו ל-Developer Experience מלא</b> — לא רק מסמך שמתאר אותו.</p>
+      <div class="stage"><div class="t">MCP Servers</div><div class="d">שרת MCP מלא ל-API עצמו, לא רק לתיעוד</div></div></div>
   </div>
 </div>
 
-<div class="block" data-id="b2">
+<div class="block" data-id="b2" draggable="false">
   <span class="drag-handle">⠿</span>
-  <div class="block-content script">
+  <div class="block-content script" contenteditable="false">
     <span class="eyebrow">מכאן אתה עובר לבעיה</span>
     <p>נניח שחברה בנתה API. מבחינת צוות הפיתוח — הוא קיים, הוא עובד, הכל בסדר. אבל מפתח חיצוני שמגיע מבחוץ שואל שאלות אחרות לגמרי: איפה ה-API, איך עושים Authentication, איזה Endpoint רלוונטי, איך מטפלים ב-Pagination, איזה SDK צריך, ואיפה בכלל הדוגמאות. וככל שה-API משתנה — וזה טוב, זה סימן שהעסק חי — נוצרת בעיה נוספת: השכבות <b>API → Documentation → SDK → Examples</b> יוצאות מסנכרון אחת מהשנייה. זה <b>Drift</b>, וזה הכאב המרכזי שרוב הארגונים חווים בלי לשים לו שם.</p>
     <p>הלקוח לא באמת קונה Documentation. הוא קונה <b>דרך להפוך APIs למוצר שקל יותר לצרוך</b>. ה-Documentation הוא בדרך כלל נקודת הכניסה, אבל Fern נותן סביב אותו API הרבה יותר מזה — וזה מה שהופך אותו לרחב בהרבה מכלי Documentation בלבד.</p>
@@ -197,9 +193,9 @@ body.edit-mode #fmtbar{transform:translateX(-50%) translateY(0);}
   </div>
 </div>
 
-<div class="block" data-id="b3">
+<div class="block" data-id="b3" draggable="false">
   <span class="drag-handle">⠿</span>
-  <div class="block-content script">
+  <div class="block-content script" contenteditable="false">
     <span class="eyebrow">תרחיש ראשון שאתה יכול לפרוש: חברת ביטוח</span>
     <div class="prod">
       <div class="t">חברת ביטוח גדולה</div>
@@ -215,9 +211,9 @@ body.edit-mode #fmtbar{transform:translateX(-50%) translateY(0);}
   </div>
 </div>
 
-<div class="block" data-id="b4">
+<div class="block" data-id="b4" draggable="false">
   <span class="drag-handle">⠿</span>
-  <div class="block-content script">
+  <div class="block-content script" contenteditable="false">
     <span class="eyebrow">תרחיש שני: חברת אשראי / תשלומים</span>
     <div class="prod">
       <div class="t">חברת אשראי שמאפשרת לבתי עסק להתחבר ל-Payment APIs</div>
@@ -229,11 +225,29 @@ body.edit-mode #fmtbar{transform:translateX(-50%) translateY(0);}
   </div>
 </div>
 
-<div class="block" data-id="b5">
+<div class="block" data-id="b4b">
   <span class="drag-handle">⠿</span>
   <div class="block-content script">
+    <span class="eyebrow">תרחיש שלישי: בנק</span>
+    <div class="prod">
+      <div class="t">בנק עם חשיפת Open Banking / PSD2</div>
+      <p>הבנק חייב לחשוף APIs של מידע על חשבונות ויזמות תשלום ל-Third Party Providers (TPPs) ולפינטקים חיצוניים — לא כברירת מחדל עסקית, אלא כדרישה רגולטורית עם תאריך יעד.</p>
+      <p><b>הבעיה:</b> תחת PSD2/PSD3, ה-API, ה-Docs וה-SDKs חייבים לעבור הסמכה (Certification) מול הרגולטור ומול כל TPP שמתחבר. כל Drift בין ה-Spec לתיעוד בפועל לא רק מעצבן — הוא יכול לגרום לכשל בהסמכה או לעיכוב שמונע משותף להתחבר בזמן.</p>
+      <p>Fern נותן תיעוד ו-SDKs שמסונכרנים אוטומטית מול ה-Spec הרגולטורי, מה שמקצר את זמן ההסמכה של TPP חדש ומקטין את הסיכון ל-Audit. וכאן, בניגוד לביטוח, <b>Self-Hosted הוא לא רק "נחמד שיהיה"</b> — במקרים רבים זו דרישה מפורשת של הרגולטור המקומי (Data Residency), לא נקודה למשא ומתן.</p>
+      <p style="color:var(--grey);font-size:13px;"><b>למי לפנות בבנק כזה:</b> Head of Open Banking / Head of API Architecture (ה-Lead), Compliance/Risk (מעורבים מוקדם, לא בסוף). קיצור זמן ההסמכה מול TPPs הוא נקודת הכניסה הכי חזקה.</p>
+      <div class="say" style="margin-top:12px;">
+        <b class="tag">שאלת Discovery לסגירת התרחיש</b>
+        "כמה זמן לוקח היום מרגע שTPP חדש עובר את תהליך ההסמכה שלכם ועד שהאינטגרציה שלו רצה בפרודקשן?"
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="block" data-id="b5" draggable="false">
+  <span class="drag-handle">⠿</span>
+  <div class="block-content script" contenteditable="false">
     <span class="eyebrow">איך תסגור את הפיץ'</span>
-    <p>ההבחנה החשובה שצריך לזכור, אם עולה שאלה על Postman עצמו: <b>Governance / Management / Discovery → Postman. Consumption / Developer Experience → Fern.</b> Fern לא מחליף את ה-API Catalog — הוא יושב במורד הזרם, השכבה הרחבה יותר סביב ה-APIs: קונטקסט עסקי, Guides, דוגמאות, Troubleshooting. אם הלקוח הוא לקוח Postman, Postman נשאר נקודת המגע הראשונה שלו.</p>
+    <p><b>Governance / Management / Discovery → Postman.&nbsp;</b></p><p><b>Consumption / Developer Experience → Fern.</b>&nbsp;</p><p>Fern לא מחליף את ה-API Catalog — הוא יושב במורד הזרם, השכבה הרחבה יותר סביב ה-APIs: קונטקסט עסקי, Guides, דוגמאות, Troubleshooting.&nbsp;</p><p>אם הלקוח הוא לקוח Postman, Postman נשאר נקודת המגע הראשונה שלו.</p>
     <div class="chip-row">
       <span class="chip" onclick="openPanel('panel-fit')">למי Fern מתאים ולמי לא</span>
       <span class="chip" onclick="openPanel('panel-signals')">Buying Signals — מה להקשיב לו</span>
@@ -307,7 +321,7 @@ body.edit-mode #fmtbar{transform:translateX(-50%) translateY(0);}
     <b>גם ל-API פנימי יש כאב אמיתי (Platform Engineering):</b> ב-Case פנימי טיפוסי, מהנדסים מבזבזים זמן ב-Slack כדי לשאול עמיתים איך API פנימי עובד, ו-Agents לא מצליחים לשלוף את זה בעצמם. גם צוותים לא-טכניים (Sales, Analysts) נתקעים בלי להבין את ה-Intent של ה-API. Fern פותר את שני הצדדים — פיתוח מהיר יותר, פחות חיכוך בין צוותים. חשוב לזכור: AEO (הגלוי ל-AI חיצוני) רלוונטי רק ל-Docs פומביים — Docs פנימיים לא צריכים שמודלים "ילמדו" מהם, אבל עדיין מרוויחים מ-MCP עם Auth Passthrough, מ-llms.txt ומחיפוש AI פנימי.
   </div>
   <table class="bt">
-    <tr><th>פרופיל</th><th>למה</th></tr>
+    <tbody><tr><th>פרופיל</th><th>למה</th></tr>
     <tr><td>חברות Tech-forward בצמיחה, ~50 עובדים ומעלה, עם API או מוצר פונה-מפתחים/צרכן</td><td><span class="fit-high">גבוהה</span> — API חיצוני אידיאלי (הכנסה מתחברת אליו), אבל גם פנימי עובד — קשה יותר למכור Outbound</td></tr>
     <tr><td>חברות פיננסיות, ביטוח, תשלומים, SaaS, AI, Marketplace</td><td><span class="fit-high">גבוהה</span></td></tr>
     <tr><td>API Product Teams — ה-API חלק מהמוצר</td><td><span class="fit-high">גבוהה</span></td></tr>
@@ -315,7 +329,7 @@ body.edit-mode #fmtbar{transform:translateX(-50%) translateY(0);}
     <tr><td>פרסונות IT כלליות בלי בעלות על API / Developer Experience</td><td><span class="fit-low">נמוכה</span> — זו שיחת Postman/Governance</td></tr>
     <tr><td>חברות בשלב Series A</td><td><span class="fit-low">נמוכה</span> — כנראה לא עסוקות עדיין ב-Docs פנימיים, Free tier מכסה אותן</td></tr>
     <tr><td>רק צורך ב-API Governance / רק Discovery</td><td><span class="fit-low">נמוכה</span> — כנראה Postman / Catalog</td></tr>
-  </table>
+  </tbody></table>
   </div>
 </div>
 
@@ -325,7 +339,7 @@ body.edit-mode #fmtbar{transform:translateX(-50%) translateY(0);}
   <p style="font-size:14px;color:var(--grey);">המילה שמזהה לקוח מיידי: <b style="color:var(--orange-dark);">"External consumers"</b> — ברגע שיש צרכנים חיצוניים ל-API, אתר התיעוד, ה-SDKs וה-CLI רלוונטיים באופן מיידי.</p>
   <table class="bt">
     <caption>לבדוק לפני השיחה (Signals Library)</caption>
-    <tr><th>איפה בודקים</th><th>מה זה אומר</th></tr>
+    <tbody><tr><th>איפה בודקים</th><th>מה זה אומר</th></tr>
     <tr><td>יש Developer Portal / API Reference פומבי (developer.&lt;company&gt;)</td><td><span class="fit-high">צרכנים חיצוניים קיימים — Revenue play חי</span></td></tr>
     <tr><td>חיפוש ב-GitHub: "unofficial &lt;company&gt; SDK"</td><td>אין SDK רשמי טוב באחת השפות — Fern land</td></tr>
     <tr><td>כמה Repos נפרדים של SDKs בארגון של החברה ב-GitHub</td><td>עומס תחזוקה/סנכרון — הכאב המרכזי של Fern</td></tr>
@@ -333,9 +347,9 @@ body.edit-mode #fmtbar{transform:translateX(-50%) translateY(0);}
     <tr><td>משרות פתוחות ל-DevRel / "Docs" ב-LinkedIn / דפי קריירה</td><td>משקיעים ב-DX עכשיו — טיימינג + תקציב</td></tr>
     <tr><td>llms.txt / אזכור MCP / "AI-ready docs" בפוטר האתר</td><td>רודפים אחרי Agent-readiness — לפתוח בזה</td></tr>
     <tr><td>ה-Stack הנוכחי של ה-Docs (מזוהה מ-Page Source: Mintlify/ReadMe/Docusaurus/Scalar)</td><td>מגלה מי המתחרה הנוכחי להזיז/להשלים</td></tr>
-  </table>
+  </tbody></table>
   <table class="bt" style="margin-top:16px;">
-    <tr><th>הלקוח אומר...</th><th>מה זה אומר</th></tr>
+    <tbody><tr><th>הלקוח אומר...</th><th>מה זה אומר</th></tr>
     <tr><td>יש לנו External Developers / Developer Portal</td><td><span class="fit-high">Signal חזק</span></td></tr>
     <tr><td>אנחנו מתחזקים SDKs בעצמנו</td><td><span class="fit-high">Signal חזק</span></td></tr>
     <tr><td>ה-Docs שלנו לא תמיד מעודכנים</td><td><span class="fit-high">Signal חזק</span></td></tr>
@@ -345,15 +359,15 @@ body.edit-mode #fmtbar{transform:translateX(-50%) translateY(0);}
     <tr><td>אנחנו צריכים API Governance</td><td>כנראה Postman</td></tr>
     <tr><td>אנחנו צריכים לדעת אילו APIs קיימים</td><td>כנראה API Catalog</td></tr>
     <tr><td>אנחנו צריכים לשלוט למי יש גישה</td><td>כנראה Passport</td></tr>
-  </table>
+  </tbody></table>
   <table class="bt" style="margin-top:16px;">
     <caption>זיהוי Opportunity — מיפוי מהיר</caption>
-    <tr><th>הלקוח אומר...</th><th>המוצר</th></tr>
+    <tbody><tr><th>הלקוח אומר...</th><th>המוצר</th></tr>
     <tr><td>רק רוצים לדעת אילו APIs קיימים בארגון</td><td>API Catalog</td></tr>
     <tr><td>צריכים לשלוט מי מקבל גישה ל-APIs</td><td>Passport</td></tr>
     <tr><td>רוצים לשלוט ב-AI Agents, Models, MCP, Policies, Token Costs</td><td>Fabric</td></tr>
     <tr><td>יש API אבל קשה למפתחים/שותפים להשתמש בו, מתחזקים Docs/SDKs ידנית, רוצים API יותר Agent-friendly</td><td><b style="color:var(--orange-dark);">Fern</b></td></tr>
-  </table>
+  </tbody></table>
   </div>
 </div>
 
@@ -362,26 +376,26 @@ body.edit-mode #fmtbar{transform:translateX(-50%) translateY(0);}
   <div class="panel-body">
   <table class="bt">
     <caption>Fern מול Postman API Catalog</caption>
-    <tr><th></th><th>API Catalog</th><th>Fern</th></tr>
+    <tbody><tr><th></th><th>API Catalog</th><th>Fern</th></tr>
     <tr><td>השאלה</td><td>אילו APIs יש לנו?</td><td>איך משתמשים ב-API?</td></tr>
     <tr><td>מטרה</td><td>Discovery ו-Visibility</td><td>Consumption ו-Developer Experience</td></tr>
     <tr><td>קהל</td><td>צוותים בתוך הארגון</td><td>Developers / Partners / API Consumers</td></tr>
     <tr><td>SDK / MCP</td><td>לא המטרה המרכזית</td><td>כן</td></tr>
-  </table>
+  </tbody></table>
   <table class="bt" style="margin-top:16px;">
     <caption>Fern מול Passport</caption>
-    <tr><th></th><th>Passport</th><th>Fern</th></tr>
+    <tbody><tr><th></th><th>Passport</th><th>Fern</th></tr>
     <tr><td>הבעיה</td><td>למי יש גישה ל-API?</td><td>איך משתמשים ב-API?</td></tr>
     <tr><td>מטרה</td><td>Access</td><td>Consumption</td></tr>
     <tr><td>הרשאות / Credentials</td><td>מרכזי</td><td>לא המטרה המרכזית</td></tr>
-  </table>
+  </tbody></table>
   <table class="bt" style="margin-top:16px;">
     <caption>Fern מול Fabric</caption>
-    <tr><th></th><th>Fabric</th><th>Fern</th></tr>
+    <tbody><tr><th></th><th>Fabric</th><th>Fern</th></tr>
     <tr><td>הבעיה</td><td>איך מנהלים AI Agents ו-AI consumption</td><td>איך הופכים APIs לקלים לצריכה</td></tr>
     <tr><td>מיקוד</td><td>AI Control Layer</td><td>API Consumption Layer</td></tr>
     <tr><td>Models / Policies / Secrets</td><td>מרכזי</td><td>לא המיקוד</td></tr>
-  </table>
+  </tbody></table>
   </div>
 </div>
 
@@ -424,13 +438,13 @@ body.edit-mode #fmtbar{transform:translateX(-50%) translateY(0);}
     <p><b>הטיעון המנצח:</b> Fern הוא קו מוצרים מלא — Documentation, SDKs, CLI ו-MCP servers בפלטפורמה אחת, שבה ה-Docs מפנים אוטומטית לכל מה שעוד Fern מייצר. וגם: Fern מגובה על ידי Postman, חברה בשווי 5.5 מיליארד דולר, עם יותר הון וקצב Roadmap מהיר יותר.</p>
   </div>
   <table class="bt">
-    <tr><th>מתחרה</th><th>מה חשוב לדעת</th></tr>
+    <tbody><tr><th>מתחרה</th><th>מה חשוב לדעת</th></tr>
     <tr><td><b>ReadMe / GitBook / Scalar / Redocly</b></td><td>קלים (Lightweight), לא תחרותיים בסקאלת Enterprise. כרגע מנסים "לצוד" לקוחות שנפלטו מ-Stainless — שווה לבדוק אם התחרות כבר שם</td></tr>
     <tr><td><b>Stoplight</b></td><td>SmartBear מפרקת אותו (being deprecated) — לא תחרותי</td></tr>
     <tr><td><b>OpenAPI Generator / MS Kiota</b></td><td>קוד פתוח, חינמי, 8-50+ שפות. הטיעון: "חינמי אבל אתה מחזיק בתחזוקה" — Fern נותן פלט אידיומטי, סנכרון עם Docs, גילוי Drift ותמיכה — זו שאלת TCO, לא רק מחיר</td></tr>
     <tr><td><b>Backstage / Docusaurus (פורטלים פנימיים)</b></td><td>OSS ל-Docs/Portal פנימי. Fern: תיעוד מיוצר ומסונכרן אוטומטית מול עמודים שנכתבים ביד ויוצאים מסונכרון + משטח MCP ל-Agents</td></tr>
     <tr><td><b>Apigee / Kong / Gravitee / Axway / Azure APIM</b></td><td>פורטל מובנה בתוך ה-Gateway. לא להחליף — Fern יושב <b>מעל</b> כל Gateway: DX טוב יותר, SDKs אמיתיים, Agent-readiness. "תשאירו את ה-Gateway, תשדרגו את הצריכה"</td></tr>
-  </table>
+  </tbody></table>
   <div class="cross-box">
     <b>מתחרי SDK — Displacement Window פתוח עכשיו:</b> Speakeasy — SDK בלבד, תמחור לפי שפה, אין Docs, אין WebSockets/gRPC, אין On-Prem. Stainless (בנו את ה-SDKs של OpenAI/Anthropic/Cloudflare) — <b>נרכשו על ידי Anthropic ב-18.5.2026 וסגורים לפרויקטים חדשים</b>: ה-Regeneration שלהם הופסק, כך שכל לקוח קודם שלהם יקבל SDKs "מיושנים" בשינוי ה-API הבא. אם אתה מזהה שחברה הייתה לקוחה של Stainless — זה חלון Displacement דחוף, לא רק Signal. API-Matic (אוסטרלית) יותר חברת שירותים מ-SaaS אמיתי — לא תחרות רצינית.
   </div>
@@ -545,5 +559,6 @@ window.addEventListener('DOMContentLoaded', function(){
   attachDnD();
 });
 </script>
-</body>
-</html>
+
+
+</body></html>
