@@ -138,13 +138,17 @@ ul.clean li{margin-bottom:8px;font-size:14.5px;}
 /* format toolbar */
 #fmtbar{
   position:fixed;bottom:20px;left:50%;transform:translateX(-50%) translateY(120%);
-  background:#fff;border:1px solid var(--line);border-radius:30px;padding:8px 12px;
-  display:flex;gap:6px;align-items:center;box-shadow:0 8px 24px rgba(0,0,0,.16);z-index:250;transition:transform .2s ease;
+  background:#fff;border:1px solid var(--line);border-radius:12px;padding:9px 12px;
+  display:flex;gap:7px;align-items:center;flex-wrap:wrap;max-width:94vw;
+  box-shadow:0 8px 24px rgba(0,0,0,.16);z-index:250;transition:transform .2s ease;
 }
 body.edit-mode #fmtbar{transform:translateX(-50%) translateY(0);}
-#fmtbar button{appearance:none;border:none;background:transparent;width:32px;height:32px;border-radius:50%;cursor:pointer;font-size:14px;}
-#fmtbar button:hover{background:var(--cream);color:var(--orange-dark);}
-#fmtbar .lbl{font-size:11px;color:var(--grey);padding:0 6px;}
+#fmtbar .ftxt{appearance:none;border:1px solid var(--line);background:#fff;border-radius:6px;min-width:32px;height:32px;padding:0 9px;cursor:pointer;font-size:13.5px;font-weight:700;color:var(--ink);}
+#fmtbar .ftxt:hover{background:var(--cream);border-color:var(--orange);color:var(--orange-dark);}
+#fmtbar .fswatch{width:36px;height:24px;border-radius:5px;border:1px solid var(--line);cursor:pointer;padding:0;}
+#fmtbar .fswatch:hover{border-color:var(--ink);transform:scale(1.08);}
+#fmtbar .fsep{width:1px;height:24px;background:var(--line);margin:0 2px;}
+#fmtbar .lbl{font-size:10.5px;color:var(--grey);padding:0 4px;}
 
 @media(max-width:760px){.stage-row{grid-template-columns:repeat(2,1fr);} .drag-handle{right:-4px;top:-4px;position:relative;margin-bottom:4px;}}
 </style>
@@ -247,14 +251,22 @@ body.edit-mode #fmtbar{transform:translateX(-50%) translateY(0);}
 </main>
 
 <div id="fmtbar">
-  <button onclick="document.execCommand('bold')" title="Bold"><b>B</b></button>
-  <button onclick="document.execCommand('italic')" title="Italic"><i>I</i></button>
-  <button onclick="document.execCommand('underline')" title="Underline"><u>U</u></button>
-  <span class="lbl">|</span>
-  <button onclick="document.execCommand('foreColor', false, '#E15A28')" title="Orange" style="color:#E15A28;">●</button>
-  <button onclick="document.execCommand('foreColor', false, '#D64545')" title="Red" style="color:#D64545;">●</button>
-  <button onclick="document.execCommand('foreColor', false, '#1C1C1E')" title="Black" style="color:#1C1C1E;">●</button>
-  <span class="lbl">Drag the ⠿ handle to reorder</span>
+  <button class="ftxt" onclick="document.execCommand('bold')" title="Bold"><b>B</b></button>
+  <button class="ftxt" onclick="document.execCommand('italic')" title="Italic"><i>I</i></button>
+  <button class="ftxt" onclick="document.execCommand('underline')" title="Underline"><u>U</u></button>
+  <button class="ftxt" onclick="adjustFontSize(-2)" title="Smaller text">A-</button>
+  <button class="ftxt" onclick="adjustFontSize(2)" title="Larger text">A+</button>
+  <span class="fsep"></span>
+  <button class="ftxt" onclick="document.execCommand('insertUnorderedList')" title="Bullet list">•</button>
+  <button class="ftxt" onclick="document.execCommand('insertOrderedList')" title="Numbered list">1.</button>
+  <span class="fsep"></span>
+  <button class="fswatch" style="background:#1C1C1E;" onclick="document.execCommand('foreColor', false, '#1C1C1E')" title="Black"></button>
+  <button class="fswatch" style="background:#E15A28;" onclick="document.execCommand('foreColor', false, '#E15A28')" title="Orange"></button>
+  <button class="fswatch" style="background:#D64545;" onclick="document.execCommand('foreColor', false, '#D64545')" title="Red"></button>
+  <button class="fswatch" style="background:#2E7D5B;" onclick="document.execCommand('foreColor', false, '#2E7D5B')" title="Green"></button>
+  <button class="fswatch" style="background:#2F6FED;" onclick="document.execCommand('foreColor', false, '#2F6FED')" title="Blue"></button>
+  <button class="fswatch" style="background:#5B5F66;" onclick="document.execCommand('foreColor', false, '#5B5F66')" title="Grey"></button>
+  <span class="lbl">Drag ⠿ to reorder</span>
 </div>
 
 <!-- ================= POPUP PANELS ================= -->
@@ -488,6 +500,22 @@ function resetAll(){
     document.querySelectorAll('.panel').forEach(function(p){ localStorage.removeItem('fernEN_panel_v1_' + p.id); });
     location.reload();
   }
+}
+
+function adjustFontSize(delta){
+  const sel = window.getSelection();
+  if(!sel.rangeCount || sel.isCollapsed) return;
+  const range = sel.getRangeAt(0);
+  const parentEl = range.commonAncestorContainer.nodeType === 1 ? range.commonAncestorContainer : range.commonAncestorContainer.parentElement;
+  const current = parseFloat(window.getComputedStyle(parentEl).fontSize) || 16;
+  const span = document.createElement('span');
+  span.style.fontSize = Math.max(10, current + delta) + 'px';
+  span.appendChild(range.extractContents());
+  range.insertNode(span);
+  sel.removeAllRanges();
+  const r2 = document.createRange();
+  r2.selectNodeContents(span);
+  sel.addRange(r2);
 }
 
 function downloadStandalone(){
