@@ -193,10 +193,27 @@ body.edit-mode #fmtbar{transform:translateX(-50%) translateY(0);}
   </div>
 </div>
 
+<div class="block" data-id="b3bank">
+  <span class="drag-handle">⠿</span>
+  <div class="block-content script">
+    <span class="eyebrow">תרחיש ראשון שאתה יכול לפרוש: בנק</span>
+    <div class="prod">
+      <div class="t">בנק קמעונאי גדול</div>
+      <p>יש לו APIs עבור חשבונות, תשלומים, כרטיסים ו-Open Banking — והוא צריך ששותפי Fintech חיצוניים וגם צוותים פנימיים יתחברו אליהם. המצב: עשרות APIs בין מחלקות שונות, תיעוד שלא עקבי ביניהן, ו-SDKs שמתוחזקים ידנית לשפות שהשותפים בפועל משתמשים בהן.</p>
+      <p>הבעיה העסקית: <b>שותף Fintech חדש רוצה להשיק פיצ'ר עם ה-Payments API של הבנק.</b> הוא צריך לקרוא תיעוד, להבין Authentication, לבנות מולו ולפתור בעיות אינטגרציה — לעיתים תוך שבועות. Fern יכול לתת: <b>API Specification → Documentation + SDKs + Examples</b> — ולקצר את זמן האינטגרציה הזה משמעותית.</p>
+      <p>ובגלל שזה בנק, היכולת של Fern לרוץ <b>Self-Hosted</b> (להריץ את יצירת ה-Documentation וה-SDKs בתוך התשתית של הבנק עצמו) יכולה להיות משמעותית בשיחה — עונה על דרישות residency ואבטחה של המידע — שווה להעלות את זה מוקדם.</p>
+      <div class="say" style="margin-top:12px;">
+        <b class="tag">שאלת Discovery לסגירת התרחיש</b>
+        "כמה זמן לוקח היום לשותף Fintech חדש לעבור מקבלת גישה ל-API עד לביצוע העסקה המוצלחת הראשונה שלו?"
+      </div>
+    </div>
+  </div>
+</div>
+
 <div class="block" data-id="b3">
   <span class="drag-handle">⠿</span>
   <div class="block-content script">
-    <span class="eyebrow">תרחיש ראשון שאתה יכול לפרוש: חברת ביטוח</span>
+    <span class="eyebrow">תרחיש שני שאתה יכול לפרוש: חברת ביטוח</span>
     <div class="prod">
       <div class="t">חברת ביטוח גדולה</div>
       <p>יש לה APIs עבור לקוחות, פוליסות, תביעות, הצעות מחיר וסוכנים — והיא מאפשרת לשותפים ולסוכנויות ביטוח להתחבר אליהם. המצב: מאות APIs, תיעוד במקומות שונים, SDKs שנבנים ידנית, וכל שינוי ב-API דורש לעדכן כמה מקומות.</p>
@@ -213,7 +230,7 @@ body.edit-mode #fmtbar{transform:translateX(-50%) translateY(0);}
 <div class="block" data-id="b4">
   <span class="drag-handle">⠿</span>
   <div class="block-content script">
-    <span class="eyebrow">תרחיש שני: חברת אשראי / תשלומים</span>
+    <span class="eyebrow">תרחיש שלישי: חברת אשראי / תשלומים</span>
     <div class="prod">
       <div class="t">חברת אשראי שמאפשרת לבתי עסק להתחבר ל-Payment APIs</div>
       <p>יש לה: Payment API, Refund API, Customer API, Transaction API, Fraud API, ו-Webhooks — והיא רוצה ש-Partners ו-Developers יתחברו במהירות.</p>
