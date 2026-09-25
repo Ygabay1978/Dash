@@ -599,7 +599,7 @@
   </div>
   <div class="header-right">
     <h1 class="header-client-name" id="clientNameTag">Global-E</h1>
-    <span id="clock">17:33:20</span>
+    <span id="clock">19:18:48</span>
     <button class="hbtn" id="editToggle" onclick="toggleEditMode()">✏️ Edit</button>
     <button class="hbtn" onclick="resetAllContent()" title="Wipe saved edits/notes in this browser and reload Claude's latest text">↺ Reset</button>
     <button class="hbtn primary" onclick="downloadCopy()">⬇ Save copy</button>
@@ -608,8 +608,8 @@
 
 <nav class="tabs" id="tabNav" style="top: 57px;" data-drag-bound="1">
   <button class="tab-btn" data-tab="discovery"><span class="icon">🔍</span>Discovery</button>
-  <button class="tab-btn active" data-tab="explaineren"><span class="icon">📘</span>Explainer (EN)</button>
-  <button class="tab-btn" data-tab="explainerhe"><span class="icon">📗</span>Explainer (HE)</button>
+  <button class="tab-btn" data-tab="explaineren"><span class="icon">📘</span>Explainer (EN)</button>
+  <button class="tab-btn active" data-tab="explainerhe"><span class="icon">📗</span>Explainer (HE)</button>
   <button class="tab-btn" data-tab="objections"><span class="icon">🛡️</span>Objections &amp; Battlecards</button>
   <button class="tab-btn" data-tab="plans"><span class="icon">📊</span>Enterprise + ASA</button>
   <button class="tab-btn" data-tab="wiki"><span class="icon">📖</span>Plans &amp; Products</button>
@@ -923,9 +923,9 @@
   </section>
 
   <!-- ================= PITCH TAB ================= -->
-  <section class="panel active" id="panel-explaineren" data-sortable-bound="1">
+  <section class="panel" id="panel-explaineren" data-sortable-bound="1">
     <div class="full-width" style="padding:0;">
-      <iframe style="width: 100%; height: 759px; border-width: medium; border-style: none; border-color: currentcolor; border-image: none;" srcdoc="&lt;!DOCTYPE html&gt;
+      <iframe style="width:100%;height:calc(100vh - 200px);border:none;" srcdoc="&lt;!DOCTYPE html&gt;
 
 &lt;html dir=&quot;ltr&quot; lang=&quot;en&quot;&gt;
 &lt;head&gt;
@@ -1552,13 +1552,13 @@
   }
   .side-panel.open{opacity:1;visibility:visible;transform:scale(1);}
 
-  /* Fern opens as a full page, not a framed card — it's an embedded real
-     page the person scrolls through normally, not a floating box. */
-  #panel-fern{
+  /* Fabric / Passport / ASA / Fern each open as a full page (embedded real
+     pages), not a framed card — same treatment for all four now. */
+  #panel-fabric, #panel-passport, #panel-asa, #panel-fern{
     top:0;left:0;right:0;width:100%;height:100%;max-width:none;
     border-radius:0;box-shadow:none;
   }
-  #panel-fern .panel-body{flex:1;min-height:0;}
+  #panel-fabric .panel-body, #panel-passport .panel-body, #panel-asa .panel-body, #panel-fern .panel-body{flex:1;min-height:0;}
   .panel-header{
     background:var(--ink);
     color:#fff;
@@ -2030,41 +2030,8 @@ A few additional capabilities that can be relevant, depending on the customer's 
 &lt;span&gt;Fabric&lt;/span&gt;
 &lt;button class=&quot;panel-close&quot; data-close=&quot;panel-fabric&quot;&gt;✕&lt;/button&gt;
 &lt;/div&gt;
-&lt;div class=&quot;panel-body&quot;&gt;
-&lt;div class=&quot;fmt-group answer-fmt-group panel-toolbar&quot;&gt;
-  &lt;button type=&quot;button&quot; class=&quot;ptb-bold&quot; title=&quot;Bold (select text and click)&quot;&gt;B&lt;/button&gt;
-  &lt;button type=&quot;button&quot; class=&quot;ptb-italic&quot; title=&quot;Italic (select text and click)&quot;&gt;I&lt;/button&gt;
-  &lt;button type=&quot;button&quot; class=&quot;ptb-decfont&quot; title=&quot;Decrease text size (select text and click)&quot;&gt;A-&lt;/button&gt;
-  &lt;button type=&quot;button&quot; class=&quot;ptb-incfont&quot; title=&quot;Increase text size (select text and click)&quot;&gt;A+&lt;/button&gt;
-  &lt;button class=&quot;swatch&quot; data-color=&quot;#1C1C1E&quot; style=&quot;background:#1C1C1E&quot; title=&quot;Black&quot;&gt;&lt;/button&gt;
-  &lt;button class=&quot;swatch&quot; data-color=&quot;#FF6C37&quot; style=&quot;background:#FF6C37&quot; title=&quot;Orange&quot;&gt;&lt;/button&gt;
-  &lt;button class=&quot;swatch&quot; data-color=&quot;#D64545&quot; style=&quot;background:#D64545&quot; title=&quot;Red&quot;&gt;&lt;/button&gt;
-  &lt;button class=&quot;swatch&quot; data-color=&quot;#2E7D5B&quot; style=&quot;background:#2E7D5B&quot; title=&quot;Green&quot;&gt;&lt;/button&gt;
-  &lt;button class=&quot;swatch&quot; data-color=&quot;#2F6FED&quot; style=&quot;background:#2F6FED&quot; title=&quot;Blue&quot;&gt;&lt;/button&gt;
-  &lt;button class=&quot;swatch&quot; data-color=&quot;#5B5F66&quot; style=&quot;background:#5B5F66&quot; title=&quot;Grey&quot;&gt;&lt;/button&gt;
-  &lt;button type=&quot;button&quot; class=&quot;ptb-save&quot; title=&quot;Save&quot;&gt;💾 Save&lt;/button&gt;
-&lt;/div&gt;
-&lt;p class=&quot;lead edit-unit&quot; contenteditable=&quot;false&quot;&gt;Fabric is our central control layer for the AI world in the organization.&lt;/p&gt;
-&lt;div class=&quot;say edit-unit&quot; contenteditable=&quot;false&quot;&gt;
-&lt;b class=&quot;tag&quot;&gt;How I explain it&lt;/b&gt;
-      &quot;As more teams start using different models — OpenAI, Claude, Gemini — to build AI Agents, and connect to MCP servers and internal APIs, each team starts managing its own connections, permissions, and Credentials. Fabric centralizes all of that traffic through a single control point — so the organization knows where AI requests are being sent, which models and APIs they can access, how secrets are kept, how much it costs, and what actually happened.&quot;
-    &lt;/div&gt;
-&lt;div class=&quot;group-title edit-unit&quot; contenteditable=&quot;false&quot;&gt;What Fabric Enables for the Organization&lt;/div&gt;
-&lt;ul class=&quot;panel-list&quot;&gt;
-&lt;li&gt;&lt;b&gt;Central Control Point&lt;/b&gt; — manage the traffic between models, Agents, MCP servers, and internal APIs from one place.&lt;/li&gt;
-&lt;li&gt;&lt;b&gt;Routing and Reliability&lt;/b&gt; — route requests between models, perform automatic Fallback when a model goes down, and pick the right model for each request.&lt;/li&gt;
-&lt;li&gt;&lt;b&gt;Security and Credential Management&lt;/b&gt; — the Agent doesn’t need to see or hold the keys itself.&lt;/li&gt;
-&lt;li&gt;&lt;b&gt;Agent Governance&lt;/b&gt; — determine precisely which APIs, Tools, or MCP Servers each Agent is authorized to access.&lt;/li&gt;
-&lt;li&gt;&lt;b&gt;Cost Control&lt;/b&gt; — see who’s consuming how many Tokens and at what cost, and set budgets.&lt;/li&gt;
-&lt;li&gt;&lt;b&gt;Full Audit&lt;/b&gt; — know who activated which Agent, on which model, which API it accessed, and which Policy was triggered.&lt;/li&gt;
-&lt;/ul&gt;
-&lt;div class=&quot;cross-box edit-unit&quot; contenteditable=&quot;false&quot;&gt;
-&lt;b&gt;Example I give:&lt;/b&gt; You have a team working with OpenAI, another team with Claude, and an Agent connecting to an MCP Server — and they all need access to internal systems. Today each of them holds its own Keys, permissions, and logs, and there’s no central layer that sees all the traffic. With Fabric, all requests pass through a single control layer: if an Agent requests GPT-5, Fabric can approve, block, route to a different model, switch to Claude if there’s an outage, or split traffic between several models — all in one place.
-    &lt;/div&gt;
-&lt;div class=&quot;say edit-unit&quot; contenteditable=&quot;false&quot;&gt;
-&lt;b class=&quot;tag&quot;&gt;Summary line&lt;/b&gt;
-      &quot;Fabric is the central control layer that connects the organization's AI, Agents, MCP servers, and APIs — and gives you control over traffic, security, permissions, costs, and Audit, instead of each of them being managed separately.&quot;
-    &lt;/div&gt;
+&lt;div class=&quot;panel-body&quot; style=&quot;padding:0;overflow:hidden;&quot;&gt;
+&lt;iframe src=&quot;fabric-explainer-en.html&quot; style=&quot;width:100%;height:100%;border:none;display:block;&quot;&gt;&lt;/iframe&gt;
 &lt;/div&gt;
 &lt;/div&gt;
 &lt;div class=&quot;side-panel&quot; id=&quot;panel-passport&quot;&gt;
@@ -2072,49 +2039,8 @@ A few additional capabilities that can be relevant, depending on the customer's 
 &lt;span&gt;Postman Passport&lt;/span&gt;
 &lt;button class=&quot;panel-close&quot; data-close=&quot;panel-passport&quot;&gt;✕&lt;/button&gt;
 &lt;/div&gt;
-&lt;div class=&quot;panel-body&quot;&gt;
-&lt;div class=&quot;fmt-group answer-fmt-group panel-toolbar&quot;&gt;
-  &lt;button type=&quot;button&quot; class=&quot;ptb-bold&quot; title=&quot;Bold (select text and click)&quot;&gt;B&lt;/button&gt;
-  &lt;button type=&quot;button&quot; class=&quot;ptb-italic&quot; title=&quot;Italic (select text and click)&quot;&gt;I&lt;/button&gt;
-  &lt;button type=&quot;button&quot; class=&quot;ptb-decfont&quot; title=&quot;Decrease text size (select text and click)&quot;&gt;A-&lt;/button&gt;
-  &lt;button type=&quot;button&quot; class=&quot;ptb-incfont&quot; title=&quot;Increase text size (select text and click)&quot;&gt;A+&lt;/button&gt;
-  &lt;button class=&quot;swatch&quot; data-color=&quot;#1C1C1E&quot; style=&quot;background:#1C1C1E&quot; title=&quot;Black&quot;&gt;&lt;/button&gt;
-  &lt;button class=&quot;swatch&quot; data-color=&quot;#FF6C37&quot; style=&quot;background:#FF6C37&quot; title=&quot;Orange&quot;&gt;&lt;/button&gt;
-  &lt;button class=&quot;swatch&quot; data-color=&quot;#D64545&quot; style=&quot;background:#D64545&quot; title=&quot;Red&quot;&gt;&lt;/button&gt;
-  &lt;button class=&quot;swatch&quot; data-color=&quot;#2E7D5B&quot; style=&quot;background:#2E7D5B&quot; title=&quot;Green&quot;&gt;&lt;/button&gt;
-  &lt;button class=&quot;swatch&quot; data-color=&quot;#2F6FED&quot; style=&quot;background:#2F6FED&quot; title=&quot;Blue&quot;&gt;&lt;/button&gt;
-  &lt;button class=&quot;swatch&quot; data-color=&quot;#5B5F66&quot; style=&quot;background:#5B5F66&quot; title=&quot;Grey&quot;&gt;&lt;/button&gt;
-  &lt;button type=&quot;button&quot; class=&quot;ptb-save&quot; title=&quot;Save&quot;&gt;💾 Save&lt;/button&gt;
-&lt;/div&gt;
-&lt;p class=&quot;lead edit-unit&quot; contenteditable=&quot;false&quot;&gt;Passport is a central Governance layer for discovering, requesting access to, and securely consuming APIs across the organization.&lt;/p&gt;
-&lt;div class=&quot;say edit-unit&quot; contenteditable=&quot;false&quot;&gt;
-&lt;b class=&quot;tag&quot;&gt;The challenge I describe&lt;/b&gt;
-      &quot;As there are more APIs and more people, applications, and AI Agents that need to use them, it becomes hard to know who’s using what, who has access, and where the API Keys and Secrets end up scattered. A developer looks for an API on Slack or in documentation, requests access from someone, and the real Key ends up in .env files, scripts, CI/CD, and other places. And as more AI Agents start accessing APIs, this challenge only grows.&quot;
-    &lt;/div&gt;
-&lt;div class=&quot;cross-box edit-unit&quot; contenteditable=&quot;false&quot;&gt;
-&lt;b&gt;Example I give:&lt;/b&gt; A new team is building an application that needs an internal customer API. The developer needs to figure out who owns it, who to ask, get a Key, and plug it into the system. Multiply that by dozens of APIs and hundreds of developers — and at some point the organization no longer knows who holds which Key, and which API they have access to.
-    &lt;/div&gt;
-&lt;div class=&quot;group-title edit-unit&quot; contenteditable=&quot;false&quot;&gt;How Passport Solves This&lt;/div&gt;
-&lt;ul class=&quot;panel-list&quot;&gt;
-&lt;li&gt;&lt;b&gt;Central Discovery&lt;/b&gt; — developers and AI Agents find approved APIs in one place.&lt;/li&gt;
-&lt;li&gt;&lt;b&gt;Controlled Access Request&lt;/b&gt; — instead of getting the real Key, they get a Passport Reference.&lt;/li&gt;
-&lt;li&gt;&lt;b&gt;Secretless Consumption&lt;/b&gt; — the real Credential stays in the customer’s existing Vault, and is only resolved at the actual moment of the API call — without the user or the Agent ever seeing or copying it.&lt;/li&gt;
-&lt;li&gt;&lt;b&gt;Full Visibility&lt;/b&gt; — who requested access, who approved it, and how the API is actually used.&lt;/li&gt;
-&lt;li&gt;&lt;b&gt;Works With Existing Tools&lt;/b&gt; — complements HashiCorp, AWS Secrets Manager, 1Password, etc., doesn’t replace them.&lt;/li&gt;
-&lt;/ul&gt;
-&lt;div class=&quot;say edit-unit&quot; contenteditable=&quot;false&quot;&gt;
-&lt;b class=&quot;tag&quot;&gt;Summary line&lt;/b&gt;
-      &quot;Passport gives the organization a central way to discover APIs, manage access to them, and enable secure use of them — without exposing the real Credentials.&quot;
-    &lt;/div&gt;
-&lt;div class=&quot;group-title edit-unit&quot; contenteditable=&quot;false&quot;&gt;When Passport Is Really Relevant — Customer Signals&lt;/div&gt;
-&lt;table class=&quot;panel-table&quot;&gt;
-&lt;tr&gt;&lt;th&gt;What the customer says&lt;/th&gt;&lt;th&gt;Fit&lt;/th&gt;&lt;th&gt;Why it’s interesting&lt;/th&gt;&lt;/tr&gt;
-&lt;tr&gt;&lt;td&gt;Developers don’t know which internal or partner APIs they’re supposed to access&lt;/td&gt;&lt;td&gt;🟢 Strong&lt;/td&gt;&lt;td&gt;API Network gives a central, controlled place to discover approved APIs.&lt;/td&gt;&lt;/tr&gt;
-&lt;tr&gt;&lt;td&gt;API access happens via Slack, Tickets, email, or tribal knowledge&lt;/td&gt;&lt;td&gt;🟢🟢 Very strong&lt;/td&gt;&lt;td&gt;Passport formalizes access requests, approval, Scope, Audit, and access revocation.&lt;/td&gt;&lt;/tr&gt;
-&lt;tr&gt;&lt;td&gt;We’re worried API Keys will show up in Variables, Repos, Logs, or local files&lt;/td&gt;&lt;td&gt;🟢🟢 Very strong&lt;/td&gt;&lt;td&gt;Secretless Consumption reduces the need to distribute the API Keys themselves.&lt;/td&gt;&lt;/tr&gt;
-&lt;tr&gt;&lt;td&gt;We use HashiCorp / AWS Secrets Manager / 1Password / GitGuardian, etc.&lt;/td&gt;&lt;td&gt;🟢 Strong&lt;/td&gt;&lt;td&gt;Passport complements existing tools and adds an Access Governance layer.&lt;/td&gt;&lt;/tr&gt;
-&lt;tr&gt;&lt;td&gt;AI Agents or automated processes need access to APIs but we don’t know how to manage it&lt;/td&gt;&lt;td&gt;🟢🟢 Very strong&lt;/td&gt;&lt;td&gt;This is one of Passport’s core and fastest-growing use cases.&lt;/td&gt;&lt;/tr&gt;
-&lt;/table&gt;
+&lt;div class=&quot;panel-body&quot; style=&quot;padding:0;overflow:hidden;&quot;&gt;
+&lt;iframe src=&quot;passport-explainer-en.html&quot; style=&quot;width:100%;height:100%;border:none;display:block;&quot;&gt;&lt;/iframe&gt;
 &lt;/div&gt;
 &lt;/div&gt;
 &lt;div class=&quot;side-panel&quot; id=&quot;panel-asa&quot;&gt;
@@ -2122,39 +2048,8 @@ A few additional capabilities that can be relevant, depending on the customer's 
 &lt;span&gt;Advanced Security Administration — ASA&lt;/span&gt;
 &lt;button class=&quot;panel-close&quot; data-close=&quot;panel-asa&quot;&gt;✕&lt;/button&gt;
 &lt;/div&gt;
-&lt;div class=&quot;panel-body&quot;&gt;
-&lt;div class=&quot;fmt-group answer-fmt-group panel-toolbar&quot;&gt;
-  &lt;button type=&quot;button&quot; class=&quot;ptb-bold&quot; title=&quot;Bold (select text and click)&quot;&gt;B&lt;/button&gt;
-  &lt;button type=&quot;button&quot; class=&quot;ptb-italic&quot; title=&quot;Italic (select text and click)&quot;&gt;I&lt;/button&gt;
-  &lt;button type=&quot;button&quot; class=&quot;ptb-decfont&quot; title=&quot;Decrease text size (select text and click)&quot;&gt;A-&lt;/button&gt;
-  &lt;button type=&quot;button&quot; class=&quot;ptb-incfont&quot; title=&quot;Increase text size (select text and click)&quot;&gt;A+&lt;/button&gt;
-  &lt;button class=&quot;swatch&quot; data-color=&quot;#1C1C1E&quot; style=&quot;background:#1C1C1E&quot; title=&quot;Black&quot;&gt;&lt;/button&gt;
-  &lt;button class=&quot;swatch&quot; data-color=&quot;#FF6C37&quot; style=&quot;background:#FF6C37&quot; title=&quot;Orange&quot;&gt;&lt;/button&gt;
-  &lt;button class=&quot;swatch&quot; data-color=&quot;#D64545&quot; style=&quot;background:#D64545&quot; title=&quot;Red&quot;&gt;&lt;/button&gt;
-  &lt;button class=&quot;swatch&quot; data-color=&quot;#2E7D5B&quot; style=&quot;background:#2E7D5B&quot; title=&quot;Green&quot;&gt;&lt;/button&gt;
-  &lt;button class=&quot;swatch&quot; data-color=&quot;#2F6FED&quot; style=&quot;background:#2F6FED&quot; title=&quot;Blue&quot;&gt;&lt;/button&gt;
-  &lt;button class=&quot;swatch&quot; data-color=&quot;#5B5F66&quot; style=&quot;background:#5B5F66&quot; title=&quot;Grey&quot;&gt;&lt;/button&gt;
-  &lt;button type=&quot;button&quot; class=&quot;ptb-save&quot; title=&quot;Save&quot;&gt;💾 Save&lt;/button&gt;
-&lt;/div&gt;
-&lt;p class=&quot;lead edit-unit&quot; contenteditable=&quot;false&quot;&gt;ASA is the Add-on I bring to the table when we talk about security at Enterprise scale — a product that exists and is active today, sold as a separate charge on top of Enterprise.&lt;/p&gt;
-&lt;div class=&quot;say edit-unit&quot; contenteditable=&quot;false&quot;&gt;
-&lt;b class=&quot;tag&quot;&gt;How I explain it&lt;/b&gt;
-      &quot;Broadly, it gives the security team more precise control over who can log in, from where, and how their secrets are kept. Postman’s default is already secure, but ASA adds an additional control layer specific to Enterprise and to regulatory requirements like SOC 2, ISO, or PCI.&quot;
-    &lt;/div&gt;
-&lt;div class=&quot;group-title edit-unit&quot; contenteditable=&quot;false&quot;&gt;What’s Included in ASA&lt;/div&gt;
-&lt;ul class=&quot;panel-list&quot;&gt;
-&lt;li&gt;&lt;b&gt;Domain Capture&lt;/b&gt; — automatic routing of logins by domain, so every employee logs into the correct organizational account without confusion between personal and company accounts.&lt;/li&gt;
-&lt;li&gt;&lt;b&gt;Secret Scanner — Dashboard &amp;amp; Alerts&lt;/b&gt; — not just a single secrets scanner, but an organization-wide picture: how many exposure attempts happened, where, and who was involved.&lt;/li&gt;
-&lt;li&gt;&lt;b&gt;Integration With External Vaults&lt;/b&gt; — Azure Key Vault, HashiCorp, AWS Secrets Manager, 1Password — so Postman works with the infrastructure the customer already uses, rather than replacing it.&lt;/li&gt;
-&lt;li&gt;&lt;b&gt;BYOK — Encryption With the Customer’s Own Key&lt;/b&gt; — the customer fully controls the encryption key; Postman never gets access to it at any stage.&lt;/li&gt;
-&lt;/ul&gt;
-&lt;div class=&quot;cross-box edit-unit&quot; contenteditable=&quot;false&quot;&gt;
-&lt;b&gt;Example I give:&lt;/b&gt; A financial organization subject to a regulation that requires it to encrypt all its sensitive data with a key it controls itself, and doesn’t rely on any external vendor holding the key. With BYOK, the organization keeps the encryption key in its own vault — and Postman simply cannot access the data without that key, even if it wanted to.
-    &lt;/div&gt;
-&lt;div class=&quot;say edit-unit&quot; contenteditable=&quot;false&quot;&gt;
-&lt;b class=&quot;tag&quot;&gt;Summary line&lt;/b&gt;
-      &quot;ASA doesn't replace Postman's baseline security — it adds a layer of control, visibility, and control at the Enterprise level, for those who need to meet strict regulatory requirements.&quot;
-    &lt;/div&gt;
+&lt;div class=&quot;panel-body&quot; style=&quot;padding:0;overflow:hidden;&quot;&gt;
+&lt;iframe src=&quot;asa-explainer-en.html&quot; style=&quot;width:100%;height:100%;border:none;display:block;&quot;&gt;&lt;/iframe&gt;
 &lt;/div&gt;
 &lt;/div&gt;
 
@@ -3422,8 +3317,7 @@ A few additional capabilities that can be relevant, depending on the customer's 
 (function(){
   const BLOCK_CONTAINERS = [
     '#sec-opening', '#sec-process', '#sec-ai', '#sec-stages',
-    '#panel-fabric .panel-body', '#panel-passport .panel-body',
-    '#panel-asa .panel-body', '#panel-database .panel-body'
+    '#panel-database .panel-body'
   ];
   // Blocks can be dragged between any of these main-page sections (not
   // into/out of the floating reference panels below — those stay separate).
@@ -3877,9 +3771,9 @@ document.addEventListener('keydown', (e)=&gt;{
     </div>
   </section>
 
-  <section class="panel" id="panel-explainerhe" data-sortable-bound="1">
+  <section class="panel active" id="panel-explainerhe" data-sortable-bound="1">
     <div class="full-width" style="padding:0;">
-      <iframe style="width: 100%; height: 759px; border-width: medium; border-style: none; border-color: currentcolor; border-image: none;" srcdoc="&lt;!DOCTYPE html&gt;
+      <iframe style="width:100%;height:calc(100vh - 200px);border:none;" srcdoc="&lt;!DOCTYPE html&gt;
 
 &lt;html dir=&quot;rtl&quot; lang=&quot;he&quot;&gt;
 &lt;head&gt;
@@ -4509,13 +4403,13 @@ document.addEventListener('keydown', (e)=&gt;{
   }
   .side-panel.open{opacity:1;visibility:visible;transform:scale(1);}
 
-  /* Fern opens as a full page, not a framed card — it's an embedded real
-     page the person scrolls through normally, not a floating box. */
-  #panel-fern{
+  /* Fabric / Passport / ASA / Fern each open as a full page (embedded real
+     pages), not a framed card — same treatment for all four now. */
+  #panel-fabric, #panel-passport, #panel-asa, #panel-fern{
     top:0;left:0;right:0;width:100%;height:100%;max-width:none;
     border-radius:0;box-shadow:none;
   }
-  #panel-fern .panel-body{flex:1;min-height:0;}
+  #panel-fabric .panel-body, #panel-passport .panel-body, #panel-asa .panel-body, #panel-fern .panel-body{flex:1;min-height:0;}
 
   /* Every floating panel (Fabric / Passport / ASA / DATABASE / Objections /
      the chat answer window) shares the .side-panel rule above, so they now
@@ -4836,7 +4730,7 @@ document.addEventListener('keydown', (e)=&gt;{
 &lt;/div&gt;
 &lt;div class=&quot;say edit-unit&quot; contenteditable=&quot;false&quot;&gt;
 &lt;b class=&quot;tag&quot;&gt;איך אני ממשיך לחלק ה-AI של המוצר שלנו עצמו&lt;/b&gt;
-      &quot;וזה מוביל אותי לנקודה שהלקוחות שלנו הכי אוהבים: ה-AI שבתוך Postman הוא לא כמו ChatGPT כללי. אנחנו קוראים לו&nbsp;&lt;b&gt;Agent Mode&lt;/b&gt;&nbsp; והוא בנוי במיוחד לעולם ה-API.&nbsp;&lt;div&gt;הוא רץ בתוך הסביבה שלכם ב-Postman, מכיר את כל הפרויקטים, הבדיקות וההתראות שכבר קיימים אצלכם, ולא רק עונה על שאלות אלא גם מבצע פעולות בפועל: כותב חוזים חדשים, מתקן בדיקות שנשברו, ומזהה מתי גרסה חדשה שוברת הבטחה שנתנו למישהו בעבר.&lt;/div&gt;&lt;div&gt;&lt;br/&gt;&lt;/div&gt;&lt;div&gt;יש גם &lt;b&gt;AI Engineer&lt;/b&gt;, שמתחבר למקום שבו שמור כל הקוד וההיסטוריה שלו (Git) ועושה עבודה עצמאית יותר/&lt;/div&gt;&lt;div&gt;לדוגמה, לעבור על כל ה-API-ים שלכם ולסמן אילו מהם כדאי להוציא משימוש כי הם ישנים או לא בשימוש, או לבדוק אוטומטית כל שינוי קוד חדש שמפתח מעלה למערכת, לפני שהוא מתקבל.&nbsp;&lt;/div&gt;&lt;div&gt;ואתם יכולים גם לבנות את כללי ה-Governance עצמם בעזרת AI — לכתוב אותם ב-Claude או ב-ChatGPT, ו-Postman הוא זה שבפועל אוכף אותם אוטומטית, על כל הפרויקטים, כל הזמן.&nbsp;&lt;/div&gt;&lt;div&gt;וזה בעצם ההבדל האמיתי: &lt;b&gt;אתם יכולים לעשות חלק מזה בעצמכם, או לקנות כמה כלים נפרדים — אבל אנחנו שמים את הכל תחת קורת גג אחת.&quot;
+      &quot;וזה מוביל אותי לנקודה שהלקוחות שלנו הכי אוהבים: ה-AI שבתוך Postman הוא לא כמו ChatGPT כללי. אנחנו קוראים לו &lt;b&gt;Agent Mode&lt;/b&gt;  והוא בנוי במיוחד לעולם ה-API. &lt;div&gt;הוא רץ בתוך הסביבה שלכם ב-Postman, מכיר את כל הפרויקטים, הבדיקות וההתראות שכבר קיימים אצלכם, ולא רק עונה על שאלות אלא גם מבצע פעולות בפועל: כותב חוזים חדשים, מתקן בדיקות שנשברו, ומזהה מתי גרסה חדשה שוברת הבטחה שנתנו למישהו בעבר.&lt;/div&gt;&lt;div&gt;&lt;br/&gt;&lt;/div&gt;&lt;div&gt;יש גם &lt;b&gt;AI Engineer&lt;/b&gt;, שמתחבר למקום שבו שמור כל הקוד וההיסטוריה שלו (Git) ועושה עבודה עצמאית יותר/&lt;/div&gt;&lt;div&gt;לדוגמה, לעבור על כל ה-API-ים שלכם ולסמן אילו מהם כדאי להוציא משימוש כי הם ישנים או לא בשימוש, או לבדוק אוטומטית כל שינוי קוד חדש שמפתח מעלה למערכת, לפני שהוא מתקבל. &lt;/div&gt;&lt;div&gt;ואתם יכולים גם לבנות את כללי ה-Governance עצמם בעזרת AI — לכתוב אותם ב-Claude או ב-ChatGPT, ו-Postman הוא זה שבפועל אוכף אותם אוטומטית, על כל הפרויקטים, כל הזמן. &lt;/div&gt;&lt;div&gt;וזה בעצם ההבדל האמיתי: &lt;b&gt;אתם יכולים לעשות חלק מזה בעצמכם, או לקנות כמה כלים נפרדים — אבל אנחנו שמים את הכל תחת קורת גג אחת.&quot;
     &lt;/b&gt;&lt;/div&gt;
 &lt;/div&gt;&lt;/section&gt;
 &lt;!-- SECTION 3: WHAT POSTMAN OFFERS PER STAGE --&gt;
@@ -4862,7 +4756,7 @@ document.addEventListener('keydown', (e)=&gt;{
 &lt;/div&gt;
 &lt;/div&gt;
 &lt;div class=&quot;cross-box edit-unit&quot; contenteditable=&quot;false&quot;&gt;&lt;b&gt;
-      &quot;שני דברים חשוב שתדעו — הם לא שייכים לשלב אחד, הם רצים על פני כולם:&nbsp;&lt;/b&gt;&lt;div&gt;&lt;b&gt;API Catalog&lt;/b&gt; נותן לכם תצוגה אחת של כל ה-APIs שבפיתוח בארגון — לא רק אלה שכבר חיים ב-gateway בפרודקשן. זה ההבדל המרכזי בינינו ל-Kong, Apigee או Boomi — הם מראים לכם רק מה שכבר רץ, אנחנו מראים לכם גם מה שבבנייה.&lt;/div&gt;&lt;div&gt;&nbsp;ו&lt;b&gt;Agent Mode&lt;/b&gt; עם &lt;b&gt;AI Engineer&lt;/b&gt; זמינים בכל שלב — לא עוזרים כלליים, אלא כלים שמכירים את הקונטקסט שלכם ובפועל מבצעים פעולות.&quot;
+      &quot;שני דברים חשוב שתדעו — הם לא שייכים לשלב אחד, הם רצים על פני כולם: &lt;/b&gt;&lt;div&gt;&lt;b&gt;API Catalog&lt;/b&gt; נותן לכם תצוגה אחת של כל ה-APIs שבפיתוח בארגון — לא רק אלה שכבר חיים ב-gateway בפרודקשן. זה ההבדל המרכזי בינינו ל-Kong, Apigee או Boomi — הם מראים לכם רק מה שכבר רץ, אנחנו מראים לכם גם מה שבבנייה.&lt;/div&gt;&lt;div&gt; ו&lt;b&gt;Agent Mode&lt;/b&gt; עם &lt;b&gt;AI Engineer&lt;/b&gt; זמינים בכל שלב — לא עוזרים כלליים, אלא כלים שמכירים את הקונטקסט שלכם ובפועל מבצעים פעולות.&quot;
     &lt;/div&gt;&lt;/div&gt;
 &lt;/section&gt;
 &lt;!-- SECTION 4: CORE PRODUCTS --&gt;
@@ -4980,41 +4874,8 @@ document.addEventListener('keydown', (e)=&gt;{
 &lt;span&gt;Fabric&lt;/span&gt;
 &lt;button class=&quot;panel-close&quot; data-close=&quot;panel-fabric&quot;&gt;✕&lt;/button&gt;
 &lt;/div&gt;
-&lt;div class=&quot;panel-body&quot;&gt;
-&lt;div class=&quot;fmt-group answer-fmt-group panel-toolbar&quot;&gt;
-  &lt;button type=&quot;button&quot; class=&quot;ptb-bold&quot; title=&quot;הדגשה (סמן טקסט ולחץ)&quot;&gt;B&lt;/button&gt;
-  &lt;button type=&quot;button&quot; class=&quot;ptb-italic&quot; title=&quot;נטוי (סמן טקסט ולחץ)&quot;&gt;I&lt;/button&gt;
-  &lt;button type=&quot;button&quot; class=&quot;ptb-decfont&quot; title=&quot;הקטן טקסט (סמן טקסט ולחץ)&quot;&gt;A-&lt;/button&gt;
-  &lt;button type=&quot;button&quot; class=&quot;ptb-incfont&quot; title=&quot;הגדל טקסט (סמן טקסט ולחץ)&quot;&gt;A+&lt;/button&gt;
-  &lt;button class=&quot;swatch&quot; data-color=&quot;#1C1C1E&quot; style=&quot;background:#1C1C1E&quot; title=&quot;שחור&quot;&gt;&lt;/button&gt;
-  &lt;button class=&quot;swatch&quot; data-color=&quot;#FF6C37&quot; style=&quot;background:#FF6C37&quot; title=&quot;כתום&quot;&gt;&lt;/button&gt;
-  &lt;button class=&quot;swatch&quot; data-color=&quot;#D64545&quot; style=&quot;background:#D64545&quot; title=&quot;אדום&quot;&gt;&lt;/button&gt;
-  &lt;button class=&quot;swatch&quot; data-color=&quot;#2E7D5B&quot; style=&quot;background:#2E7D5B&quot; title=&quot;ירוק&quot;&gt;&lt;/button&gt;
-  &lt;button class=&quot;swatch&quot; data-color=&quot;#2F6FED&quot; style=&quot;background:#2F6FED&quot; title=&quot;כחול&quot;&gt;&lt;/button&gt;
-  &lt;button class=&quot;swatch&quot; data-color=&quot;#5B5F66&quot; style=&quot;background:#5B5F66&quot; title=&quot;אפור&quot;&gt;&lt;/button&gt;
-  &lt;button type=&quot;button&quot; class=&quot;ptb-save&quot; title=&quot;שמור&quot;&gt;💾 שמור&lt;/button&gt;
-&lt;/div&gt;
-&lt;p class=&quot;lead edit-unit&quot; contenteditable=&quot;false&quot;&gt;Fabric הוא שכבת הבקרה המרכזית שלנו לעולם ה-AI בארגון.&lt;/p&gt;
-&lt;div class=&quot;say edit-unit&quot; contenteditable=&quot;false&quot;&gt;
-&lt;b class=&quot;tag&quot;&gt;איך אני מסביר את זה&lt;/b&gt;
-      &quot;ככל שיותר צוותים מתחילים להשתמש במודלים שונים — OpenAI, Claude, Gemini — לבנות AI Agents, ולהתחבר לשרתי MCP ול-APIs פנימיים, כל צוות מתחיל לנהל בעצמו את החיבורים, ההרשאות וה-Credentials שלו. Fabric מרכז את כל התעבורה הזו דרך נקודת שליטה אחת — כדי שהארגון יידע לאן בקשות ה-AI נשלחות, לאילו מודלים ו-APIs יש להן גישה, איך נשמרים הסודות, כמה זה עולה, ומה קרה בפועל.&quot;
-    &lt;/div&gt;
-&lt;div class=&quot;group-title edit-unit&quot; contenteditable=&quot;false&quot;&gt;מה Fabric מאפשר לארגון&lt;/div&gt;
-&lt;ul class=&quot;panel-list&quot;&gt;
-&lt;li&gt;&lt;b&gt;נקודת שליטה מרכזית&lt;/b&gt; — לנהל ממקום אחד את התעבורה בין מודלים, Agents, שרתי MCP ו-APIs פנימיים.&lt;/li&gt;
-&lt;li&gt;&lt;b&gt;Routing ו-Reliability&lt;/b&gt; — לנתב בקשות בין מודלים, לבצע Fallback אוטומטי כשמודל נופל, ולבחור את המודל המתאים לכל בקשה.&lt;/li&gt;
-&lt;li&gt;&lt;b&gt;Security ו-Credential Management&lt;/b&gt; — ה-Agent לא צריך לראות או להחזיק את המפתחות בעצמו.&lt;/li&gt;
-&lt;li&gt;&lt;b&gt;Agent Governance&lt;/b&gt; — לקבוע במדויק לאילו APIs, Tools או MCP Servers כל Agent מורשה לגשת.&lt;/li&gt;
-&lt;li&gt;&lt;b&gt;שליטה בעלויות&lt;/b&gt; — לראות מי צורך כמה Tokens ובאיזו עלות, ולהגדיר תקציבים.&lt;/li&gt;
-&lt;li&gt;&lt;b&gt;Audit מלא&lt;/b&gt; — לדעת מי הפעיל איזה Agent, על איזה מודל, לאיזה API ניגש, ואיזו Policy הופעלה.&lt;/li&gt;
-&lt;/ul&gt;
-&lt;div class=&quot;cross-box edit-unit&quot; contenteditable=&quot;false&quot;&gt;
-&lt;b&gt;דוגמה שאני נותן:&lt;/b&gt; יש לכם צוות שעובד עם OpenAI, צוות אחר עם Claude, ו-Agent שמתחבר ל-MCP Server — וכולם צריכים גישה למערכות פנימיות. היום כל אחד מהם מחזיק Keys, הרשאות ולוגים משלו, ואין שכבה מרכזית שרואה את כל התעבורה. עם Fabric, כל הבקשות עוברות דרך שכבת בקרה אחת: אם Agent מבקש GPT-5, Fabric יכול לאשר, לחסום, לנתב למודל אחר, לעבור ל-Claude אם יש תקלה, או לפצל את התעבורה בין כמה מודלים — הכל במקום אחד.
-    &lt;/div&gt;
-&lt;div class=&quot;say edit-unit&quot; contenteditable=&quot;false&quot;&gt;
-&lt;b class=&quot;tag&quot;&gt;משפט סיכום&lt;/b&gt;
-      &quot;Fabric הוא שכבת הבקרה המרכזית שמחברת בין ה-AI, ה-Agents, שרתי MCP וה-APIs של הארגון — ונותנת שליטה על התעבורה, האבטחה, ההרשאות, העלויות וה-Audit, במקום שכל אחד מהם ינוהל בנפרד.&quot;
-    &lt;/div&gt;
+&lt;div class=&quot;panel-body&quot; style=&quot;padding:0;overflow:hidden;&quot;&gt;
+&lt;iframe src=&quot;fabric-explainer.html&quot; style=&quot;width:100%;height:100%;border:none;display:block;&quot;&gt;&lt;/iframe&gt;
 &lt;/div&gt;
 &lt;/div&gt;
 &lt;div class=&quot;side-panel&quot; id=&quot;panel-passport&quot;&gt;
@@ -5022,49 +4883,8 @@ document.addEventListener('keydown', (e)=&gt;{
 &lt;span&gt;Postman Passport&lt;/span&gt;
 &lt;button class=&quot;panel-close&quot; data-close=&quot;panel-passport&quot;&gt;✕&lt;/button&gt;
 &lt;/div&gt;
-&lt;div class=&quot;panel-body&quot;&gt;
-&lt;div class=&quot;fmt-group answer-fmt-group panel-toolbar&quot;&gt;
-  &lt;button type=&quot;button&quot; class=&quot;ptb-bold&quot; title=&quot;הדגשה (סמן טקסט ולחץ)&quot;&gt;B&lt;/button&gt;
-  &lt;button type=&quot;button&quot; class=&quot;ptb-italic&quot; title=&quot;נטוי (סמן טקסט ולחץ)&quot;&gt;I&lt;/button&gt;
-  &lt;button type=&quot;button&quot; class=&quot;ptb-decfont&quot; title=&quot;הקטן טקסט (סמן טקסט ולחץ)&quot;&gt;A-&lt;/button&gt;
-  &lt;button type=&quot;button&quot; class=&quot;ptb-incfont&quot; title=&quot;הגדל טקסט (סמן טקסט ולחץ)&quot;&gt;A+&lt;/button&gt;
-  &lt;button class=&quot;swatch&quot; data-color=&quot;#1C1C1E&quot; style=&quot;background:#1C1C1E&quot; title=&quot;שחור&quot;&gt;&lt;/button&gt;
-  &lt;button class=&quot;swatch&quot; data-color=&quot;#FF6C37&quot; style=&quot;background:#FF6C37&quot; title=&quot;כתום&quot;&gt;&lt;/button&gt;
-  &lt;button class=&quot;swatch&quot; data-color=&quot;#D64545&quot; style=&quot;background:#D64545&quot; title=&quot;אדום&quot;&gt;&lt;/button&gt;
-  &lt;button class=&quot;swatch&quot; data-color=&quot;#2E7D5B&quot; style=&quot;background:#2E7D5B&quot; title=&quot;ירוק&quot;&gt;&lt;/button&gt;
-  &lt;button class=&quot;swatch&quot; data-color=&quot;#2F6FED&quot; style=&quot;background:#2F6FED&quot; title=&quot;כחול&quot;&gt;&lt;/button&gt;
-  &lt;button class=&quot;swatch&quot; data-color=&quot;#5B5F66&quot; style=&quot;background:#5B5F66&quot; title=&quot;אפור&quot;&gt;&lt;/button&gt;
-  &lt;button type=&quot;button&quot; class=&quot;ptb-save&quot; title=&quot;שמור&quot;&gt;💾 שמור&lt;/button&gt;
-&lt;/div&gt;
-&lt;p class=&quot;lead edit-unit&quot; contenteditable=&quot;false&quot;&gt;Passport הוא שכבת Governance מרכזית לגילוי, בקשת גישה וצריכה מאובטחת של APIs בארגון.&lt;/p&gt;
-&lt;div class=&quot;say edit-unit&quot; contenteditable=&quot;false&quot;&gt;
-&lt;b class=&quot;tag&quot;&gt;האתגר שאני מתאר&lt;/b&gt;
-      &quot;ככל שיש יותר APIs ויותר אנשים, אפליקציות ו-AI Agents שצריכים להשתמש בהם, קשה לדעת מי משתמש במה, למי יש גישה, ולאן ה-API Keys וה-Secrets מתפזרים. מפתח מחפש API ב-Slack או בתיעוד, מבקש גישה ממישהו, וה-Key האמיתי מגיע לקבצי .env, לסקריפטים, ל-CI/CD ולעוד מקומות. וככל שיותר AI Agents מתחילים לגשת ל-APIs, האתגר הזה רק גדל.&quot;
-    &lt;/div&gt;
-&lt;div class=&quot;cross-box edit-unit&quot; contenteditable=&quot;false&quot;&gt;
-&lt;b&gt;דוגמה שאני נותן:&lt;/b&gt; צוות חדש בונה אפליקציה שצריכה API פנימי של לקוחות. המפתח צריך להבין מי הבעלים, למי לפנות, לקבל Key ולהכניס אותו למערכת. תכפילו את זה בעשרות APIs ומאות מפתחים — ובשלב מסוים הארגון כבר לא יודע מי מחזיק איזה Key, ולאיזה API יש לו גישה.
-    &lt;/div&gt;
-&lt;div class=&quot;group-title edit-unit&quot; contenteditable=&quot;false&quot;&gt;איך Passport פותר את זה&lt;/div&gt;
-&lt;ul class=&quot;panel-list&quot;&gt;
-&lt;li&gt;&lt;b&gt;גילוי מרכזי&lt;/b&gt; — מפתחים ו-AI Agents מוצאים APIs מאושרים במקום אחד.&lt;/li&gt;
-&lt;li&gt;&lt;b&gt;בקשת גישה מבוקרת&lt;/b&gt; — במקום לקבל את ה-Key האמיתי, מקבלים Reference של Passport.&lt;/li&gt;
-&lt;li&gt;&lt;b&gt;Secretless Consumption&lt;/b&gt; — ה-Credential האמיתי נשאר ב-Vault הקיים של הלקוח, ונפתר רק בזמן הקריאה בפועל ל-API — בלי שהמשתמש או ה-Agent רואים או מעתיקים אותו.&lt;/li&gt;
-&lt;li&gt;&lt;b&gt;Visibility מלא&lt;/b&gt; — מי ביקש גישה, מי אישר, ואיך בפועל משתמשים ב-API.&lt;/li&gt;
-&lt;li&gt;&lt;b&gt;עובד עם הכלים הקיימים&lt;/b&gt; — משלים HashiCorp, AWS Secrets Manager, 1Password וכו', לא מחליף אותם.&lt;/li&gt;
-&lt;/ul&gt;
-&lt;div class=&quot;say edit-unit&quot; contenteditable=&quot;false&quot;&gt;
-&lt;b class=&quot;tag&quot;&gt;משפט סיכום&lt;/b&gt;
-      &quot;Passport נותן לארגון דרך מרכזית לגלות APIs, לנהל את הגישה אליהם ולאפשר שימוש מאובטח בהם — בלי לחשוף את ה-Credentials האמיתיים.&quot;
-    &lt;/div&gt;
-&lt;div class=&quot;group-title edit-unit&quot; contenteditable=&quot;false&quot;&gt;מתי Passport ממש רלוונטי — סיגנלים מהלקוח&lt;/div&gt;
-&lt;table class=&quot;panel-table&quot;&gt;
-&lt;tr&gt;&lt;th&gt;מה הלקוח אומר&lt;/th&gt;&lt;th&gt;התאמה&lt;/th&gt;&lt;th&gt;למה זה מעניין&lt;/th&gt;&lt;/tr&gt;
-&lt;tr&gt;&lt;td&gt;המפתחים לא יודעים לאיזה APIs פנימיים או של שותפים הם אמורים לגשת&lt;/td&gt;&lt;td&gt;🟢 חזקה&lt;/td&gt;&lt;td&gt;API Network נותן מקום מרכזי ומבוקר לגילוי APIs מאושרים.&lt;/td&gt;&lt;/tr&gt;
-&lt;tr&gt;&lt;td&gt;גישה ל-API מתבצעת דרך Slack, Tickets, מייל או ידע שבטי&lt;/td&gt;&lt;td&gt;🟢🟢 חזקה מאוד&lt;/td&gt;&lt;td&gt;Passport מסדיר בקשות גישה, אישור, Scope, Audit וביטול גישה.&lt;/td&gt;&lt;/tr&gt;
-&lt;tr&gt;&lt;td&gt;אנחנו חוששים ש-API Keys יופיעו ב-Variables, Repos, Logs או קבצים מקומיים&lt;/td&gt;&lt;td&gt;🟢🟢 חזקה מאוד&lt;/td&gt;&lt;td&gt;Secretless Consumption מפחית את הצורך להפיץ את ה-API Keys עצמם.&lt;/td&gt;&lt;/tr&gt;
-&lt;tr&gt;&lt;td&gt;אנחנו משתמשים ב-HashiCorp / AWS Secrets Manager / 1Password / GitGuardian וכו'&lt;/td&gt;&lt;td&gt;🟢 חזקה&lt;/td&gt;&lt;td&gt;Passport משלים את הכלים הקיימים ומוסיף שכבת Access Governance.&lt;/td&gt;&lt;/tr&gt;
-&lt;tr&gt;&lt;td&gt;ל-AI Agents או לתהליכים אוטומטיים דרושה גישה ל-APIs אבל אנחנו לא יודעים איך לנהל אותה&lt;/td&gt;&lt;td&gt;🟢🟢 חזקה מאוד&lt;/td&gt;&lt;td&gt;זה אחד מתרחישי השימוש המרכזיים והמתפתחים של Passport.&lt;/td&gt;&lt;/tr&gt;
-&lt;/table&gt;
+&lt;div class=&quot;panel-body&quot; style=&quot;padding:0;overflow:hidden;&quot;&gt;
+&lt;iframe src=&quot;passport-explainer.html&quot; style=&quot;width:100%;height:100%;border:none;display:block;&quot;&gt;&lt;/iframe&gt;
 &lt;/div&gt;
 &lt;/div&gt;
 &lt;div class=&quot;side-panel&quot; id=&quot;panel-asa&quot;&gt;
@@ -5072,39 +4892,8 @@ document.addEventListener('keydown', (e)=&gt;{
 &lt;span&gt;Advanced Security Administration — ASA&lt;/span&gt;
 &lt;button class=&quot;panel-close&quot; data-close=&quot;panel-asa&quot;&gt;✕&lt;/button&gt;
 &lt;/div&gt;
-&lt;div class=&quot;panel-body&quot;&gt;
-&lt;div class=&quot;fmt-group answer-fmt-group panel-toolbar&quot;&gt;
-  &lt;button type=&quot;button&quot; class=&quot;ptb-bold&quot; title=&quot;הדגשה (סמן טקסט ולחץ)&quot;&gt;B&lt;/button&gt;
-  &lt;button type=&quot;button&quot; class=&quot;ptb-italic&quot; title=&quot;נטוי (סמן טקסט ולחץ)&quot;&gt;I&lt;/button&gt;
-  &lt;button type=&quot;button&quot; class=&quot;ptb-decfont&quot; title=&quot;הקטן טקסט (סמן טקסט ולחץ)&quot;&gt;A-&lt;/button&gt;
-  &lt;button type=&quot;button&quot; class=&quot;ptb-incfont&quot; title=&quot;הגדל טקסט (סמן טקסט ולחץ)&quot;&gt;A+&lt;/button&gt;
-  &lt;button class=&quot;swatch&quot; data-color=&quot;#1C1C1E&quot; style=&quot;background:#1C1C1E&quot; title=&quot;שחור&quot;&gt;&lt;/button&gt;
-  &lt;button class=&quot;swatch&quot; data-color=&quot;#FF6C37&quot; style=&quot;background:#FF6C37&quot; title=&quot;כתום&quot;&gt;&lt;/button&gt;
-  &lt;button class=&quot;swatch&quot; data-color=&quot;#D64545&quot; style=&quot;background:#D64545&quot; title=&quot;אדום&quot;&gt;&lt;/button&gt;
-  &lt;button class=&quot;swatch&quot; data-color=&quot;#2E7D5B&quot; style=&quot;background:#2E7D5B&quot; title=&quot;ירוק&quot;&gt;&lt;/button&gt;
-  &lt;button class=&quot;swatch&quot; data-color=&quot;#2F6FED&quot; style=&quot;background:#2F6FED&quot; title=&quot;כחול&quot;&gt;&lt;/button&gt;
-  &lt;button class=&quot;swatch&quot; data-color=&quot;#5B5F66&quot; style=&quot;background:#5B5F66&quot; title=&quot;אפור&quot;&gt;&lt;/button&gt;
-  &lt;button type=&quot;button&quot; class=&quot;ptb-save&quot; title=&quot;שמור&quot;&gt;💾 שמור&lt;/button&gt;
-&lt;/div&gt;
-&lt;p class=&quot;lead edit-unit&quot; contenteditable=&quot;false&quot;&gt;ASA הוא ה-Add-on שאני מביא לשולחן כשמדברים על אבטחה בקנה מידה Enterprise — מוצר קיים ופעיל היום, נמכר בתשלום נפרד על גבי Enterprise.&lt;/p&gt;
-&lt;div class=&quot;say edit-unit&quot; contenteditable=&quot;false&quot;&gt;
-&lt;b class=&quot;tag&quot;&gt;איך אני מסביר את זה&lt;/b&gt;
-      &quot;בגדול, זה נותן לצוות האבטחה שליטה מדויקת יותר על מי יכול להתחבר, מאיפה, ואיך שומרים על הסודות (secrets) שלהם. ברירת המחדל של Postman כבר מאובטחת, אבל ASA מוסיף שכבת בקרה נוספת שספציפית ל-Enterprise ולדרישות רגולציה כמו SOC 2, ISO או PCI.&quot;
-    &lt;/div&gt;
-&lt;div class=&quot;group-title edit-unit&quot; contenteditable=&quot;false&quot;&gt;מה כלול ב-ASA&lt;/div&gt;
-&lt;ul class=&quot;panel-list&quot;&gt;
-&lt;li&gt;&lt;b&gt;Domain Capture&lt;/b&gt; — ניתוב אוטומטי של כניסות לפי דומיין, כך שכל עובד נכנס לחשבון הארגוני הנכון בלי בלבול בין חשבונות אישיים לחשבון החברה.&lt;/li&gt;
-&lt;li&gt;&lt;b&gt;Secret Scanner — לוח בקרה והתראות&lt;/b&gt; — לא רק סורק סודות בודד, אלא תמונת מצב ארגונית: כמה ניסיונות חשיפה קרו, איפה, ומי היה מעורב.&lt;/li&gt;
-&lt;li&gt;&lt;b&gt;אינטגרציה עם כספות חיצוניות&lt;/b&gt; — Azure Key Vault, HashiCorp, AWS Secrets Manager, 1Password — כדי ש-Postman יעבוד עם התשתית שהלקוח כבר משתמש בה, לא יחליף אותה.&lt;/li&gt;
-&lt;li&gt;&lt;b&gt;BYOK — הצפנה במפתח של הלקוח&lt;/b&gt; — הלקוח שולט לגמרי במפתח ההצפנה; Postman לא מקבל אליו גישה בשום שלב.&lt;/li&gt;
-&lt;/ul&gt;
-&lt;div class=&quot;cross-box edit-unit&quot; contenteditable=&quot;false&quot;&gt;
-&lt;b&gt;דוגמה שאני נותן:&lt;/b&gt; ארגון פיננסי שכפוף לרגולציה שמחייבת אותו להצפין את כל המידע הרגיש שלו במפתח שהוא עצמו שולט בו, ולא סומך על אף ספק חיצוני שמחזיק את המפתח. עם BYOK, הארגון שומר את מפתח ההצפנה בכספת שלו — ו-Postman פשוט לא יכול לגשת למידע בלי המפתח הזה, אפילו אם הוא ירצה.
-    &lt;/div&gt;
-&lt;div class=&quot;say edit-unit&quot; contenteditable=&quot;false&quot;&gt;
-&lt;b class=&quot;tag&quot;&gt;משפט סיכום&lt;/b&gt;
-      &quot;ASA לא מחליף את האבטחה הבסיסית של Postman — הוא מוסיף עליה שכבת בקרה, ניראות ושליטה ברמת Enterprise, למי שצריך לעמוד בדרישות רגולציה מחמירות.&quot;
-    &lt;/div&gt;
+&lt;div class=&quot;panel-body&quot; style=&quot;padding:0;overflow:hidden;&quot;&gt;
+&lt;iframe src=&quot;asa-explainer.html&quot; style=&quot;width:100%;height:100%;border:none;display:block;&quot;&gt;&lt;/iframe&gt;
 &lt;/div&gt;
 &lt;/div&gt;
 
@@ -6392,8 +6181,7 @@ document.addEventListener('keydown', (e)=&gt;{
 (function(){
   const BLOCK_CONTAINERS = [
     '#sec-opening', '#sec-process', '#sec-ai', '#sec-stages',
-    '#panel-fabric .panel-body', '#panel-passport .panel-body',
-    '#panel-asa .panel-body', '#panel-database .panel-body'
+    '#panel-database .panel-body'
   ];
   // Blocks can be dragged between any of these main-page sections (not
   // into/out of the floating reference panels below — those stay separate).
@@ -7157,7 +6945,7 @@ document.addEventListener('keydown', (e)=&gt;{
 
 </main>
 
-<footer style="display: none;">Postman · Confidential · Internal call companion - not for external distribution</footer>
+<footer>Postman · Confidential · Internal call companion - not for external distribution</footer>
 
 <!-- floating format toolbar -->
 <!-- persistent side panel: Best Reverse Questions -->
@@ -7167,7 +6955,6 @@ document.addEventListener('keydown', (e)=&gt;{
     <span>↩ Reverse Questions</span>
     <button class="side-panel-close" onclick="toggleSidePanel()">✕</button>
   </div>
-  <div data-editable="true" contenteditable="false">
   <ul class="clean">
     <li>If I joined as a developer tomorrow, how would I find the APIs I need?</li>
     <li>If your CTO joined this call, what would they want fixed first?</li>
@@ -7180,7 +6967,6 @@ document.addEventListener('keydown', (e)=&gt;{
     <li>Would a REST-first tool actually cover what you're running, or would it miss a chunk of your traffic?</li>
   </ul>
   <p class="side-panel-hint">Pinned here so you can glance at it while running Discovery, no matter which tab or how far you've scrolled.</p>
-  </div>
 </aside>
 
 <!-- ASA info side panel (triggered from Pricing Reference) -->
@@ -7189,7 +6975,6 @@ document.addEventListener('keydown', (e)=&gt;{
     <span>Advanced Security Administration (ASA)</span>
     <button class="side-panel-close" onclick="closeAsaModal()">✕</button>
   </div>
-  <div data-editable="true" contenteditable="false">
   <p class="muted">Pitch angle: base Enterprise gives you control over what your licensed users do. ASA gives you control over the shadow usage you don't even know about yet.</p>
   <ul class="clean">
     <li><b>Domain Capture</b> - any user who signs up with your company email is automatically routed into your managed org; existing and new free accounts under your domain are prompted to request access, giving admins full control and visibility</li>
@@ -7199,7 +6984,6 @@ document.addEventListener('keydown', (e)=&gt;{
     <li><b>Advanced secret controls</b> - deeper Cloud Secret Detection with an analytics dashboard and alerts across all workspace types</li>
     <li><b>BYOK encryption</b> - protect sensitive Postman data with your own customer-managed key in AWS KMS; revoke or restore Postman's encryption permissions at any time</li>
   </ul>
-  </div>
 </aside>
 
 <!-- Reusable product explainer panel (Fabric / ASA / Passport - EN + Hebrew) -->
@@ -7208,7 +6992,7 @@ document.addEventListener('keydown', (e)=&gt;{
     <span id="productPanelTitle">Product</span>
     <button class="side-panel-close" onmousedown="event.stopPropagation()" onclick="closeProductExplainer()">✕</button>
   </div>
-  <div id="productPanelBody" data-editable="true" contenteditable="false"></div>
+  <div id="productPanelBody"></div>
 </aside>
 
 <div id="fmtbar">
