@@ -265,6 +265,10 @@ body.edit-mode #fmtbar{transform:translateX(-50%) translateY(0);}
   <button onclick="document.execCommand('bold')" title="Bold"><b>B</b></button>
   <button onclick="document.execCommand('italic')" title="Italic"><i>I</i></button>
   <button onclick="document.execCommand('underline')" title="Underline"><u>U</u></button>
+  <button onclick="document.execCommand('insertUnorderedList')" title="רשימת תבליטים">•</button>
+  <button onclick="document.execCommand('insertOrderedList')" title="רשימה ממוספרת">.1</button>
+  <button onclick="fmtAdjustFontSize(-2)" title="הקטן טקסט">A-</button>
+  <button onclick="fmtAdjustFontSize(2)" title="הגדל טקסט">A+</button>
   <span class="lbl">|</span>
   <button onclick="document.execCommand('foreColor', false, '#E15A28')" title="כתום" style="color:#E15A28;">●</button>
   <button onclick="document.execCommand('foreColor', false, '#D64545')" title="אדום" style="color:#D64545;">●</button>
@@ -426,6 +430,23 @@ body.edit-mode #fmtbar{transform:translateX(-50%) translateY(0);}
 
 <script>
 let editMode = false;
+
+function fmtAdjustFontSize(delta){
+  const sel = window.getSelection();
+  if(!sel || sel.rangeCount === 0 || sel.isCollapsed) return;
+  const range = sel.getRangeAt(0);
+  const refNode = range.startContainer.nodeType === 3 ? range.startContainer.parentElement : range.startContainer;
+  const currentSize = parseFloat(window.getComputedStyle(refNode).fontSize) || 15;
+  const value = Math.max(10, Math.min(40, currentSize + delta)) + 'px';
+  const span = document.createElement('span');
+  span.style.fontSize = value;
+  span.appendChild(range.extractContents());
+  range.insertNode(span);
+  sel.removeAllRanges();
+  const newRange = document.createRange();
+  newRange.selectNodeContents(span);
+  sel.addRange(newRange);
+}
 
 function toggleEdit(){
   editMode = !editMode;
