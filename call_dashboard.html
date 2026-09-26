@@ -599,10 +599,11 @@
   </div>
   <div class="header-right">
     <h1 class="header-client-name" id="clientNameTag">Global-E</h1>
-    <span id="clock">19:18:48</span>
+    <span id="clock">23:04:54</span>
     <button class="hbtn" id="editToggle" onclick="toggleEditMode()">✏️ Edit</button>
     <button class="hbtn" onclick="resetAllContent()" title="Wipe saved edits/notes in this browser and reload Claude's latest text">↺ Reset</button>
     <button class="hbtn primary" onclick="downloadCopy()">⬇ Save copy</button>
+    <button class="hbtn" onclick="downloadExplainerOnly()" title="Download a clean, read-only copy of the active Explainer script, without the topics/chat side panels">📤 Share Script</button>
   </div>
 </header>
 
@@ -925,7 +926,7 @@
   <!-- ================= PITCH TAB ================= -->
   <section class="panel" id="panel-explaineren" data-sortable-bound="1">
     <div class="full-width" style="padding:0;">
-      <iframe style="width:100%;height:calc(100vh - 200px);border:none;" srcdoc="&lt;!DOCTYPE html&gt;
+      <iframe style="width: 100%; height: 759px; border-width: medium; border-style: none; border-color: currentcolor; border-image: none;" srcdoc="&lt;!DOCTYPE html&gt;
 
 &lt;html dir=&quot;ltr&quot; lang=&quot;en&quot;&gt;
 &lt;head&gt;
@@ -1690,6 +1691,9 @@
 &lt;div class=&quot;fmt-group&quot;&gt;
 &lt;button id=&quot;bold-btn&quot; title=&quot;Bold (select text and click)&quot;&gt;B&lt;/button&gt;
 &lt;button id=&quot;italic-btn&quot; title=&quot;Italic (select text and click)&quot;&gt;I&lt;/button&gt;
+&lt;button id=&quot;underline-btn&quot; title=&quot;Underline (select text and click)&quot;&gt;U&lt;/button&gt;
+&lt;button id=&quot;bullet-btn&quot; title=&quot;Bullet list (select text and click)&quot;&gt;•&lt;/button&gt;
+&lt;button id=&quot;number-btn&quot; title=&quot;Numbered list (select text and click)&quot;&gt;.1&lt;/button&gt;
 &lt;button id=&quot;dec-font-btn&quot; title=&quot;Decrease text size (select text and click)&quot;&gt;A-&lt;/button&gt;
 &lt;button id=&quot;inc-font-btn&quot; title=&quot;Increase text size (select text and click)&quot;&gt;A+&lt;/button&gt;
 &lt;input id=&quot;color-input&quot; title=&quot;Text color (select text and choose a color)&quot; type=&quot;color&quot; value=&quot;#1C1C1E&quot;/&gt;
@@ -2002,6 +2006,9 @@ A few additional capabilities that can be relevant, depending on the customer's 
 &lt;div class=&quot;fmt-group answer-fmt-group panel-toolbar&quot;&gt;
   &lt;button type=&quot;button&quot; class=&quot;ptb-bold&quot; title=&quot;Bold (select text and click)&quot;&gt;B&lt;/button&gt;
   &lt;button type=&quot;button&quot; class=&quot;ptb-italic&quot; title=&quot;Italic (select text and click)&quot;&gt;I&lt;/button&gt;
+  &lt;button type=&quot;button&quot; class=&quot;ptb-underline&quot; title=&quot;Underline (select text and click)&quot;&gt;U&lt;/button&gt;
+  &lt;button type=&quot;button&quot; class=&quot;ptb-bullet&quot; title=&quot;Bullet list (select text and click)&quot;&gt;•&lt;/button&gt;
+  &lt;button type=&quot;button&quot; class=&quot;ptb-number&quot; title=&quot;Numbered list (select text and click)&quot;&gt;.1&lt;/button&gt;
   &lt;button type=&quot;button&quot; class=&quot;ptb-decfont&quot; title=&quot;Decrease text size (select text and click)&quot;&gt;A-&lt;/button&gt;
   &lt;button type=&quot;button&quot; class=&quot;ptb-incfont&quot; title=&quot;Increase text size (select text and click)&quot;&gt;A+&lt;/button&gt;
   &lt;button class=&quot;swatch&quot; data-color=&quot;#1C1C1E&quot; style=&quot;background:#1C1C1E&quot; title=&quot;Black&quot;&gt;&lt;/button&gt;
@@ -2040,6 +2047,9 @@ A few additional capabilities that can be relevant, depending on the customer's 
 &lt;div class=&quot;fmt-group answer-fmt-group panel-toolbar&quot;&gt;
   &lt;button type=&quot;button&quot; class=&quot;ptb-bold&quot; title=&quot;Bold (select text and click)&quot;&gt;B&lt;/button&gt;
   &lt;button type=&quot;button&quot; class=&quot;ptb-italic&quot; title=&quot;Italic (select text and click)&quot;&gt;I&lt;/button&gt;
+  &lt;button type=&quot;button&quot; class=&quot;ptb-underline&quot; title=&quot;Underline (select text and click)&quot;&gt;U&lt;/button&gt;
+  &lt;button type=&quot;button&quot; class=&quot;ptb-bullet&quot; title=&quot;Bullet list (select text and click)&quot;&gt;•&lt;/button&gt;
+  &lt;button type=&quot;button&quot; class=&quot;ptb-number&quot; title=&quot;Numbered list (select text and click)&quot;&gt;.1&lt;/button&gt;
   &lt;button type=&quot;button&quot; class=&quot;ptb-decfont&quot; title=&quot;Decrease text size (select text and click)&quot;&gt;A-&lt;/button&gt;
   &lt;button type=&quot;button&quot; class=&quot;ptb-incfont&quot; title=&quot;Increase text size (select text and click)&quot;&gt;A+&lt;/button&gt;
   &lt;button class=&quot;swatch&quot; data-color=&quot;#1C1C1E&quot; style=&quot;background:#1C1C1E&quot; title=&quot;Black&quot;&gt;&lt;/button&gt;
@@ -2085,6 +2095,9 @@ A few additional capabilities that can be relevant, depending on the customer's 
 &lt;div class=&quot;fmt-group answer-fmt-group panel-toolbar&quot;&gt;
   &lt;button type=&quot;button&quot; class=&quot;ptb-bold&quot; title=&quot;Bold (select text and click)&quot;&gt;B&lt;/button&gt;
   &lt;button type=&quot;button&quot; class=&quot;ptb-italic&quot; title=&quot;Italic (select text and click)&quot;&gt;I&lt;/button&gt;
+  &lt;button type=&quot;button&quot; class=&quot;ptb-underline&quot; title=&quot;Underline (select text and click)&quot;&gt;U&lt;/button&gt;
+  &lt;button type=&quot;button&quot; class=&quot;ptb-bullet&quot; title=&quot;Bullet list (select text and click)&quot;&gt;•&lt;/button&gt;
+  &lt;button type=&quot;button&quot; class=&quot;ptb-number&quot; title=&quot;Numbered list (select text and click)&quot;&gt;.1&lt;/button&gt;
   &lt;button type=&quot;button&quot; class=&quot;ptb-decfont&quot; title=&quot;Decrease text size (select text and click)&quot;&gt;A-&lt;/button&gt;
   &lt;button type=&quot;button&quot; class=&quot;ptb-incfont&quot; title=&quot;Increase text size (select text and click)&quot;&gt;A+&lt;/button&gt;
   &lt;button class=&quot;swatch&quot; data-color=&quot;#1C1C1E&quot; style=&quot;background:#1C1C1E&quot; title=&quot;Black&quot;&gt;&lt;/button&gt;
@@ -2138,6 +2151,9 @@ A few additional capabilities that can be relevant, depending on the customer's 
 &lt;div class=&quot;fmt-group answer-fmt-group panel-toolbar&quot;&gt;
   &lt;button type=&quot;button&quot; class=&quot;ptb-bold&quot; title=&quot;Bold (select text and click)&quot;&gt;B&lt;/button&gt;
   &lt;button type=&quot;button&quot; class=&quot;ptb-italic&quot; title=&quot;Italic (select text and click)&quot;&gt;I&lt;/button&gt;
+  &lt;button type=&quot;button&quot; class=&quot;ptb-underline&quot; title=&quot;Underline (select text and click)&quot;&gt;U&lt;/button&gt;
+  &lt;button type=&quot;button&quot; class=&quot;ptb-bullet&quot; title=&quot;Bullet list (select text and click)&quot;&gt;•&lt;/button&gt;
+  &lt;button type=&quot;button&quot; class=&quot;ptb-number&quot; title=&quot;Numbered list (select text and click)&quot;&gt;.1&lt;/button&gt;
   &lt;button type=&quot;button&quot; class=&quot;ptb-decfont&quot; title=&quot;Decrease text size (select text and click)&quot;&gt;A-&lt;/button&gt;
   &lt;button type=&quot;button&quot; class=&quot;ptb-incfont&quot; title=&quot;Increase text size (select text and click)&quot;&gt;A+&lt;/button&gt;
   &lt;button class=&quot;swatch&quot; data-color=&quot;#1C1C1E&quot; style=&quot;background:#1C1C1E&quot; title=&quot;Black&quot;&gt;&lt;/button&gt;
@@ -2186,6 +2202,9 @@ It also includes: automatic routing of logins by domain (Domain Capture), a dash
 &lt;div class=&quot;fmt-group answer-fmt-group panel-toolbar&quot;&gt;
   &lt;button type=&quot;button&quot; class=&quot;ptb-bold&quot; title=&quot;Bold (select text and click)&quot;&gt;B&lt;/button&gt;
   &lt;button type=&quot;button&quot; class=&quot;ptb-italic&quot; title=&quot;Italic (select text and click)&quot;&gt;I&lt;/button&gt;
+  &lt;button type=&quot;button&quot; class=&quot;ptb-underline&quot; title=&quot;Underline (select text and click)&quot;&gt;U&lt;/button&gt;
+  &lt;button type=&quot;button&quot; class=&quot;ptb-bullet&quot; title=&quot;Bullet list (select text and click)&quot;&gt;•&lt;/button&gt;
+  &lt;button type=&quot;button&quot; class=&quot;ptb-number&quot; title=&quot;Numbered list (select text and click)&quot;&gt;.1&lt;/button&gt;
   &lt;button type=&quot;button&quot; class=&quot;ptb-decfont&quot; title=&quot;Decrease text size (select text and click)&quot;&gt;A-&lt;/button&gt;
   &lt;button type=&quot;button&quot; class=&quot;ptb-incfont&quot; title=&quot;Increase text size (select text and click)&quot;&gt;A+&lt;/button&gt;
   &lt;button class=&quot;swatch&quot; data-color=&quot;#1C1C1E&quot; style=&quot;background:#1C1C1E&quot; title=&quot;Black&quot;&gt;&lt;/button&gt;
@@ -2256,6 +2275,9 @@ It also includes: automatic routing of logins by domain (Domain Capture), a dash
     &lt;div class=&quot;fmt-group answer-fmt-group panel-toolbar&quot;&gt;
       &lt;button type=&quot;button&quot; class=&quot;ptb-bold&quot; title=&quot;Bold (select text and click)&quot;&gt;B&lt;/button&gt;
       &lt;button type=&quot;button&quot; class=&quot;ptb-italic&quot; title=&quot;Italic (select text and click)&quot;&gt;I&lt;/button&gt;
+  &lt;button type=&quot;button&quot; class=&quot;ptb-underline&quot; title=&quot;Underline (select text and click)&quot;&gt;U&lt;/button&gt;
+  &lt;button type=&quot;button&quot; class=&quot;ptb-bullet&quot; title=&quot;Bullet list (select text and click)&quot;&gt;•&lt;/button&gt;
+  &lt;button type=&quot;button&quot; class=&quot;ptb-number&quot; title=&quot;Numbered list (select text and click)&quot;&gt;.1&lt;/button&gt;
   &lt;button type=&quot;button&quot; class=&quot;ptb-decfont&quot; title=&quot;Decrease text size (select text and click)&quot;&gt;A-&lt;/button&gt;
   &lt;button type=&quot;button&quot; class=&quot;ptb-incfont&quot; title=&quot;Increase text size (select text and click)&quot;&gt;A+&lt;/button&gt;
       &lt;button class=&quot;swatch&quot; data-color=&quot;#1C1C1E&quot; style=&quot;background:#1C1C1E&quot; title=&quot;Black&quot;&gt;&lt;/button&gt;
@@ -2738,6 +2760,12 @@ It also includes: automatic routing of logins by domain (Domain Capture), a dash
 
   document.getElementById('italic-btn').addEventListener('mousedown', e=&gt;e.preventDefault());
   document.getElementById('italic-btn').addEventListener('click', ()=&gt; runCommand('italic'));
+  document.getElementById('underline-btn').addEventListener('mousedown', e=&gt;e.preventDefault());
+  document.getElementById('underline-btn').addEventListener('click', ()=&gt; runCommand('underline'));
+  document.getElementById('bullet-btn').addEventListener('mousedown', e=&gt;e.preventDefault());
+  document.getElementById('bullet-btn').addEventListener('click', ()=&gt; runCommand('insertUnorderedList'));
+  document.getElementById('number-btn').addEventListener('mousedown', e=&gt;e.preventDefault());
+  document.getElementById('number-btn').addEventListener('click', ()=&gt; runCommand('insertOrderedList'));
 
   document.getElementById('inc-font-btn').addEventListener('mousedown', e=&gt;e.preventDefault());
   document.getElementById('inc-font-btn').addEventListener('click', ()=&gt; wrapSelection('fontSize', 2, true));
@@ -3860,13 +3888,19 @@ It also includes: automatic routing of logins by domain (Domain Capture), a dash
     sel.addRange(newRange);
   }
   document.addEventListener('mousedown', (e)=&gt;{
-    if(e.target.closest('.ptb-bold, .ptb-italic, .ptb-save, .ptb-decfont, .ptb-incfont')) e.preventDefault();
+    if(e.target.closest('.ptb-bold, .ptb-italic, .ptb-underline, .ptb-bullet, .ptb-number, .ptb-save, .ptb-decfont, .ptb-incfont')) e.preventDefault();
   });
   document.addEventListener('click', (e)=&gt;{
     const boldBtn = e.target.closest('.ptb-bold');
     if(boldBtn){ document.execCommand('bold'); return; }
     const italicBtn = e.target.closest('.ptb-italic');
     if(italicBtn){ document.execCommand('italic'); return; }
+    const underlineBtn = e.target.closest('.ptb-underline');
+    if(underlineBtn){ document.execCommand('underline'); return; }
+    const bulletBtn = e.target.closest('.ptb-bullet');
+    if(bulletBtn){ document.execCommand('insertUnorderedList'); return; }
+    const numberBtn = e.target.closest('.ptb-number');
+    if(numberBtn){ document.execCommand('insertOrderedList'); return; }
     const decBtn = e.target.closest('.ptb-decfont');
     if(decBtn){ adjustFontSize(-2); return; }
     const incBtn = e.target.closest('.ptb-incfont');
@@ -3964,7 +3998,7 @@ document.addEventListener('keydown', (e)=&gt;{
 
   <section class="panel active" id="panel-explainerhe" data-sortable-bound="1">
     <div class="full-width" style="padding:0;">
-      <iframe style="width:100%;height:calc(100vh - 200px);border:none;" srcdoc="&lt;!DOCTYPE html&gt;
+      <iframe style="width: 100%; height: 759px; border-width: medium; border-style: none; border-color: currentcolor; border-image: none;" srcdoc="&lt;!DOCTYPE html&gt;
 
 &lt;html dir=&quot;rtl&quot; lang=&quot;he&quot;&gt;
 &lt;head&gt;
@@ -4727,6 +4761,9 @@ document.addEventListener('keydown', (e)=&gt;{
 &lt;div class=&quot;fmt-group&quot;&gt;
 &lt;button id=&quot;bold-btn&quot; title=&quot;הדגשה (סמן טקסט ולחץ)&quot;&gt;B&lt;/button&gt;
 &lt;button id=&quot;italic-btn&quot; title=&quot;נטוי (סמן טקסט ולחץ)&quot;&gt;I&lt;/button&gt;
+&lt;button id=&quot;underline-btn&quot; title=&quot;קו תחתי (סמן טקסט ולחץ)&quot;&gt;U&lt;/button&gt;
+&lt;button id=&quot;bullet-btn&quot; title=&quot;רשימת תבליטים (סמן טקסט ולחץ)&quot;&gt;•&lt;/button&gt;
+&lt;button id=&quot;number-btn&quot; title=&quot;רשימה ממוספרת (סמן טקסט ולחץ)&quot;&gt;.1&lt;/button&gt;
 &lt;button id=&quot;dec-font-btn&quot; title=&quot;הקטן טקסט (סמן טקסט ולחץ)&quot;&gt;A-&lt;/button&gt;
 &lt;button id=&quot;inc-font-btn&quot; title=&quot;הגדל טקסט (סמן טקסט ולחץ)&quot;&gt;A+&lt;/button&gt;
 &lt;input id=&quot;color-input&quot; title=&quot;צבע טקסט (סמן טקסט ובחר צבע)&quot; type=&quot;color&quot; value=&quot;#1C1C1E&quot;/&gt;
@@ -5037,6 +5074,9 @@ document.addEventListener('keydown', (e)=&gt;{
 &lt;div class=&quot;fmt-group answer-fmt-group panel-toolbar&quot;&gt;
   &lt;button type=&quot;button&quot; class=&quot;ptb-bold&quot; title=&quot;הדגשה (סמן טקסט ולחץ)&quot;&gt;B&lt;/button&gt;
   &lt;button type=&quot;button&quot; class=&quot;ptb-italic&quot; title=&quot;נטוי (סמן טקסט ולחץ)&quot;&gt;I&lt;/button&gt;
+  &lt;button type=&quot;button&quot; class=&quot;ptb-underline&quot; title=&quot;קו תחתי (סמן טקסט ולחץ)&quot;&gt;U&lt;/button&gt;
+  &lt;button type=&quot;button&quot; class=&quot;ptb-bullet&quot; title=&quot;רשימת תבליטים (סמן טקסט ולחץ)&quot;&gt;•&lt;/button&gt;
+  &lt;button type=&quot;button&quot; class=&quot;ptb-number&quot; title=&quot;רשימה ממוספרת (סמן טקסט ולחץ)&quot;&gt;.1&lt;/button&gt;
   &lt;button type=&quot;button&quot; class=&quot;ptb-decfont&quot; title=&quot;הקטן טקסט (סמן טקסט ולחץ)&quot;&gt;A-&lt;/button&gt;
   &lt;button type=&quot;button&quot; class=&quot;ptb-incfont&quot; title=&quot;הגדל טקסט (סמן טקסט ולחץ)&quot;&gt;A+&lt;/button&gt;
   &lt;button class=&quot;swatch&quot; data-color=&quot;#1C1C1E&quot; style=&quot;background:#1C1C1E&quot; title=&quot;שחור&quot;&gt;&lt;/button&gt;
@@ -5075,6 +5115,9 @@ document.addEventListener('keydown', (e)=&gt;{
 &lt;div class=&quot;fmt-group answer-fmt-group panel-toolbar&quot;&gt;
   &lt;button type=&quot;button&quot; class=&quot;ptb-bold&quot; title=&quot;הדגשה (סמן טקסט ולחץ)&quot;&gt;B&lt;/button&gt;
   &lt;button type=&quot;button&quot; class=&quot;ptb-italic&quot; title=&quot;נטוי (סמן טקסט ולחץ)&quot;&gt;I&lt;/button&gt;
+  &lt;button type=&quot;button&quot; class=&quot;ptb-underline&quot; title=&quot;קו תחתי (סמן טקסט ולחץ)&quot;&gt;U&lt;/button&gt;
+  &lt;button type=&quot;button&quot; class=&quot;ptb-bullet&quot; title=&quot;רשימת תבליטים (סמן טקסט ולחץ)&quot;&gt;•&lt;/button&gt;
+  &lt;button type=&quot;button&quot; class=&quot;ptb-number&quot; title=&quot;רשימה ממוספרת (סמן טקסט ולחץ)&quot;&gt;.1&lt;/button&gt;
   &lt;button type=&quot;button&quot; class=&quot;ptb-decfont&quot; title=&quot;הקטן טקסט (סמן טקסט ולחץ)&quot;&gt;A-&lt;/button&gt;
   &lt;button type=&quot;button&quot; class=&quot;ptb-incfont&quot; title=&quot;הגדל טקסט (סמן טקסט ולחץ)&quot;&gt;A+&lt;/button&gt;
   &lt;button class=&quot;swatch&quot; data-color=&quot;#1C1C1E&quot; style=&quot;background:#1C1C1E&quot; title=&quot;שחור&quot;&gt;&lt;/button&gt;
@@ -5120,6 +5163,9 @@ document.addEventListener('keydown', (e)=&gt;{
 &lt;div class=&quot;fmt-group answer-fmt-group panel-toolbar&quot;&gt;
   &lt;button type=&quot;button&quot; class=&quot;ptb-bold&quot; title=&quot;הדגשה (סמן טקסט ולחץ)&quot;&gt;B&lt;/button&gt;
   &lt;button type=&quot;button&quot; class=&quot;ptb-italic&quot; title=&quot;נטוי (סמן טקסט ולחץ)&quot;&gt;I&lt;/button&gt;
+  &lt;button type=&quot;button&quot; class=&quot;ptb-underline&quot; title=&quot;קו תחתי (סמן טקסט ולחץ)&quot;&gt;U&lt;/button&gt;
+  &lt;button type=&quot;button&quot; class=&quot;ptb-bullet&quot; title=&quot;רשימת תבליטים (סמן טקסט ולחץ)&quot;&gt;•&lt;/button&gt;
+  &lt;button type=&quot;button&quot; class=&quot;ptb-number&quot; title=&quot;רשימה ממוספרת (סמן טקסט ולחץ)&quot;&gt;.1&lt;/button&gt;
   &lt;button type=&quot;button&quot; class=&quot;ptb-decfont&quot; title=&quot;הקטן טקסט (סמן טקסט ולחץ)&quot;&gt;A-&lt;/button&gt;
   &lt;button type=&quot;button&quot; class=&quot;ptb-incfont&quot; title=&quot;הגדל טקסט (סמן טקסט ולחץ)&quot;&gt;A+&lt;/button&gt;
   &lt;button class=&quot;swatch&quot; data-color=&quot;#1C1C1E&quot; style=&quot;background:#1C1C1E&quot; title=&quot;שחור&quot;&gt;&lt;/button&gt;
@@ -5173,6 +5219,9 @@ document.addEventListener('keydown', (e)=&gt;{
 &lt;div class=&quot;fmt-group answer-fmt-group panel-toolbar&quot;&gt;
   &lt;button type=&quot;button&quot; class=&quot;ptb-bold&quot; title=&quot;הדגשה (סמן טקסט ולחץ)&quot;&gt;B&lt;/button&gt;
   &lt;button type=&quot;button&quot; class=&quot;ptb-italic&quot; title=&quot;נטוי (סמן טקסט ולחץ)&quot;&gt;I&lt;/button&gt;
+  &lt;button type=&quot;button&quot; class=&quot;ptb-underline&quot; title=&quot;קו תחתי (סמן טקסט ולחץ)&quot;&gt;U&lt;/button&gt;
+  &lt;button type=&quot;button&quot; class=&quot;ptb-bullet&quot; title=&quot;רשימת תבליטים (סמן טקסט ולחץ)&quot;&gt;•&lt;/button&gt;
+  &lt;button type=&quot;button&quot; class=&quot;ptb-number&quot; title=&quot;רשימה ממוספרת (סמן טקסט ולחץ)&quot;&gt;.1&lt;/button&gt;
   &lt;button type=&quot;button&quot; class=&quot;ptb-decfont&quot; title=&quot;הקטן טקסט (סמן טקסט ולחץ)&quot;&gt;A-&lt;/button&gt;
   &lt;button type=&quot;button&quot; class=&quot;ptb-incfont&quot; title=&quot;הגדל טקסט (סמן טקסט ולחץ)&quot;&gt;A+&lt;/button&gt;
   &lt;button class=&quot;swatch&quot; data-color=&quot;#1C1C1E&quot; style=&quot;background:#1C1C1E&quot; title=&quot;שחור&quot;&gt;&lt;/button&gt;
@@ -5221,6 +5270,9 @@ document.addEventListener('keydown', (e)=&gt;{
 &lt;div class=&quot;fmt-group answer-fmt-group panel-toolbar&quot;&gt;
   &lt;button type=&quot;button&quot; class=&quot;ptb-bold&quot; title=&quot;הדגשה (סמן טקסט ולחץ)&quot;&gt;B&lt;/button&gt;
   &lt;button type=&quot;button&quot; class=&quot;ptb-italic&quot; title=&quot;נטוי (סמן טקסט ולחץ)&quot;&gt;I&lt;/button&gt;
+  &lt;button type=&quot;button&quot; class=&quot;ptb-underline&quot; title=&quot;קו תחתי (סמן טקסט ולחץ)&quot;&gt;U&lt;/button&gt;
+  &lt;button type=&quot;button&quot; class=&quot;ptb-bullet&quot; title=&quot;רשימת תבליטים (סמן טקסט ולחץ)&quot;&gt;•&lt;/button&gt;
+  &lt;button type=&quot;button&quot; class=&quot;ptb-number&quot; title=&quot;רשימה ממוספרת (סמן טקסט ולחץ)&quot;&gt;.1&lt;/button&gt;
   &lt;button type=&quot;button&quot; class=&quot;ptb-decfont&quot; title=&quot;הקטן טקסט (סמן טקסט ולחץ)&quot;&gt;A-&lt;/button&gt;
   &lt;button type=&quot;button&quot; class=&quot;ptb-incfont&quot; title=&quot;הגדל טקסט (סמן טקסט ולחץ)&quot;&gt;A+&lt;/button&gt;
   &lt;button class=&quot;swatch&quot; data-color=&quot;#1C1C1E&quot; style=&quot;background:#1C1C1E&quot; title=&quot;שחור&quot;&gt;&lt;/button&gt;
@@ -5291,6 +5343,9 @@ document.addEventListener('keydown', (e)=&gt;{
     &lt;div class=&quot;fmt-group answer-fmt-group panel-toolbar&quot;&gt;
       &lt;button type=&quot;button&quot; class=&quot;ptb-bold&quot; title=&quot;הדגשה (סמן טקסט ולחץ)&quot;&gt;B&lt;/button&gt;
       &lt;button type=&quot;button&quot; class=&quot;ptb-italic&quot; title=&quot;נטוי (סמן טקסט ולחץ)&quot;&gt;I&lt;/button&gt;
+  &lt;button type=&quot;button&quot; class=&quot;ptb-underline&quot; title=&quot;קו תחתי (סמן טקסט ולחץ)&quot;&gt;U&lt;/button&gt;
+  &lt;button type=&quot;button&quot; class=&quot;ptb-bullet&quot; title=&quot;רשימת תבליטים (סמן טקסט ולחץ)&quot;&gt;•&lt;/button&gt;
+  &lt;button type=&quot;button&quot; class=&quot;ptb-number&quot; title=&quot;רשימה ממוספרת (סמן טקסט ולחץ)&quot;&gt;.1&lt;/button&gt;
   &lt;button type=&quot;button&quot; class=&quot;ptb-decfont&quot; title=&quot;הקטן טקסט (סמן טקסט ולחץ)&quot;&gt;A-&lt;/button&gt;
   &lt;button type=&quot;button&quot; class=&quot;ptb-incfont&quot; title=&quot;הגדל טקסט (סמן טקסט ולחץ)&quot;&gt;A+&lt;/button&gt;
       &lt;button class=&quot;swatch&quot; data-color=&quot;#1C1C1E&quot; style=&quot;background:#1C1C1E&quot; title=&quot;שחור&quot;&gt;&lt;/button&gt;
@@ -5774,6 +5829,12 @@ document.addEventListener('keydown', (e)=&gt;{
 
   document.getElementById('italic-btn').addEventListener('mousedown', e=&gt;e.preventDefault());
   document.getElementById('italic-btn').addEventListener('click', ()=&gt; runCommand('italic'));
+  document.getElementById('underline-btn').addEventListener('mousedown', e=&gt;e.preventDefault());
+  document.getElementById('underline-btn').addEventListener('click', ()=&gt; runCommand('underline'));
+  document.getElementById('bullet-btn').addEventListener('mousedown', e=&gt;e.preventDefault());
+  document.getElementById('bullet-btn').addEventListener('click', ()=&gt; runCommand('insertUnorderedList'));
+  document.getElementById('number-btn').addEventListener('mousedown', e=&gt;e.preventDefault());
+  document.getElementById('number-btn').addEventListener('click', ()=&gt; runCommand('insertOrderedList'));
 
   document.getElementById('inc-font-btn').addEventListener('mousedown', e=&gt;e.preventDefault());
   document.getElementById('inc-font-btn').addEventListener('click', ()=&gt; wrapSelection('fontSize', 2, true));
@@ -6921,13 +6982,19 @@ document.addEventListener('keydown', (e)=&gt;{
     sel.addRange(newRange);
   }
   document.addEventListener('mousedown', (e)=&gt;{
-    if(e.target.closest('.ptb-bold, .ptb-italic, .ptb-save, .ptb-decfont, .ptb-incfont')) e.preventDefault();
+    if(e.target.closest('.ptb-bold, .ptb-italic, .ptb-underline, .ptb-bullet, .ptb-number, .ptb-save, .ptb-decfont, .ptb-incfont')) e.preventDefault();
   });
   document.addEventListener('click', (e)=&gt;{
     const boldBtn = e.target.closest('.ptb-bold');
     if(boldBtn){ document.execCommand('bold'); return; }
     const italicBtn = e.target.closest('.ptb-italic');
     if(italicBtn){ document.execCommand('italic'); return; }
+    const underlineBtn = e.target.closest('.ptb-underline');
+    if(underlineBtn){ document.execCommand('underline'); return; }
+    const bulletBtn = e.target.closest('.ptb-bullet');
+    if(bulletBtn){ document.execCommand('insertUnorderedList'); return; }
+    const numberBtn = e.target.closest('.ptb-number');
+    if(numberBtn){ document.execCommand('insertOrderedList'); return; }
     const decBtn = e.target.closest('.ptb-decfont');
     if(decBtn){ adjustFontSize(-2); return; }
     const incBtn = e.target.closest('.ptb-incfont');
@@ -7327,7 +7394,7 @@ document.addEventListener('keydown', (e)=&gt;{
 
 </main>
 
-<footer>Postman · Confidential · Internal call companion - not for external distribution</footer>
+<footer style="display: none;">Postman · Confidential · Internal call companion - not for external distribution</footer>
 
 <!-- floating format toolbar -->
 <!-- persistent side panel: Best Reverse Questions -->
@@ -8305,6 +8372,42 @@ ${wrap.outerHTML}
     const stamp = new Date().toISOString().slice(0,10);
     a.href = url;
     a.download = 'Postman_Plans_Pricing_' + stamp + '.html';
+    document.body.appendChild(a);
+    a.click();
+    a.remove();
+    URL.revokeObjectURL(url);
+  }
+
+  // ---------- Share the active Explainer script only (clean, read-only, no side panels) ----------
+  function downloadExplainerOnly(){
+    const activeTabBtn = document.querySelector('#tabNav .tab-btn.active');
+    const tab = activeTabBtn ? activeTabBtn.dataset.tab : 'explainerhe';
+    const lang = (tab === 'explaineren') ? 'en' : 'he';
+    const panelId = (lang === 'en') ? 'panel-explaineren' : 'panel-explainerhe';
+    const panel = document.getElementById(panelId);
+    const iframe = panel ? panel.querySelector('iframe') : null;
+    if(!iframe || !iframe.contentDocument){
+      alert('Explainer content not found - make sure the Explainer (EN) or Explainer (HE) tab is open.');
+      return;
+    }
+    const clone = iframe.contentDocument.documentElement.cloneNode(true);
+    // Strip the topics nav and the chat assistant - a shared copy is just
+    // the script itself, not the tools used to edit/ask questions about it.
+    clone.querySelectorAll('#left-nav, #chat-panel, #edit-toolbar, .nav-sep, #panel-backdrop').forEach(el => el.remove());
+    // Strip editing-only chrome so it reads as a normal page, not a live editor.
+    clone.querySelectorAll('.block-drag-grip, .block-delete-btn, .drag-grip, .card-delete-btn, .panel-toolbar, .reorder-arrows, .add-block-btn, .add-card-btn').forEach(el => el.remove());
+    clone.querySelectorAll('[draggable]').forEach(el => el.removeAttribute('draggable'));
+    clone.querySelectorAll('[contenteditable]').forEach(el => el.setAttribute('contenteditable', 'false'));
+    // Close any floating panel that happened to be open when this was clicked.
+    clone.querySelectorAll('.side-panel').forEach(el => el.classList.remove('open'));
+
+    const html = '<!DOCTYPE html>\n' + clone.outerHTML;
+    const blob = new Blob([html], {type:'text/html'});
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    const stamp = new Date().toISOString().slice(0,10);
+    a.href = url;
+    a.download = 'postman-call-script-' + lang + '-' + stamp + '.html';
     document.body.appendChild(a);
     a.click();
     a.remove();
