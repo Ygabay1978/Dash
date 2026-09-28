@@ -397,7 +397,16 @@ header .sub{font-size:12px;color:#B9B9BC;margin-right:auto;}
     try{ localStorage.setItem(overridesKey(name), JSON.stringify(overrides)); }catch(e){}
   }
   function loadPersonalNote(name){
-    try{ return localStorage.getItem(personalKey(name)) || ''; }catch(e){ return ''; }
+    try{
+      const stored = localStorage.getItem(personalKey(name));
+      if(stored) return stored;
+      // Fall back to a seed note from the data file (e.g. AI-Readiness
+      // pitches) so it shows up the first time, before anyone has typed
+      // anything locally. Once saved once, the local copy takes over.
+      const seed = DATA && DATA.seed_personal_notes && DATA.seed_personal_notes[name];
+      if(seed) return seed;
+      return '';
+    }catch(e){ return ''; }
   }
   function savePersonalNote(name, html){
     try{ localStorage.setItem(personalKey(name), html); }catch(e){}
