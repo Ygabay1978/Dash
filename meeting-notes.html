@@ -399,7 +399,12 @@ header .sub{font-size:12px;color:#B9B9BC;margin-right:auto;}
   function loadPersonalNote(name){
     try{
       const stored = localStorage.getItem(personalKey(name));
-      if(stored) return stored;
+      // A contenteditable box that was merely clicked into and left, without
+      // typing anything, can save back "empty-looking" HTML like <br> or
+      // <div><br></div> — technically non-empty, so it would silently block
+      // the seed fallback below forever. Treat that the same as truly empty.
+      const strippedStored = stored ? stored.replace(/<[^>]*>/g, '').replace(/\s|&nbsp;/g, '') : '';
+      if(stored && strippedStored !== '') return stored;
       // Fall back to a seed note from the data file (e.g. AI-Readiness
       // pitches) so it shows up the first time, before anyone has typed
       // anything locally. Once saved once, the local copy takes over.
@@ -1132,6 +1137,51 @@ header .sub{font-size:12px;color:#B9B9BC;margin-right:auto;}
   document.addEventListener('mousedown', (e)=>{
     if(e.target.closest('.mini-toolbar')) e.preventDefault();
   });
+  // Paste as plain text everywhere in any rich-editable box — pasting from
+  // Word/Outlook/another page was bringing its background color and font
+  // along, with no way to remove it afterward.
+  document.addEventListener('paste', (e)=>{
+    const target = e.target.closest && e.target.closest('.rich-editable');
+    if(!target) return;
+    e.preventDefault();
+    const text = (e.clipboardData || window.clipboardData).getData('text/plain');
+    const sel = window.getSelection();
+    if(!sel || sel.rangeCount === 0) return;
+    const range = sel.getRangeAt(0);
+    range.deleteContents();
+    const lines = text.split(/\r\n|\r|\n/);
+    const frag = document.createDocumentFragment();
+    lines.forEach((line, i)=>{
+      if(i > 0) frag.appendChild(document.createElement('br'));
+      frag.appendChild(document.createTextNode(line));
+    });
+    const lastNode = frag.lastChild;
+    range.insertNode(frag);
+    if(lastNode){
+      const newRange = document.createRange();
+      newRange.setStartAfter(lastNode);
+      newRange.collapse(true);
+      sel.removeAllRanges();
+      sel.addRange(newRange);
+    }
+  });
+
+  function adjustFontSize(delta){
+    const sel = window.getSelection();
+    if(!sel || sel.rangeCount === 0 || sel.isCollapsed) return;
+    const range = sel.getRangeAt(0);
+    const refNode = range.startContainer.nodeType === 3 ? range.startContainer.parentElement : range.startContainer;
+    const currentSize = parseFloat(window.getComputedStyle(refNode).fontSize) || 14;
+    const value = Math.max(10, Math.min(40, currentSize + delta)) + 'px';
+    const span = document.createElement('span');
+    span.style.fontSize = value;
+    span.appendChild(range.extractContents());
+    range.insertNode(span);
+    sel.removeAllRanges();
+    const newRange = document.createRange();
+    newRange.selectNodeContents(span);
+    sel.addRange(newRange);
+  }
   document.addEventListener('click', (e)=>{
     const swatch = e.target.closest('.mini-toolbar .swatch');
     const cmdBtn = e.target.closest('.mini-toolbar button[data-cmd]');
@@ -1148,8 +1198,8 @@ header .sub{font-size:12px;color:#B9B9BC;margin-right:auto;}
       const cmd = cmdBtn.dataset.cmd;
       if(cmd === 'bold') document.execCommand('bold');
       else if(cmd === 'italic') document.execCommand('italic');
-      else if(cmd === 'dec') document.execCommand('fontSize', false, '2');
-      else if(cmd === 'inc') document.execCommand('fontSize', false, '5');
+      else if(cmd === 'dec') adjustFontSize(-2);
+      else if(cmd === 'inc') adjustFontSize(2);
       return;
     }
     if(saveBtn){
