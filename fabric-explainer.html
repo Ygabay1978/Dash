@@ -248,6 +248,7 @@ body.edit-mode #fmtbar{transform:translateX(-50%) translateY(0);}
 <div class="chip-row">
   <span class="chip" onclick="openPanel('panel-fit')">למי Fabric מתאים + Buying Signals</span>
   <span class="chip" onclick="openPanel('panel-ecosystem')">Fabric מול Fern / Passport / Catalog</span>
+  <span class="chip" onclick="openPanel('panel-competition')">Fabric מול LiteLLM</span>
   <span class="chip" onclick="openPanel('panel-objections')">התנגדויות נפוצות</span>
   <span class="chip" onclick="openPanel('panel-pricing')">תמחור</span>
 </div>
@@ -293,6 +294,16 @@ body.edit-mode #fmtbar{transform:translateX(-50%) translateY(0);}
   <li>עם צמיחת השימוש ב-AI, יש חששות סביב אבטחה, גישת Agents, Credentials, Governance או עלויות?</li>
   <li>אתם משתמשים ביותר ממודל AI אחד? איך אתם מחליטים איזה מודל מקבל איזו בקשה?</li>
 </ul>
+
+<div class="group-title">מתחילים מ-Agents, ואז Governance</div>
+<div class="say-critical"><b class="tag">לפתוח עם</b>"אתם בונים Agents או workflows מבוססי-AI - פנימית, במוצר שלכם, או בשניהם?"</div>
+<ul class="clean">
+  <li><b>תעבורה אמיתית</b> — למה ה-Agents קוראים בפועל? APIs, כלים, שרתי MCP, LLMs, דאטה, workflows?</li>
+  <li><b>שליטה</b> — מי שולט על הגישה? מדיניות מרכזית, או הכרעות צוות-בצוות?</li>
+  <li><b>Credentials</b> — איפה ה-Credentials חיים? מרוכזים, או מפוזרים בין אפליקציות, צוותים ו-Agents?</li>
+  <li><b>Visibility / הוכחה</b> — אפשר לעשות Audit למה שקרה? מי קרא למה, מה קרה, האם זה הותר, וכמה זה עלה?</li>
+</ul>
+<div class="say-critical"><b class="tag">להמשיך עם</b>"איך אתם עושים היום Governance למה שהם יכולים לגשת אליו, לעשות, ולהוכיח?"</div>
 
   </div>
 </div>
@@ -345,6 +356,55 @@ body.edit-mode #fmtbar{transform:translateX(-50%) translateY(0);}
 <div class="obj-wrap"><div class="q">"אנחנו רק משתמשים ב-ChatGPT/Copilot"</div><div class="bubble ae"><span class="bubble-role">AE</span>אז כרגע Fabric פחות קריטי — הוא נכנס לתמונה כשיש יותר מ-Agent/מודל אחד, MCP Servers, או Agents שנוגעים ב-APIs פנימיים.</div></div>
 <div class="obj-wrap"><div class="q">"יש לנו כבר LLM Gateway"</div><div class="bubble ae"><span class="bubble-role">AE</span>Gateway רגיל מנתב בקשות למודל. Fabric מוסיף עליו שכבת Governance ל-Agents עצמם — מי מורשה לגשת לאיזה API/Tool, לא רק לאיזה מודל.</div></div>
 <div class="obj-wrap"><div class="q">"אנחנו לא בונים Agents עדיין"</div><div class="bubble ae"><span class="bubble-role">AE</span>זה בסדר — שווה להכיר את זה מוקדם, כי ברוב הארגונים זה קורה מהר יותר משחושבים, ולרוב בלי Governance מוכן.</div></div>
+
+  </div>
+</div>
+<div class="panel" id="panel-competition">
+  <div class="panel-head"><h3>Fabric מול LiteLLM</h3><button class="panel-close" onclick="closeAllPanels()">✕</button></div>
+  <div class="panel-body">
+
+<p style="font-size:13px;color:#5B5F66;margin-top:0;">מקורות: תיעוד פומבי של Postman ו-LiteLLM, בתוספת מסמכי roadmap פנימיים של Fabric Gateway (נכון לספטמבר 2026). פריטים המסומנים "בפיתוח" עדיין לא כלליים (GA) וכפופים לשינוי.</p>
+
+<div class="group-title">נתב וגישה לספקים</div>
+<table class="bt">
+  <tr><th></th><th>Fabric Gateway</th><th>LiteLLM</th></tr>
+  <tr><td>היקף</td><td>1,200+ מודלים - LLMs, שרתי MCP, Agents ו-APIs פנימיים, מאחורי URL אחד</td><td>100+ APIs של LLM, מאחורי endpoint אחד תואם-OpenAI</td></tr>
+  <tr><td>אמינות</td><td>שרשראות Fallback מובנות (גם לספק אחר), Circuit Breakers, ניתוב מודע-בריאות, פיזור עומס משוקלל</td><td>איזון עומס בין Deployments + Fallback אוטומטי לספק אחר</td></tr>
+  <tr><td>הרצת מודלים Self-Hosted</td><td>Self-hosted; מנתב לכל LLM/MCP/API ציבורי או פנימי</td><td>מתווך ל-APIs חיצוניים; אין הרצת מודלים Self-hosted מובנית</td></tr>
+</table>
+
+<div class="group-title">Governance, מדיניות ואבטחה</div>
+<table class="bt">
+  <tr><th></th><th>Fabric Gateway</th><th>LiteLLM</th></tr>
+  <tr><td>מודל מדיניות</td><td>קטלוג Plugin-instance (cors, access-control, agent-approval, rate-limit וכו'), מוצמד ברמת Route/Service/Global</td><td>הגדרות Guardrails, מפתחות וירטואליים, RBAC</td></tr>
+  <tr><td>בדיקת מדיניות</td><td>כלי Explain מדמה בקשה מול הקונפיגורציה לפני שהיא חיה</td><td>אין מקביל ישיר</td></tr>
+  <tr><td>זהות/Auth</td><td>אימות טוקן כפול + Delegation per-hop (RFC 8693); SSO, RBAC מפורט, ו-Audit Logs מובנים - בנוי לשרשראות Multi-Agent</td><td>מפתחות API וירטואליים; SSO / RBAC מפורט / Audit מלא נעולים מאחורי רישיון Enterprise</td></tr>
+  <tr><td>Guardrails (PII/Prompt Injection)</td><td>PII Redaction, הזרקת Secrets וכו' זמינים; אינטגרציית CrowdStrike (בפיתוח)</td><td>כלול ב-OSS (דרך Presidio); כיסוי עמוק יותר בשכבת Enterprise</td></tr>
+</table>
+
+<div class="group-title">עלות ובקרת תעריפים</div>
+<table class="bt">
+  <tr><th></th><th>Fabric Gateway</th><th>LiteLLM</th></tr>
+  <tr><td>תקציבים/RBAC</td><td>יכולת Namespaces - הגדרת תקציב, Guardrails ותהליכי אישור (בפיתוח)</td><td>מפתחות וירטואליים עם תקציב לפי מפתח/צוות</td></tr>
+  <tr><td>ניתוב לפי עלות</td><td>ניתוב מודל אינטליגנטי זמין (בפיתוח)</td><td>Auto Router (שכבות מורכבות/סמנטיות), עם תיעוד חיסכון בפרודקשן</td></tr>
+  <tr><td>Caching</td><td>Plugin בשם Lightyear - מייעל צריכת Tokens (בפיתוח)</td><td>Redis / Qdrant / Valkey, גם התאמה סמנטית וגם מדויקת</td></tr>
+</table>
+
+<div class="group-title">MCP ותמיכת Agents</div>
+<table class="bt">
+  <tr><th></th><th>Fabric Gateway</th><th>LiteLLM</th></tr>
+  <tr><td>ארכיטקטורה</td><td>מישור אחד לכל שרתי ה-MCP (ציבוריים/פרטיים); תעבורת Agents טבעית לעיצוב הליבה</td><td>MCP Gateway עם בקרת גישה לפי מפתח/צוות; A2A Agent Gateway נוסף בהמשך</td></tr>
+  <tr><td>APIs פנימיים כ-Tools</td><td>חושף APIs פנימיים כ-MCP Tools באופן טבעי</td><td>לא מוקד ליבה - ממוקד LLM/MCP</td></tr>
+</table>
+
+<div class="group-title">Observability ופריסה</div>
+<table class="bt">
+  <tr><th></th><th>Fabric Gateway</th><th>LiteLLM</th></tr>
+  <tr><td>מוניטורינג ולוגים</td><td>Analytics, Audit Logs, Health Status ו-Traces בתצוגה מאוחדת אחת; דוחף דאטה למערכת ה-Telemetry שלך לפי תקן OTEL</td><td>Dashboard לניהול לניטור Spend/Keys; ייצוא Traces של OpenTelemetry ואינטגרציות Logging צד-שלישי</td></tr>
+  <tr><td>אפשרויות פריסה</td><td>Self-hosted, Postman-hosted, או היברידי; ה-Credentials לא עוזבים את ה-Gateway</td><td>Self-hosted (Docker) או Cloud מנוהל; דורש Postgres + Redis לסביבת פרודקשן HA</td></tr>
+</table>
+
+<div class="say-critical" style="margin-top:16px;"><b class="tag">נקודת שיחה</b>אם הלקוח כבר משתמש ב-LiteLLM: זה לא "להחליף" - זה לשאול "מה קורה כשיש לכם גם APIs פנימיים ו-Agents שצריכים לגשת אליהם, לא רק LLMs?" Fabric הוא שכבה רחבה יותר (LLMs + MCP + Agents + APIs פנימיים באותו מקום), לא רק Proxy למודלים.</div>
 
   </div>
 </div>
