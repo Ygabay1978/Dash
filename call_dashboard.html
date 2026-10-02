@@ -1556,7 +1556,8 @@
   /* Only the &quot;-full&quot; versions (opened via the expand ⤢ button) go full
      page — the small popups keep the normal .side-panel card size. */
   #panel-fabric-full, #panel-passport-full, #panel-asa-full, #panel-fern-full, #panel-addons-pricing{
-    top:0;left:0;right:0;width:100%;height:100%;max-width:none;
+    position:fixed !important;
+    top:0;left:0;right:0;bottom:0;width:100%;height:100%;max-width:none;
     border-radius:0;box-shadow:none;
   }
   #panel-fabric-full .panel-body, #panel-passport-full .panel-body, #panel-asa-full .panel-body, #panel-fern-full .panel-body, #panel-addons-pricing .panel-body{flex:1;min-height:0;}
@@ -2400,6 +2401,56 @@ It also includes: automatic routing of logins by domain (Domain Capture), a dash
     &lt;div class=&quot;cross-box edit-unit&quot; contenteditable=&quot;false&quot;&gt;
       &lt;b&gt;Positioning point:&lt;/b&gt; Don’t sell Fabric as a replacement for Kong/Apigee — it’s an AI-tailored Governance layer that sits alongside the existing API infrastructure.
     &lt;/div&gt;
+
+    &lt;div class=&quot;group-title edit-unit&quot; contenteditable=&quot;false&quot;&gt;Exact pricing — Fabric Gateway&lt;/div&gt;
+    &lt;table class=&quot;panel-table&quot;&gt;
+      &lt;tr&gt;&lt;th&gt;Meter&lt;/th&gt;&lt;th&gt;Rate&lt;/th&gt;&lt;th&gt;Credit drawdown&lt;/th&gt;&lt;/tr&gt;
+      &lt;tr&gt;&lt;td&gt;API / MCP Requests&lt;/td&gt;&lt;td&gt;$20 per 1M requests&lt;/td&gt;&lt;td&gt;20 credits per 1M requests&lt;/td&gt;&lt;/tr&gt;
+    &lt;/table&gt;
+    &lt;div class=&quot;cross-box edit-unit&quot; contenteditable=&quot;false&quot;&gt;
+      &lt;b&gt;Example:&lt;/b&gt; 500M annual requests = 500 × $20 = &lt;b&gt;$100,000&lt;/b&gt;, or 500 × 20 = &lt;b&gt;100,000 credits&lt;/b&gt;. Future meters (such as model routing and cost optimization) may be added later.
+    &lt;/div&gt;
+    &lt;ul class=&quot;panel-list&quot;&gt;
+      &lt;li&gt;&lt;b&gt;Core capabilities&lt;/b&gt; — Connect (agents/LLMs/MCP/internal APIs), Control (who can access what, under which rules), Protect (broker credentials so agents don't hold secrets themselves), Route (fallback and circuit breaking when a provider fails), Observe (usage, cost, decisions, audit trail).&lt;/li&gt;
+      &lt;li&gt;&lt;b&gt;Architecture&lt;/b&gt; — Control Plane in Postman cloud (registry, policy, identity/RBAC, admin portal); Data Plane in the customer's own cloud (protocol adapters, plugin chain, credential broker, router, OTel). Deployment options: Self-Hosted in the customer's VPC, Postman-Hosted, or hybrid.&lt;/li&gt;
+    &lt;/ul&gt;
+
+    &lt;div class=&quot;group-title edit-unit&quot; contenteditable=&quot;false&quot;&gt;Exact pricing — Passport&lt;/div&gt;
+    &lt;table class=&quot;panel-table&quot;&gt;
+      &lt;tr&gt;&lt;th&gt;Component&lt;/th&gt;&lt;th&gt;Rate&lt;/th&gt;&lt;th&gt;What it means on the customer side&lt;/th&gt;&lt;/tr&gt;
+      &lt;tr&gt;&lt;td&gt;&lt;b&gt;Human identities&lt;/b&gt;&lt;/td&gt;&lt;td&gt;$49 per user/month (49 credits)&lt;/td&gt;&lt;td&gt;A durable, named identity that's tracked and reported on over time: a developer, service, pipeline, or long-lived agent. Any entity with standing (not one-off) access counts as one identity and is billed separately.&lt;/td&gt;&lt;/tr&gt;
+      &lt;tr&gt;&lt;td&gt;&lt;b&gt;Ephemeral identities&lt;/b&gt;&lt;/td&gt;&lt;td&gt;Not charged&lt;/td&gt;&lt;td&gt;A short-lived identity, most often a sub-agent spawned by another agent for one task. Automatically scoped to a narrower slice of the parent agent's access, and disappears when the task ends. Free, no matter how many spin up.&lt;/td&gt;&lt;/tr&gt;
+      &lt;tr&gt;&lt;td&gt;&lt;b&gt;API consumption&lt;/b&gt;&lt;/td&gt;&lt;td&gt;$50 per million calls&lt;/td&gt;&lt;td&gt;Covers all API traffic routed through the Passport Proxy, regardless of which identity (durable or ephemeral) made the call. Metered by call volume, not by seat.&lt;/td&gt;&lt;/tr&gt;
+    &lt;/table&gt;
+    &lt;div class=&quot;cross-box edit-unit&quot; contenteditable=&quot;false&quot;&gt;
+      &lt;b&gt;Positioning point:&lt;/b&gt; Passport never holds the real secret at all — a consumer requests access, gets approved, and receives a reference; the real secret stays in the customer's own vault and is resolved only at the moment of the actual call. Postman itself is never in the request path. Revoking one identity's access takes 30-60 seconds, with no need to rotate the secret for everyone else.
+    &lt;/div&gt;
+    &lt;ul class=&quot;panel-list&quot;&gt;
+      &lt;li&gt;&lt;b&gt;Who this resonates with&lt;/b&gt; — Security/platform teams (containment and audit without slowing developers down), platform/DevOps teams managing AI agents (the sharpest wedge right now), and AI-first companies trying to secure their agentic workflow.&lt;/li&gt;
+      &lt;li&gt;&lt;b&gt;Agent-focused discovery questions&lt;/b&gt; — &quot;Are you giving coding agents or MCP-based tools direct access to live API credentials?&quot; / &quot;Do any of those agents spawn sub-agents that also need API access — how is that scoped today?&quot; / &quot;Is agent-related secret sprawl something your security team has flagged, or still under the radar?&quot;&lt;/li&gt;
+    &lt;/ul&gt;
+
+    &lt;div class=&quot;group-title edit-unit&quot; contenteditable=&quot;false&quot;&gt;Pooled credits vs. a separate contract — when each fits&lt;/div&gt;
+    &lt;table class=&quot;panel-table&quot;&gt;
+      &lt;tr&gt;&lt;th&gt;Fits &lt;b&gt;pooled credits&lt;/b&gt;&lt;/th&gt;&lt;th&gt;Fits a &lt;b&gt;separate contract&lt;/b&gt;&lt;/th&gt;&lt;/tr&gt;
+      &lt;tr&gt;&lt;td&gt;Usage volume isn't clear yet, or it's a pilot / early rollout&lt;/td&gt;&lt;td&gt;High, predictable usage over time (typically several hundred million+ requests/year)&lt;/td&gt;&lt;/tr&gt;
+      &lt;tr&gt;&lt;td&gt;Wants flexibility to draw from one shared pool across several add-ons without renegotiating&lt;/td&gt;&lt;td&gt;The product becomes business-critical (e.g. payments) and needs a dedicated SLA and support&lt;/td&gt;&lt;/tr&gt;
+      &lt;tr&gt;&lt;td&gt;A new customer still learning their own usage patterns&lt;/td&gt;&lt;td&gt;The customer already knows their exact volume and wants a tiered rate that drops with volume&lt;/td&gt;&lt;/tr&gt;
+    &lt;/table&gt;
+    &lt;div class=&quot;cross-box edit-unit&quot; contenteditable=&quot;false&quot;&gt;
+      &lt;b&gt;Yaniv's personal note (internal use, don't quote directly to the customer):&lt;/b&gt; In most cases a separate contract isn't a better deal for the customer than pooled credits, unless they have proven high volume or a genuine need for a dedicated SLA. When in doubt, pooled credits is usually the right default to start with.
+    &lt;/div&gt;
+
+    &lt;div class=&quot;group-title edit-unit&quot; contenteditable=&quot;false&quot;&gt;Free vs. Enterprise Hosting — what it actually means&lt;/div&gt;
+    &lt;div class=&quot;say edit-unit&quot; contenteditable=&quot;false&quot;&gt;
+      &lt;b class=&quot;tag&quot;&gt;The difference, simply&lt;/b&gt;
+      Think of it as a central manager plus execution units. On &lt;b&gt;Free&lt;/b&gt;, both the Control Plane (management and configuration) and the Data Plane (the actual data processing) run in Postman's cloud — the fastest path to production. On &lt;b&gt;Enterprise&lt;/b&gt;, the Control Plane stays in Postman's cloud, but the customer runs the Data Plane components in their own cloud — for data residency control and network isolation.
+    &lt;/div&gt;
+    &lt;ul class=&quot;panel-list&quot;&gt;
+      &lt;li&gt;&lt;b&gt;When it's worth the money&lt;/b&gt; — If the organization is already on Postman's cloud with no data-location restriction, there's often no meaningful benefit. If it must process data in its own cloud, needs network isolation, or is subject to specific regulation/security policy, Enterprise can be very relevant.&lt;/li&gt;
+      &lt;li&gt;&lt;b&gt;Important point to flag to the customer&lt;/b&gt; — &quot;Data residency&quot; doesn't automatically mean all data stays with the customer — the Control Plane still sits in Postman's cloud. Worth checking, per specific product, exactly what data moves between the components and what stays on the customer's side, before presenting this as a reason to upgrade.&lt;/li&gt;
+    &lt;/ul&gt;
+
 &lt;div class=&quot;group-title edit-unit&quot; contenteditable=&quot;false&quot;&gt;Common Customer Questions in a First Call&lt;/div&gt;
 
 &lt;div class=&quot;obj&quot;&gt;
@@ -4652,7 +4703,8 @@ document.addEventListener('keydown', (e)=&gt;{
   /* Only the &quot;-full&quot; versions (opened via the expand ⤢ button) go full
      page — the small popups keep the normal .side-panel card size. */
   #panel-fabric-full, #panel-passport-full, #panel-asa-full, #panel-fern-full, #panel-addons-pricing{
-    top:0;left:0;right:0;width:100%;height:100%;max-width:none;
+    position:fixed !important;
+    top:0;left:0;right:0;bottom:0;width:100%;height:100%;max-width:none;
     border-radius:0;box-shadow:none;
   }
   #panel-fabric-full .panel-body, #panel-passport-full .panel-body, #panel-asa-full .panel-body, #panel-fern-full .panel-body, #panel-addons-pricing .panel-body{flex:1;min-height:0;}
@@ -5489,6 +5541,56 @@ document.addEventListener('keydown', (e)=&gt;{
     &lt;div class=&quot;cross-box edit-unit&quot; contenteditable=&quot;false&quot;&gt;
       &lt;b&gt;נקודת מיצוב:&lt;/b&gt; לא למכור את Fabric כתחליף ל-Kong/Apigee — זו שכבת Governance מותאמת AI שיושבת לצד תשתית ה-API הקיימת.
     &lt;/div&gt;
+
+    &lt;div class=&quot;group-title edit-unit&quot; contenteditable=&quot;false&quot;&gt;תמחור מדויק — Fabric Gateway&lt;/div&gt;
+    &lt;table class=&quot;panel-table&quot;&gt;
+      &lt;tr&gt;&lt;th&gt;מדד&lt;/th&gt;&lt;th&gt;תעריף&lt;/th&gt;&lt;th&gt;משיכה מהמאגר&lt;/th&gt;&lt;/tr&gt;
+      &lt;tr&gt;&lt;td&gt;API / MCP Requests&lt;/td&gt;&lt;td&gt;$20 ל-מיליון בקשות&lt;/td&gt;&lt;td&gt;20 קרדיטים למיליון בקשות&lt;/td&gt;&lt;/tr&gt;
+    &lt;/table&gt;
+    &lt;div class=&quot;cross-box edit-unit&quot; contenteditable=&quot;false&quot;&gt;
+      &lt;b&gt;דוגמה:&lt;/b&gt; 500 מיליון בקשות בשנה = 500 × $20 = &lt;b&gt;$100,000&lt;/b&gt;, או 500 × 20 = &lt;b&gt;100,000 קרדיטים&lt;/b&gt;. מדדים נוספים (כמו ניתוב מודלים ואופטימיזציית עלות) עשויים להתווסף בהמשך.
+    &lt;/div&gt;
+    &lt;ul class=&quot;panel-list&quot;&gt;
+      &lt;li&gt;&lt;b&gt;יכולות מרכזיות&lt;/b&gt; — Connect (חיבור ל-Agents/LLMs/MCP/APIs פנימיים), Control (מי יכול לגשת למה ותחת אילו כללים), Protect (ברוקראז' Credentials כך ש-Agents לא מחזיקים Secrets בעצמם), Route (Fallback ו-Circuit Breaking כשספק נופל), Observe (שימוש, עלות, החלטות, Audit Trail).&lt;/li&gt;
+      &lt;li&gt;&lt;b&gt;ארכיטקטורה&lt;/b&gt; — Control Plane בענן Postman (Registry, מדיניות, זהויות/RBAC, פורטל ניהול); Data Plane בענן של הלקוח (Protocol Adapters, Plugin Chain, Credential Broker, Router, OTel). אפשרויות פריסה: Self-Hosted ב-VPC של הלקוח, Postman-Hosted, או היברידי.&lt;/li&gt;
+    &lt;/ul&gt;
+
+    &lt;div class=&quot;group-title edit-unit&quot; contenteditable=&quot;false&quot;&gt;תמחור מדויק — Passport&lt;/div&gt;
+    &lt;table class=&quot;panel-table&quot;&gt;
+      &lt;tr&gt;&lt;th&gt;רכיב&lt;/th&gt;&lt;th&gt;תעריף&lt;/th&gt;&lt;th&gt;מה זה אומר בצד הלקוח&lt;/th&gt;&lt;/tr&gt;
+      &lt;tr&gt;&lt;td&gt;&lt;b&gt;Human identities&lt;/b&gt;&lt;br&gt;(זהויות אדם)&lt;/td&gt;&lt;td&gt;$49 למשתמש לחודש (49 קרדיטים)&lt;/td&gt;&lt;td&gt;זהות קבועה ונקראת-בשם שעוקבים ומתעדים אותה לאורך זמן: מפתח, שירות, pipeline, או Agent ארוך-טווח. כל גורם עם גישה קבועה (לא חד-פעמית) נספר כזהות אחת וחויב בנפרד.&lt;/td&gt;&lt;/tr&gt;
+      &lt;tr&gt;&lt;td&gt;&lt;b&gt;Ephemeral identities&lt;/b&gt;&lt;br&gt;(זהויות חולפות)&lt;/td&gt;&lt;td&gt;לא בתשלום&lt;/td&gt;&lt;td&gt;זהות קצרת-חיים, בדרך כלל Sub-Agent שנוצר על ידי Agent אחר למשימה ספציפית. מוגבלת אוטומטית לחלק קטן מהגישה של ה-Agent &quot;ההורה&quot;, ונעלמת כשהמשימה מסתיימת. חינם, לא משנה כמה כאלה נוצרים.&lt;/td&gt;&lt;/tr&gt;
+      &lt;tr&gt;&lt;td&gt;&lt;b&gt;API consumption&lt;/b&gt;&lt;br&gt;(צריכת API)&lt;/td&gt;&lt;td&gt;$50 למיליון קריאות&lt;/td&gt;&lt;td&gt;מכסה את כל תעבורת ה-API שעוברת דרך Passport Proxy, בלי קשר לאיזו זהות (קבועה או חולפת) ביצעה את הקריאה. נמדד לפי נפח קריאות, לא לפי מספר משתמשים.&lt;/td&gt;&lt;/tr&gt;
+    &lt;/table&gt;
+    &lt;div class=&quot;cross-box edit-unit&quot; contenteditable=&quot;false&quot;&gt;
+      &lt;b&gt;נקודת מיצוב:&lt;/b&gt; Passport לא מחזיק את ה-Secret האמיתי בכלל — Consumer מבקש גישה, מאושר, ומקבל Reference; ה-Secret האמיתי נשאר בכספת של הלקוח ומתפענח רק ברגע הקריאה בפועל. Postman עצמה אינה חלק מנתיב הבקשה. ביטול גישה לזהות אחת לוקח 30-60 שניות, בלי לסובב (Rotate) את ה-Secret לכולם.
+    &lt;/div&gt;
+    &lt;ul class=&quot;panel-list&quot;&gt;
+      &lt;li&gt;&lt;b&gt;למי זה מדבר&lt;/b&gt; — צוותי Security/Platform (Containment ו-Audit בלי להאט מפתחים), צוותי Platform/DevOps שמנהלים Agents (ה-Wedge החד ביותר כרגע), וחברות AI-first שמנסות לאבטח את ה-Agentic Workflow שלהן.&lt;/li&gt;
+      &lt;li&gt;&lt;b&gt;שאלות Discovery ממוקדות-Agent&lt;/b&gt; — &quot;אתם נותנים ל-Coding Agents או כלי MCP גישה ישירה ל-Credentials חיים?&quot; / &quot;אם Agent יוצר Sub-Agents שגם צריכים גישה ל-API — איך זה מוגבל היום?&quot; / &quot;דליפת מפתח היא כאב שצוות האבטחה דגל בו, או שזה עדיין מתחת לרדאר?&quot;&lt;/li&gt;
+    &lt;/ul&gt;
+
+    &lt;div class=&quot;group-title edit-unit&quot; contenteditable=&quot;false&quot;&gt;קרדיטים שיתופיים מול חוזה נפרד — מתי כדאי כל אחד&lt;/div&gt;
+    &lt;table class=&quot;panel-table&quot;&gt;
+      &lt;tr&gt;&lt;th&gt;מתאים ל&lt;b&gt;קרדיטים שיתופיים&lt;/b&gt;&lt;/th&gt;&lt;th&gt;מתאים ל&lt;b&gt;חוזה נפרד&lt;/b&gt;&lt;/th&gt;&lt;/tr&gt;
+      &lt;tr&gt;&lt;td&gt;היקף שימוש לא ברור מראש, או בשלב פיילוט/הטמעה ראשונית&lt;/td&gt;&lt;td&gt;היקף שימוש גבוה וצפוי לאורך זמן (בדרך כלל מעל כמה מאות מיליוני בקשות בשנה)&lt;/td&gt;&lt;/tr&gt;
+      &lt;tr&gt;&lt;td&gt;רוצים גמישות למשוך מהמאגר המשותף בין כמה Add-ons בלי משא-ומתן נוסף&lt;/td&gt;&lt;td&gt;המוצר הופך קריטי לייעוד עסקי (למשל תשלומים) ודורש SLA ותמיכה ייעודית&lt;/td&gt;&lt;/tr&gt;
+      &lt;tr&gt;&lt;td&gt;לקוח חדש שעדיין לומד את דפוסי השימוש שלו&lt;/td&gt;&lt;td&gt;הלקוח כבר יודע בדיוק את הנפח שלו ורוצה תעריף מדורג (יורד עם נפח)&lt;/td&gt;&lt;/tr&gt;
+    &lt;/table&gt;
+    &lt;div class=&quot;cross-box edit-unit&quot; contenteditable=&quot;false&quot;&gt;
+      &lt;b&gt;הערה אישית של יניב (לשימוש פנימי, לא לצטט ישירות ללקוח):&lt;/b&gt; ברוב המקרים חוזה נפרד לא משתלם ללקוח לעומת קרדיטים שיתופיים, אלא אם יש לו נפח גבוה ומוכח או צורך אמיתי ב-SLA ייעודי. כשמתלבטים, קרדיטים שיתופיים הם בדרך כלל ברירת המחדל הנכונה להתחיל בה.
+    &lt;/div&gt;
+
+    &lt;div class=&quot;group-title edit-unit&quot; contenteditable=&quot;false&quot;&gt;Free מול Enterprise Hosting — מה זה אומר בפועל&lt;/div&gt;
+    &lt;div class=&quot;say edit-unit&quot; contenteditable=&quot;false&quot;&gt;
+      &lt;b class=&quot;tag&quot;&gt;ההבדל בפשטות&lt;/b&gt;
+      תחשוב על זה כמו מנהל מרכזי ויחידות ביצוע. ב-&lt;b&gt;Free&lt;/b&gt;, גם ה-Control Plane (ניהול והגדרות) וגם ה-Data Plane (עיבוד והעברת הנתונים בפועל) פועלים בענן של Postman — הדרך המהירה ביותר להגיע ל-Production. ב-&lt;b&gt;Enterprise&lt;/b&gt;, ה-Control Plane נשאר בענן Postman, אבל הלקוח מריץ את רכיבי ה-Data Plane בענן הפרטי שלו — לשליטה במיקום הנתונים (Data Residency) ובידוד רשת.
+    &lt;/div&gt;
+    &lt;ul class=&quot;panel-list&quot;&gt;
+      &lt;li&gt;&lt;b&gt;מתי זה שווה את הכסף&lt;/b&gt; — אם הארגון כבר בענן Postman ואין לו מגבלת מיקום נתונים: כנראה שאין יתרון משמעותי. אם הוא חייב שהעיבוד יתבצע בענן שלו, דורש בידוד רשת, או כפוף לרגולציה/מדיניות אבטחה ספציפית: Enterprise עשוי להיות ממש רלוונטי.&lt;/li&gt;
+      &lt;li&gt;&lt;b&gt;נקודה חשובה לציין ללקוח&lt;/b&gt; — &quot;Data Residency&quot; לא אומר שכל הנתונים נשארים אצל הלקוח — ה-Control Plane עדיין בענן Postman. שווה לבדוק בכל מוצר ספציפי אילו נתונים עוברים בין הרכיבים, ומה בדיוק נשאר בצד הלקוח, לפני שמציגים את זה כסיבה לשדרג.&lt;/li&gt;
+    &lt;/ul&gt;
+
 &lt;div class=&quot;group-title edit-unit&quot; contenteditable=&quot;false&quot;&gt;שאלות נפוצות מלקוחות ב-First Call&lt;/div&gt;
 
 &lt;div class=&quot;obj&quot;&gt;
