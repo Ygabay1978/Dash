@@ -247,5 +247,17 @@
 <footer>List prices in USD, subject to change. Final pricing is confirmed in your quote.</footer>
 
 </main>
+<script>
+// If opened with a #fabric / #passport / #fern anchor, show only that
+// product's section (plus everything general) - not all three at once.
+(function(){
+  const target = (location.hash || '').replace('#', '');
+  const known = ['fabric', 'passport', 'fern'];
+  if(!known.includes(target)) return; // no/unknown anchor: show everything, as before
+  document.querySelectorAll('section.product').forEach(function(sec){
+    if(sec.id !== target) sec.style.display = 'none';
+  });
+})();
+</script>
 </body>
 </html>
