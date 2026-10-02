@@ -1,0 +1,252 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>תוספי Postman AI: התמחור במבט אחד</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Heebo:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --ink: #1c1c28;
+    --muted: #5d6070;
+    --line: #e3e4ea;
+    --soft: #f7f7fa;
+    --orange: #ff6c37;
+    --fabric: #6d4bc2;
+    --passport: #d99a00;
+    --fern: #2f9e5b;
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0; background: #fff; color: var(--ink);
+    font-family: "Heebo", "Assistant", system-ui, -apple-system, "Segoe UI", Arial, sans-serif;
+    font-size: 16px; line-height: 1.6;
+  }
+  main { max-width: 940px; margin: 0 auto; padding: 40px 20px 64px; }
+  header { border-bottom: 3px solid var(--orange); padding-bottom: 18px; margin-bottom: 28px; }
+  h1 { font-size: 30px; line-height: 1.25; margin: 0 0 6px; }
+  header p { margin: 0; color: var(--muted); }
+  h2 { font-size: 22px; margin: 40px 0 12px; }
+  h3 { font-size: 17px; margin: 22px 0 8px; }
+  p { margin: 0 0 10px; }
+  .table-wrap { overflow-x: auto; margin: 8px 0 14px; }
+  table { border-collapse: collapse; width: 100%; min-width: 560px; }
+  th, td { border: 1px solid var(--line); padding: 9px 12px; text-align: start; vertical-align: top; }
+  th { background: var(--soft); font-weight: 600; }
+  td.label, th.label { width: 22%; font-weight: 600; background: var(--soft); }
+  .num { white-space: nowrap; }
+  .ltr { direction: ltr; unicode-bidi: isolate; display: inline-block; }
+  .product { border-inline-start: 5px solid var(--c); padding-inline-start: 18px; margin-top: 36px; }
+  .product h2 { margin-top: 0; }
+  .fabric { --c: var(--fabric); }
+  .passport { --c: var(--passport); }
+  .fern { --c: var(--fern); }
+  .what { color: var(--muted); margin-bottom: 14px; }
+  .two { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+  .two > div { border: 1px solid var(--line); padding: 4px 18px 12px; }
+  .two h3 { margin-top: 14px; }
+  ul { margin: 6px 0 0; padding-inline-start: 22px; }
+  li { margin-bottom: 6px; }
+  .rule { border-inline-start: 5px solid var(--orange); padding: 10px 16px; background: #fff6f1; margin-top: 16px; font-weight: 500; }
+  footer { margin-top: 36px; color: var(--muted); font-size: 13px; border-top: 1px solid var(--line); padding-top: 14px; }
+  @media (max-width: 680px) { .two { grid-template-columns: 1fr; } h1 { font-size: 25px; } }
+  @media print { main { padding: 0; } .product { break-inside: avoid; } }
+  .note { background: var(--soft); border: 1px solid var(--line); padding: 10px 14px; margin: 10px 0; color: var(--muted); font-size: 14px; }
+</style>
+</head>
+<body>
+<main>
+
+<header>
+  <h1>תוספי Postman AI: התמחור במבט אחד</h1>
+  <p>Fabric Gateway, ‏Passport ו-Fern Docs. כל המחירים הם מחירון בדולרים, וקרדיט אחד (Agent Stack Credit) שווה <span class="ltr">$1</span>.</p>
+</header>
+
+<h2>שתי דרכים לרכוש</h2>
+<div class="table-wrap">
+<table>
+  <tr><th class="label"></th><th>קרדיטים שיתופיים (Postman AI)</th><th>חוזה נפרד (מוצר אחד)</th></tr>
+  <tr><td class="label">איך זה עובד</td><td>רוכשים מאגר אחד של קרדיטים וצורכים אותו בין Fabric Gateway, ‏Passport ו-Fern Docs, בכל חלוקה שנוח ללקוח.</td><td>חותמים על חוזה למוצר אחד בלבד, עם תנאים משלו.</td></tr>
+  <tr><td class="label">על מה משלמים</td><td>רק על מה שמשתמשים בפועל. השימוש יורד מהמאגר.</td><td>על התחייבות לנפח או דמי פלטפורמה, ועל מה שנכלל בחוזה.</td></tr>
+  <tr><td class="label">מאיפה מגיעה ההנחה</td><td>מגודל רכישת הקרדיטים (ראו בהמשך). התעריפים של המוצרים עצמם לא משתנים.</td><td>מו"מ לכל מוצר, למשל לפי נפח שנתי מחויב.</td></tr>
+  <tr><td class="label">מה עוד מקבלים</td><td>התחלה קלה, ורכישה אחת לכל המוצרים.</td><td>יכולות ארגוניות עמוקות יותר, תמיכה ו-SLA, ושירותים מקצועיים.</td></tr>
+</table>
+</div>
+
+<h3>חבילות קרדיטים</h3>
+<div class="table-wrap">
+<table>
+  <tr><th>הלקוח משלם</th><th>הלקוח מקבל</th><th>ערך נוסף</th></tr>
+  <tr><td class="num"><span class="ltr">$50K</span></td><td class="num"><span class="ltr">50K</span> קרדיטים</td><td>אין</td></tr>
+  <tr><td class="num"><span class="ltr">$100K</span></td><td class="num"><span class="ltr">110K</span> קרדיטים</td><td><span class="ltr">+10%</span></td></tr>
+  <tr><td class="num"><span class="ltr">$250K</span></td><td class="num"><span class="ltr">300K</span> קרדיטים</td><td><span class="ltr">+20%</span></td></tr>
+  <tr><td class="num"><span class="ltr">$500K</span></td><td class="num"><span class="ltr">650K</span> קרדיטים</td><td><span class="ltr">+30%</span></td></tr>
+  <tr><td class="num"><span class="ltr">$1M+</span></td><td>בהתאמה אישית</td><td>בהתאמה אישית</td></tr>
+</table>
+</div>
+
+
+<h2>שלוש חברות לדוגמה ואיך כל אחת רוכשת</h2>
+<p class="note">תרחישים להמחשה. החברות ונתוני השימוש הם הנחות שנועדו להראות איך התמחור עובד, ולא נתוני לקוחות. כל המחירים הם מחירון.</p>
+<div class="table-wrap">
+<table>
+  <tr><th class="label">חברה</th><th>המצב</th><th>איך היא רוכשת</th><th>שימוש בשנה הראשונה</th></tr>
+  <tr><td class="label">בנק</td><td>בנק קמעונאי גדול שמטמיע עוזרי AI לעובדים ופורטל מפתחים ל-Open Banking.</td><td>מאגר שיתופי אחד לשלושת התוספים: <span class="ltr">$100K</span> תמורת <span class="ltr">110K</span> קרדיטים (<span class="ltr">+10%</span>).</td><td class="num"><span class="ltr">108,160</span> קרדיטים<br>(98% מהמאגר)</td></tr>
+  <tr><td class="label">חברת ביטוח</td><td>חברת ביטוח בינונית שמאוטמטת את טיפול התביעות באמצעות סוכני AI.</td><td>מאגר פתיחה: <span class="ltr">$50K</span> תמורת <span class="ltr">50K</span> קרדיטים.</td><td class="num"><span class="ltr">41,580</span> קרדיטים<br>(83% מהמאגר)</td></tr>
+  <tr><td class="label">חברת כרטיסי אשראי</td><td>מנפיקת כרטיסים עם ממשקי API של תשלומים וסוחרים בנפח גבוה.</td><td>מאגר של <span class="ltr">$250K</span> (<span class="ltr">300K</span> קרדיטים, <span class="ltr">+20%</span>) ל-Fabric ול-Passport, וחוזה נפרד ל-Fern Enterprise עבור פורטל המפתחים לסוחרים.</td><td class="num"><span class="ltr">192,000</span> קרדיטים (64% מהמאגר)<br>Fern Enterprise בהצעת מחיר</td></tr>
+</table>
+</div>
+
+<!-- FABRIC -->
+<section class="product fabric" id="fabric">
+  <h2>Fabric Gateway</h2>
+  <p class="what">שער (Gateway) שיושב בין האפליקציות וסוכני ה-AI של הארגון לבין מודלי ה-AI, שרתי MCP וממשקי ה-API שהם קוראים להם. הוא מחיל את כללי האבטחה, מנתב את התעבורה ושומר יומן ביקורת. משלמים לפי כמות הבקשות שעוברות דרכו.</p>
+
+  <div class="table-wrap">
+  <table>
+    <tr><th class="label">מודל</th><th>תעריף</th></tr>
+    <tr><td class="label">קרדיטים שיתופיים</td><td><span class="ltr">$20</span> למיליון בקשות, כלומר <span class="ltr">20</span> קרדיטים למיליון בקשות</td></tr>
+    <tr><td class="label">חוזה נפרד</td><td>מחירון <span class="ltr">$200</span> למיליון בקשות, שיורד לפי נפח שנתי מחויב:
+      עד <span class="ltr">100M</span>: <span class="ltr">$200</span> &middot; <span class="ltr">100M&ndash;500M</span>: <span class="ltr">$180</span> &middot; <span class="ltr">500M&ndash;1B</span>: <span class="ltr">$160</span> &middot; <span class="ltr">1B&ndash;5B</span>: <span class="ltr">$140</span> &middot; מעל <span class="ltr">5B</span>: במו"מ.
+      התחייבות שנתית מינימלית: <span class="ltr">$20K</span>.</td></tr>
+  </table>
+  </div>
+
+  <h3>שתי דוגמאות</h3>
+  <div class="table-wrap">
+  <table>
+    <tr><th>תרחיש</th><th>קרדיטים שיתופיים</th><th>חוזה נפרד</th></tr>
+    <tr><td><strong>פיילוט:</strong> <span class="ltr">100M</span> בקשות בשנה</td><td class="num"><span class="ltr">100 &times; 20 =</span> <strong><span class="ltr">2,000</span> קרדיטים</strong> (כ-<span class="ltr">$2,000</span>)</td><td class="num"><span class="ltr">100 &times; $200 =</span> <strong><span class="ltr">$20,000</span></strong> (ההתחייבות המינימלית)</td></tr>
+    <tr><td><strong>הטמעה בייצור:</strong> <span class="ltr">400M</span> בקשות בשנה</td><td class="num"><span class="ltr">400 &times; 20 =</span> <strong><span class="ltr">8,000</span> קרדיטים</strong> (כ-<span class="ltr">$8,000</span>)</td><td class="num"><span class="ltr">400 &times; $180 =</span> <strong><span class="ltr">$72,000</span></strong></td></tr>
+  </table>
+  </div>
+
+  <h3>שלושה תרחישים מהעולם האמיתי</h3>
+  <div class="table-wrap">
+  <table>
+    <tr><th>חברה</th><th>המצב</th><th>שימוש</th><th>חישוב</th><th>איך היא משלמת</th></tr>
+    <tr><td><strong>בנק</strong></td><td>עוזרי AI לעובדים (נציגי שירות, אנליסטים באשראי) קוראים למודלי שפה ולכלי MCP שמאתרים נתוני לקוח ומדיניות. אבטחת המידע דורשת שכל קריאה תאומת ותתועד, ושיהיה גיבוי אם ספק AI אחד נופל.</td><td class="num"><span class="ltr">600M</span> בקשות בשנה</td><td class="num"><span class="ltr">600 &times; 20</span></td><td class="num"><strong><span class="ltr">12,000</span> קרדיטים</strong> מתוך מאגר ה-<span class="ltr">$100K</span></td></tr>
+    <tr><td><strong>חברת ביטוח</strong></td><td>צוות התביעות מריץ פיילוט של AI שקורא מסמכי תביעה ושואל את מערכת הפוליסות. השער מראה איזה צוות מוציא כמה על AI, ומחיל מערכת כללים אחת על כולם.</td><td class="num"><span class="ltr">150M</span> בקשות בשנה</td><td class="num"><span class="ltr">150 &times; 20</span></td><td class="num"><strong><span class="ltr">3,000</span> קרדיטים</strong> מתוך מאגר ה-<span class="ltr">$50K</span></td></tr>
+    <tr><td><strong>חברת כרטיסי אשראי</strong></td><td>קריאות לציון הונאה, ממשקי API לסוחרים ולשותפים וסוכנים שמטפלים בסכסוכי חיוב עוברים כולם דרך שער אחד, עם הגבלת קצב ויומן ביקורת.</td><td class="num"><span class="ltr">1.5B</span> בקשות בשנה</td><td class="num"><span class="ltr">1,500 &times; 20</span></td><td class="num"><strong><span class="ltr">30,000</span> קרדיטים</strong> מתוך מאגר ה-<span class="ltr">$250K</span></td></tr>
+  </table>
+  </div>
+  <p>אם Fabric יהפוך בהמשך לקריטי לתשלומים והחברה תצטרך SLA ותמיכה ייעודית, אפשר להעביר את המוצר הזה לחוזה משלו.</p>
+</section>
+
+<!-- PASSPORT -->
+<section class="product passport" id="passport">
+  <h2>Passport</h2>
+  <p class="what">מאפשר למפתחים, ל-pipelines ולסוכני AI לקרוא ל-APIs מאושרים בלי להחזיק אי פעם את מפתח ה-API האמיתי. הסוד האמיתי נשאר בענן של הארגון ומוחלף רק ברגע הקריאה.</p>
+
+  <div class="table-wrap">
+  <table>
+    <tr><th class="label">על מה משלמים</th><th>תעריף</th><th>מה זה אומר</th></tr>
+    <tr><td class="label">Durable identity<br>(זהות קבועה)</td><td class="num"><span class="ltr">$49</span> לזהות לחודש<br>(<span class="ltr">49</span> קרדיטים)</td><td>זהות קבועה ושמית ש-Passport עוקב ומתעד: מפתח, שירות או pipeline, או סוכן AI ארוך טווח. כל גורם עם גישה קבועה נספר כזהות אחת. בחלק מהחומרים היא נקראת גם Human identities.</td></tr>
+    <tr><td class="label">Ephemeral identity<br>(זהות זמנית)</td><td>חינם</td><td>זהות זמנית שנוצרת אוטומטית למשימה אחת, בדרך כלל תת-סוכן שסוכן אחר הפעיל. היא פגה בסיום המשימה, ולכן הלקוח לא סופר ולא מתקצב אותן.</td></tr>
+    <tr><td class="label">API consumption<br>(צריכת API)</td><td class="num"><span class="ltr">$50</span> למיליון קריאות<br>(<span class="ltr">50</span> קרדיטים)</td><td>כל קריאת API שעוברת דרך ה-Passport Proxy, מכל זהות, קבועה או זמנית.</td></tr>
+  </table>
+  </div>
+  <p>תעריפי המחירון זהים בשני המודלים. אפשר לתת הנחה על מחיר הזהויות ללקוחות Postman Ultimate ו-Advanced Security. חוזה נפרד יכול להוסיף תמיכה, SLA ושירותים.</p>
+
+  <h3>שתי דוגמאות</h3>
+  <div class="table-wrap">
+  <table>
+    <tr><th>תרחיש</th><th>חישוב</th><th>עלות שנתית</th></tr>
+    <tr><td><strong>פיילוט של צוות אבטחה:</strong> <span class="ltr">25</span> זהויות קבועות, <span class="ltr">10M</span> קריאות, וכמה שרוצים זהויות זמניות</td><td class="num"><span class="ltr">25 &times; $49 &times; 12 = $14,700</span><br><span class="ltr">10 &times; $50 = $500</span><br>זהויות זמניות: <span class="ltr">$0</span></td><td class="num"><strong><span class="ltr">$15,200</span></strong><br>(<span class="ltr">15,200</span> קרדיטים)</td></tr>
+    <tr><td><strong>פריסה ארגונית:</strong> <span class="ltr">100</span> זהויות קבועות, <span class="ltr">100M</span> קריאות</td><td class="num"><span class="ltr">100 &times; $49 &times; 12 = $58,800</span><br><span class="ltr">100 &times; $50 = $5,000</span></td><td class="num"><strong><span class="ltr">$63,800</span></strong><br>(<span class="ltr">63,800</span> קרדיטים). ברכישה דרך מאגר של <span class="ltr">$100K</span> (<span class="ltr">110K</span> קרדיטים) העלות האפקטיבית היא כ-<span class="ltr">$58,000</span>.</td></tr>
+  </table>
+  </div>
+
+  <h3>שלושה תרחישים מהעולם האמיתי</h3>
+  <div class="table-wrap">
+  <table>
+    <tr><th>חברה</th><th>המצב</th><th>שימוש</th><th>חישוב</th><th>איך היא משלמת</th></tr>
+    <tr><td><strong>בנק</strong></td><td>מפתחים, pipelines של CI וכמה סוכנים פנימיים קבועים צריכים גישה ל-APIs של הליבה הבנקאית ושל התשלומים. היום המפתחות יושבים בקבצי <span class="ltr">.env</span>, בהודעות צ'אט וביומני CI. עם Passport הם מחזיקים הפניות במקום מפתחות, מבטלים גישה בלחיצה אחת, והמבקרים רואים מי קרא למה.</td><td class="num"><span class="ltr">120</span> זהויות קבועות<br><span class="ltr">80M</span> קריאות בשנה</td><td class="num"><span class="ltr">120 &times; 49 &times; 12 = 70,560</span><br><span class="ltr">80 &times; 50 = 4,000</span></td><td class="num"><strong><span class="ltr">74,560</span> קרדיטים</strong> מתוך מאגר ה-<span class="ltr">$100K</span></td></tr>
+    <tr><td><strong>חברת ביטוח</strong></td><td>סוכן לאוטומציה של תביעות מפעיל תת-סוכן לכל תביעה, וכל אחד צריך גישה צרה ל-APIs של הפוליסות והתשלומים. ששים הזהויות הקבועות הן מפתחים, pipelines ו-6 סוכנים קבועים. תתי-הסוכנים הם זהויות זמניות ואינם עולים כלום.</td><td class="num"><span class="ltr">60</span> זהויות קבועות<br><span class="ltr">30M</span> קריאות בשנה<br>אלפי זהויות זמניות</td><td class="num"><span class="ltr">60 &times; 49 &times; 12 = 35,280</span><br><span class="ltr">30 &times; 50 = 1,500</span><br>זהויות זמניות: <span class="ltr">0</span></td><td class="num"><strong><span class="ltr">36,780</span> קרדיטים</strong> מתוך מאגר ה-<span class="ltr">$50K</span></td></tr>
+    <tr><td><strong>חברת כרטיסי אשראי</strong></td><td>צוותי הנדסה רבים ומשלבים חיצוניים קוראים ל-APIs פנימיים. אחרי תקרית או החלפת ספק צריך לנתק מיד זהות אחת, בלי להחליף מפתחות לכל השאר.</td><td class="num"><span class="ltr">250</span> זהויות קבועות<br><span class="ltr">300M</span> קריאות בשנה</td><td class="num"><span class="ltr">250 &times; 49 &times; 12 = 147,000</span><br><span class="ltr">300 &times; 50 = 15,000</span></td><td class="num"><strong><span class="ltr">162,000</span> קרדיטים</strong> מתוך מאגר ה-<span class="ltr">$250K</span></td></tr>
+  </table>
+  </div>
+  <p>ללקוחות Postman Ultimate ו-Advanced Security אפשר לתת הנחה על מחיר הזהויות, והיא תוריד את הסכומים האלה.</p>
+</section>
+
+<!-- FERN -->
+<section class="product fern" id="fern">
+  <h2>Fern Docs</h2>
+  <p class="what">הופך את ה-API של הארגון לאתר תיעוד שגם מפתחים וגם כלי AI יכולים לקרוא. כל לקוח Postman כבר מקבל מכסה ללא עלות, ומשלמים רק על שימוש מעבר אליה.</p>
+
+  <div class="table-wrap">
+  <table>
+    <tr><th class="label">מדד</th><th>כלול ללא עלות</th><th>מעבר למכסה</th><th>מה זה אומר</th></tr>
+    <tr><td class="label">Page generations<br>(יצירת דפים)</td><td><span class="ltr">5,000</span> בחודש</td><td class="num"><span class="ltr">$50</span> לכל <span class="ltr">1,000</span> נוספים<br>(<span class="ltr">50</span> קרדיטים)</td><td>כל פעם ש-Fern בונה או מעדכן דף באתר התיעוד.</td></tr>
+    <tr><td class="label">Docs instances<br>(אתרי תיעוד)</td><td>1</td><td class="num"><span class="ltr">$1,000</span> לכל אתר נוסף לחודש<br>(<span class="ltr">1,000</span> קרדיטים)</td><td>אתר תיעוד נפרד, למשל אחד לכל מוצר או לכל קהל.</td></tr>
+    <tr><td class="label">Fern AI credits<br>(קרדיטי AI)</td><td><span class="ltr">500</span> בחודש</td><td class="num"><span class="ltr">$50</span> לכל <span class="ltr">500</span> נוספים<br>(<span class="ltr">50</span> קרדיטים)</td><td>יחידות שמודדות את שימוש ה-AI בתוך אתר התיעוד.</td></tr>
+  </table>
+  </div>
+  <p><strong>חוזה נפרד (Fern Enterprise):</strong> כמה repos ואתרי תיעוד, CSS, JavaScript ו-React מותאמים, אנליטיקה מתקדמת, תשתית ייעודית או אירוח עצמי, SLA ותמיכה ייעודית. התמחור בהצעת מחיר.</p>
+
+  <h3>שתי דוגמאות (קרדיטים שיתופיים)</h3>
+  <div class="table-wrap">
+  <table>
+    <tr><th>תרחיש</th><th>חישוב</th><th>עלות</th></tr>
+    <tr><td><strong>בתוך המכסה החינמית:</strong> אתר אחד, <span class="ltr">4,000</span> יצירות דפים ו-<span class="ltr">300</span> קרדיטי AI בחודש</td><td>הכול מתחת לכמויות הכלולות.</td><td class="num"><strong>0 קרדיטים</strong></td></tr>
+    <tr><td><strong>תיעוד שגדל:</strong> 2 אתרים, <span class="ltr">20,000</span> יצירות דפים ו-<span class="ltr">1,000</span> קרדיטי AI בחודש</td><td class="num"><span class="ltr">15K</span> דפים נוספים: <span class="ltr">750</span><br>אתר נוסף אחד: <span class="ltr">1,000</span><br><span class="ltr">500</span> קרדיטי AI נוספים: <span class="ltr">50</span></td><td class="num"><strong><span class="ltr">1,800</span> קרדיטים בחודש</strong><br>(<span class="ltr">21,600</span> בשנה)</td></tr>
+  </table>
+  </div>
+
+  <h3>שלושה תרחישים מהעולם האמיתי</h3>
+  <div class="table-wrap">
+  <table>
+    <tr><th>חברה</th><th>המצב</th><th>שימוש בחודש</th><th>חישוב</th><th>איך היא משלמת</th></tr>
+    <tr><td><strong>בנק</strong></td><td>פורטל מפתחים ל-Open Banking עבור מפתחים חיצוניים, ואתר שני לתיעוד API פנימי. הדפים נבנים מחדש בכל גרסה.</td><td class="num">2 אתרים<br><span class="ltr">20,000</span> יצירות דפים<br><span class="ltr">1,000</span> קרדיטי AI</td><td class="num"><span class="ltr">15K</span> דפים נוספים: <span class="ltr">750</span><br>אתר נוסף: <span class="ltr">1,000</span><br><span class="ltr">500</span> קרדיטי AI נוספים: <span class="ltr">50</span></td><td class="num"><strong><span class="ltr">1,800</span> קרדיטים בחודש</strong> (<span class="ltr">21,600</span> בשנה) מתוך מאגר ה-<span class="ltr">$100K</span></td></tr>
+    <tr><td><strong>חברת ביטוח</strong></td><td>אתר תיעוד אחד ל-APIs שסוכנים ומתווכים משתלבים בהם.</td><td class="num">אתר אחד<br><span class="ltr">8,000</span> יצירות דפים<br><span class="ltr">500</span> קרדיטי AI</td><td class="num"><span class="ltr">3K</span> דפים נוספים: <span class="ltr">150</span><br>האתר וקרדיטי ה-AI בתוך המכסה החינמית</td><td class="num"><strong><span class="ltr">150</span> קרדיטים בחודש</strong> (<span class="ltr">1,800</span> בשנה) מתוך מאגר ה-<span class="ltr">$50K</span></td></tr>
+    <tr><td><strong>חברת כרטיסי אשראי</strong></td><td>פורטל מפתחים לסוחרים ולחברות פינטק, עם מיתוג מותאם ב-React, כמה מוצרי API, פריסה באירוח עצמי ו-SLA. זה חורג ממודל התשלום לפי שימוש.</td><td class="num">Fern Enterprise</td><td class="num">היכולות, ולא השימוש, קובעות את המחיר</td><td class="num"><strong>חוזה נפרד</strong>, בהצעת מחיר</td></tr>
+  </table>
+  </div>
+</section>
+
+<!-- GLOSSARY -->
+<h2>מונחים בשפה פשוטה</h2>
+<div class="table-wrap">
+<table>
+  <tr><th class="label">מונח</th><th>מה זה אומר</th></tr>
+  <tr><td class="label">Agent Stack Credit</td><td>יחידה נקנית מראש ששווה <span class="ltr">$1</span> במחירון. אפשר לצרוך מאגר אחד בכל מוצר זכאי.</td></tr>
+  <tr><td class="label">API / MCP request</td><td>קריאה אחת שעוברת דרך השער. MCP (‏Model Context Protocol) הוא התקן שמאפשר לסוכני AI להשתמש בכלים ובמידע.</td></tr>
+  <tr><td class="label">Committed volume<br>(נפח מחויב)</td><td>התעבורה השנתית שהלקוח מתחייב לשלם עליה מראש, בתמורה לתעריף נמוך יותר לבקשה.</td></tr>
+  <tr><td class="label">Overage<br>(חריגה)</td><td>שימוש מעבר למה שכבר כלול. מחויבת רק החריגה.</td></tr>
+  <tr><td class="label">Durable identity</td><td>זהות קבועה לאדם, לשירות או לסוכן ארוך טווח. נקראת בחלק מהחומרים גם Human identities.</td></tr>
+  <tr><td class="label">Ephemeral identity</td><td>זהות קצרת חיים למשימה בודדת, ללא עלות.</td></tr>
+  <tr><td class="label">Passport Proxy</td><td>הרכיב בענן של הארגון שמבצע את קריאת ה-API עבור הזהות ומכניס את הסוד האמיתי ברגע האחרון. Postman לא נמצאת בנתיב הבקשה.</td></tr>
+  <tr><td class="label">Control plane ו-Data plane</td><td>Control plane הוא המקום שבו מגדירים ומנטרים כללים. Data plane הוא המקום שבו התעבורה עוברת בפועל. ב-Fabric ה-Control plane נמצא בענן של Postman, וה-Data plane יכול לרוץ בענן של Postman או בענן של הארגון.</td></tr>
+</table>
+</div>
+
+<h2>איזה מודל מתאים?</h2>
+<div class="two">
+  <div>
+    <h3>קרדיטים שיתופיים מתאימים כאשר</h3>
+    <ul>
+      <li>רוצים להתחיל מהר ולבדוק לפני שמתחייבים למוצר אחד.</li>
+      <li>מתכננים להשתמש ביותר ממוצר אחד, ורוצים להזיז תקציב ביניהם כשההטמעה משתנה.</li>
+      <li>קשה לחזות את הצריכה, ולכן עדיף לשלם רק על מה שמשתמשים.</li>
+      <li>רוצים את בונוס הנפח של עד <span class="ltr">30%</span> ברכישות גדולות.</li>
+      <li>מעדיפים רכישה אחת וחוזה אחד לכל המוצרים.</li>
+    </ul>
+  </div>
+  <div>
+    <h3>חוזה נפרד מתאים כאשר</h3>
+    <ul>
+      <li>מוצר אחד הפך לאסטרטגי ונדרשים עבורו תמיכה ייעודית, SLA או שירותים מקצועיים.</li>
+      <li>נדרשות יכולות Fern Enterprise כמו אירוח עצמי, קוד מותאם או כמה repos.</li>
+      <li>רוצים מוצר אחד בלבד, ומאגר קרדיטים של <span class="ltr">$50K</span> ומעלה גדול ממה שצריך.</li>
+      <li>רוצים תנאים שמנוהלים במו"מ למוצר הספציפי, כמו מדרגות נפח מחויב ב-Fabric.</li>
+    </ul>
+  </div>
+</div>
+<p class="rule">כלל אצבע: מתחילים בקרדיטים שיתופיים. מעבירים מוצר לחוזה משלו כשהוא הופך קריטי לעסק ונדרשות לו יכולות או רמות שירות שהמודל השיתופי לא כולל.</p>
+
+<footer>מחירי מחירון בדולרים, כפופים לשינוי. המחיר הסופי נקבע בהצעת המחיר.</footer>
+
+</main>
+</body>
+</html>

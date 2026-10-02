@@ -1,0 +1,251 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Postman AI add-ons: pricing at a glance</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --ink: #1c1c28;
+    --muted: #5d6070;
+    --line: #e3e4ea;
+    --soft: #f7f7fa;
+    --orange: #ff6c37;
+    --fabric: #6d4bc2;
+    --passport: #d99a00;
+    --fern: #2f9e5b;
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0; background: #fff; color: var(--ink);
+    font-family: "Inter", system-ui, -apple-system, "Segoe UI", Arial, sans-serif;
+    font-size: 15px; line-height: 1.55;
+  }
+  main { max-width: 940px; margin: 0 auto; padding: 40px 20px 64px; }
+  header { border-bottom: 3px solid var(--orange); padding-bottom: 18px; margin-bottom: 28px; }
+  h1 { font-size: 30px; line-height: 1.2; margin: 0 0 6px; letter-spacing: -0.01em; }
+  header p { margin: 0; color: var(--muted); }
+  h2 { font-size: 21px; margin: 40px 0 12px; }
+  h3 { font-size: 16px; margin: 22px 0 8px; }
+  p { margin: 0 0 10px; }
+  .table-wrap { overflow-x: auto; margin: 8px 0 14px; }
+  table { border-collapse: collapse; width: 100%; min-width: 560px; }
+  th, td { border: 1px solid var(--line); padding: 9px 12px; text-align: start; vertical-align: top; }
+  th { background: var(--soft); font-weight: 600; }
+  td.label, th.label { width: 22%; font-weight: 600; background: var(--soft); }
+  .num { white-space: nowrap; }
+  .product { border-inline-start: 5px solid var(--c); padding-inline-start: 18px; margin-top: 36px; }
+  .product h2 { margin-top: 0; }
+  .fabric { --c: var(--fabric); }
+  .passport { --c: var(--passport); }
+  .fern { --c: var(--fern); }
+  .what { color: var(--muted); margin-bottom: 14px; }
+  .note { background: var(--soft); border: 1px solid var(--line); padding: 10px 14px; margin: 10px 0; color: var(--muted); font-size: 14px; }
+  .two { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+  .two > div { border: 1px solid var(--line); padding: 4px 18px 12px; }
+  .two h3 { margin-top: 14px; }
+  ul { margin: 6px 0 0; padding-inline-start: 20px; }
+  li { margin-bottom: 6px; }
+  .rule { border-inline-start: 5px solid var(--orange); padding: 10px 16px; background: #fff6f1; margin-top: 16px; font-weight: 500; }
+  footer { margin-top: 36px; color: var(--muted); font-size: 13px; border-top: 1px solid var(--line); padding-top: 14px; }
+  @media (max-width: 680px) { .two { grid-template-columns: 1fr; } h1 { font-size: 25px; } }
+  @media print { main { padding: 0; } .product { break-inside: avoid; } }
+</style>
+</head>
+<body>
+<main>
+
+<header>
+  <h1>Postman AI add-ons: pricing at a glance</h1>
+  <p>Fabric Gateway, Passport and Fern Docs. All prices are list prices in USD, and 1 Agent Stack Credit = $1.</p>
+</header>
+
+<h2>Two ways to buy</h2>
+<div class="table-wrap">
+<table>
+  <tr><th class="label"></th><th>Shared credits (Postman AI)</th><th>Separate contract (one product)</th></tr>
+  <tr><td class="label">How it works</td><td>Buy one pool of Agent Stack Credits and spend it across Fabric Gateway, Passport and Fern Docs in any split you like.</td><td>Sign a contract for a single product, with its own terms.</td></tr>
+  <tr><td class="label">You pay for</td><td>Only what you use. Usage is drawn down from your pool.</td><td>A committed volume or platform fee, plus what the contract includes.</td></tr>
+  <tr><td class="label">Where the discount comes from</td><td>The size of the credit purchase (see below). Product rates themselves stay the same.</td><td>Negotiated per product, for example by committed annual volume.</td></tr>
+  <tr><td class="label">Extras</td><td>Low-friction start, one purchase for all products.</td><td>Deeper enterprise capabilities, support and SLAs, professional services.</td></tr>
+</table>
+</div>
+
+<h3>Credit packages</h3>
+<div class="table-wrap">
+<table>
+  <tr><th>You spend</th><th>You receive</th><th>Extra value</th></tr>
+  <tr><td class="num">$50K</td><td class="num">50K credits</td><td>None</td></tr>
+  <tr><td class="num">$100K</td><td class="num">110K credits</td><td>+10%</td></tr>
+  <tr><td class="num">$250K</td><td class="num">300K credits</td><td>+20%</td></tr>
+  <tr><td class="num">$500K</td><td class="num">650K credits</td><td>+30%</td></tr>
+  <tr><td class="num">$1M+</td><td>Custom</td><td>Custom</td></tr>
+</table>
+</div>
+
+
+<h2>Three example companies and how each buys</h2>
+<p class="note">Illustrative scenarios. The companies and usage figures are assumptions made to show how the pricing works, not customer data. All prices are list prices.</p>
+<div class="table-wrap">
+<table>
+  <tr><th class="label">Company</th><th>Situation</th><th>How it buys</th><th>Year-1 usage</th></tr>
+  <tr><td class="label">Bank</td><td>Large retail bank rolling out AI assistants for its staff and an open-banking developer portal.</td><td>One shared pool for all three add-ons: $100K for 110K credits (+10%).</td><td class="num">108,160 credits<br>(98% of the pool)</td></tr>
+  <tr><td class="label">Insurance company</td><td>Mid-size insurer automating claims handling with AI agents.</td><td>A starter pool: $50K for 50K credits.</td><td class="num">41,580 credits<br>(83% of the pool)</td></tr>
+  <tr><td class="label">Credit card company</td><td>Card issuer with high-volume payment and merchant APIs.</td><td>A $250K pool (300K credits, +20%) for Fabric and Passport, plus a separate Fern Enterprise contract for its merchant developer portal.</td><td class="num">192,000 credits (64% of the pool)<br>Fern Enterprise by quote</td></tr>
+</table>
+</div>
+
+<!-- FABRIC -->
+<section class="product fabric" id="fabric">
+  <h2>Fabric Gateway</h2>
+  <p class="what">A gateway that sits between your apps and AI agents and the AI models, MCP servers and APIs they call. It applies your security rules, routes traffic and keeps an audit trail. You pay per request that passes through it.</p>
+
+  <div class="table-wrap">
+  <table>
+    <tr><th class="label">Model</th><th>Rate</th></tr>
+    <tr><td class="label">Shared credits</td><td>$20 per 1M requests, which is 20 credits per 1M requests</td></tr>
+    <tr><td class="label">Separate contract</td><td>List rate $200 per 1M requests, lowered by committed annual volume:
+      up to 100M: $200 &middot; 100M to 500M: $180 &middot; 500M to 1B: $160 &middot; 1B to 5B: $140 &middot; 5B+: negotiated.
+      Minimum annual commitment: $20K.</td></tr>
+  </table>
+  </div>
+
+  <h3>Two examples</h3>
+  <div class="table-wrap">
+  <table>
+    <tr><th>Scenario</th><th>Shared credits</th><th>Separate contract</th></tr>
+    <tr><td><strong>Pilot:</strong> 100M requests per year</td><td class="num">100 &times; 20 = <strong>2,000 credits</strong> (about $2,000)</td><td class="num">100 &times; $200 = <strong>$20,000</strong> (the minimum commitment)</td></tr>
+    <tr><td><strong>Production rollout:</strong> 400M requests per year</td><td class="num">400 &times; 20 = <strong>8,000 credits</strong> (about $8,000)</td><td class="num">400 &times; $180 = <strong>$72,000</strong></td></tr>
+  </table>
+  </div>
+
+  <h3>Three real-world scenarios</h3>
+  <div class="table-wrap">
+  <table>
+    <tr><th>Company</th><th>Situation</th><th>Usage</th><th>Calculation</th><th>How it pays</th></tr>
+    <tr><td><strong>Bank</strong></td><td>Staff AI assistants (service reps, credit analysts) call LLMs and MCP tools that look up customer records and policies. Security requires every call to be authenticated and logged, with a fallback if one AI provider goes down.</td><td class="num">600M requests per year</td><td class="num">600 &times; 20</td><td class="num"><strong>12,000 credits</strong> from its $100K pool</td></tr>
+    <tr><td><strong>Insurance company</strong></td><td>The claims team pilots an AI that reads claim documents and queries the policy system. The gateway shows which team spends how much on AI and applies one set of rules to all of them.</td><td class="num">150M requests per year</td><td class="num">150 &times; 20</td><td class="num"><strong>3,000 credits</strong> from its $50K pool</td></tr>
+    <tr><td><strong>Credit card company</strong></td><td>Fraud-scoring calls, merchant and partner APIs and dispute-handling agents all go through one gateway, with rate limits and an audit trail.</td><td class="num">1.5B requests per year</td><td class="num">1,500 &times; 20</td><td class="num"><strong>30,000 credits</strong> from its $250K pool</td></tr>
+  </table>
+  </div>
+  <p>If Fabric later becomes critical to payments and the company needs SLAs and dedicated support, that product can move to its own contract.</p>
+</section>
+
+<!-- PASSPORT -->
+<section class="product passport" id="passport">
+  <h2>Passport</h2>
+  <p class="what">Lets developers, pipelines and AI agents call approved APIs without ever holding the real API key. The real secret stays in your cloud and is swapped in only at the moment of the call.</p>
+
+  <div class="table-wrap">
+  <table>
+    <tr><th class="label">What is billed</th><th>Rate</th><th>What it means</th></tr>
+    <tr><td class="label">Durable identity</td><td class="num">$49 per identity per month<br>(49 credits)</td><td>A permanent, named identity that Passport tracks and audits: a developer, a service or pipeline, or a long-lived AI agent. Each one with standing access counts as one identity.</td></tr>
+    <tr><td class="label">Ephemeral identity</td><td>Free</td><td>A temporary identity created automatically for one task, usually a sub-agent started by another agent. It expires when the task ends, so you never count or budget for them.</td></tr>
+    <tr><td class="label">API consumption</td><td class="num">$50 per 1M calls<br>(50 credits)</td><td>Every API call routed through the Passport Proxy, by any identity, durable or ephemeral.</td></tr>
+  </table>
+  </div>
+  <p>The list rates are the same in both models. Identity pricing can be discounted for Postman Ultimate and Advanced Security customers. A separate contract can add support, SLAs and services.</p>
+
+  <h3>Two examples</h3>
+  <div class="table-wrap">
+  <table>
+    <tr><th>Scenario</th><th>Calculation</th><th>Annual cost</th></tr>
+    <tr><td><strong>Security team pilot:</strong> 25 durable identities, 10M calls, any number of ephemeral agents</td><td class="num">25 &times; $49 &times; 12 = $14,700<br>10 &times; $50 = $500<br>Ephemeral: $0</td><td class="num"><strong>$15,200</strong><br>(15,200 credits)</td></tr>
+    <tr><td><strong>Company-wide:</strong> 100 durable identities, 100M calls</td><td class="num">100 &times; $49 &times; 12 = $58,800<br>100 &times; $50 = $5,000</td><td class="num"><strong>$63,800</strong><br>(63,800 credits). Bought through a $100K pool (110K credits), the effective cost is about $58,000.</td></tr>
+  </table>
+  </div>
+
+  <h3>Three real-world scenarios</h3>
+  <div class="table-wrap">
+  <table>
+    <tr><th>Company</th><th>Situation</th><th>Usage</th><th>Calculation</th><th>How it pays</th></tr>
+    <tr><td><strong>Bank</strong></td><td>Developers, CI pipelines and a few permanent internal agents need access to core-banking and payments APIs. Today the keys sit in .env files, chat messages and CI logs. With Passport they hold references instead, access is revoked in one click, and auditors can see who called what.</td><td class="num">120 durable identities<br>80M calls per year</td><td class="num">120 &times; 49 &times; 12 = 70,560<br>80 &times; 50 = 4,000</td><td class="num"><strong>74,560 credits</strong> from its $100K pool</td></tr>
+    <tr><td><strong>Insurance company</strong></td><td>A claims-automation agent starts a sub-agent for every claim, and each one needs narrow access to the policy and payment APIs. The 60 durable identities are developers, pipelines and 6 permanent agents. The sub-agents are ephemeral and cost nothing.</td><td class="num">60 durable identities<br>30M calls per year<br>thousands of ephemeral</td><td class="num">60 &times; 49 &times; 12 = 35,280<br>30 &times; 50 = 1,500<br>Ephemeral: 0</td><td class="num"><strong>36,780 credits</strong> from its $50K pool</td></tr>
+    <tr><td><strong>Credit card company</strong></td><td>Many engineering teams and outside integrators call internal APIs. After an incident or a vendor change, access to one identity must be cut immediately, without rotating keys for everyone else.</td><td class="num">250 durable identities<br>300M calls per year</td><td class="num">250 &times; 49 &times; 12 = 147,000<br>300 &times; 50 = 15,000</td><td class="num"><strong>162,000 credits</strong> from its $250K pool</td></tr>
+  </table>
+  </div>
+  <p>Postman Ultimate and Advanced Security customers can receive a discount on identity pricing, which would lower these figures.</p>
+</section>
+
+<!-- FERN -->
+<section class="product fern" id="fern">
+  <h2>Fern Docs</h2>
+  <p class="what">Turns your API into a documentation site that both developers and AI tools can read. Every Postman customer already gets an allowance for free, and you only pay for usage above it.</p>
+
+  <div class="table-wrap">
+  <table>
+    <tr><th class="label">Meter</th><th>Included free</th><th>Above the allowance</th><th>What it means</th></tr>
+    <tr><td class="label">Page generations</td><td>5,000 per month</td><td class="num">$50 per extra 1,000<br>(50 credits)</td><td>Each time Fern builds or updates a page of your docs site.</td></tr>
+    <tr><td class="label">Docs instances</td><td>1</td><td class="num">$1,000 per extra instance per month<br>(1,000 credits)</td><td>A separate docs site, for example one per product or per audience.</td></tr>
+    <tr><td class="label">Fern AI credits</td><td>500 per month</td><td class="num">$50 per extra 500<br>(50 credits)</td><td>Units that meter the AI features inside your docs site.</td></tr>
+  </table>
+  </div>
+  <p><strong>Separate contract (Fern Enterprise):</strong> multiple repos and docs instances, custom CSS, JavaScript and React, advanced analytics, dedicated infrastructure or self-hosting, SLAs and dedicated support. Priced by quote.</p>
+
+  <h3>Two examples (shared credits)</h3>
+  <div class="table-wrap">
+  <table>
+    <tr><th>Scenario</th><th>Calculation</th><th>Cost</th></tr>
+    <tr><td><strong>Inside the free allowance:</strong> 1 site, 4,000 page generations and 300 AI credits per month</td><td>Everything is below the included amounts.</td><td class="num"><strong>0 credits</strong></td></tr>
+    <tr><td><strong>Growing docs:</strong> 2 sites, 20,000 page generations and 1,000 AI credits per month</td><td class="num">15K extra pages: 750<br>1 extra site: 1,000<br>500 extra AI credits: 50</td><td class="num"><strong>1,800 credits per month</strong><br>(21,600 per year)</td></tr>
+  </table>
+  </div>
+
+  <h3>Three real-world scenarios</h3>
+  <div class="table-wrap">
+  <table>
+    <tr><th>Company</th><th>Situation</th><th>Usage per month</th><th>Calculation</th><th>How it pays</th></tr>
+    <tr><td><strong>Bank</strong></td><td>An open-banking developer portal for outside developers, plus a second site for internal API docs. Pages are rebuilt with every release.</td><td class="num">2 sites<br>20,000 page generations<br>1,000 AI credits</td><td class="num">15K extra pages: 750<br>1 extra site: 1,000<br>500 extra AI credits: 50</td><td class="num"><strong>1,800 credits per month</strong> (21,600 per year) from its $100K pool</td></tr>
+    <tr><td><strong>Insurance company</strong></td><td>One docs site for the APIs that brokers and agents integrate with.</td><td class="num">1 site<br>8,000 page generations<br>500 AI credits</td><td class="num">3K extra pages: 150<br>Site and AI credits are within the free allowance</td><td class="num"><strong>150 credits per month</strong> (1,800 per year) from its $50K pool</td></tr>
+    <tr><td><strong>Credit card company</strong></td><td>A merchant and fintech developer portal with custom branding in React, several API products, a self-hosted deployment and an SLA. This goes beyond the pay-as-you-go allowance.</td><td class="num">Fern Enterprise</td><td class="num">Capabilities, not usage, drive the price</td><td class="num"><strong>Separate contract</strong>, priced by quote</td></tr>
+  </table>
+  </div>
+</section>
+
+<!-- GLOSSARY -->
+<h2>Terms in plain language</h2>
+<div class="table-wrap">
+<table>
+  <tr><th class="label">Term</th><th>What it means</th></tr>
+  <tr><td class="label">Agent Stack Credit</td><td>A prepaid unit worth $1 at list price. One pool can be spent on any eligible product.</td></tr>
+  <tr><td class="label">API / MCP request</td><td>One call that passes through the gateway. MCP (Model Context Protocol) is the standard that lets AI agents use tools and data.</td></tr>
+  <tr><td class="label">Committed volume</td><td>The yearly traffic the customer agrees to pay for in advance, in return for a lower rate per request.</td></tr>
+  <tr><td class="label">Overage</td><td>Usage above what is already included. Only the overage is billed.</td></tr>
+  <tr><td class="label">Durable identity</td><td>Also called "human identities" in some materials. A permanent identity for a person, service or long-lived agent.</td></tr>
+  <tr><td class="label">Ephemeral identity</td><td>A short-lived identity for a single task, free of charge.</td></tr>
+  <tr><td class="label">Passport Proxy</td><td>The component in your cloud that makes the API call for the identity and inserts the real secret at the last moment. Postman is not in the request path.</td></tr>
+  <tr><td class="label">Control plane and data plane</td><td>The control plane is where rules are set and monitored. The data plane is where traffic actually flows. For Fabric, the control plane is in Postman cloud and the data plane can run in Postman cloud or in your own cloud.</td></tr>
+</table>
+</div>
+
+<h2>Which model fits?</h2>
+<div class="two">
+  <div>
+    <h3>Shared credits fit when</h3>
+    <ul>
+      <li>You want to start quickly and test before committing to a single product.</li>
+      <li>You plan to use more than one product, and want to move spend between them as adoption changes.</li>
+      <li>Usage is hard to forecast, so paying only for what you use is safer.</li>
+      <li>You want the volume bonus of up to +30% on larger purchases.</li>
+      <li>You prefer one purchase and one contract for everything.</li>
+    </ul>
+  </div>
+  <div>
+    <h3>A separate contract fits when</h3>
+    <ul>
+      <li>A single product has become strategic and you need dedicated support, SLAs or professional services for it.</li>
+      <li>You need Fern Enterprise capabilities such as self-hosting, custom code or multiple repos.</li>
+      <li>You only want one product and a credit pool of $50K or more is more than you need.</li>
+      <li>You want terms negotiated specifically for that product, such as committed-volume tiers for Fabric.</li>
+    </ul>
+  </div>
+</div>
+<p class="rule">Rule of thumb: start with shared credits. Move a product to its own contract when it becomes critical to the business and needs capabilities or service levels that the shared model does not include.</p>
+
+<footer>List prices in USD, subject to change. Final pricing is confirmed in your quote.</footer>
+
+</main>
+</body>
+</html>

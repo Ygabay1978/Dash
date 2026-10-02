@@ -1555,11 +1555,11 @@
 
   /* Only the &quot;-full&quot; versions (opened via the expand ⤢ button) go full
      page — the small popups keep the normal .side-panel card size. */
-  #panel-fabric-full, #panel-passport-full, #panel-asa-full, #panel-fern-full{
+  #panel-fabric-full, #panel-passport-full, #panel-asa-full, #panel-fern-full, #panel-addons-pricing{
     top:0;left:0;right:0;width:100%;height:100%;max-width:none;
     border-radius:0;box-shadow:none;
   }
-  #panel-fabric-full .panel-body, #panel-passport-full .panel-body, #panel-asa-full .panel-body, #panel-fern-full .panel-body{flex:1;min-height:0;}
+  #panel-fabric-full .panel-body, #panel-passport-full .panel-body, #panel-asa-full .panel-body, #panel-fern-full .panel-body, #panel-addons-pricing .panel-body{flex:1;min-height:0;}
   .panel-expand{
     background:none;border:none;color:#fff;font-size:16px;cursor:pointer;
     padding:4px 8px;border-radius:5px;margin-right:4px;
@@ -2040,6 +2040,7 @@ A few additional capabilities that can be relevant, depending on the customer's 
 &lt;div class=&quot;side-panel&quot; id=&quot;panel-fabric&quot;&gt;
 &lt;div class=&quot;panel-header&quot;&gt;
 &lt;span&gt;Fabric&lt;/span&gt;
+&lt;button class=&quot;panel-expand&quot; data-pricing=&quot;fabric&quot; title=&quot;Pricing&quot;&gt;💰&lt;/button&gt;
 &lt;button class=&quot;panel-expand&quot; data-expand=&quot;panel-fabric-full&quot; title=&quot;Expand to full call script&quot;&gt;⤢&lt;/button&gt;
 &lt;button class=&quot;panel-close&quot; data-close=&quot;panel-fabric&quot;&gt;✕&lt;/button&gt;
 &lt;/div&gt;
@@ -2088,6 +2089,7 @@ A few additional capabilities that can be relevant, depending on the customer's 
 &lt;div class=&quot;side-panel&quot; id=&quot;panel-passport&quot;&gt;
 &lt;div class=&quot;panel-header&quot;&gt;
 &lt;span&gt;Postman Passport&lt;/span&gt;
+&lt;button class=&quot;panel-expand&quot; data-pricing=&quot;passport&quot; title=&quot;Pricing&quot;&gt;💰&lt;/button&gt;
 &lt;button class=&quot;panel-expand&quot; data-expand=&quot;panel-passport-full&quot; title=&quot;Expand to full call script&quot;&gt;⤢&lt;/button&gt;
 &lt;button class=&quot;panel-close&quot; data-close=&quot;panel-passport&quot;&gt;✕&lt;/button&gt;
 &lt;/div&gt;
@@ -2195,6 +2197,7 @@ It also includes: automatic routing of logins by domain (Domain Capture), a dash
 &lt;div class=&quot;side-panel&quot; id=&quot;panel-fern&quot;&gt;
   &lt;div class=&quot;panel-header&quot;&gt;
     &lt;span&gt;Fern&lt;/span&gt;
+    &lt;button class=&quot;panel-expand&quot; data-pricing=&quot;fern&quot; title=&quot;Pricing&quot;&gt;💰&lt;/button&gt;
     &lt;button class=&quot;panel-expand&quot; data-expand=&quot;panel-fern-full&quot; title=&quot;Expand to full call script&quot;&gt;⤢&lt;/button&gt;
     &lt;button class=&quot;panel-close&quot; data-close=&quot;panel-fern&quot;&gt;✕&lt;/button&gt;
   &lt;/div&gt;
@@ -2232,6 +2235,7 @@ It also includes: automatic routing of logins by domain (Domain Capture), a dash
 &lt;div class=&quot;side-panel&quot; id=&quot;panel-fabric-full&quot;&gt;
   &lt;div class=&quot;panel-header&quot;&gt;
     &lt;span&gt;Fabric — Full Call Script&lt;/span&gt;
+    &lt;button class=&quot;panel-expand&quot; data-pricing=&quot;fabric&quot; title=&quot;Pricing&quot;&gt;💰&lt;/button&gt;
     &lt;button class=&quot;panel-close&quot; data-close=&quot;panel-fabric-full&quot;&gt;✕&lt;/button&gt;
   &lt;/div&gt;
   &lt;div class=&quot;panel-body&quot; style=&quot;padding:0;overflow:hidden;&quot;&gt;
@@ -2241,6 +2245,7 @@ It also includes: automatic routing of logins by domain (Domain Capture), a dash
 &lt;div class=&quot;side-panel&quot; id=&quot;panel-passport-full&quot;&gt;
   &lt;div class=&quot;panel-header&quot;&gt;
     &lt;span&gt;Postman Passport — Full Call Script&lt;/span&gt;
+    &lt;button class=&quot;panel-expand&quot; data-pricing=&quot;passport&quot; title=&quot;Pricing&quot;&gt;💰&lt;/button&gt;
     &lt;button class=&quot;panel-close&quot; data-close=&quot;panel-passport-full&quot;&gt;✕&lt;/button&gt;
   &lt;/div&gt;
   &lt;div class=&quot;panel-body&quot; style=&quot;padding:0;overflow:hidden;&quot;&gt;
@@ -2259,10 +2264,20 @@ It also includes: automatic routing of logins by domain (Domain Capture), a dash
 &lt;div class=&quot;side-panel&quot; id=&quot;panel-fern-full&quot;&gt;
   &lt;div class=&quot;panel-header&quot;&gt;
     &lt;span&gt;Fern — Full Call Script&lt;/span&gt;
+    &lt;button class=&quot;panel-expand&quot; data-pricing=&quot;fern&quot; title=&quot;Pricing&quot;&gt;💰&lt;/button&gt;
     &lt;button class=&quot;panel-close&quot; data-close=&quot;panel-fern-full&quot;&gt;✕&lt;/button&gt;
   &lt;/div&gt;
   &lt;div class=&quot;panel-body&quot; style=&quot;padding:0;overflow:hidden;&quot;&gt;
     &lt;iframe src=&quot;fern-explainer-en.html&quot; style=&quot;width:100%;height:100%;border:none;display:block;&quot;&gt;&lt;/iframe&gt;
+  &lt;/div&gt;
+&lt;/div&gt;
+&lt;div class=&quot;side-panel&quot; id=&quot;panel-addons-pricing&quot;&gt;
+  &lt;div class=&quot;panel-header&quot;&gt;
+    &lt;span&gt;Add-ons Pricing&lt;/span&gt;
+    &lt;button class=&quot;panel-close&quot; data-close=&quot;panel-addons-pricing&quot;&gt;✕&lt;/button&gt;
+  &lt;/div&gt;
+  &lt;div class=&quot;panel-body&quot; style=&quot;padding:0;overflow:hidden;&quot;&gt;
+    &lt;iframe id=&quot;addons-pricing-iframe&quot; src=&quot;&quot; style=&quot;width:100%;height:100%;border:none;display:block;&quot;&gt;&lt;/iframe&gt;
   &lt;/div&gt;
 &lt;/div&gt;
 
@@ -2820,7 +2835,13 @@ It also includes: automatic routing of logins by domain (Domain Capture), a dash
   document.querySelectorAll('.panel-expand').forEach(btn=&gt;{
     btn.addEventListener('click', (e)=&gt;{
       e.stopPropagation();
-      openPanel(btn.dataset.expand);
+      if(btn.dataset.pricing){
+        const iframe = document.getElementById('addons-pricing-iframe');
+        if(iframe) iframe.src = 'addons-pricing-en.html#' + btn.dataset.pricing;
+        openPanel('panel-addons-pricing');
+        return;
+      }
+      if(btn.dataset.expand) openPanel(btn.dataset.expand);
     });
   });
   backdrop.addEventListener('click', closeAllPanels);
@@ -4630,11 +4651,11 @@ document.addEventListener('keydown', (e)=&gt;{
 
   /* Only the &quot;-full&quot; versions (opened via the expand ⤢ button) go full
      page — the small popups keep the normal .side-panel card size. */
-  #panel-fabric-full, #panel-passport-full, #panel-asa-full, #panel-fern-full{
+  #panel-fabric-full, #panel-passport-full, #panel-asa-full, #panel-fern-full, #panel-addons-pricing{
     top:0;left:0;right:0;width:100%;height:100%;max-width:none;
     border-radius:0;box-shadow:none;
   }
-  #panel-fabric-full .panel-body, #panel-passport-full .panel-body, #panel-asa-full .panel-body, #panel-fern-full .panel-body{flex:1;min-height:0;}
+  #panel-fabric-full .panel-body, #panel-passport-full .panel-body, #panel-asa-full .panel-body, #panel-fern-full .panel-body, #panel-addons-pricing .panel-body{flex:1;min-height:0;}
   .panel-expand{
     background:none;border:none;color:#fff;font-size:16px;cursor:pointer;
     padding:4px 8px;border-radius:5px;margin-left:4px;
@@ -5108,6 +5129,7 @@ document.addEventListener('keydown', (e)=&gt;{
 &lt;div class=&quot;side-panel&quot; id=&quot;panel-fabric&quot;&gt;
 &lt;div class=&quot;panel-header&quot;&gt;
 &lt;span&gt;Fabric&lt;/span&gt;
+&lt;button class=&quot;panel-expand&quot; data-pricing=&quot;fabric&quot; title=&quot;תמחור&quot;&gt;💰&lt;/button&gt;
 &lt;button class=&quot;panel-expand&quot; data-expand=&quot;panel-fabric-full&quot; title=&quot;הרחב לתרחיש שיחה מלא&quot;&gt;⤢&lt;/button&gt;
 &lt;button class=&quot;panel-close&quot; data-close=&quot;panel-fabric&quot;&gt;✕&lt;/button&gt;
 &lt;/div&gt;
@@ -5156,6 +5178,7 @@ document.addEventListener('keydown', (e)=&gt;{
 &lt;div class=&quot;side-panel&quot; id=&quot;panel-passport&quot;&gt;
 &lt;div class=&quot;panel-header&quot;&gt;
 &lt;span&gt;Postman Passport&lt;/span&gt;
+&lt;button class=&quot;panel-expand&quot; data-pricing=&quot;passport&quot; title=&quot;תמחור&quot;&gt;💰&lt;/button&gt;
 &lt;button class=&quot;panel-expand&quot; data-expand=&quot;panel-passport-full&quot; title=&quot;הרחב לתרחיש שיחה מלא&quot;&gt;⤢&lt;/button&gt;
 &lt;button class=&quot;panel-close&quot; data-close=&quot;panel-passport&quot;&gt;✕&lt;/button&gt;
 &lt;/div&gt;
@@ -5263,6 +5286,7 @@ document.addEventListener('keydown', (e)=&gt;{
 &lt;div class=&quot;side-panel&quot; id=&quot;panel-fern&quot;&gt;
   &lt;div class=&quot;panel-header&quot;&gt;
     &lt;span&gt;Fern&lt;/span&gt;
+    &lt;button class=&quot;panel-expand&quot; data-pricing=&quot;fern&quot; title=&quot;תמחור&quot;&gt;💰&lt;/button&gt;
     &lt;button class=&quot;panel-expand&quot; data-expand=&quot;panel-fern-full&quot; title=&quot;הרחב לתרחיש שיחה מלא&quot;&gt;⤢&lt;/button&gt;
     &lt;button class=&quot;panel-close&quot; data-close=&quot;panel-fern&quot;&gt;✕&lt;/button&gt;
   &lt;/div&gt;
@@ -5300,6 +5324,7 @@ document.addEventListener('keydown', (e)=&gt;{
 &lt;div class=&quot;side-panel&quot; id=&quot;panel-fabric-full&quot;&gt;
   &lt;div class=&quot;panel-header&quot;&gt;
     &lt;span&gt;Fabric — תרחיש שיחה מלא&lt;/span&gt;
+    &lt;button class=&quot;panel-expand&quot; data-pricing=&quot;fabric&quot; title=&quot;תמחור&quot;&gt;💰&lt;/button&gt;
     &lt;button class=&quot;panel-close&quot; data-close=&quot;panel-fabric-full&quot;&gt;✕&lt;/button&gt;
   &lt;/div&gt;
   &lt;div class=&quot;panel-body&quot; style=&quot;padding:0;overflow:hidden;&quot;&gt;
@@ -5309,6 +5334,7 @@ document.addEventListener('keydown', (e)=&gt;{
 &lt;div class=&quot;side-panel&quot; id=&quot;panel-passport-full&quot;&gt;
   &lt;div class=&quot;panel-header&quot;&gt;
     &lt;span&gt;Postman Passport — תרחיש שיחה מלא&lt;/span&gt;
+    &lt;button class=&quot;panel-expand&quot; data-pricing=&quot;passport&quot; title=&quot;תמחור&quot;&gt;💰&lt;/button&gt;
     &lt;button class=&quot;panel-close&quot; data-close=&quot;panel-passport-full&quot;&gt;✕&lt;/button&gt;
   &lt;/div&gt;
   &lt;div class=&quot;panel-body&quot; style=&quot;padding:0;overflow:hidden;&quot;&gt;
@@ -5327,10 +5353,20 @@ document.addEventListener('keydown', (e)=&gt;{
 &lt;div class=&quot;side-panel&quot; id=&quot;panel-fern-full&quot;&gt;
   &lt;div class=&quot;panel-header&quot;&gt;
     &lt;span&gt;Fern — תרחיש שיחה מלא&lt;/span&gt;
+    &lt;button class=&quot;panel-expand&quot; data-pricing=&quot;fern&quot; title=&quot;תמחור&quot;&gt;💰&lt;/button&gt;
     &lt;button class=&quot;panel-close&quot; data-close=&quot;panel-fern-full&quot;&gt;✕&lt;/button&gt;
   &lt;/div&gt;
   &lt;div class=&quot;panel-body&quot; style=&quot;padding:0;overflow:hidden;&quot;&gt;
     &lt;iframe src=&quot;fern-explainer.html&quot; style=&quot;width:100%;height:100%;border:none;display:block;&quot;&gt;&lt;/iframe&gt;
+  &lt;/div&gt;
+&lt;/div&gt;
+&lt;div class=&quot;side-panel&quot; id=&quot;panel-addons-pricing&quot;&gt;
+  &lt;div class=&quot;panel-header&quot;&gt;
+    &lt;span&gt;תמחור התוספים&lt;/span&gt;
+    &lt;button class=&quot;panel-close&quot; data-close=&quot;panel-addons-pricing&quot;&gt;✕&lt;/button&gt;
+  &lt;/div&gt;
+  &lt;div class=&quot;panel-body&quot; style=&quot;padding:0;overflow:hidden;&quot;&gt;
+    &lt;iframe id=&quot;addons-pricing-iframe&quot; src=&quot;&quot; style=&quot;width:100%;height:100%;border:none;display:block;&quot;&gt;&lt;/iframe&gt;
   &lt;/div&gt;
 &lt;/div&gt;
 
@@ -5892,7 +5928,13 @@ document.addEventListener('keydown', (e)=&gt;{
   document.querySelectorAll('.panel-expand').forEach(btn=&gt;{
     btn.addEventListener('click', (e)=&gt;{
       e.stopPropagation();
-      openPanel(btn.dataset.expand);
+      if(btn.dataset.pricing){
+        const iframe = document.getElementById('addons-pricing-iframe');
+        if(iframe) iframe.src = 'addons-pricing-he.html#' + btn.dataset.pricing;
+        openPanel('panel-addons-pricing');
+        return;
+      }
+      if(btn.dataset.expand) openPanel(btn.dataset.expand);
     });
   });
   backdrop.addEventListener('click', closeAllPanels);
