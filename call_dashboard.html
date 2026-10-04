@@ -2460,6 +2460,44 @@ It also includes: automatic routing of logins by domain (Domain Capture), a dash
       &lt;li&gt;&lt;b&gt;Important point to flag to the customer&lt;/b&gt; — &quot;Data residency&quot; doesn't automatically mean all data stays with the customer — the Control Plane still sits in Postman's cloud. Worth checking, per specific product, exactly what data moves between the components and what stays on the customer's side, before presenting this as a reason to upgrade.&lt;/li&gt;
     &lt;/ul&gt;
 
+    &lt;div class=&quot;group-title edit-unit&quot; contenteditable=&quot;false&quot;&gt;Fern — Competitive Landscape (Sept 2026)&lt;/div&gt;
+    &lt;div class=&quot;cross-box edit-unit&quot; contenteditable=&quot;false&quot;&gt;
+      &lt;b&gt;Fern's wedge:&lt;/b&gt; SDKs + docs + CLIs + MCP from one definition · 9 languages (only vendor with production Swift) · self-host · drift detection (&quot;Fern diff&quot;).
+    &lt;/div&gt;
+    &lt;table class=&quot;panel-table&quot;&gt;
+      &lt;tr&gt;&lt;th&gt;Category&lt;/th&gt;&lt;th&gt;Competitor&lt;/th&gt;&lt;th&gt;What they do&lt;/th&gt;&lt;th&gt;How Fern wins / talk track&lt;/th&gt;&lt;/tr&gt;
+      &lt;tr&gt;&lt;td&gt;SDK generation&lt;/td&gt;&lt;td&gt;Speakeasy&lt;/td&gt;&lt;td&gt;SDK-only; per-language pricing; no docs; no on-prem&lt;/td&gt;&lt;td&gt;Docs+SDK from one source vs two vendors/cadences&lt;/td&gt;&lt;/tr&gt;
+      &lt;tr&gt;&lt;td&gt;SDK generation&lt;/td&gt;&lt;td&gt;Stainless&lt;/td&gt;&lt;td&gt;⚠️ Winding down — acquired by Anthropic 18-May-2026, closed to new projects&lt;/td&gt;&lt;td&gt;Displacement with a timeline: migration + drift&lt;/td&gt;&lt;/tr&gt;
+      &lt;tr&gt;&lt;td&gt;SDK generation&lt;/td&gt;&lt;td&gt;OpenAPI Generator / MS Kiota&lt;/td&gt;&lt;td&gt;Open-source, free, 8-50+ targets&lt;/td&gt;&lt;td&gt;&quot;Free but you own the maintenance&quot; — real TCO&lt;/td&gt;&lt;/tr&gt;
+      &lt;tr&gt;&lt;td&gt;Documentation&lt;/td&gt;&lt;td&gt;Mintlify&lt;/td&gt;&lt;td&gt;Modern docs, strong AI chat, but docs-only&lt;/td&gt;&lt;td&gt;Docs alone drift out of sync with the SDK&lt;/td&gt;&lt;/tr&gt;
+      &lt;tr&gt;&lt;td&gt;Documentation&lt;/td&gt;&lt;td&gt;ReadMe / Scalar / Stoplight / Redocly&lt;/td&gt;&lt;td&gt;API reference &amp; portals; courting Stainless migrants&lt;/td&gt;&lt;td&gt;One vendor for docs+SDK; drift detection&lt;/td&gt;&lt;/tr&gt;
+      &lt;tr&gt;&lt;td&gt;Internal portal&lt;/td&gt;&lt;td&gt;Backstage / Docusaurus&lt;/td&gt;&lt;td&gt;OSS internal developer portal / docs&lt;/td&gt;&lt;td&gt;Generated, always-in-sync vs hand-written pages that drift&lt;/td&gt;&lt;/tr&gt;
+      &lt;tr&gt;&lt;td&gt;Gateway portals&lt;/td&gt;&lt;td&gt;Apigee / Kong / Gravitee / Axway / Azure APIM&lt;/td&gt;&lt;td&gt;Dev portal bundled with the gateway&lt;/td&gt;&lt;td&gt;Fern sits on top of any gateway — &quot;complement, not rip-out&quot;&lt;/td&gt;&lt;/tr&gt;
+      &lt;tr&gt;&lt;td&gt;Build-it-yourself&lt;/td&gt;&lt;td&gt;Homegrown scripts&lt;/td&gt;&lt;td&gt;In-house SDK/doc generation&lt;/td&gt;&lt;td&gt;Hidden cost = maintenance + drift; show the diff and support-ticket data&lt;/td&gt;&lt;/tr&gt;
+    &lt;/table&gt;
+
+    &lt;div class=&quot;group-title edit-unit&quot; contenteditable=&quot;false&quot;&gt;Fern — Signals to Qualify an Account Before Outreach&lt;/div&gt;
+    &lt;ul class=&quot;panel-list&quot;&gt;
+      &lt;li&gt;&lt;b&gt;Public developer portal / API reference&lt;/b&gt; (developer.&amp;lt;co&amp;gt; / docs.&amp;lt;co&amp;gt;) — external consumers exist, revenue play is live.&lt;/li&gt;
+      &lt;li&gt;&lt;b&gt;Community (&quot;unofficial&quot;) SDKs on GitHub&lt;/b&gt; — no first-party SDK in some languages, that's exactly Fern land.&lt;/li&gt;
+      &lt;li&gt;&lt;b&gt;Multiple hand-maintained SDK repos&lt;/b&gt; — the SDK-sync/drift burden, Fern's core pain.&lt;/li&gt;
+      &lt;li&gt;&lt;b&gt;Was a Stainless customer&lt;/b&gt; (SDK README / generator headers; &quot;app.stainless&quot; in transition) — regeneration stopped 18-May-2026, urgent displacement.&lt;/li&gt;
+      &lt;li&gt;&lt;b&gt;DevRel / &quot;docs&quot; hiring&lt;/b&gt; (careers page, LinkedIn jobs) — investing in DX now, timing + budget.&lt;/li&gt;
+      &lt;li&gt;&lt;b&gt;llms.txt / MCP / &quot;AI-ready docs&quot;&lt;/b&gt; — chasing agent-readiness, lead with that.&lt;/li&gt;
+      &lt;li&gt;&lt;b&gt;Big-parent subsidiary that runs its own APIs&lt;/b&gt; (e.g. PagoNxt, Enel X, Wiz) — qualifies on parent revenue too.&lt;/li&gt;
+    &lt;/ul&gt;
+
+    &lt;div class=&quot;group-title edit-unit&quot; contenteditable=&quot;false&quot;&gt;Fern — Partners (Channel &amp; Tech Levers)&lt;/div&gt;
+    &lt;ul class=&quot;panel-list&quot;&gt;
+      &lt;li&gt;&lt;b&gt;GSIs&lt;/b&gt; (Capgemini, Sopra Steria, Reply, Indra/Minsait, Atos, Devoteam, Accenture/Deloitte) — delivery partners into banks/telecom; co-sell Fern as the DX layer.&lt;/li&gt;
+      &lt;li&gt;&lt;b&gt;Hyperscalers/marketplaces&lt;/b&gt; (AWS, Microsoft Azure, Google Cloud) — co-sell + marketplace transaction; also CAMARA channels for telecom operators.&lt;/li&gt;
+      &lt;li&gt;&lt;b&gt;Telecom-API channels&lt;/b&gt; (GSMA Open Gateway, Vonage, Nokia) — ecosystem entry to telecom operators.&lt;/li&gt;
+      &lt;li&gt;&lt;b&gt;API-gateway vendors&lt;/b&gt; (Kong, Gravitee, Apigee, Axway) — Fern as the DX layer on top of their gateway.&lt;/li&gt;
+      &lt;li&gt;&lt;b&gt;Postman ecosystem&lt;/b&gt; — the warmest path: land-expand where Postman is already deployed. &quot;Postman builds the API, Fern makes it get consumed.&quot;&lt;/li&gt;
+      &lt;li&gt;&lt;b&gt;Visa/Mastercard, PSPs&lt;/b&gt; — ecosystem intros for fintech/paytech.&lt;/li&gt;
+      &lt;li&gt;&lt;b&gt;Amdocs&lt;/b&gt; — both a target and a telecom-delivery partner for operator network-API programmes.&lt;/li&gt;
+    &lt;/ul&gt;
+
 &lt;div class=&quot;group-title edit-unit&quot; contenteditable=&quot;false&quot;&gt;Common Customer Questions in a First Call&lt;/div&gt;
 
 &lt;div class=&quot;obj&quot;&gt;
@@ -2574,6 +2612,38 @@ It also includes: automatic routing of logins by domain (Domain Capture), a dash
 &lt;div class=&quot;obj&quot;&gt;
 &lt;div class=&quot;q edit-unit&quot; contenteditable=&quot;false&quot;&gt;&quot;Ephemeral identities being free — doesn't that just mean the cost shows up somewhere else?&quot;&lt;/div&gt;
 &lt;div class=&quot;a edit-unit&quot; contenteditable=&quot;false&quot;&gt;&quot;No — these are short-lived identities (e.g. a sub-agent spawned for one task, automatically scoped to the parent agent's permissions). The real charges are on human identities (durable, $49/month) and API consumption volume ($50/million calls) — two separate, clearly metered things.&quot; &lt;br/&gt;&lt;b&gt;Reverse question:&lt;/b&gt; &quot;Roughly how many sub-agents get spun up per day, and how long do they typically 'live'?&quot;&lt;br/&gt;&lt;b&gt;Remember:&lt;/b&gt; That answer helps estimate actual API consumption volume, not just the identity count.&lt;/div&gt;
+&lt;/div&gt;
+
+&lt;div class=&quot;group-title edit-unit&quot; contenteditable=&quot;false&quot;&gt;Objections — Fern's Direct Competitors (Sept 2026)&lt;/div&gt;
+
+&lt;div class=&quot;obj&quot;&gt;
+&lt;div class=&quot;q edit-unit&quot; contenteditable=&quot;false&quot;&gt;&quot;We already use Speakeasy for SDKs — why Fern?&quot;&lt;/div&gt;
+&lt;div class=&quot;a edit-unit&quot; contenteditable=&quot;false&quot;&gt;&quot;Speakeasy is SDK-generation only, with per-language pricing, no docs, and no on-prem. Fern gives you docs+SDK from one source, not two vendors on two different cadences — and supports 9 languages including production Swift, the only one that does.&quot; &lt;br/&gt;&lt;b&gt;Reverse question:&lt;/b&gt; &quot;When the API changes, how long does it take your docs to 'catch up' after the SDK, and who's responsible for keeping the two tools in sync?&quot;&lt;br/&gt;&lt;b&gt;Remember:&lt;/b&gt; The real pain is coordination between two vendors, not the SDK's quality itself.&lt;/div&gt;
+&lt;/div&gt;
+
+&lt;div class=&quot;obj&quot;&gt;
+&lt;div class=&quot;q edit-unit&quot; contenteditable=&quot;false&quot;&gt;&quot;We're on Stainless — it works fine for us.&quot;&lt;/div&gt;
+&lt;div class=&quot;a edit-unit&quot; contenteditable=&quot;false&quot;&gt;&quot;Important to know: Stainless is winding down — acquired by Anthropic on May 18, 2026, and closed to new projects. Your existing SDKs will start going stale the moment the API changes and there's no one running regeneration. This is a genuine displacement opportunity with a timeline, not just a regular sale.&quot; &lt;br/&gt;&lt;b&gt;Reverse question:&lt;/b&gt; &quot;Are you aware Stainless is shutting down? Do you have a migration plan, or are you still relying on the SDKs already generated?&quot;&lt;br/&gt;&lt;b&gt;Remember:&lt;/b&gt; Lead with migration + drift, not features — this is time-bound, there's a real deadline here.&lt;/div&gt;
+&lt;/div&gt;
+
+&lt;div class=&quot;obj&quot;&gt;
+&lt;div class=&quot;q edit-unit&quot; contenteditable=&quot;false&quot;&gt;&quot;There's OpenAPI Generator (open-source, free) — why pay?&quot;&lt;/div&gt;
+&lt;div class=&quot;a edit-unit&quot; contenteditable=&quot;false&quot;&gt;&quot;It's free at 'purchase price' — but you become the owner of all the maintenance: idiomatic output, docs sync, drift detection, and support. The real TCO is engineering hours, not license cost.&quot; &lt;br/&gt;&lt;b&gt;Reverse question:&lt;/b&gt; &quot;How much engineering time actually goes into maintaining the SDKs generated from OpenAPI Generator / Kiota today, and who does that work?&quot;&lt;br/&gt;&lt;b&gt;Remember:&lt;/b&gt; &quot;Free but you own the maintenance&quot; — that's the exact phrase to use.&lt;/div&gt;
+&lt;/div&gt;
+
+&lt;div class=&quot;obj&quot;&gt;
+&lt;div class=&quot;q edit-unit&quot; contenteditable=&quot;false&quot;&gt;&quot;We have Mintlify / ReadMe for docs — isn't that enough?&quot;&lt;/div&gt;
+&lt;div class=&quot;a edit-unit&quot; contenteditable=&quot;false&quot;&gt;&quot;Those tools are great for the docs themselves, but they're docs-only — no SDK. When docs and SDK come from two separate vendors, they go out of sync the moment the API changes. Fern is one vendor for docs+SDK, with built-in drift detection.&quot; &lt;br/&gt;&lt;b&gt;Reverse question:&lt;/b&gt; &quot;Who runs regeneration for your SDKs when the API changes, and do the docs update at the same pace?&quot;&lt;br/&gt;&lt;b&gt;Remember:&lt;/b&gt; Don't argue about docs quality — ReadMe/Mintlify are good at that; the gap is SDK sync.&lt;/div&gt;
+&lt;/div&gt;
+
+&lt;div class=&quot;obj&quot;&gt;
+&lt;div class=&quot;q edit-unit&quot; contenteditable=&quot;false&quot;&gt;&quot;We wrote our own scripts that generate SDK/docs — it works for us.&quot;&lt;/div&gt;
+&lt;div class=&quot;a edit-unit&quot; contenteditable=&quot;false&quot;&gt;&quot;That usually works — until the developer who built the scripts leaves, or the API expands. The hidden cost is maintenance + drift, usually alongside a growing volume of support tickets from customers/partners getting stuck.&quot; &lt;br/&gt;&lt;b&gt;Reverse question:&lt;/b&gt; &quot;Who on the team maintains those scripts today, and what happens if that person leaves?&quot;&lt;br/&gt;&lt;b&gt;Remember:&lt;/b&gt; Show the actual Fern diff + any data on support-ticket volume tied to SDK/docs, if you have it.&lt;/div&gt;
+&lt;/div&gt;
+
+&lt;div class=&quot;obj&quot;&gt;
+&lt;div class=&quot;q edit-unit&quot; contenteditable=&quot;false&quot;&gt;&quot;We have a gateway (Apigee/Kong/Gravitee/Axway) with a built-in developer portal — why another tool?&quot;&lt;/div&gt;
+&lt;div class=&quot;a edit-unit&quot; contenteditable=&quot;false&quot;&gt;&quot;Fern doesn't compete with the gateway — it sits on top of it. The portal that ships with a gateway usually provides access, not real DX: no quality SDKs, no agent-readiness. Fern upgrades the experience around the gateway without ripping it out.&quot; &lt;br/&gt;&lt;b&gt;Reverse question:&lt;/b&gt; &quot;When an external developer wants to start working against your API, do they get a ready-made SDK, or just portal access and have to build a client themselves?&quot;&lt;br/&gt;&lt;b&gt;Remember:&lt;/b&gt; &quot;Complement, not rip-out&quot; — the exact phrase for customers with an existing gateway.&lt;/div&gt;
 &lt;/div&gt;
 
 &lt;div class=&quot;group-title edit-unit&quot; contenteditable=&quot;false&quot;&gt;10 Questions You Should Be Ready For in Every First Call&lt;/div&gt;
@@ -2691,7 +2761,12 @@ It also includes: automatic routing of logins by domain (Domain Capture), a dash
   // color, font, and other inline styling along, with no way to remove it
   // afterward. Stripping to plain text on paste means what you paste always
   // matches the surrounding formatting, never a stray colored box.
-  root.addEventListener('paste', (e)=&gt;{
+  // Global, not just on `root` — the side panels (ASA/Fabric/Passport/Fern/
+  // Database) are separate elements outside #editable-root, so a listener
+  // scoped to root never covers paste there, and pasted content keeps
+  // whatever background/formatting it came in with.
+  document.addEventListener('paste', (e)=&gt;{
+    if(!e.target.closest('[contenteditable=&quot;true&quot;]')) return;
     e.preventDefault();
     const text = (e.clipboardData || window.clipboardData).getData('text/plain');
     const sel = window.getSelection();
@@ -4076,17 +4151,29 @@ document.addEventListener('keydown', (e)=&gt;{
     try{ localStorage.setItem(NAV_ORDER_KEY, JSON.stringify(currentItems().map(i=&gt;i.dataset.reorderId))); }catch(e){}
   }
 
+  // Only trust a saved order when it's the EXACT same set of items as today
+  // — a structural edit (items added/removed/renamed) makes an old saved
+  // order meaningless: applying it would move just the still-matching items
+  // while leaving new ones wherever they happened to render, producing a
+  // scrambled mix. In that case, fall back to the current default order.
   try{
     const savedOrder = JSON.parse(localStorage.getItem(NAV_ORDER_KEY));
-    if(savedOrder &amp;&amp; savedOrder.length){
-      const byId = {};
-      currentItems().forEach(i=&gt;{ byId[i.dataset.reorderId] = i; });
+    const byId = {};
+    currentItems().forEach(i=&gt;{ byId[i.dataset.reorderId] = i; });
+    const currentIds = Object.keys(byId);
+    const sameSet = savedOrder &amp;&amp; savedOrder.length === currentIds.length &amp;&amp;
+      savedOrder.every(id =&gt; byId[id]) &amp;&amp; currentIds.every(id =&gt; savedOrder.includes(id));
+    if(sameSet){
       const navTitle = nav.querySelector('.nav-title');
       let anchor = navTitle;
       savedOrder.forEach(id=&gt;{
         const el = byId[id];
         if(el){ anchor.after(el); anchor = el; }
       });
+    } else if(savedOrder){
+      // Stale order from before a structural edit — drop it so it doesn't
+      // get reapplied (and scramble things again) on a future visit.
+      try{ localStorage.removeItem(NAV_ORDER_KEY); }catch(e){}
     }
   }catch(e){}
 
@@ -5651,6 +5738,44 @@ document.addEventListener('keydown', (e)=&gt;{
       &lt;li&gt;&lt;b&gt;נקודה חשובה לציין ללקוח&lt;/b&gt; — &quot;Data Residency&quot; לא אומר שכל הנתונים נשארים אצל הלקוח — ה-Control Plane עדיין בענן Postman. שווה לבדוק בכל מוצר ספציפי אילו נתונים עוברים בין הרכיבים, ומה בדיוק נשאר בצד הלקוח, לפני שמציגים את זה כסיבה לשדרג.&lt;/li&gt;
     &lt;/ul&gt;
 
+    &lt;div class=&quot;group-title edit-unit&quot; contenteditable=&quot;false&quot;&gt;Fern — מפת תחרות (Sept 2026)&lt;/div&gt;
+    &lt;div class=&quot;cross-box edit-unit&quot; contenteditable=&quot;false&quot;&gt;
+      &lt;b&gt;ה-Wedge של Fern:&lt;/b&gt; SDKs + Docs + CLIs + MCP ממקור הגדרה אחד · 9 שפות (היחיד עם Swift ב-production) · Self-host · Drift detection (&quot;Fern Diff&quot;).
+    &lt;/div&gt;
+    &lt;table class=&quot;panel-table&quot;&gt;
+      &lt;tr&gt;&lt;th&gt;קטגוריה&lt;/th&gt;&lt;th&gt;מתחרה&lt;/th&gt;&lt;th&gt;מה הם עושים&lt;/th&gt;&lt;th&gt;איך Fern מנצח / Talk Track&lt;/th&gt;&lt;/tr&gt;
+      &lt;tr&gt;&lt;td&gt;SDK generation&lt;/td&gt;&lt;td&gt;Speakeasy&lt;/td&gt;&lt;td&gt;SDK בלבד; תמחור לפי-שפה; אין Docs; אין on-prem&lt;/td&gt;&lt;td&gt;Docs+SDK ממקור אחד מול שני ספקים/קצבים&lt;/td&gt;&lt;/tr&gt;
+      &lt;tr&gt;&lt;td&gt;SDK generation&lt;/td&gt;&lt;td&gt;Stainless&lt;/td&gt;&lt;td&gt;⚠️ בתהליך Winding Down — נרכשה ע&quot;י Anthropic ב-18/5/2026, סגורה לפרויקטים חדשים&lt;/td&gt;&lt;td&gt;Displacement עם Timeline: Migration + Drift&lt;/td&gt;&lt;/tr&gt;
+      &lt;tr&gt;&lt;td&gt;SDK generation&lt;/td&gt;&lt;td&gt;OpenAPI Generator / MS Kiota&lt;/td&gt;&lt;td&gt;קוד פתוח, חינם, 8-50+ יעדים&lt;/td&gt;&lt;td&gt;&quot;Free but you own the maintenance&quot; — TCO אמיתי&lt;/td&gt;&lt;/tr&gt;
+      &lt;tr&gt;&lt;td&gt;Documentation&lt;/td&gt;&lt;td&gt;Mintlify&lt;/td&gt;&lt;td&gt;Docs מודרני, AI chat חזק, אבל Docs-only&lt;/td&gt;&lt;td&gt;Docs לבד יוצא מסונכרן מה-SDK&lt;/td&gt;&lt;/tr&gt;
+      &lt;tr&gt;&lt;td&gt;Documentation&lt;/td&gt;&lt;td&gt;ReadMe / Scalar / Stoplight / Redocly&lt;/td&gt;&lt;td&gt;Reference ו-Portals, מגייסים מעברי Stainless&lt;/td&gt;&lt;td&gt;ספק אחד ל-Docs+SDK, Drift detection&lt;/td&gt;&lt;/tr&gt;
+      &lt;tr&gt;&lt;td&gt;Internal portal&lt;/td&gt;&lt;td&gt;Backstage / Docusaurus&lt;/td&gt;&lt;td&gt;Portal/Docs פנימי בקוד פתוח&lt;/td&gt;&lt;td&gt;Generated תמיד-מסונכרן מול דפים שידניים ונעשים Stale&lt;/td&gt;&lt;/tr&gt;
+      &lt;tr&gt;&lt;td&gt;Gateway portals&lt;/td&gt;&lt;td&gt;Apigee / Kong / Gravitee / Axway / Azure APIM&lt;/td&gt;&lt;td&gt;Portal שמגיע מובנה עם ה-Gateway&lt;/td&gt;&lt;td&gt;Fern יושב מעל כל Gateway — &quot;Complement, not rip-out&quot;&lt;/td&gt;&lt;/tr&gt;
+      &lt;tr&gt;&lt;td&gt;Build-it-yourself&lt;/td&gt;&lt;td&gt;סקריפטים פנימיים&lt;/td&gt;&lt;td&gt;יצירת SDK/Docs ביתית&lt;/td&gt;&lt;td&gt;עלות חבויה = תחזוקה + Drift; להראות נתוני Support&lt;/td&gt;&lt;/tr&gt;
+    &lt;/table&gt;
+
+    &lt;div class=&quot;group-title edit-unit&quot; contenteditable=&quot;false&quot;&gt;Fern — סיגנלים לאיתור לקוח מתאים (Qualify לפני Outreach)&lt;/div&gt;
+    &lt;ul class=&quot;panel-list&quot;&gt;
+      &lt;li&gt;&lt;b&gt;Public developer portal / API reference&lt;/b&gt; (developer.&amp;lt;חברה&amp;gt; / docs.&amp;lt;חברה&amp;gt;) — יש להם Consumers חיצוניים, זה Revenue Play חי.&lt;/li&gt;
+      &lt;li&gt;&lt;b&gt;SDKs &quot;לא-רשמיים&quot; של הקהילה ב-GitHub&lt;/b&gt; — אין להם SDK רשמי בחלק מהשפות, זה בדיוק ה-Fern Land.&lt;/li&gt;
+      &lt;li&gt;&lt;b&gt;כמה Repos של SDKs שמתוחזקים ביד&lt;/b&gt; — זה בדיוק הכאב המרכזי של Fern (SDK-sync/Drift).&lt;/li&gt;
+      &lt;li&gt;&lt;b&gt;היו לקוח של Stainless&lt;/b&gt; (ראו README/generator headers, &quot;app.stainless&quot; ב-transition) — דחיפות גבוהה, ה-Regeneration שלהם נעצר ב-18/5/2026.&lt;/li&gt;
+      &lt;li&gt;&lt;b&gt;גיוס DevRel / &quot;Docs&quot;&lt;/b&gt; (Careers page, LinkedIn jobs) — משקיעים ב-DX עכשיו, זה תזמון + תקציב.&lt;/li&gt;
+      &lt;li&gt;&lt;b&gt;חברות שחשופות ל-llms.txt / MCP / &quot;AI-ready docs&quot;&lt;/b&gt; — רודפים אחרי Agent-readiness, שווה להוביל עם זה.&lt;/li&gt;
+      &lt;li&gt;&lt;b&gt;חברת-אם גדולה שמפעילה APIs של היחידה שלה&lt;/b&gt; (למשל PagoNxt, Enel X, Wiz) — להסתכל גם על הכנסות החברה-האם.&lt;/li&gt;
+    &lt;/ul&gt;
+
+    &lt;div class=&quot;group-title edit-unit&quot; contenteditable=&quot;false&quot;&gt;Fern — שותפים (ערוצים ומנופים טכנולוגיים)&lt;/div&gt;
+    &lt;ul class=&quot;panel-list&quot;&gt;
+      &lt;li&gt;&lt;b&gt;GSIs&lt;/b&gt; (Capgemini, Sopra Steria, Reply, Indra/Minsait, Atos, Devoteam, Accenture/Deloitte) — שותפי Delivery בבנקים/טלקום; Co-sell את Fern כשכבת ה-DX.&lt;/li&gt;
+      &lt;li&gt;&lt;b&gt;Hyperscalers/Marketplaces&lt;/b&gt; (AWS, Microsoft Azure, Google Cloud) — Co-sell + עסקת Marketplace; Azure/AWS הם גם ערוצי CAMARA למפעילים.&lt;/li&gt;
+      &lt;li&gt;&lt;b&gt;ערוצי Telecom-API&lt;/b&gt; (GSMA Open Gateway, Vonage, Nokia) — כניסה ל-Ecosystem של מפעילים סלולריים.&lt;/li&gt;
+      &lt;li&gt;&lt;b&gt;ספקי API-Gateway&lt;/b&gt; (Kong, Gravitee, Apigee, Axway) — Fern כשכבת DX מעל ה-Gateway שלהם.&lt;/li&gt;
+      &lt;li&gt;&lt;b&gt;Postman Ecosystem&lt;/b&gt; — הדרך החמה ביותר: Land-Expand במקום שבו Postman כבר נמצא. &quot;Postman בונה את ה-API, Fern הופך אותו לנגיש בפועל.&quot;&lt;/li&gt;
+      &lt;li&gt;&lt;b&gt;Visa/Mastercard, PSPs&lt;/b&gt; — הכרויות Ecosystem ל-fintech/paytech.&lt;/li&gt;
+      &lt;li&gt;&lt;b&gt;Amdocs&lt;/b&gt; — גם Target וגם שותף-Delivery לתוכניות Network-API של מפעילים.&lt;/li&gt;
+    &lt;/ul&gt;
+
 &lt;div class=&quot;group-title edit-unit&quot; contenteditable=&quot;false&quot;&gt;שאלות נפוצות מלקוחות ב-First Call&lt;/div&gt;
 
 &lt;div class=&quot;obj&quot;&gt;
@@ -5767,6 +5892,38 @@ document.addEventListener('keydown', (e)=&gt;{
 &lt;div class=&quot;a edit-unit&quot; contenteditable=&quot;false&quot;&gt;&quot;לא — אלה זהויות קצרות-חיים (למשל Sub-Agent שנוצר למשימה אחת וננעל מיד לפי ההרשאות של ה-Agent ההורה). התשלום האמיתי הוא על Human identities (זהויות קבועות, $49/חודש) ועל נפח ה-API consumption ($50/מיליון קריאות) — שני דברים שנמדדים בנפרד וברורים.&quot; &lt;br/&gt;&lt;b&gt;שאלת Revers:&lt;/b&gt; &quot;כמה Sub-Agents בערך נוצרים אצלכם ביום, ולכמה זמן הם בדרך כלל 'חיים'?&quot;&lt;br/&gt;&lt;b&gt;לזכור:&lt;/b&gt; התשובה הזו עוזרת להעריך את נפח ה-API consumption בפועל, לא רק את מספר הזהויות הקבועות.&lt;/div&gt;
 &lt;/div&gt;
 
+&lt;div class=&quot;group-title edit-unit&quot; contenteditable=&quot;false&quot;&gt;התנגדויות — מתחרים ישירים של Fern (Sept 2026)&lt;/div&gt;
+
+&lt;div class=&quot;obj&quot;&gt;
+&lt;div class=&quot;q edit-unit&quot; contenteditable=&quot;false&quot;&gt;&quot;אנחנו כבר משתמשים ב-Speakeasy ל-SDKs — למה Fern?&quot;&lt;/div&gt;
+&lt;div class=&quot;a edit-unit&quot; contenteditable=&quot;false&quot;&gt;&quot;Speakeasy עושה SDK-generation בלבד, עם תמחור לפי-שפה, בלי Docs ובלי on-prem. Fern נותן Docs+SDK ממקור אחד, לא משני ספקים/קצבי-עדכון שונים — ותומך ב-9 שפות כולל Swift ב-production (היחיד שעושה את זה).&quot; &lt;br/&gt;&lt;b&gt;שאלת Revers:&lt;/b&gt; &quot;כשה-API משתנה, כמה זמן לוקח ל-Docs שלכם 'להתעדכן' אחרי ה-SDK, ומי אחראי לסנכרן בין שני הכלים?&quot;&lt;br/&gt;&lt;b&gt;לזכור:&lt;/b&gt; הכאב האמיתי הוא תיאום בין שני ספקים, לא איכות ה-SDK עצמו.&lt;/div&gt;
+&lt;/div&gt;
+
+&lt;div class=&quot;obj&quot;&gt;
+&lt;div class=&quot;q edit-unit&quot; contenteditable=&quot;false&quot;&gt;&quot;אנחנו על Stainless — זה עובד לנו טוב.&quot;&lt;/div&gt;
+&lt;div class=&quot;a edit-unit&quot; contenteditable=&quot;false&quot;&gt;&quot;חשוב לדעת: Stainless בתהליך Winding Down — נרכשה ע״י Anthropic ב-18 במאי 2026 וסגורה לפרויקטים חדשים. ה-SDKs הקיימים שלכם יתחילו 'להתיישן' ברגע שה-API משתנה ואין מי שמריץ regeneration. זו הזדמנות Displacement אמיתית עם Timeline — לא רק מכירה רגילה.&quot; &lt;br/&gt;&lt;b&gt;שאלת Revers:&lt;/b&gt; &quot;אתם מודעים לסגירה של Stainless? יש לכם תוכנית מגירה, או שאתם עדיין סומכים על ה-SDKs שכבר נוצרו?&quot;&lt;br/&gt;&lt;b&gt;לזכור:&lt;/b&gt; להוביל עם Migration + Drift, לא עם פיצ'רים - זה Time-bound, יש כאן דד-ליין אמיתי.&lt;/div&gt;
+&lt;/div&gt;
+
+&lt;div class=&quot;obj&quot;&gt;
+&lt;div class=&quot;q edit-unit&quot; contenteditable=&quot;false&quot;&gt;&quot;יש OpenAPI Generator (קוד פתוח, חינם) — בשביל מה לשלם?&quot;&lt;/div&gt;
+&lt;div class=&quot;a edit-unit&quot; contenteditable=&quot;false&quot;&gt;&quot;זה חינם ב'מחיר רכישה' — אבל אתם הופכים לבעלים של כל התחזוקה: Idiomatic output, סנכרון Docs, Drift detection, ותמיכה. ה-TCO האמיתי הוא שעות הנדסה, לא מחיר רישיון.&quot; &lt;br/&gt;&lt;b&gt;שאלת Revers:&lt;/b&gt; &quot;כמה זמן הנדסי בפועל הולך היום על תחזוקת ה-SDKs שנוצרו מ-OpenAPI Generator / Kiota, ומי עושה את זה?&quot;&lt;br/&gt;&lt;b&gt;לזכור:&lt;/b&gt; &quot;Free but you own the maintenance&quot; — זה המשפט המדויק להשתמש בו.&lt;/div&gt;
+&lt;/div&gt;
+
+&lt;div class=&quot;obj&quot;&gt;
+&lt;div class=&quot;q edit-unit&quot; contenteditable=&quot;false&quot;&gt;&quot;יש לנו Mintlify / ReadMe ל-Docs — זה לא מספיק?&quot;&lt;/div&gt;
+&lt;div class=&quot;a edit-unit&quot; contenteditable=&quot;false&quot;&gt;&quot;כלים כאלה מעולים לתיעוד עצמו, אבל הם Docs-only — אין להם SDK. כש-Docs ו-SDK באים משני ספקים נפרדים, הם יוצאים מסונכרנים ברגע שה-API משתנה. Fern הוא ספק אחד ל-Docs+SDK, עם Drift detection מובנה.&quot; &lt;br/&gt;&lt;b&gt;שאלת Revers:&lt;/b&gt; &quot;מי מריץ regeneration ל-SDKs שלכם כשה-API משתנה, והאם ה-Docs מתעדכנים באותו קצב?&quot;&lt;br/&gt;&lt;b&gt;לזכור:&lt;/b&gt; אל תתווכח על איכות ה-Docs — ReadMe/Mintlify טובים בזה; הפער הוא ב-SDK sync.&lt;/div&gt;
+&lt;/div&gt;
+
+&lt;div class=&quot;obj&quot;&gt;
+&lt;div class=&quot;q edit-unit&quot; contenteditable=&quot;false&quot;&gt;&quot;כתבנו סקריפטים משלנו שמייצרים SDK/Docs — זה עובד לנו.&quot;&lt;/div&gt;
+&lt;div class=&quot;a edit-unit&quot; contenteditable=&quot;false&quot;&gt;&quot;זה לרוב עובד — עד שהמפתח שבנה את הסקריפטים עוזב, או שה-API מתרחב. העלות החבויה היא תחזוקה + Drift, בדרך כלל יחד עם נפח גדל של פניות Support מלקוחות/שותפים שנתקעים.&quot; &lt;br/&gt;&lt;b&gt;שאלת Revers:&lt;/b&gt; &quot;מי בצוות מתחזק את הסקריפטים האלה היום, ומה קורה אם האדם הזה עוזב?&quot;&lt;br/&gt;&lt;b&gt;לזכור:&lt;/b&gt; להראות את ה-Fern diff בפועל + דאטה על נפח כרטיסי Support שקשורים ל-SDK/Docs, אם יש.&lt;/div&gt;
+&lt;/div&gt;
+
+&lt;div class=&quot;obj&quot;&gt;
+&lt;div class=&quot;q edit-unit&quot; contenteditable=&quot;false&quot;&gt;&quot;יש לנו Gateway (Apigee/Kong/Gravitee/Axway) עם Developer Portal מובנה — למה עוד כלי?&quot;&lt;/div&gt;
+&lt;div class=&quot;a edit-unit&quot; contenteditable=&quot;false&quot;&gt;&quot;Fern לא מתחרה ב-Gateway — הוא יושב מעליו. ה-Portal שמגיע עם Gateway בדרך כלל מספק גישה, לא DX אמיתי: אין SDKs איכותיים, אין Agent-readiness. Fern משדרג את החוויה שסביב ה-Gateway, בלי לדרוס אותו.&quot; &lt;br/&gt;&lt;b&gt;שאלת Revers:&lt;/b&gt; &quot;כשמפתח חיצוני רוצה להתחיל לעבוד מול ה-API שלכם, הוא מקבל SDK מוכן, או רק גישה ל-Portal וצריך לבנות client בעצמו?&quot;&lt;br/&gt;&lt;b&gt;לזכור:&lt;/b&gt; &quot;Complement, not rip-out&quot; — המשפט המדויק מול לקוחות עם Gateway קיים.&lt;/div&gt;
+&lt;/div&gt;
+
 &lt;div class=&quot;group-title edit-unit&quot; contenteditable=&quot;false&quot;&gt;10 שאלות שכדאי להיות מוכן אליהן בכל First Call&lt;/div&gt;
 &lt;ul class=&quot;panel-list&quot;&gt;
 &lt;li&gt;אני כבר משתמש ב-Free — למה Enterprise?&lt;/li&gt;
@@ -5881,7 +6038,12 @@ document.addEventListener('keydown', (e)=&gt;{
   // color, font, and other inline styling along, with no way to remove it
   // afterward. Stripping to plain text on paste means what you paste always
   // matches the surrounding formatting, never a stray colored box.
-  root.addEventListener('paste', (e)=&gt;{
+  // Global, not just on `root` — the side panels (ASA/Fabric/Passport/Fern/
+  // Database) are separate elements outside #editable-root, so a listener
+  // scoped to root never covers paste there, and pasted content keeps
+  // whatever background/formatting it came in with.
+  document.addEventListener('paste', (e)=&gt;{
+    if(!e.target.closest('[contenteditable=&quot;true&quot;]')) return;
     e.preventDefault();
     const text = (e.clipboardData || window.clipboardData).getData('text/plain');
     const sel = window.getSelection();
@@ -7294,17 +7456,29 @@ document.addEventListener('keydown', (e)=&gt;{
   }
 
   // Apply a previously saved order, if any (anchored right after nav-title).
+  // Only trust it when it's a saved order of the EXACT same set of items as
+  // today — a structural edit (items added/removed/renamed) makes an old
+  // saved order meaningless: applying it would move just the still-matching
+  // items while leaving new ones wherever they happened to render, producing
+  // a scrambled mix. In that case, fall back to the current default order.
   try{
     const savedOrder = JSON.parse(localStorage.getItem(NAV_ORDER_KEY));
-    if(savedOrder &amp;&amp; savedOrder.length){
-      const byId = {};
-      currentItems().forEach(i=&gt;{ byId[i.dataset.reorderId] = i; });
+    const byId = {};
+    currentItems().forEach(i=&gt;{ byId[i.dataset.reorderId] = i; });
+    const currentIds = Object.keys(byId);
+    const sameSet = savedOrder &amp;&amp; savedOrder.length === currentIds.length &amp;&amp;
+      savedOrder.every(id =&gt; byId[id]) &amp;&amp; currentIds.every(id =&gt; savedOrder.includes(id));
+    if(sameSet){
       const navTitle = nav.querySelector('.nav-title');
       let anchor = navTitle;
       savedOrder.forEach(id=&gt;{
         const el = byId[id];
         if(el){ anchor.after(el); anchor = el; }
       });
+    } else if(savedOrder){
+      // Stale order from before a structural edit — drop it so it doesn't
+      // get reapplied (and scramble things again) on a future visit.
+      try{ localStorage.removeItem(NAV_ORDER_KEY); }catch(e){}
     }
   }catch(e){}
 
