@@ -1678,6 +1678,26 @@
   }
   .answer-content.loading{color:var(--grey);}
   .answer-content:focus{outline:2px solid #FFD9C7;outline-offset:-2px;}
+
+  .qa-lib{font-size:13px;}
+  .qa-lib .qa-head{display:flex;align-items:center;gap:8px;margin:0 0 6px;}
+  .qa-lib .qa-title{font-weight:700;color:#1C1C1E;}
+  .qa-lib input.qa-search{flex:1;min-width:0;padding:6px 10px;border:1px solid #D8D8DC;border-radius:8px;font:inherit;}
+  .qa-lib .qa-chips{display:flex;flex-wrap:wrap;gap:6px;margin:0 0 6px;}
+  .qa-lib .qa-chip{border:1px solid #D8D8DC;background:#fff;border-radius:999px;padding:4px 10px;cursor:pointer;font:inherit;color:#1C1C1E;}
+  .qa-lib .qa-chip:hover{border-color:#FF6C37;color:#FF6C37;}
+  .qa-lib .qa-chip.active{background:#FF6C37;border-color:#FF6C37;color:#fff;}
+  .qa-lib .qa-chip .n{opacity:.7;margin-inline-start:4px;font-size:11px;}
+  .qa-lib .qa-list{max-height:260px;overflow:auto;border:1px solid #ECECEF;border-radius:8px;background:#fff;}
+  .qa-lib .qa-list:empty{display:none;}
+  .qa-lib .qa-item{padding:7px 10px;cursor:pointer;border-bottom:1px solid #F1F1F4;line-height:1.35;}
+  .qa-lib .qa-item:last-child{border-bottom:none;}
+  .qa-lib .qa-item:hover{background:#FFF4EE;color:#C2410C;}
+  .qa-lib .qa-item small{display:block;color:#8A8A90;font-size:11px;}
+  #qa-lib-obj{padding:10px 14px 8px;border-bottom:1px solid #ECECEF;background:#FAFAFB;}
+  #qa-lib-chat{padding:8px 10px;border-bottom:1px solid #ECECEF;}
+  .qa-clickable li{cursor:pointer;}
+  .qa-clickable li:hover{color:#C2410C;text-decoration:underline;}
 &lt;/style&gt;
 &lt;/head&gt;
 &lt;body&gt;
@@ -2012,6 +2032,7 @@ We have an API but it's hard for developers/partners to use, we maintain Docs an
 &lt;span&gt;Objections — How I Respond&lt;/span&gt;
 &lt;button class=&quot;panel-close&quot; data-close=&quot;panel-objections&quot;&gt;✕&lt;/button&gt;
 &lt;/div&gt;
+&lt;div id=&quot;qa-lib-obj&quot;&gt;&lt;/div&gt;
 &lt;div class=&quot;panel-body&quot;&gt;
 &lt;div class=&quot;fmt-group answer-fmt-group panel-toolbar&quot;&gt;
   &lt;button type=&quot;button&quot; class=&quot;ptb-bold&quot; title=&quot;Bold (select text and click)&quot;&gt;B&lt;/button&gt;
@@ -2044,154 +2065,6 @@ We have an API but it's hard for developers/partners to use, we maintain Docs an
 &lt;div class=&quot;obj&quot;&gt;
 &lt;div class=&quot;q edit-unit&quot; contenteditable=&quot;false&quot;&gt;Data privacy (relevant for conversations with financial institutions)&lt;/div&gt;
 &lt;div class=&quot;a edit-unit&quot; contenteditable=&quot;false&quot;&gt;&quot;Postman never has access to the customer’s real data — it always stays in your own cloud, AWS or Azure, and never passes through us. On the Enterprise plan, AI data is also not shared with Postman for model training purposes; on lower-tier plans — it is. We also have a Trust Portal (requires an NDA), with SOC 2, SOC 3, and ISO certifications.&quot;&lt;/div&gt;
-&lt;/div&gt;
-
-&lt;div class=&quot;group-title edit-unit&quot; contenteditable=&quot;false&quot;&gt;Common Customer Questions in a First Call&lt;/div&gt;
-
-&lt;div class=&quot;obj&quot;&gt;
-&lt;div class=&quot;q edit-unit&quot; contenteditable=&quot;false&quot;&gt;&quot;Do you connect to other systems (API Connect, Azure APIM)?&quot;&lt;/div&gt;
-&lt;div class=&quot;a edit-unit&quot; contenteditable=&quot;false&quot;&gt;&quot;Yes. There are integrations with various gateways (including Azure API Management and IBM API Connect) and with AWS, Azure, and Google Cloud. Postman pulls information from existing environments for discovery and the API Catalog.&quot; &lt;br/&gt;&lt;b&gt;Remember:&lt;/b&gt; first clarify what the customer means by &quot;integration&quot; — discovery, monitoring, testing, or replacing a gateway.&lt;/div&gt;
-&lt;/div&gt;
-
-&lt;div class=&quot;obj&quot;&gt;
-&lt;div class=&quot;q edit-unit&quot; contenteditable=&quot;false&quot;&gt;&quot;Is Postman a Gateway, or does it sit in the middle as one?&quot;&lt;/div&gt;
-&lt;div class=&quot;a edit-unit&quot; contenteditable=&quot;false&quot;&gt;&quot;No. Postman isn't meant to replace your API Gateway. It connects to existing Gateways and pulls information from them, plus there's an agent that listens to activity in the environment.&quot; &lt;br/&gt;&lt;b&gt;Remember:&lt;/b&gt; keep the distinction clear — the Gateway handles traffic; Postman manages the API lifecycle around it.&lt;/div&gt;
-&lt;/div&gt;
-
-&lt;div class=&quot;obj&quot;&gt;
-&lt;div class=&quot;q edit-unit&quot; contenteditable=&quot;false&quot;&gt;&quot;How do you find APIs that we ourselves don't know about?&quot;&lt;/div&gt;
-&lt;div class=&quot;a edit-unit&quot; contenteditable=&quot;false&quot;&gt;&quot;A few discovery mechanisms: integration with gateways and cloud providers, an agent that identifies APIs from network traffic (Postman Insights), and service discovery in Kubernetes (Cluster Watcher). The goal is a broad picture of your entire API landscape.&quot; &lt;br/&gt;&lt;b&gt;Remember:&lt;/b&gt; this connects directly to the &quot;unknown APIs&quot; problem and the API Catalog.&lt;/div&gt;
-&lt;/div&gt;
-
-&lt;div class=&quot;obj&quot;&gt;
-&lt;div class=&quot;q edit-unit&quot; contenteditable=&quot;false&quot;&gt;&quot;To monitor APIs, do you have to intercept traffic?&quot;&lt;/div&gt;
-&lt;div class=&quot;a edit-unit&quot; contenteditable=&quot;false&quot;&gt;&quot;Not necessarily. With a Gateway integration, Postman gets information directly from the Gateway. There's also an agent option that listens to the environment and identifies which APIs are being called.&quot; &lt;br/&gt;&lt;b&gt;Remember:&lt;/b&gt; don't go too deep into the technology — there are a few methods depending on the customer's architecture.&lt;/div&gt;
-&lt;/div&gt;
-
-&lt;div class=&quot;obj&quot;&gt;
-&lt;div class=&quot;q edit-unit&quot; contenteditable=&quot;false&quot;&gt;&quot;What is an API Catalog, and why do we need it if we have API Management?&quot;&lt;/div&gt;
-&lt;div class=&quot;a edit-unit&quot; contenteditable=&quot;false&quot;&gt;&quot;API Catalog is a central registry giving you a single pane of glass over every API in the organization — what exists, who owns it, and what state it's in (linked to source control, CI/CD, and production). API Management handles real-time traffic; the Catalog gives you the visibility and ownership picture above it.&quot; &lt;br/&gt;&lt;b&gt;Remember:&lt;/b&gt; don't present the Catalog as &quot;just another list&quot; — it's visibility and ownership over a distributed API landscape.&lt;/div&gt;
-&lt;/div&gt;
-
-&lt;div class=&quot;obj&quot;&gt;
-&lt;div class=&quot;q edit-unit&quot; contenteditable=&quot;false&quot;&gt;&quot;Do you work with source code and repositories?&quot;&lt;/div&gt;
-&lt;div class=&quot;a edit-unit&quot; contenteditable=&quot;false&quot;&gt;&quot;Yes. There's a GitHub connection that links source code to APIs, and you can also turn existing code into Postman collections.&quot; &lt;br/&gt;&lt;b&gt;Remember:&lt;/b&gt; especially relevant for Git-based organizations.&lt;/div&gt;
-&lt;/div&gt;
-
-&lt;div class=&quot;obj&quot;&gt;
-&lt;div class=&quot;q edit-unit&quot; contenteditable=&quot;false&quot;&gt;&quot;We work a lot with AI and Agents — how does Postman fit in?&quot;&lt;/div&gt;
-&lt;div class=&quot;a edit-unit&quot; contenteditable=&quot;false&quot;&gt;&quot;Postman includes built-in AI capabilities (Postman AI and Agent Mode) that automate API development work — generating tests, docs, and workflows. Beyond that, as more AI/agent workflows consume APIs, the need grows for APIs that are discoverable, reliable, and well-documented, and for Governance once AI is part of the process.&quot; &lt;br/&gt;&lt;b&gt;Remember:&lt;/b&gt; first understand the customer's AI workflow, only then connect it to the relevant product.&lt;/div&gt;
-&lt;/div&gt;
-
-&lt;div class=&quot;obj&quot;&gt;
-&lt;div class=&quot;q edit-unit&quot; contenteditable=&quot;false&quot;&gt;&quot;Do you enforce standards like OpenAPI on development teams?&quot;&lt;/div&gt;
-&lt;div class=&quot;a edit-unit&quot; contenteditable=&quot;false&quot;&gt;&quot;Yes. Postman (API Governance) lets you define and enforce rules across teams — both built-in and custom rules — and plug Governance into CI/CD.&quot; &lt;br/&gt;&lt;b&gt;Remember:&lt;/b&gt; distinguish between &quot;we follow OpenAPI&quot; and &quot;we actually enforce OpenAPI.&quot;&lt;/div&gt;
-&lt;/div&gt;
-
-&lt;div class=&quot;group-title edit-unit&quot; contenteditable=&quot;false&quot;&gt;Common Pricing &amp;amp; Packaging Questions (2026)&lt;/div&gt;
-
-&lt;div class=&quot;obj&quot;&gt;
-&lt;div class=&quot;q edit-unit&quot; contenteditable=&quot;false&quot;&gt;&quot;Why is Free only 1 user now?&quot;&lt;/div&gt;
-&lt;div class=&quot;a edit-unit&quot; contenteditable=&quot;false&quot;&gt;&quot;Free is now a complete single-developer experience (unlimited runs, Git, mocks, 50 AI credits) rather than a light 3-person team plan. Collaboration starts at Team, which is actually built for multi-user work with real roles and controls.&quot;&lt;/div&gt;
-&lt;/div&gt;
-
-&lt;div class=&quot;obj&quot;&gt;
-&lt;div class=&quot;q edit-unit&quot; contenteditable=&quot;false&quot;&gt;&quot;What's the real difference between Team RBAC and Enterprise RBAC?&quot;&lt;/div&gt;
-&lt;div class=&quot;a edit-unit&quot; contenteditable=&quot;false&quot;&gt;&quot;Team RBAC is workspace-level, the same as the old Professional plan. Enterprise RBAC is org-wide and advanced - user groups, API-level roles, governance and network manager roles.&quot;&lt;/div&gt;
-&lt;/div&gt;
-
-&lt;div class=&quot;obj&quot;&gt;
-&lt;div class=&quot;q edit-unit&quot; contenteditable=&quot;false&quot;&gt;&quot;Why did add-ons mostly go away?&quot;&lt;/div&gt;
-&lt;div class=&quot;a edit-unit&quot; contenteditable=&quot;false&quot;&gt;&quot;They caused constant confusion about which plan someone actually needed. Almost everything is now bundled directly into the plan it belongs to, unlimited, so the purchase decision is just 'which plan,' not 'which plan plus which add-ons.'&quot;&lt;/div&gt;
-&lt;/div&gt;
-
-&lt;div class=&quot;obj&quot;&gt;
-&lt;div class=&quot;q edit-unit&quot; contenteditable=&quot;false&quot;&gt;&quot;Are AI credits really unlimited?&quot;&lt;/div&gt;
-&lt;div class=&quot;a edit-unit&quot; contenteditable=&quot;false&quot;&gt;&quot;No plan is unlimited, but each has a real baseline most users never hit, and consumption pricing only kicks in above that - it's a safety valve, not the default experience, and admins choose whether overage billing is even turned on.&quot; &lt;br/&gt;&lt;b&gt;Numbers:&lt;/b&gt; Free 50 / Solo &amp;amp; Team 400 / Enterprise 800 (pooled), all per user/mo; overage: Solo $0.05, Team $0.04, Enterprise $0.035 per credit (Free: none, must upgrade).&lt;/div&gt;
-&lt;/div&gt;
-
-&lt;div class=&quot;obj&quot;&gt;
-&lt;div class=&quot;q edit-unit&quot; contenteditable=&quot;false&quot;&gt;&quot;What does Postman add beyond the WAF, DDoS, and Authentication we already have?&quot;&lt;/div&gt;
-&lt;div class=&quot;a edit-unit&quot; contenteditable=&quot;false&quot;&gt;&quot;Postman doesn't compete with WAF/DDoS/authentication — it adds a security layer focused on the API lifecycle itself: Secret Scanner, which finds leaked secrets and keys in code and collections, security scorecards in the API Catalog, and a shift-left testing approach.&quot; &lt;br/&gt;&lt;b&gt;Remember:&lt;/b&gt; don't argue with the existing stack. Find out where the gaps actually are — lifecycle, Governance, secrets, and testing.&lt;/div&gt;
-&lt;/div&gt;
-
-&lt;div class=&quot;obj&quot;&gt;
-&lt;div class=&quot;q edit-unit&quot; contenteditable=&quot;false&quot;&gt;&quot;We work with MuleSoft — where does Postman fit in?&quot;&lt;/div&gt;
-&lt;div class=&quot;a edit-unit&quot; contenteditable=&quot;false&quot;&gt;&quot;Postman doesn't replace MuleSoft as an integration platform — MuleSoft/Anypoint is its own integration platform with its own Catalog. The relevant angle is self-service API publishing from Postman, with Governance and an approval flow, which fills the gap of long waits to create new APIs. A direct, specific technical integration with MuleSoft hasn't been fully confirmed yet.&quot; &lt;br/&gt;&lt;b&gt;Remember:&lt;/b&gt; never promise a capability that hasn't actually been demonstrated — set up a technical follow-up with an SE.&lt;/div&gt;
-&lt;/div&gt;
-
-&lt;div class=&quot;obj&quot;&gt;
-&lt;div class=&quot;q edit-unit&quot; contenteditable=&quot;false&quot;&gt;&quot;We already use Postman for testing — what else do we get?&quot;&lt;/div&gt;
-&lt;div class=&quot;a edit-unit&quot; contenteditable=&quot;false&quot;&gt;&quot;Enterprise expands a point-solution use of testing into the full API lifecycle: design, Governance, and organization-wide visibility into every API in the company — not just the ones already being tested.&quot; &lt;br/&gt;&lt;b&gt;Remember:&lt;/b&gt; start from what they're already doing with Postman, then identify what's missing around it.&lt;/div&gt;
-&lt;/div&gt;
-
-&lt;div class=&quot;group-title edit-unit&quot; contenteditable=&quot;false&quot;&gt;Objections — Fabric / Passport / Fern / Hosting&lt;/div&gt;
-
-&lt;div class=&quot;obj&quot;&gt;
-&lt;div class=&quot;q edit-unit&quot; contenteditable=&quot;false&quot;&gt;&quot;We already have a Secret Manager/Vault (HashiCorp, AWS Secrets Manager) — why do we need Passport?&quot;&lt;/div&gt;
-&lt;div class=&quot;a edit-unit&quot; contenteditable=&quot;false&quot;&gt;&quot;Passport doesn't replace your existing vault — the real secret keeps living exactly there. It adds a layer on top: discovery (knowing the API even exists), an orderly access request flow, and an audit trail on every call — things the vault itself doesn't do.&quot; &lt;br/&gt;&lt;b&gt;Reverse question:&lt;/b&gt; &quot;When a developer needs new access today, how long does it take from request to actually getting the secret, and who approves it?&quot;&lt;br/&gt;&lt;b&gt;Remember:&lt;/b&gt; Don't sell this as &quot;a better vault&quot; — it's a Governance layer, not direct competition.&lt;/div&gt;
-&lt;/div&gt;
-
-&lt;div class=&quot;obj&quot;&gt;
-&lt;div class=&quot;q edit-unit&quot; contenteditable=&quot;false&quot;&gt;&quot;$49/month per identity is a lot — why not just give developers the key?&quot;&lt;/div&gt;
-&lt;div class=&quot;a edit-unit&quot; contenteditable=&quot;false&quot;&gt;&quot;That's exactly what happens in most organizations today — and that's the problem: one leaked key can be used thousands of times before anyone notices. $49 isn't an 'extra' cost — it's the price of knowing who did what, and being able to revoke access in 30 seconds instead of rotating the secret for everyone.&quot; &lt;br/&gt;&lt;b&gt;Reverse question:&lt;/b&gt; &quot;If a developer leaves tomorrow, how long does it take you today to know exactly which APIs they had access to, and to cut that off?&quot;&lt;br/&gt;&lt;b&gt;Remember:&lt;/b&gt; The real ARR driver is API consumption ($50/million calls), not just identities — don't anchor the whole conversation on per-user price.&lt;/div&gt;
-&lt;/div&gt;
-
-&lt;div class=&quot;obj&quot;&gt;
-&lt;div class=&quot;q edit-unit&quot; contenteditable=&quot;false&quot;&gt;&quot;We already use LiteLLM / Kong AI Gateway — why Fabric?&quot;&lt;/div&gt;
-&lt;div class=&quot;a edit-unit&quot; contenteditable=&quot;false&quot;&gt;&quot;Tools like that are great for routing between LLMs — but that's exactly their scope: LLMs. Once you also have internal APIs and agents that need to reach them, not just models, Fabric gives you a broader layer — LLMs, MCP, agents, and APIs in one place, with a credential broker so the agent never holds the secret itself.&quot; &lt;br/&gt;&lt;b&gt;Reverse question:&lt;/b&gt; &quot;Today, when an agent needs to reach both a model and an internal API, does that go through two different tools, or do you have one solution for both?&quot;&lt;br/&gt;&lt;b&gt;Remember:&lt;/b&gt; Don't sell it as a &quot;replacement&quot; — sell it as &quot;an additional layer&quot; where the existing gateway doesn't cover internal APIs.&lt;/div&gt;
-&lt;/div&gt;
-
-&lt;div class=&quot;obj&quot;&gt;
-&lt;div class=&quot;q edit-unit&quot; contenteditable=&quot;false&quot;&gt;&quot;The Control Plane stays in your cloud — doesn't that mean this doesn't really solve Data Residency for us?&quot;&lt;/div&gt;
-&lt;div class=&quot;a edit-unit&quot; contenteditable=&quot;false&quot;&gt;&quot;Great question, and a fair one — 'Data Residency' doesn't mean everything stays with you. The Control Plane (management and configuration) does stay in Postman's cloud; only the Data Plane (actual processing) moves to your cloud. If your requirement is network isolation or processing location, that's enough. If the requirement is that no data ever reaches an external cloud at all, we need to check together exactly what moves between components.&quot; &lt;br/&gt;&lt;b&gt;Reverse question:&lt;/b&gt; &quot;What's the exact regulatory requirement — network isolation, processing location, or that no data at all can move through an external cloud?&quot;&lt;br/&gt;&lt;b&gt;Remember:&lt;/b&gt; This is exactly the point flagged internally as &quot;don't present this alone as a reason to upgrade&quot; — check against the actual need, don't assume.&lt;/div&gt;
-&lt;/div&gt;
-
-&lt;div class=&quot;obj&quot;&gt;
-&lt;div class=&quot;q edit-unit&quot; contenteditable=&quot;false&quot;&gt;&quot;We already have Swagger/OpenAPI — what's Fern for?&quot;&lt;/div&gt;
-&lt;div class=&quot;a edit-unit&quot; contenteditable=&quot;false&quot;&gt;&quot;The spec is the start, not the end. Fern takes that spec and automatically generates documentation, SDKs in major languages, and a CLI — so they never drift out of sync with the actual API. If your spec updates and the docs/SDKs don't update with it automatically, that's exactly the drift that causes pain.&quot; &lt;br/&gt;&lt;b&gt;Reverse question:&lt;/b&gt; &quot;When your API changes, how long does it take your docs and external SDKs to catch up, and who actually does that work?&quot;&lt;br/&gt;&lt;b&gt;Remember:&lt;/b&gt; Fern is currently its own standalone product/acquisition, not part of a Postman bundle — position accordingly.&lt;/div&gt;
-&lt;/div&gt;
-
-&lt;div class=&quot;obj&quot;&gt;
-&lt;div class=&quot;q edit-unit&quot; contenteditable=&quot;false&quot;&gt;&quot;Pooled credits sound like you just want us to pay more — what's wrong with a separate contract?&quot;&lt;/div&gt;
-&lt;div class=&quot;a edit-unit&quot; contenteditable=&quot;false&quot;&gt;&quot;Usually it's the opposite — pooled credits give you flexibility to draw across several add-ons without renegotiating every time usage shifts. A separate contract only pays off when there's high, predictable volume over time, or a genuine need for a dedicated SLA.&quot; &lt;br/&gt;&lt;b&gt;Reverse question:&lt;/b&gt; &quot;Do you have a clear forecast of your usage over the next 12 months, or is it still evolving?&quot;&lt;br/&gt;&lt;b&gt;Remember:&lt;/b&gt; If the customer isn't sure of their volume, pooled credits is the right default to start with.&lt;/div&gt;
-&lt;/div&gt;
-
-&lt;div class=&quot;obj&quot;&gt;
-&lt;div class=&quot;q edit-unit&quot; contenteditable=&quot;false&quot;&gt;&quot;Ephemeral identities being free — doesn't that just mean the cost shows up somewhere else?&quot;&lt;/div&gt;
-&lt;div class=&quot;a edit-unit&quot; contenteditable=&quot;false&quot;&gt;&quot;No — these are short-lived identities (e.g. a sub-agent spawned for one task, automatically scoped to the parent agent's permissions). The real charges are on human identities (durable, $49/month) and API consumption volume ($50/million calls) — two separate, clearly metered things.&quot; &lt;br/&gt;&lt;b&gt;Reverse question:&lt;/b&gt; &quot;Roughly how many sub-agents get spun up per day, and how long do they typically 'live'?&quot;&lt;br/&gt;&lt;b&gt;Remember:&lt;/b&gt; That answer helps estimate actual API consumption volume, not just the identity count.&lt;/div&gt;
-&lt;/div&gt;
-
-&lt;div class=&quot;group-title edit-unit&quot; contenteditable=&quot;false&quot;&gt;Objections — Fern's Direct Competitors (Sept 2026)&lt;/div&gt;
-
-&lt;div class=&quot;obj&quot;&gt;
-&lt;div class=&quot;q edit-unit&quot; contenteditable=&quot;false&quot;&gt;&quot;We already use Speakeasy for SDKs — why Fern?&quot;&lt;/div&gt;
-&lt;div class=&quot;a edit-unit&quot; contenteditable=&quot;false&quot;&gt;&quot;Speakeasy is SDK-generation only, with per-language pricing, no docs, and no on-prem. Fern gives you docs+SDK from one source, not two vendors on two different cadences — and supports 9 languages including production Swift, the only one that does.&quot; &lt;br/&gt;&lt;b&gt;Reverse question:&lt;/b&gt; &quot;When the API changes, how long does it take your docs to 'catch up' after the SDK, and who's responsible for keeping the two tools in sync?&quot;&lt;br/&gt;&lt;b&gt;Remember:&lt;/b&gt; The real pain is coordination between two vendors, not the SDK's quality itself.&lt;/div&gt;
-&lt;/div&gt;
-
-&lt;div class=&quot;obj&quot;&gt;
-&lt;div class=&quot;q edit-unit&quot; contenteditable=&quot;false&quot;&gt;&quot;We're on Stainless — it works fine for us.&quot;&lt;/div&gt;
-&lt;div class=&quot;a edit-unit&quot; contenteditable=&quot;false&quot;&gt;&quot;Important to know: Stainless is winding down — acquired by Anthropic on May 18, 2026, and closed to new projects. Your existing SDKs will start going stale the moment the API changes and there's no one running regeneration. This is a genuine displacement opportunity with a timeline, not just a regular sale.&quot; &lt;br/&gt;&lt;b&gt;Reverse question:&lt;/b&gt; &quot;Are you aware Stainless is shutting down? Do you have a migration plan, or are you still relying on the SDKs already generated?&quot;&lt;br/&gt;&lt;b&gt;Remember:&lt;/b&gt; Lead with migration + drift, not features — this is time-bound, there's a real deadline here.&lt;/div&gt;
-&lt;/div&gt;
-
-&lt;div class=&quot;obj&quot;&gt;
-&lt;div class=&quot;q edit-unit&quot; contenteditable=&quot;false&quot;&gt;&quot;There's OpenAPI Generator (open-source, free) — why pay?&quot;&lt;/div&gt;
-&lt;div class=&quot;a edit-unit&quot; contenteditable=&quot;false&quot;&gt;&quot;It's free at 'purchase price' — but you become the owner of all the maintenance: idiomatic output, docs sync, drift detection, and support. The real TCO is engineering hours, not license cost.&quot; &lt;br/&gt;&lt;b&gt;Reverse question:&lt;/b&gt; &quot;How much engineering time actually goes into maintaining the SDKs generated from OpenAPI Generator / Kiota today, and who does that work?&quot;&lt;br/&gt;&lt;b&gt;Remember:&lt;/b&gt; &quot;Free but you own the maintenance&quot; — that's the exact phrase to use.&lt;/div&gt;
-&lt;/div&gt;
-
-&lt;div class=&quot;obj&quot;&gt;
-&lt;div class=&quot;q edit-unit&quot; contenteditable=&quot;false&quot;&gt;&quot;We have Mintlify / ReadMe for docs — isn't that enough?&quot;&lt;/div&gt;
-&lt;div class=&quot;a edit-unit&quot; contenteditable=&quot;false&quot;&gt;&quot;Those tools are great for the docs themselves, but they're docs-only — no SDK. When docs and SDK come from two separate vendors, they go out of sync the moment the API changes. Fern is one vendor for docs+SDK, with built-in drift detection.&quot; &lt;br/&gt;&lt;b&gt;Reverse question:&lt;/b&gt; &quot;Who runs regeneration for your SDKs when the API changes, and do the docs update at the same pace?&quot;&lt;br/&gt;&lt;b&gt;Remember:&lt;/b&gt; Don't argue about docs quality — ReadMe/Mintlify are good at that; the gap is SDK sync.&lt;/div&gt;
-&lt;/div&gt;
-
-&lt;div class=&quot;obj&quot;&gt;
-&lt;div class=&quot;q edit-unit&quot; contenteditable=&quot;false&quot;&gt;&quot;We wrote our own scripts that generate SDK/docs — it works for us.&quot;&lt;/div&gt;
-&lt;div class=&quot;a edit-unit&quot; contenteditable=&quot;false&quot;&gt;&quot;That usually works — until the developer who built the scripts leaves, or the API expands. The hidden cost is maintenance + drift, usually alongside a growing volume of support tickets from customers/partners getting stuck.&quot; &lt;br/&gt;&lt;b&gt;Reverse question:&lt;/b&gt; &quot;Who on the team maintains those scripts today, and what happens if that person leaves?&quot;&lt;br/&gt;&lt;b&gt;Remember:&lt;/b&gt; Show the actual Fern diff + any data on support-ticket volume tied to SDK/docs, if you have it.&lt;/div&gt;
-&lt;/div&gt;
-
-&lt;div class=&quot;obj&quot;&gt;
-&lt;div class=&quot;q edit-unit&quot; contenteditable=&quot;false&quot;&gt;&quot;We have a gateway (Apigee/Kong/Gravitee/Axway) with a built-in developer portal — why another tool?&quot;&lt;/div&gt;
-&lt;div class=&quot;a edit-unit&quot; contenteditable=&quot;false&quot;&gt;&quot;Fern doesn't compete with the gateway — it sits on top of it. The portal that ships with a gateway usually provides access, not real DX: no quality SDKs, no agent-readiness. Fern upgrades the experience around the gateway without ripping it out.&quot; &lt;br/&gt;&lt;b&gt;Reverse question:&lt;/b&gt; &quot;When an external developer wants to start working against your API, do they get a ready-made SDK, or just portal access and have to build a client themselves?&quot;&lt;br/&gt;&lt;b&gt;Remember:&lt;/b&gt; &quot;Complement, not rip-out&quot; — the exact phrase for customers with an existing gateway.&lt;/div&gt;
 &lt;/div&gt;
 
 &lt;div class=&quot;group-title edit-unit&quot; contenteditable=&quot;false&quot;&gt;10 Questions You Should Be Ready For in Every First Call&lt;/div&gt;
@@ -2390,7 +2263,7 @@ It also includes: automatic routing of logins by domain (Domain Capture), a dash
   &lt;button class=&quot;swatch&quot; data-color=&quot;#5B5F66&quot; style=&quot;background:#5B5F66&quot; title=&quot;Grey&quot;&gt;&lt;/button&gt;
   &lt;button type=&quot;button&quot; class=&quot;ptb-save&quot; title=&quot;Save&quot;&gt;💾 Save&lt;/button&gt;
 &lt;/div&gt;
-&lt;p class=&quot;lead edit-unit&quot; contenteditable=&quot;false&quot;&gt;Fern — a separate platform (acquired by Postman in January 2026) that turns an existing API into a complete Developer Experience.&lt;/p&gt;
+&lt;p class=&quot;lead edit-unit&quot; contenteditable=&quot;false&quot;&gt;FERN - a separate platform that turns an existing API into a complete Developer Experience.&lt;/p&gt;
 &lt;div class=&quot;say edit-unit&quot; contenteditable=&quot;false&quot;&gt;
 &lt;b class=&quot;tag&quot;&gt;How I explain it&lt;/b&gt;
       It automatically generates documentation, SDKs in major languages, a CLI, and MCP servers from the same single API definition, so they never drift out of sync with each other. It sits on the Consumption side (how the API is consumed), not the Governance side — and is currently sold as its own standalone product, not part of a Postman plan.
@@ -2695,6 +2568,7 @@ It also includes: automatic routing of logins by domain (Domain Capture), a dash
 &lt;span class=&quot;chat-header-icon&quot;&gt;🤖&lt;/span&gt;
 &lt;span class=&quot;chat-header-title&quot;&gt;Ask About the Material&lt;/span&gt;
 &lt;/div&gt;
+&lt;div id=&quot;qa-lib-chat&quot;&gt;&lt;/div&gt;
 &lt;div class=&quot;chat-quick&quot;&gt;
 &lt;div class=&quot;chat-quick-item&quot;&gt;&lt;button class=&quot;chat-quick-btn&quot; data-prompt=&quot;What’s the difference between Fabric and Passport?&quot;&gt;What’s the difference between Fabric and Passport?&lt;/button&gt;&lt;button class=&quot;chat-quick-remove&quot; title=&quot;Remove this question&quot;&gt;✕&lt;/button&gt;&lt;/div&gt;
 &lt;div class=&quot;chat-quick-item&quot;&gt;&lt;button class=&quot;chat-quick-btn&quot; data-prompt=&quot;The customer objects to the price, how do I respond?&quot;&gt;The customer objects to the price, how do I respond?&lt;/button&gt;&lt;button class=&quot;chat-quick-remove&quot; title=&quot;Remove this question&quot;&gt;✕&lt;/button&gt;&lt;/div&gt;
@@ -2725,6 +2599,90 @@ It also includes: automatic routing of logins by domain (Domain Capture), a dash
 &lt;/aside&gt;
 &lt;/div&gt;
 &lt;/div&gt;
+&lt;script&gt;
+/* one-time cleanup (schema v2): old positional edit keys and the Fern panel block snapshot
+   were corrupted by id shifts; drop them once so the file's own content shows correctly. */
+(function(){
+  try{
+    if(localStorage.getItem('dash-schema')==='2') return;
+    Object.keys(localStorage).forEach(function(k){
+      if(/^content-edit(-dirty)?:(en|he)(:ce\d+)?$/.test(k) || /^blocks:(en|he):#panel-fern \.panel-body$/.test(k)){ localStorage.removeItem(k); }
+    });
+    localStorage.setItem('dash-schema','2');
+  }catch(e){}
+})();
+&lt;/script&gt;
+&lt;script&gt;
+/* ===== Built-in Q&amp;A library (static, no API cost) ===== */
+window.QA_LIB = [{&quot;topic&quot;: &quot;Top 10 first-call questions&quot;, &quot;items&quot;: [{&quot;q&quot;: &quot;I'm already on Free — why Enterprise?&quot;, &quot;a&quot;: &quot;\&quot;Free is a complete single-developer experience — great for one person building and testing. What it can't give the company is visibility, ownership, and control across teams. Enterprise takes what individuals already do in Postman and adds what the organization is missing: org-wide RBAC and user groups, Governance, and an API Catalog over every API — not only the ones someone happens to be testing.\&quot; &lt;br/&gt;&lt;b&gt;Reverse question:&lt;/b&gt; \&quot;How many people at the company use Postman on their own today — and does anyone have a single picture of which APIs they work on and who owns them?\&quot;&lt;br/&gt;&lt;b&gt;Remember:&lt;/b&gt; Start from what they already do in Free, then show what's missing around it. Don't open with a feature list.&quot;}, {&quot;q&quot;: &quot;Do you replace the API Gateway?&quot;, &quot;a&quot;: &quot;\&quot;No. Postman isn't meant to replace your API Gateway. It connects to existing Gateways and pulls information from them, plus there's an agent that listens to activity in the environment.\&quot; &lt;br/&gt;&lt;b&gt;Remember:&lt;/b&gt; keep the distinction clear — the Gateway handles traffic; Postman manages the API lifecycle around it.&quot;}, {&quot;q&quot;: &quot;Do you connect to API Management / Cloud / GitHub?&quot;, &quot;a&quot;: &quot;\&quot;Yes. There are integrations with various gateways (including Azure API Management and IBM API Connect) and with AWS, Azure, and Google Cloud — Postman pulls information from those environments for discovery and the API Catalog. There's also a GitHub connection that links source code to APIs, and existing code can be turned into Postman collections.\&quot; &lt;br/&gt;&lt;b&gt;Reverse question:&lt;/b&gt; \&quot;Which of these do you run today — a gateway, a cloud provider, GitHub — and which one holds most of your APIs?\&quot;&lt;br/&gt;&lt;b&gt;Remember:&lt;/b&gt; First clarify what the customer means by &amp;quot;integration&amp;quot; — discovery, monitoring, testing, or replacing a gateway.&quot;}, {&quot;q&quot;: &quot;How do you discover APIs I don't even know exist?&quot;, &quot;a&quot;: &quot;\&quot;A few discovery mechanisms: integration with gateways and cloud providers, an agent that identifies APIs from network traffic (Postman Insights), and service discovery in Kubernetes (Cluster Watcher). The goal is a broad picture of your entire API landscape.\&quot; &lt;br/&gt;&lt;b&gt;Remember:&lt;/b&gt; this connects directly to the \&quot;unknown APIs\&quot; problem and the API Catalog.&quot;}, {&quot;q&quot;: &quot;Do you sit in the middle of the traffic?&quot;, &quot;a&quot;: &quot;\&quot;Not necessarily. With a Gateway integration, Postman gets information directly from the Gateway. There's also an agent option that listens to the environment and identifies which APIs are being called.\&quot; &lt;br/&gt;&lt;b&gt;Remember:&lt;/b&gt; don't go too deep into the technology — there are a few methods depending on the customer's architecture.&quot;}, {&quot;q&quot;: &quot;What's the difference between API Catalog and API Management?&quot;, &quot;a&quot;: &quot;\&quot;API Catalog is a central registry giving you a single pane of glass over every API in the organization — what exists, who owns it, and what state it's in (linked to source control, CI/CD, and production). API Management handles real-time traffic; the Catalog gives you the visibility and ownership picture above it.\&quot; &lt;br/&gt;&lt;b&gt;Remember:&lt;/b&gt; don't present the Catalog as \&quot;just another list\&quot; — it's visibility and ownership over a distributed API landscape.&quot;}, {&quot;q&quot;: &quot;How do you enforce OpenAPI / Governance?&quot;, &quot;a&quot;: &quot;\&quot;Yes. Postman (API Governance) lets you define and enforce rules across teams — both built-in and custom rules — and plug Governance into CI/CD.\&quot; &lt;br/&gt;&lt;b&gt;Remember:&lt;/b&gt; distinguish between \&quot;we follow OpenAPI\&quot; and \&quot;we actually enforce OpenAPI.\&quot;&quot;}, {&quot;q&quot;: &quot;What do you add beyond WAF / DDoS / Security tools?&quot;, &quot;a&quot;: &quot;\&quot;Postman doesn't compete with WAF/DDoS/authentication — it adds a security layer focused on the API lifecycle itself: Secret Scanner, which finds leaked secrets and keys in code and collections, security scorecards in the API Catalog, and a shift-left testing approach.\&quot; &lt;br/&gt;&lt;b&gt;Remember:&lt;/b&gt; don't argue with the existing stack. Find out where the gaps actually are — lifecycle, Governance, secrets, and testing.&quot;}, {&quot;q&quot;: &quot;How do you prove ROI?&quot;, &quot;a&quot;: &quot;\&quot;I'd rather not hand you a generic number. ROI here usually shows up in three places: time (less time spent finding which APIs exist, who owns them, and onboarding new developers), risk (unknown APIs and leaked secrets found before they become incidents, standards enforced instead of hoped for), and speed (teams reuse what exists instead of rebuilding). The credible way to prove it is to measure it on your own baseline — then compare after a pilot.\&quot; &lt;br/&gt;&lt;b&gt;Reverse question:&lt;/b&gt; \&quot;Today, how long does it take a new developer to find the right API and make a first successful call — and what does one incident from an unknown or ungoverned API cost you?\&quot;&lt;br/&gt;&lt;b&gt;Remember:&lt;/b&gt; Don't quote ROI percentages or case-study figures unless you have a verified one for a similar customer. Ask for their baseline first.&quot;}, {&quot;q&quot;: &quot;Can we start small / Trial / POC?&quot;, &quot;a&quot;: &quot;\&quot;Yes — starting small is usually the right way. Pick one team or one business domain, connect the sources that already exist (a gateway, a cloud account, or GitHub), and see what the API Catalog shows. The goal of a pilot is a concrete finding in your own environment — for example APIs nobody had listed — not a feature tour.\&quot; &lt;br/&gt;&lt;b&gt;Reverse question:&lt;/b&gt; \&quot;If we ran a small pilot, what would you need to see in your own environment to say it was worth expanding?\&quot;&lt;br/&gt;&lt;b&gt;Remember:&lt;/b&gt; I don't have verified trial/POC terms or duration in this material — confirm current terms with your SE before promising anything, and agree on success criteria up front.&quot;}]}, {&quot;topic&quot;: &quot;First call&quot;, &quot;items&quot;: [{&quot;q&quot;: &quot;Do you connect to other systems (API Connect, Azure APIM)?&quot;, &quot;a&quot;: &quot;\&quot;Yes. There are integrations with various gateways (including Azure API Management and IBM API Connect) and with AWS, Azure, and Google Cloud. Postman pulls information from existing environments for discovery and the API Catalog.\&quot; &lt;br/&gt;&lt;b&gt;Remember:&lt;/b&gt; first clarify what the customer means by \&quot;integration\&quot; — discovery, monitoring, testing, or replacing a gateway.&quot;}, {&quot;q&quot;: &quot;Is Postman a Gateway, or does it sit in the middle as one?&quot;, &quot;a&quot;: &quot;\&quot;No. Postman isn't meant to replace your API Gateway. It connects to existing Gateways and pulls information from them, plus there's an agent that listens to activity in the environment.\&quot; &lt;br/&gt;&lt;b&gt;Remember:&lt;/b&gt; keep the distinction clear — the Gateway handles traffic; Postman manages the API lifecycle around it.&quot;}, {&quot;q&quot;: &quot;How do you find APIs that we ourselves don't know about?&quot;, &quot;a&quot;: &quot;\&quot;A few discovery mechanisms: integration with gateways and cloud providers, an agent that identifies APIs from network traffic (Postman Insights), and service discovery in Kubernetes (Cluster Watcher). The goal is a broad picture of your entire API landscape.\&quot; &lt;br/&gt;&lt;b&gt;Remember:&lt;/b&gt; this connects directly to the \&quot;unknown APIs\&quot; problem and the API Catalog.&quot;}, {&quot;q&quot;: &quot;To monitor APIs, do you have to intercept traffic?&quot;, &quot;a&quot;: &quot;\&quot;Not necessarily. With a Gateway integration, Postman gets information directly from the Gateway. There's also an agent option that listens to the environment and identifies which APIs are being called.\&quot; &lt;br/&gt;&lt;b&gt;Remember:&lt;/b&gt; don't go too deep into the technology — there are a few methods depending on the customer's architecture.&quot;}, {&quot;q&quot;: &quot;What is an API Catalog, and why do we need it if we have API Management?&quot;, &quot;a&quot;: &quot;\&quot;API Catalog is a central registry giving you a single pane of glass over every API in the organization — what exists, who owns it, and what state it's in (linked to source control, CI/CD, and production). API Management handles real-time traffic; the Catalog gives you the visibility and ownership picture above it.\&quot; &lt;br/&gt;&lt;b&gt;Remember:&lt;/b&gt; don't present the Catalog as \&quot;just another list\&quot; — it's visibility and ownership over a distributed API landscape.&quot;}, {&quot;q&quot;: &quot;Do you work with source code and repositories?&quot;, &quot;a&quot;: &quot;\&quot;Yes. There's a GitHub connection that links source code to APIs, and you can also turn existing code into Postman collections.\&quot; &lt;br/&gt;&lt;b&gt;Remember:&lt;/b&gt; especially relevant for Git-based organizations.&quot;}, {&quot;q&quot;: &quot;We work a lot with AI and Agents — how does Postman fit in?&quot;, &quot;a&quot;: &quot;\&quot;Postman includes built-in AI capabilities (Postman AI and Agent Mode) that automate API development work — generating tests, docs, and workflows. Beyond that, as more AI/agent workflows consume APIs, the need grows for APIs that are discoverable, reliable, and well-documented, and for Governance once AI is part of the process.\&quot; &lt;br/&gt;&lt;b&gt;Remember:&lt;/b&gt; first understand the customer's AI workflow, only then connect it to the relevant product.&quot;}, {&quot;q&quot;: &quot;Do you enforce standards like OpenAPI on development teams?&quot;, &quot;a&quot;: &quot;\&quot;Yes. Postman (API Governance) lets you define and enforce rules across teams — both built-in and custom rules — and plug Governance into CI/CD.\&quot; &lt;br/&gt;&lt;b&gt;Remember:&lt;/b&gt; distinguish between \&quot;we follow OpenAPI\&quot; and \&quot;we actually enforce OpenAPI.\&quot;&quot;}]}, {&quot;topic&quot;: &quot;Pricing &amp; packaging&quot;, &quot;items&quot;: [{&quot;q&quot;: &quot;Why is Free only 1 user now?&quot;, &quot;a&quot;: &quot;\&quot;Free is now a complete single-developer experience (unlimited runs, Git, mocks, 50 AI credits) rather than a light 3-person team plan. Collaboration starts at Team, which is actually built for multi-user work with real roles and controls.\&quot;&quot;}, {&quot;q&quot;: &quot;What's the real difference between Team RBAC and Enterprise RBAC?&quot;, &quot;a&quot;: &quot;\&quot;Team RBAC is workspace-level, the same as the old Professional plan. Enterprise RBAC is org-wide and advanced - user groups, API-level roles, governance and network manager roles.\&quot;&quot;}, {&quot;q&quot;: &quot;Why did add-ons mostly go away?&quot;, &quot;a&quot;: &quot;\&quot;They caused constant confusion about which plan someone actually needed. Almost everything is now bundled directly into the plan it belongs to, unlimited, so the purchase decision is just 'which plan,' not 'which plan plus which add-ons.'\&quot;&quot;}, {&quot;q&quot;: &quot;Are AI credits really unlimited?&quot;, &quot;a&quot;: &quot;\&quot;No plan is unlimited, but each has a real baseline most users never hit, and consumption pricing only kicks in above that - it's a safety valve, not the default experience, and admins choose whether overage billing is even turned on.\&quot; &lt;br/&gt;&lt;b&gt;Numbers:&lt;/b&gt; Free 50 / Solo &amp;amp; Team 400 / Enterprise 800 (pooled), all per user/mo; overage: Solo $0.05, Team $0.04, Enterprise $0.035 per credit (Free: none, must upgrade).&quot;}, {&quot;q&quot;: &quot;What does Postman add beyond the WAF, DDoS, and Authentication we already have?&quot;, &quot;a&quot;: &quot;\&quot;Postman doesn't compete with WAF/DDoS/authentication — it adds a security layer focused on the API lifecycle itself: Secret Scanner, which finds leaked secrets and keys in code and collections, security scorecards in the API Catalog, and a shift-left testing approach.\&quot; &lt;br/&gt;&lt;b&gt;Remember:&lt;/b&gt; don't argue with the existing stack. Find out where the gaps actually are — lifecycle, Governance, secrets, and testing.&quot;}, {&quot;q&quot;: &quot;We work with MuleSoft — where does Postman fit in?&quot;, &quot;a&quot;: &quot;\&quot;Postman doesn't replace MuleSoft as an integration platform — MuleSoft/Anypoint is its own integration platform with its own Catalog. The relevant angle is self-service API publishing from Postman, with Governance and an approval flow, which fills the gap of long waits to create new APIs. A direct, specific technical integration with MuleSoft hasn't been fully confirmed yet.\&quot; &lt;br/&gt;&lt;b&gt;Remember:&lt;/b&gt; never promise a capability that hasn't actually been demonstrated — set up a technical follow-up with an SE.&quot;}, {&quot;q&quot;: &quot;We already use Postman for testing — what else do we get?&quot;, &quot;a&quot;: &quot;\&quot;Enterprise expands a point-solution use of testing into the full API lifecycle: design, Governance, and organization-wide visibility into every API in the company — not just the ones already being tested.\&quot; &lt;br/&gt;&lt;b&gt;Remember:&lt;/b&gt; start from what they're already doing with Postman, then identify what's missing around it.&quot;}, {&quot;q&quot;: &quot;Pooled credits sound like you just want us to pay more — what's wrong with a separate contract?&quot;, &quot;a&quot;: &quot;\&quot;Usually it's the opposite — pooled credits give you flexibility to draw across several add-ons without renegotiating every time usage shifts. A separate contract only pays off when there's high, predictable volume over time, or a genuine need for a dedicated SLA.\&quot; &lt;br/&gt;&lt;b&gt;Reverse question:&lt;/b&gt; \&quot;Do you have a clear forecast of your usage over the next 12 months, or is it still evolving?\&quot;&lt;br/&gt;&lt;b&gt;Remember:&lt;/b&gt; If the customer isn't sure of their volume, pooled credits is the right default to start with.&quot;}]}, {&quot;topic&quot;: &quot;Passport&quot;, &quot;items&quot;: [{&quot;q&quot;: &quot;We already have a Secret Manager/Vault (HashiCorp, AWS Secrets Manager) — why do we need Passport?&quot;, &quot;a&quot;: &quot;\&quot;Passport doesn't replace your existing vault — the real secret keeps living exactly there. It adds a layer on top: discovery (knowing the API even exists), an orderly access request flow, and an audit trail on every call — things the vault itself doesn't do.\&quot; &lt;br/&gt;&lt;b&gt;Reverse question:&lt;/b&gt; \&quot;When a developer needs new access today, how long does it take from request to actually getting the secret, and who approves it?\&quot;&lt;br/&gt;&lt;b&gt;Remember:&lt;/b&gt; Don't sell this as \&quot;a better vault\&quot; — it's a Governance layer, not direct competition.&quot;}, {&quot;q&quot;: &quot;$49/month per identity is a lot — why not just give developers the key?&quot;, &quot;a&quot;: &quot;\&quot;That's exactly what happens in most organizations today — and that's the problem: one leaked key can be used thousands of times before anyone notices. $49 isn't an 'extra' cost — it's the price of knowing who did what, and being able to revoke access in 30 seconds instead of rotating the secret for everyone.\&quot; &lt;br/&gt;&lt;b&gt;Reverse question:&lt;/b&gt; \&quot;If a developer leaves tomorrow, how long does it take you today to know exactly which APIs they had access to, and to cut that off?\&quot;&lt;br/&gt;&lt;b&gt;Remember:&lt;/b&gt; The real ARR driver is API consumption ($50/million calls), not just identities — don't anchor the whole conversation on per-user price.&quot;}, {&quot;q&quot;: &quot;Ephemeral identities being free — doesn't that just mean the cost shows up somewhere else?&quot;, &quot;a&quot;: &quot;\&quot;No — these are short-lived identities (e.g. a sub-agent spawned for one task, automatically scoped to the parent agent's permissions). The real charges are on human identities (durable, $49/month) and API consumption volume ($50/million calls) — two separate, clearly metered things.\&quot; &lt;br/&gt;&lt;b&gt;Reverse question:&lt;/b&gt; \&quot;Roughly how many sub-agents get spun up per day, and how long do they typically 'live'?\&quot;&lt;br/&gt;&lt;b&gt;Remember:&lt;/b&gt; That answer helps estimate actual API consumption volume, not just the identity count.&quot;}]}, {&quot;topic&quot;: &quot;Fabric&quot;, &quot;items&quot;: [{&quot;q&quot;: &quot;We already use LiteLLM / Kong AI Gateway — why Fabric?&quot;, &quot;a&quot;: &quot;\&quot;Tools like that are great for routing between LLMs — but that's exactly their scope: LLMs. Once you also have internal APIs and agents that need to reach them, not just models, Fabric gives you a broader layer — LLMs, MCP, agents, and APIs in one place, with a credential broker so the agent never holds the secret itself.\&quot; &lt;br/&gt;&lt;b&gt;Reverse question:&lt;/b&gt; \&quot;Today, when an agent needs to reach both a model and an internal API, does that go through two different tools, or do you have one solution for both?\&quot;&lt;br/&gt;&lt;b&gt;Remember:&lt;/b&gt; Don't sell it as a \&quot;replacement\&quot; — sell it as \&quot;an additional layer\&quot; where the existing gateway doesn't cover internal APIs.&quot;}]}, {&quot;topic&quot;: &quot;Hosting&quot;, &quot;items&quot;: [{&quot;q&quot;: &quot;The Control Plane stays in your cloud — doesn't that mean this doesn't really solve Data Residency for us?&quot;, &quot;a&quot;: &quot;\&quot;Great question, and a fair one — 'Data Residency' doesn't mean everything stays with you. The Control Plane (management and configuration) does stay in Postman's cloud; only the Data Plane (actual processing) moves to your cloud. If your requirement is network isolation or processing location, that's enough. If the requirement is that no data ever reaches an external cloud at all, we need to check together exactly what moves between components.\&quot; &lt;br/&gt;&lt;b&gt;Reverse question:&lt;/b&gt; \&quot;What's the exact regulatory requirement — network isolation, processing location, or that no data at all can move through an external cloud?\&quot;&lt;br/&gt;&lt;b&gt;Remember:&lt;/b&gt; This is exactly the point flagged internally as \&quot;don't present this alone as a reason to upgrade\&quot; — check against the actual need, don't assume.&quot;}]}, {&quot;topic&quot;: &quot;Fern&quot;, &quot;items&quot;: [{&quot;q&quot;: &quot;We already have Swagger/OpenAPI — what's Fern for?&quot;, &quot;a&quot;: &quot;\&quot;The spec is the start, not the end. Fern takes that spec and automatically generates documentation, SDKs in major languages, and a CLI — so they never drift out of sync with the actual API. If your spec updates and the docs/SDKs don't update with it automatically, that's exactly the drift that causes pain.\&quot; &lt;br/&gt;&lt;b&gt;Reverse question:&lt;/b&gt; \&quot;When your API changes, how long does it take your docs and external SDKs to catch up, and who actually does that work?\&quot;&lt;br/&gt;&lt;b&gt;Remember:&lt;/b&gt; Fern is currently its own standalone product/acquisition, not part of a Postman bundle — position accordingly.&quot;}, {&quot;q&quot;: &quot;We already use Speakeasy for SDKs — why Fern?&quot;, &quot;a&quot;: &quot;\&quot;Speakeasy is SDK-generation only, with per-language pricing, no docs, and no on-prem. Fern gives you docs+SDK from one source, not two vendors on two different cadences — and supports 9 languages including production Swift, the only one that does.\&quot; &lt;br/&gt;&lt;b&gt;Reverse question:&lt;/b&gt; \&quot;When the API changes, how long does it take your docs to 'catch up' after the SDK, and who's responsible for keeping the two tools in sync?\&quot;&lt;br/&gt;&lt;b&gt;Remember:&lt;/b&gt; The real pain is coordination between two vendors, not the SDK's quality itself.&quot;}, {&quot;q&quot;: &quot;We're on Stainless — it works fine for us.&quot;, &quot;a&quot;: &quot;\&quot;Important to know: Stainless is winding down — acquired by Anthropic on May 18, 2026, and closed to new projects. Your existing SDKs will start going stale the moment the API changes and there's no one running regeneration. This is a genuine displacement opportunity with a timeline, not just a regular sale.\&quot; &lt;br/&gt;&lt;b&gt;Reverse question:&lt;/b&gt; \&quot;Are you aware Stainless is shutting down? Do you have a migration plan, or are you still relying on the SDKs already generated?\&quot;&lt;br/&gt;&lt;b&gt;Remember:&lt;/b&gt; Lead with migration + drift, not features — this is time-bound, there's a real deadline here.&quot;}, {&quot;q&quot;: &quot;There's OpenAPI Generator (open-source, free) — why pay?&quot;, &quot;a&quot;: &quot;\&quot;It's free at 'purchase price' — but you become the owner of all the maintenance: idiomatic output, docs sync, drift detection, and support. The real TCO is engineering hours, not license cost.\&quot; &lt;br/&gt;&lt;b&gt;Reverse question:&lt;/b&gt; \&quot;How much engineering time actually goes into maintaining the SDKs generated from OpenAPI Generator / Kiota today, and who does that work?\&quot;&lt;br/&gt;&lt;b&gt;Remember:&lt;/b&gt; \&quot;Free but you own the maintenance\&quot; — that's the exact phrase to use.&quot;}, {&quot;q&quot;: &quot;We have Mintlify / ReadMe for docs — isn't that enough?&quot;, &quot;a&quot;: &quot;\&quot;Those tools are great for the docs themselves, but they're docs-only — no SDK. When docs and SDK come from two separate vendors, they go out of sync the moment the API changes. Fern is one vendor for docs+SDK, with built-in drift detection.\&quot; &lt;br/&gt;&lt;b&gt;Reverse question:&lt;/b&gt; \&quot;Who runs regeneration for your SDKs when the API changes, and do the docs update at the same pace?\&quot;&lt;br/&gt;&lt;b&gt;Remember:&lt;/b&gt; Don't argue about docs quality — ReadMe/Mintlify are good at that; the gap is SDK sync.&quot;}, {&quot;q&quot;: &quot;We wrote our own scripts that generate SDK/docs — it works for us.&quot;, &quot;a&quot;: &quot;\&quot;That usually works — until the developer who built the scripts leaves, or the API expands. The hidden cost is maintenance + drift, usually alongside a growing volume of support tickets from customers/partners getting stuck.\&quot; &lt;br/&gt;&lt;b&gt;Reverse question:&lt;/b&gt; \&quot;Who on the team maintains those scripts today, and what happens if that person leaves?\&quot;&lt;br/&gt;&lt;b&gt;Remember:&lt;/b&gt; Show the actual Fern diff + any data on support-ticket volume tied to SDK/docs, if you have it.&quot;}, {&quot;q&quot;: &quot;We have a gateway (Apigee/Kong/Gravitee/Axway) with a built-in developer portal — why another tool?&quot;, &quot;a&quot;: &quot;\&quot;Fern doesn't compete with the gateway — it sits on top of it. The portal that ships with a gateway usually provides access, not real DX: no quality SDKs, no agent-readiness. Fern upgrades the experience around the gateway without ripping it out.\&quot; &lt;br/&gt;&lt;b&gt;Reverse question:&lt;/b&gt; \&quot;When an external developer wants to start working against your API, do they get a ready-made SDK, or just portal access and have to build a client themselves?\&quot;&lt;br/&gt;&lt;b&gt;Remember:&lt;/b&gt; \&quot;Complement, not rip-out\&quot; — the exact phrase for customers with an existing gateway.&quot;}]}];
+(function(){
+  const LBL = [&quot;📚 Q&amp;A library&quot;, &quot;Search all questions…&quot;, &quot;No match&quot;];
+  function norm(q){ return (q||'').trim().toLowerCase().replace(/^[&quot;“”']+|[&quot;“”']+$/g,'').replace(/[?؟!.]+$/,'').replace(/\s+/g,' '); }
+  const flat = [];
+  window.QA_LIB.forEach(g=&gt;g.items.forEach(it=&gt;flat.push({topic:g.topic,q:it.q,a:it.a,n:norm(it.q)})));
+  const tokens = s =&gt; norm(s).split(/[^\p{L}\p{N}]+/u).filter(w=&gt;w.length&gt;1);
+  function lookup(question){
+    const n = norm(question);
+    let hit = flat.find(x=&gt;x.n===n);
+    if(hit) return hit.a;
+    const t = new Set(tokens(question)); if(t.size&lt;3) return null;
+    let best=null, score=0;
+    flat.forEach(x=&gt;{
+      const u = new Set(tokens(x.q)); let inter=0; t.forEach(w=&gt;{ if(u.has(w)) inter++; });
+      const s = inter / (new Set([...t,...u]).size);
+      if(s&gt;score){ score=s; best=x; }
+    });
+    return (best &amp;&amp; score&gt;=0.7) ? best.a : null;
+  }
+  window.getBuiltinAnswer = lookup;
+
+  function build(host){
+    host.classList.add('qa-lib');
+    host.innerHTML = '&lt;div class=&quot;qa-head&quot;&gt;&lt;span class=&quot;qa-title&quot;&gt;'+LBL[0]+'&lt;/span&gt;&lt;input class=&quot;qa-search&quot; type=&quot;search&quot; placeholder=&quot;'+LBL[1]+'&quot;&gt;&lt;/div&gt;'
+      + '&lt;div class=&quot;qa-chips&quot;&gt;&lt;/div&gt;&lt;div class=&quot;qa-list&quot;&gt;&lt;/div&gt;';
+    const chips = host.querySelector('.qa-chips'), list = host.querySelector('.qa-list'), input = host.querySelector('.qa-search');
+    let active = null;
+    function show(items, showTopic){
+      list.innerHTML='';
+      if(!items.length){ list.innerHTML='&lt;div class=&quot;qa-item&quot;&gt;'+LBL[2]+'&lt;/div&gt;'; return; }
+      items.forEach(x=&gt;{
+        const d=document.createElement('div'); d.className='qa-item';
+        d.textContent=x.q;
+        if(showTopic){ const s=document.createElement('small'); s.textContent=x.topic; d.appendChild(s); }
+        d.addEventListener('click',()=&gt;{ if(window.askLibrary) window.askLibrary(x.q); });
+        list.appendChild(d);
+      });
+    }
+    window.QA_LIB.forEach((g,i)=&gt;{
+      const b=document.createElement('button'); b.type='button'; b.className='qa-chip';
+      b.innerHTML=g.topic.replace(/&amp;/g,'&amp;amp;').replace(/&lt;/g,'&amp;lt;')+'&lt;span class=&quot;n&quot;&gt;'+g.items.length+'&lt;/span&gt;';
+      b.addEventListener('click',()=&gt;{
+        input.value='';
+        if(active===i){ active=null; b.classList.remove('active'); list.innerHTML=''; return; }
+        active=i; chips.querySelectorAll('.qa-chip').forEach(c=&gt;c.classList.remove('active')); b.classList.add('active');
+        show(flat.filter(x=&gt;x.topic===g.topic), false);
+      });
+      chips.appendChild(b);
+    });
+    input.addEventListener('input',()=&gt;{
+      chips.querySelectorAll('.qa-chip').forEach(c=&gt;c.classList.remove('active')); active=null;
+      const v=norm(input.value); if(!v){ list.innerHTML=''; return; }
+      const ws = tokens(input.value);
+      show(flat.filter(x=&gt;ws.every(w=&gt;(x.n+' '+norm(x.topic)).includes(w))), true);
+    });
+  }
+  const objHost = document.getElementById('qa-lib-obj'); if(objHost) build(objHost);
+  const chatHost = document.getElementById('qa-lib-chat'); if(chatHost) build(chatHost);
+
+  // the &quot;10 questions&quot; list in the Objections panel: click a line to open its answer
+  document.querySelectorAll('#panel-objections ul.panel-list').forEach(ul=&gt;{
+    ul.classList.add('qa-clickable');
+    ul.querySelectorAll('li').forEach(li=&gt;{
+      li.addEventListener('click',()=&gt;{ if(window.askLibrary) window.askLibrary(li.textContent.trim()); });
+    });
+  });
+})();
+&lt;/script&gt;
 &lt;script&gt;
 (function(){
   const root = document.getElementById('editable-root');
@@ -3368,7 +3326,7 @@ It also includes: automatic routing of logins by domain (Domain Capture), a dash
 
     // If this exact question was already asked and edited/saved before,
     // show the saved version instead of calling the API again.
-    const saved = getSavedAnswer(question);
+    const saved = (getSavedAnswer(question) !== null) ? getSavedAnswer(question) : (window.getBuiltinAnswer ? window.getBuiltinAnswer(question) : null);
     if(saved !== null){
       answerContentEl.classList.remove('loading');
       answerContentEl.innerHTML = saved;
@@ -3476,6 +3434,8 @@ It also includes: automatic routing of logins by domain (Domain Capture), a dash
       sendBtn.disabled = false;
     }
   }
+
+  window.askLibrary = ask;
 
   function sendCurrentInput(){
     const question = questionEl.value.trim();
@@ -3603,6 +3563,11 @@ It also includes: automatic routing of logins by domain (Domain Capture), a dash
           temp.innerHTML = cardHTML;
           const cardEl = temp.firstElementChild;
           if(cardEl){
+            if(containerSelector.indexOf('objections')&gt;-1 &amp;&amp; window.QA_LIB){
+              const qn = (cardEl.querySelector('.q')||{textContent:''}).textContent.trim().replace(/^[&quot;“”']+|[&quot;“”']+$/g,'').toLowerCase();
+              const moved = window.QA_LIB.some(g=&gt;g.items.some(it=&gt;it.q.toLowerCase()===qn));
+              if(moved) return;   // this Q&amp;A now lives in the Q&amp;A library
+            }
             cardEl.querySelectorAll('.drag-grip, .card-delete-btn').forEach(n =&gt; n.remove());
             cardEl.removeAttribute('data-wired');
             container.appendChild(cardEl);
@@ -3963,14 +3928,21 @@ It also includes: automatic routing of logins by domain (Domain Capture), a dash
       el.closest('#sec-opening') || el.closest('#sec-process') ||
       el.closest('#sec-ai') || el.closest('#sec-stages') ||
       el.closest('#panel-fabric .panel-body') || el.closest('#panel-passport .panel-body') ||
-      el.closest('#panel-asa .panel-body') || el.closest('#panel-database .panel-body')
+      el.closest('#panel-asa .panel-body') || el.closest('#panel-fern .panel-body') || el.closest('#panel-database .panel-body')
     );
   }
 
-  let counter = 0;
+  // Stable ids: scoped to the nearest container with an id, numbered inside that
+  // scope only. A unit added/removed elsewhere on the page can no longer shift
+  // every later id (which used to make one block's saved edit land on another).
+  const scopeCount = {};
   const units = Array.from(root.querySelectorAll('.edit-unit')).filter(el =&gt; !isInCardGroup(el));
   units.forEach(el=&gt;{
-    if(!el.dataset.ceid) el.dataset.ceid = 'ce' + (counter++);
+    if(el.dataset.ceid) return;
+    const holder = el.parentElement &amp;&amp; el.parentElement.closest('[id]');
+    const scope = holder ? holder.id : 'root';
+    scopeCount[scope] = (scopeCount[scope] || 0) + 1;
+    el.dataset.ceid = 'u:' + scope + ':' + scopeCount[scope];
   });
 
   // Guard: an override that is empty/whitespace-only is treated as no
@@ -4959,6 +4931,26 @@ document.addEventListener('keydown', (e)=&gt;{
     cursor:pointer;
   }
   .answer-window-status{font-size:12px;color:#2E7D5B;}
+
+  .qa-lib{font-size:13px;}
+  .qa-lib .qa-head{display:flex;align-items:center;gap:8px;margin:0 0 6px;}
+  .qa-lib .qa-title{font-weight:700;color:#1C1C1E;}
+  .qa-lib input.qa-search{flex:1;min-width:0;padding:6px 10px;border:1px solid #D8D8DC;border-radius:8px;font:inherit;}
+  .qa-lib .qa-chips{display:flex;flex-wrap:wrap;gap:6px;margin:0 0 6px;}
+  .qa-lib .qa-chip{border:1px solid #D8D8DC;background:#fff;border-radius:999px;padding:4px 10px;cursor:pointer;font:inherit;color:#1C1C1E;}
+  .qa-lib .qa-chip:hover{border-color:#FF6C37;color:#FF6C37;}
+  .qa-lib .qa-chip.active{background:#FF6C37;border-color:#FF6C37;color:#fff;}
+  .qa-lib .qa-chip .n{opacity:.7;margin-inline-start:4px;font-size:11px;}
+  .qa-lib .qa-list{max-height:260px;overflow:auto;border:1px solid #ECECEF;border-radius:8px;background:#fff;}
+  .qa-lib .qa-list:empty{display:none;}
+  .qa-lib .qa-item{padding:7px 10px;cursor:pointer;border-bottom:1px solid #F1F1F4;line-height:1.35;}
+  .qa-lib .qa-item:last-child{border-bottom:none;}
+  .qa-lib .qa-item:hover{background:#FFF4EE;color:#C2410C;}
+  .qa-lib .qa-item small{display:block;color:#8A8A90;font-size:11px;}
+  #qa-lib-obj{padding:10px 14px 8px;border-bottom:1px solid #ECECEF;background:#FAFAFB;}
+  #qa-lib-chat{padding:8px 10px;border-bottom:1px solid #ECECEF;}
+  .qa-clickable li{cursor:pointer;}
+  .qa-clickable li:hover{color:#C2410C;text-decoration:underline;}
 &lt;/style&gt;
 &lt;/head&gt;
 &lt;body&gt;
@@ -5291,6 +5283,7 @@ document.addEventListener('keydown', (e)=&gt;{
 &lt;span&gt;התנגדויות — איך אני עונה&lt;/span&gt;
 &lt;button class=&quot;panel-close&quot; data-close=&quot;panel-objections&quot;&gt;✕&lt;/button&gt;
 &lt;/div&gt;
+&lt;div id=&quot;qa-lib-obj&quot;&gt;&lt;/div&gt;
 &lt;div class=&quot;panel-body&quot;&gt;
 &lt;div class=&quot;fmt-group answer-fmt-group panel-toolbar&quot;&gt;
   &lt;button type=&quot;button&quot; class=&quot;ptb-bold&quot; title=&quot;הדגשה (סמן טקסט ולחץ)&quot;&gt;B&lt;/button&gt;
@@ -5323,154 +5316,6 @@ document.addEventListener('keydown', (e)=&gt;{
 &lt;div class=&quot;obj&quot;&gt;
 &lt;div class=&quot;q edit-unit&quot; contenteditable=&quot;false&quot;&gt;פרטיות נתונים (רלוונטי לשיחות עם גופים פיננסיים)&lt;/div&gt;
 &lt;div class=&quot;a edit-unit&quot; contenteditable=&quot;false&quot;&gt;&quot;Postman אף פעם לא נגיש למידע האמיתי של הלקוח — הוא נשאר תמיד בענן שלכם, AWS או Azure, ולא עובר אצלנו. בתוכנית Enterprise, נתוני ה-AI גם לא משותפים עם Postman לצורך אימון מודלים; בתוכניות נמוכות יותר — כן. יש לנו גם Trust Portal (דורש NDA), עם אישורי SOC 2, SOC 3 ו-ISO.&quot;&lt;/div&gt;
-&lt;/div&gt;
-
-&lt;div class=&quot;group-title edit-unit&quot; contenteditable=&quot;false&quot;&gt;שאלות נפוצות מלקוחות ב-First Call&lt;/div&gt;
-
-&lt;div class=&quot;obj&quot;&gt;
-&lt;div class=&quot;q edit-unit&quot; contenteditable=&quot;false&quot;&gt;&quot;אתם מתחברים למערכות אחרות (API Connect, Azure APIM)?&quot;&lt;/div&gt;
-&lt;div class=&quot;a edit-unit&quot; contenteditable=&quot;false&quot;&gt;&quot;כן. יש אינטגרציות עם gateways שונים (כולל Azure API Management ו-IBM API Connect) ועם AWS, Azure ו-Google Cloud. Postman שואב מידע מהסביבות הקיימות לצורך discovery ו-API Catalog.&quot; &lt;br/&gt;&lt;b&gt;לזכור:&lt;/b&gt; לברר קודם למה הלקוח מתכוון ב-&quot;integration&quot; — discovery, monitoring, testing או החלפת gateway.&lt;/div&gt;
-&lt;/div&gt;
-
-&lt;div class=&quot;obj&quot;&gt;
-&lt;div class=&quot;q edit-unit&quot; contenteditable=&quot;false&quot;&gt;&quot;Postman הוא Gateway, או ששם Gateway באמצע?&quot;&lt;/div&gt;
-&lt;div class=&quot;a edit-unit&quot; contenteditable=&quot;false&quot;&gt;&quot;לא. Postman לא נועד להחליף API Gateway. הוא מתחבר ל-Gateways קיימים ומקבל מהם מידע, ובנוסף יש agent שמאזין לפעילות בסביבה.&quot; &lt;br/&gt;&lt;b&gt;לזכור:&lt;/b&gt; להפריד — Gateway מטפל בתעבורה; Postman מנהל את ה-API lifecycle סביבו.&lt;/div&gt;
-&lt;/div&gt;
-
-&lt;div class=&quot;obj&quot;&gt;
-&lt;div class=&quot;q edit-unit&quot; contenteditable=&quot;false&quot;&gt;&quot;איך אתם מוצאים APIs שאנחנו בעצמנו לא מכירים?&quot;&lt;/div&gt;
-&lt;div class=&quot;a edit-unit&quot; contenteditable=&quot;false&quot;&gt;&quot;כמה מנגנוני discovery: אינטגרציה עם gateways ו-cloud providers, agent שמזהה APIs לפי תעבורת רשת (Postman Insights), ו-service discovery ב-Kubernetes (Cluster Watcher). המטרה — תמונה רחבה של כל ה-API landscape.&quot; &lt;br/&gt;&lt;b&gt;לזכור:&lt;/b&gt; זה מתחבר ישירות לבעיה של APIs לא מוכרים ול-API Catalog.&lt;/div&gt;
-&lt;/div&gt;
-
-&lt;div class=&quot;obj&quot;&gt;
-&lt;div class=&quot;q edit-unit&quot; contenteditable=&quot;false&quot;&gt;&quot;כדי לנטר APIs אתם חייבים ליירט תעבורה?&quot;&lt;/div&gt;
-&lt;div class=&quot;a edit-unit&quot; contenteditable=&quot;false&quot;&gt;&quot;לא בהכרח. באינטגרציה עם Gateway, Postman מקבל מידע ישירות מה-Gateway. אפשר גם agent שמאזין לסביבה ומזהה אילו APIs נקראים.&quot; &lt;br/&gt;&lt;b&gt;לזכור:&lt;/b&gt; לא להיכנס עמוק מדי לטכנולוגיה — יש כמה שיטות בהתאם לארכיטקטורה של הלקוח.&lt;/div&gt;
-&lt;/div&gt;
-
-&lt;div class=&quot;obj&quot;&gt;
-&lt;div class=&quot;q edit-unit&quot; contenteditable=&quot;false&quot;&gt;&quot;מה זה API Catalog, ולמה צריך אותו אם יש API Management?&quot;&lt;/div&gt;
-&lt;div class=&quot;a edit-unit&quot; contenteditable=&quot;false&quot;&gt;&quot;API Catalog הוא registry מרכזי שנותן single pane of glass על כל ה-APIs בארגון — מה קיים, מי הבעלים, ומה המצב שלו (מקושר ל-source control, CI/CD ו-production). API Management מטפל בתעבורה בזמן אמת; Catalog נותן את תמונת ה-visibility וה-ownership שמעליו.&quot; &lt;br/&gt;&lt;b&gt;לזכור:&lt;/b&gt; לא להציג Catalog כעוד רשימה, אלא כ-visibility ו-ownership על API landscape מבוזר.&lt;/div&gt;
-&lt;/div&gt;
-
-&lt;div class=&quot;obj&quot;&gt;
-&lt;div class=&quot;q edit-unit&quot; contenteditable=&quot;false&quot;&gt;&quot;אתם עובדים עם source code ו-repositories?&quot;&lt;/div&gt;
-&lt;div class=&quot;a edit-unit&quot; contenteditable=&quot;false&quot;&gt;&quot;כן. יש חיבור ל-GitHub שמקשר בין source code ל-APIs, וניתן גם להפוך קוד קיים ל-Postman collections.&quot; &lt;br/&gt;&lt;b&gt;לזכור:&lt;/b&gt; רלוונטי במיוחד לארגונים שעובדים Git-based.&lt;/div&gt;
-&lt;/div&gt;
-
-&lt;div class=&quot;obj&quot;&gt;
-&lt;div class=&quot;q edit-unit&quot; contenteditable=&quot;false&quot;&gt;&quot;אנחנו עובדים הרבה עם AI ו-Agents — איך Postman משתלב?&quot;&lt;/div&gt;
-&lt;div class=&quot;a edit-unit&quot; contenteditable=&quot;false&quot;&gt;&quot;Postman כולל יכולות AI מובנות (Postman AI ו-Agent Mode) לאוטומציה של תהליכי פיתוח API — יצירת בדיקות, תיעוד ו-workflows. מעבר לכך, ככל שיותר תהליכי AI/Agents צורכים APIs, גובר הצורך ב-APIs שניתנים לגילוי, אמינים ומתועדים היטב, וב-Governance כש-AI משתתף בתהליך.&quot; &lt;br/&gt;&lt;b&gt;לזכור:&lt;/b&gt; קודם להבין את ה-AI workflow של הלקוח, ורק אחר כך לחבר למוצר הרלוונטי.&lt;/div&gt;
-&lt;/div&gt;
-
-&lt;div class=&quot;obj&quot;&gt;
-&lt;div class=&quot;q edit-unit&quot; contenteditable=&quot;false&quot;&gt;&quot;אתם אוכפים standards כמו OpenAPI על צוותי הפיתוח?&quot;&lt;/div&gt;
-&lt;div class=&quot;a edit-unit&quot; contenteditable=&quot;false&quot;&gt;&quot;כן. Postman (API Governance) מאפשר להגדיר ולאכוף כללים על פני צוותים — כללים מובנים וגם custom rules — ולשלב Governance ב-CI/CD.&quot; &lt;br/&gt;&lt;b&gt;לזכור:&lt;/b&gt; להבדיל בין &quot;אנחנו עובדים לפי OpenAPI&quot; לבין &quot;אנחנו אוכפים OpenAPI בפועל&quot;.&lt;/div&gt;
-&lt;/div&gt;
-
-&lt;div class=&quot;group-title edit-unit&quot; contenteditable=&quot;false&quot;&gt;שאלות נפוצות על תמחור וחבילות (2026)&lt;/div&gt;
-
-&lt;div class=&quot;obj&quot;&gt;
-&lt;div class=&quot;q edit-unit&quot; contenteditable=&quot;false&quot;&gt;&quot;למה Free זה רק משתמש אחד עכשיו?&quot;&lt;/div&gt;
-&lt;div class=&quot;a edit-unit&quot; contenteditable=&quot;false&quot;&gt;&quot;Free הפכה לחוויה מלאה למפתח בודד - ריצות ללא הגבלה, Git, mocks, 50 קרדיטי AI - במקום חבילת צוות קלה ל-3 אנשים. שיתוף פעולה מתחיל ב-Team, שבאמת נבנתה לעבודה מרובת-משתמשים עם תפקידים ובקרות אמיתיים.&quot;&lt;/div&gt;
-&lt;/div&gt;
-
-&lt;div class=&quot;obj&quot;&gt;
-&lt;div class=&quot;q edit-unit&quot; contenteditable=&quot;false&quot;&gt;&quot;מה ההבדל האמיתי בין RBAC ב-Team ל-RBAC ב-Enterprise?&quot;&lt;/div&gt;
-&lt;div class=&quot;a edit-unit&quot; contenteditable=&quot;false&quot;&gt;&quot;RBAC ב-Team הוא ברמת ה-workspace - כמו ב-Professional הישן. RBAC ב-Enterprise הוא ארגוני ומתקדם - קבוצות משתמשים, תפקידים בגובה API, Governance ותפקידי מנהל רשת.&quot;&lt;/div&gt;
-&lt;/div&gt;
-
-&lt;div class=&quot;obj&quot;&gt;
-&lt;div class=&quot;q edit-unit&quot; contenteditable=&quot;false&quot;&gt;&quot;למה רוב ה-Add-ons נעלמו?&quot;&lt;/div&gt;
-&lt;div class=&quot;a edit-unit&quot; contenteditable=&quot;false&quot;&gt;&quot;הם גרמו לבלבול מתמיד לגבי מה שהלקוח בעצם צריך. עכשיו כמעט הכל מגיע מובנה בתוך החבילה שאליה הוא שייך, ללא הגבלה, כך שהחלטת הרכישה היא רק 'איזו חבילה', לא 'איזו חבילה ואיזה Add-on'.&quot;&lt;/div&gt;
-&lt;/div&gt;
-
-&lt;div class=&quot;obj&quot;&gt;
-&lt;div class=&quot;q edit-unit&quot; contenteditable=&quot;false&quot;&gt;&quot;קרדיטי ה-AI באמת ללא הגבלה?&quot;&lt;/div&gt;
-&lt;div class=&quot;a edit-unit&quot; contenteditable=&quot;false&quot;&gt;&quot;אין חבילה עם הגבלה אינסופית, אבל בכל חבילה יש בסיס שרוב המשתמשים לא מגיעים אליו, ותמחור לפי צריכה נכנס לתמונה רק מעל לזה - זה שסתום ביטחון, לא חוויית ברירת המחדל, והמנהל בוחר אם חיוב חריגה מופעל בכלל.&quot; &lt;br/&gt;&lt;b&gt;מספרים:&lt;/b&gt; Free 50 / Solo ו-Team 400 / Enterprise 800 (pooled), הכל לחודש למשתמש; חריגה: Solo $0.05, Team $0.04, Enterprise $0.035 לקרדיט (ב-Free חייבים לשדרג).&lt;/div&gt;
-&lt;/div&gt;
-
-&lt;div class=&quot;obj&quot;&gt;
-&lt;div class=&quot;q edit-unit&quot; contenteditable=&quot;false&quot;&gt;&quot;מה Postman מוסיף מעבר ל-WAF, DDoS ו-Authentication שיש לנו?&quot;&lt;/div&gt;
-&lt;div class=&quot;a edit-unit&quot; contenteditable=&quot;false&quot;&gt;&quot;Postman לא מתחרה ב-WAF/DDoS/authentication — הוא מוסיף שכבת אבטחה שממוקדת ב-API lifecycle: Secret Scanner שמאתר סודות ומפתחות שדלפו בקוד ובקולקציות, security scorecards ב-API Catalog, וגישת shift-left testing.&quot; &lt;br/&gt;&lt;b&gt;לזכור:&lt;/b&gt; לא להתווכח עם ה-stack הקיים. לברר איפה יש gaps ב-lifecycle, Governance, secrets ו-testing.&lt;/div&gt;
-&lt;/div&gt;
-
-&lt;div class=&quot;obj&quot;&gt;
-&lt;div class=&quot;q edit-unit&quot; contenteditable=&quot;false&quot;&gt;&quot;אנחנו עובדים עם MuleSoft — איפה Postman נכנס?&quot;&lt;/div&gt;
-&lt;div class=&quot;a edit-unit&quot; contenteditable=&quot;false&quot;&gt;&quot;Postman לא מחליף את MuleSoft כפלטפורמת אינטגרציה — MuleSoft/Anypoint הוא integration platform בפני עצמו עם ה-Catalog שלו. הכיוון הרלוונטי הוא self-service API publishing מ-Postman, עם Governance ו-approval flow, שממלא את הפער של המתנה ארוכה ליצירת APIs חדשים. אינטגרציה טכנית ישירה וספציפית מול MuleSoft טרם אושרה במלואה.&quot; &lt;br/&gt;&lt;b&gt;לזכור:&lt;/b&gt; לא להבטיח capability שלא הוצגה בפועל — לקבוע follow-up טכני עם SE.&lt;/div&gt;
-&lt;/div&gt;
-
-&lt;div class=&quot;obj&quot;&gt;
-&lt;div class=&quot;q edit-unit&quot; contenteditable=&quot;false&quot;&gt;&quot;אנחנו כבר משתמשים ב-Postman ל-testing — מה עוד נקבל?&quot;&lt;/div&gt;
-&lt;div class=&quot;a edit-unit&quot; contenteditable=&quot;false&quot;&gt;&quot;Enterprise מרחיב שימוש נקודתי ב-testing לכל ה-API lifecycle: design, Governance, ו-visibility ארגוני על כל ה-APIs בחברה — לא רק על אלה שכבר נבדקים.&quot; &lt;br/&gt;&lt;b&gt;לזכור:&lt;/b&gt; להתחיל ממה שהם כבר עושים עם Postman, ואז לזהות מה חסר סביבו.&lt;/div&gt;
-&lt;/div&gt;
-
-&lt;div class=&quot;group-title edit-unit&quot; contenteditable=&quot;false&quot;&gt;התנגדויות — Fabric / Passport / Fern / Hosting&lt;/div&gt;
-
-&lt;div class=&quot;obj&quot;&gt;
-&lt;div class=&quot;q edit-unit&quot; contenteditable=&quot;false&quot;&gt;&quot;יש לנו כבר Secret Manager/Vault (HashiCorp, AWS Secrets Manager) — למה צריך Passport?&quot;&lt;/div&gt;
-&lt;div class=&quot;a edit-unit&quot; contenteditable=&quot;false&quot;&gt;&quot;Passport לא מחליף את הכספת הקיימת — ה-Secret האמיתי ממשיך לגור בדיוק שם. הוא מוסיף שכבה שמעליה: גילוי (מי יודע שה-API הזה קיים בכלל), בקשת גישה מסודרת, ו-Audit על כל קריאה — דברים שהכספת עצמה לא עושה.&quot; &lt;br/&gt;&lt;b&gt;שאלת Revers:&lt;/b&gt; &quot;אם מפתח צריך גישה חדשה היום — כמה זמן לוקח מהבקשה עד שהוא מקבל את ה-Secret בפועל, ומי מאשר?&quot;&lt;br/&gt;&lt;b&gt;לזכור:&lt;/b&gt; אל תמכור את זה כ&quot;כספת טובה יותר&quot; — זה Governance-layer, לא תחרות ישירה.&lt;/div&gt;
-&lt;/div&gt;
-
-&lt;div class=&quot;obj&quot;&gt;
-&lt;div class=&quot;q edit-unit&quot; contenteditable=&quot;false&quot;&gt;&quot;$49 לחודש לזהות זה הרבה — למה לא פשוט לתת למפתחים את ה-Key?&quot;&lt;/div&gt;
-&lt;div class=&quot;a edit-unit&quot; contenteditable=&quot;false&quot;&gt;&quot;זה בדיוק מה שקורה היום ברוב הארגונים — וזו הבעיה: Key אחד שדלף יכול לשמש אלפי פעמים לפני שמישהו שם לב. $49 הוא לא עלות 'נוספת' — זה המחיר של לדעת מי עשה מה, ולבטל גישה ל-30 שניות במקום לסובב Secret לכולם.&quot; &lt;br/&gt;&lt;b&gt;שאלת Revers:&lt;/b&gt; &quot;אם מפתח עוזב את החברה מחר — כמה זמן לוקח לכם היום לדעת לאיזה APIs בדיוק הייתה לו גישה, ולחסום את זה?&quot;&lt;br/&gt;&lt;b&gt;לזכור:&lt;/b&gt; ה-ARR האמיתי הוא ב-API consumption ($50/מיליון קריאות) לא רק בזהויות — אל תעגן את כל השיחה רק במחיר למשתמש.&lt;/div&gt;
-&lt;/div&gt;
-
-&lt;div class=&quot;obj&quot;&gt;
-&lt;div class=&quot;q edit-unit&quot; contenteditable=&quot;false&quot;&gt;&quot;אנחנו כבר משתמשים ב-LiteLLM / Kong AI Gateway — למה Fabric?&quot;&lt;/div&gt;
-&lt;div class=&quot;a edit-unit&quot; contenteditable=&quot;false&quot;&gt;&quot;כלים כאלה מצוינים לניתוב בין מודלי LLM — אבל זה בדיוק התחום שלהם: LLMs. ברגע שיש לכם גם APIs פנימיים ו-Agents שצריכים לגשת אליהם, לא רק מודלים, Fabric נותן שכבה רחבה יותר — LLMs, MCP, Agents ו-APIs באותו מקום, עם Credential Broker כך ש-Agent לא מחזיק Secret בעצמו.&quot; &lt;br/&gt;&lt;b&gt;שאלת Revers:&lt;/b&gt; &quot;מה קורה היום כש-Agent צריך לגשת גם למודל וגם ל-API פנימי — זה עובר דרך שני כלים שונים, או שיש לכם פתרון אחד לשניהם?&quot;&lt;br/&gt;&lt;b&gt;לזכור:&lt;/b&gt; לא למכור &quot;תחליף&quot; — למכור &quot;שכבה נוספת&quot; כשה-Gateway הקיים לא מכסה APIs פנימיים.&lt;/div&gt;
-&lt;/div&gt;
-
-&lt;div class=&quot;obj&quot;&gt;
-&lt;div class=&quot;q edit-unit&quot; contenteditable=&quot;false&quot;&gt;&quot;ה-Control Plane נשאר אצלכם בענן — זה לא פותר לנו באמת Data Residency?&quot;&lt;/div&gt;
-&lt;div class=&quot;a edit-unit&quot; contenteditable=&quot;false&quot;&gt;&quot;שאלה מצוינת, ונכונה — 'Data Residency' לא אומר שהכל נשאר אצלכם. ה-Control Plane (ניהול והגדרות) כן נשאר בענן Postman; רק ה-Data Plane (העיבוד בפועל) עובר לענן שלכם. אם הדרישה שלכם היא בידוד רשת או מיקום עיבוד — זה מספיק. אם הדרישה היא שאף מידע לא יגיע לענן חיצוני בכלל — צריך לבדוק יחד מה בדיוק עובר בין הרכיבים.&quot; &lt;br/&gt;&lt;b&gt;שאלת Revers:&lt;/b&gt; &quot;מה בדיוק הדרישה הרגולטורית שלכם — בידוד רשת, מיקום עיבוד, או שאין בכלל מידע שיכול לעבור בענן חיצוני?&quot;&lt;br/&gt;&lt;b&gt;לזכור:&lt;/b&gt; זו בדיוק הנקודה שיניב ציין כ&quot;לא לנצל לבד כסיבה לשדרג&quot; — לבדוק מול הצורך האמיתי, לא להניח.&lt;/div&gt;
-&lt;/div&gt;
-
-&lt;div class=&quot;obj&quot;&gt;
-&lt;div class=&quot;q edit-unit&quot; contenteditable=&quot;false&quot;&gt;&quot;יש לנו כבר Swagger/OpenAPI — בשביל מה Fern?&quot;&lt;/div&gt;
-&lt;div class=&quot;a edit-unit&quot; contenteditable=&quot;false&quot;&gt;&quot;ה-Spec הוא ההתחלה, לא הסוף. Fern לוקח את ה-Spec ומייצר ממנו אוטומטית Documentation, SDKs בשפות מרכזיות ו-CLI — כך שהם לא יוצאים מסונכרנים מה-API בפועל. אם ה-Spec שלכם מתעדכן והDocs/SDKs לא מתעדכנים איתו אוטומטית — זה בדיוק ה-Drift שגורם לכאב.&quot; &lt;br/&gt;&lt;b&gt;שאלת Revers:&lt;/b&gt; &quot;כשה-API שלכם משתנה — כמה זמן לוקח ל-Docs ול-SDKs החיצוניים שלכם להתעדכן בהתאם, ומי עושה את זה בפועל?&quot;&lt;br/&gt;&lt;b&gt;לזכור:&lt;/b&gt; Fern הוא כרגע מוצר/רכישה עצמאית, לא חלק מחבילת Postman — למצב בהתאם.&lt;/div&gt;
-&lt;/div&gt;
-
-&lt;div class=&quot;obj&quot;&gt;
-&lt;div class=&quot;q edit-unit&quot; contenteditable=&quot;false&quot;&gt;&quot;קרדיטים שיתופיים נשמעים כמו שאתם רוצים שנשלם יותר — מה רע בחוזה נפרד?&quot;&lt;/div&gt;
-&lt;div class=&quot;a edit-unit&quot; contenteditable=&quot;false&quot;&gt;&quot;בדרך כלל זה הפוך — קרדיטים שיתופיים נותנים לכם גמישות למשוך בין כמה Add-ons בלי משא-ומתן חדש בכל פעם שהשימוש משתנה. חוזה נפרד משתלם רק כשיש נפח גבוה וצפוי לאורך זמן, או צורך אמיתי ב-SLA ייעודי.&quot; &lt;br/&gt;&lt;b&gt;שאלת Revers:&lt;/b&gt; &quot;יש לכם היום תחזית ברורה של כמה אתם תצרכו ב-12 החודשים הקרובים, או שזה עדיין משתנה?&quot;&lt;br/&gt;&lt;b&gt;לזכור:&lt;/b&gt; אם הלקוח לא בטוח בנפח — קרדיטים שיתופיים הם ברירת המחדל הנכונה להתחיל בה.&lt;/div&gt;
-&lt;/div&gt;
-
-&lt;div class=&quot;obj&quot;&gt;
-&lt;div class=&quot;q edit-unit&quot; contenteditable=&quot;false&quot;&gt;&quot;Ephemeral identities בחינם — זה לא 'חינם' שבאמת עולה לנו במקום אחר?&quot;&lt;/div&gt;
-&lt;div class=&quot;a edit-unit&quot; contenteditable=&quot;false&quot;&gt;&quot;לא — אלה זהויות קצרות-חיים (למשל Sub-Agent שנוצר למשימה אחת וננעל מיד לפי ההרשאות של ה-Agent ההורה). התשלום האמיתי הוא על Human identities (זהויות קבועות, $49/חודש) ועל נפח ה-API consumption ($50/מיליון קריאות) — שני דברים שנמדדים בנפרד וברורים.&quot; &lt;br/&gt;&lt;b&gt;שאלת Revers:&lt;/b&gt; &quot;כמה Sub-Agents בערך נוצרים אצלכם ביום, ולכמה זמן הם בדרך כלל 'חיים'?&quot;&lt;br/&gt;&lt;b&gt;לזכור:&lt;/b&gt; התשובה הזו עוזרת להעריך את נפח ה-API consumption בפועל, לא רק את מספר הזהויות הקבועות.&lt;/div&gt;
-&lt;/div&gt;
-
-&lt;div class=&quot;group-title edit-unit&quot; contenteditable=&quot;false&quot;&gt;התנגדויות — מתחרים ישירים של Fern (Sept 2026)&lt;/div&gt;
-
-&lt;div class=&quot;obj&quot;&gt;
-&lt;div class=&quot;q edit-unit&quot; contenteditable=&quot;false&quot;&gt;&quot;אנחנו כבר משתמשים ב-Speakeasy ל-SDKs — למה Fern?&quot;&lt;/div&gt;
-&lt;div class=&quot;a edit-unit&quot; contenteditable=&quot;false&quot;&gt;&quot;Speakeasy עושה SDK-generation בלבד, עם תמחור לפי-שפה, בלי Docs ובלי on-prem. Fern נותן Docs+SDK ממקור אחד, לא משני ספקים/קצבי-עדכון שונים — ותומך ב-9 שפות כולל Swift ב-production (היחיד שעושה את זה).&quot; &lt;br/&gt;&lt;b&gt;שאלת Revers:&lt;/b&gt; &quot;כשה-API משתנה, כמה זמן לוקח ל-Docs שלכם 'להתעדכן' אחרי ה-SDK, ומי אחראי לסנכרן בין שני הכלים?&quot;&lt;br/&gt;&lt;b&gt;לזכור:&lt;/b&gt; הכאב האמיתי הוא תיאום בין שני ספקים, לא איכות ה-SDK עצמו.&lt;/div&gt;
-&lt;/div&gt;
-
-&lt;div class=&quot;obj&quot;&gt;
-&lt;div class=&quot;q edit-unit&quot; contenteditable=&quot;false&quot;&gt;&quot;אנחנו על Stainless — זה עובד לנו טוב.&quot;&lt;/div&gt;
-&lt;div class=&quot;a edit-unit&quot; contenteditable=&quot;false&quot;&gt;&quot;חשוב לדעת: Stainless בתהליך Winding Down — נרכשה ע״י Anthropic ב-18 במאי 2026 וסגורה לפרויקטים חדשים. ה-SDKs הקיימים שלכם יתחילו 'להתיישן' ברגע שה-API משתנה ואין מי שמריץ regeneration. זו הזדמנות Displacement אמיתית עם Timeline — לא רק מכירה רגילה.&quot; &lt;br/&gt;&lt;b&gt;שאלת Revers:&lt;/b&gt; &quot;אתם מודעים לסגירה של Stainless? יש לכם תוכנית מגירה, או שאתם עדיין סומכים על ה-SDKs שכבר נוצרו?&quot;&lt;br/&gt;&lt;b&gt;לזכור:&lt;/b&gt; להוביל עם Migration + Drift, לא עם פיצ'רים - זה Time-bound, יש כאן דד-ליין אמיתי.&lt;/div&gt;
-&lt;/div&gt;
-
-&lt;div class=&quot;obj&quot;&gt;
-&lt;div class=&quot;q edit-unit&quot; contenteditable=&quot;false&quot;&gt;&quot;יש OpenAPI Generator (קוד פתוח, חינם) — בשביל מה לשלם?&quot;&lt;/div&gt;
-&lt;div class=&quot;a edit-unit&quot; contenteditable=&quot;false&quot;&gt;&quot;זה חינם ב'מחיר רכישה' — אבל אתם הופכים לבעלים של כל התחזוקה: Idiomatic output, סנכרון Docs, Drift detection, ותמיכה. ה-TCO האמיתי הוא שעות הנדסה, לא מחיר רישיון.&quot; &lt;br/&gt;&lt;b&gt;שאלת Revers:&lt;/b&gt; &quot;כמה זמן הנדסי בפועל הולך היום על תחזוקת ה-SDKs שנוצרו מ-OpenAPI Generator / Kiota, ומי עושה את זה?&quot;&lt;br/&gt;&lt;b&gt;לזכור:&lt;/b&gt; &quot;Free but you own the maintenance&quot; — זה המשפט המדויק להשתמש בו.&lt;/div&gt;
-&lt;/div&gt;
-
-&lt;div class=&quot;obj&quot;&gt;
-&lt;div class=&quot;q edit-unit&quot; contenteditable=&quot;false&quot;&gt;&quot;יש לנו Mintlify / ReadMe ל-Docs — זה לא מספיק?&quot;&lt;/div&gt;
-&lt;div class=&quot;a edit-unit&quot; contenteditable=&quot;false&quot;&gt;&quot;כלים כאלה מעולים לתיעוד עצמו, אבל הם Docs-only — אין להם SDK. כש-Docs ו-SDK באים משני ספקים נפרדים, הם יוצאים מסונכרנים ברגע שה-API משתנה. Fern הוא ספק אחד ל-Docs+SDK, עם Drift detection מובנה.&quot; &lt;br/&gt;&lt;b&gt;שאלת Revers:&lt;/b&gt; &quot;מי מריץ regeneration ל-SDKs שלכם כשה-API משתנה, והאם ה-Docs מתעדכנים באותו קצב?&quot;&lt;br/&gt;&lt;b&gt;לזכור:&lt;/b&gt; אל תתווכח על איכות ה-Docs — ReadMe/Mintlify טובים בזה; הפער הוא ב-SDK sync.&lt;/div&gt;
-&lt;/div&gt;
-
-&lt;div class=&quot;obj&quot;&gt;
-&lt;div class=&quot;q edit-unit&quot; contenteditable=&quot;false&quot;&gt;&quot;כתבנו סקריפטים משלנו שמייצרים SDK/Docs — זה עובד לנו.&quot;&lt;/div&gt;
-&lt;div class=&quot;a edit-unit&quot; contenteditable=&quot;false&quot;&gt;&quot;זה לרוב עובד — עד שהמפתח שבנה את הסקריפטים עוזב, או שה-API מתרחב. העלות החבויה היא תחזוקה + Drift, בדרך כלל יחד עם נפח גדל של פניות Support מלקוחות/שותפים שנתקעים.&quot; &lt;br/&gt;&lt;b&gt;שאלת Revers:&lt;/b&gt; &quot;מי בצוות מתחזק את הסקריפטים האלה היום, ומה קורה אם האדם הזה עוזב?&quot;&lt;br/&gt;&lt;b&gt;לזכור:&lt;/b&gt; להראות את ה-Fern diff בפועל + דאטה על נפח כרטיסי Support שקשורים ל-SDK/Docs, אם יש.&lt;/div&gt;
-&lt;/div&gt;
-
-&lt;div class=&quot;obj&quot;&gt;
-&lt;div class=&quot;q edit-unit&quot; contenteditable=&quot;false&quot;&gt;&quot;יש לנו Gateway (Apigee/Kong/Gravitee/Axway) עם Developer Portal מובנה — למה עוד כלי?&quot;&lt;/div&gt;
-&lt;div class=&quot;a edit-unit&quot; contenteditable=&quot;false&quot;&gt;&quot;Fern לא מתחרה ב-Gateway — הוא יושב מעליו. ה-Portal שמגיע עם Gateway בדרך כלל מספק גישה, לא DX אמיתי: אין SDKs איכותיים, אין Agent-readiness. Fern משדרג את החוויה שסביב ה-Gateway, בלי לדרוס אותו.&quot; &lt;br/&gt;&lt;b&gt;שאלת Revers:&lt;/b&gt; &quot;כשמפתח חיצוני רוצה להתחיל לעבוד מול ה-API שלכם, הוא מקבל SDK מוכן, או רק גישה ל-Portal וצריך לבנות client בעצמו?&quot;&lt;br/&gt;&lt;b&gt;לזכור:&lt;/b&gt; &quot;Complement, not rip-out&quot; — המשפט המדויק מול לקוחות עם Gateway קיים.&lt;/div&gt;
 &lt;/div&gt;
 
 &lt;div class=&quot;group-title edit-unit&quot; contenteditable=&quot;false&quot;&gt;10 שאלות שכדאי להיות מוכן אליהן בכל First Call&lt;/div&gt;
@@ -5669,7 +5514,7 @@ document.addEventListener('keydown', (e)=&gt;{
   &lt;button class=&quot;swatch&quot; data-color=&quot;#5B5F66&quot; style=&quot;background:#5B5F66&quot; title=&quot;אפור&quot;&gt;&lt;/button&gt;
   &lt;button type=&quot;button&quot; class=&quot;ptb-save&quot; title=&quot;שמור&quot;&gt;💾 שמור&lt;/button&gt;
 &lt;/div&gt;
-&lt;p class=&quot;lead edit-unit&quot; contenteditable=&quot;false&quot;&gt;Fern — פלטפורמה נפרדת (נרכשה על ידי Postman בינואר 2026) שהופכת API קיים ל-Developer Experience מלא.&lt;/p&gt;
+&lt;p class=&quot;lead edit-unit&quot; contenteditable=&quot;false&quot;&gt;FERN - פלטפורמה נפרדת שהופכת API קיים ל-Developer Experience מלא.&lt;/p&gt;
 &lt;div class=&quot;say edit-unit&quot; contenteditable=&quot;false&quot;&gt;
 &lt;b class=&quot;tag&quot;&gt;איך אני מסביר את זה&lt;/b&gt;
       מייצרת אוטומטית תיעוד, SDKs בשפות מרכזיות, CLI ו-MCP servers מתוך אותה הגדרת API אחת, כך שהם לא יוצאים מסונכרון אלה מאלה. פונה לצד ה-Consumption (איך צורכים את ה-API), לא לצד ה-Governance - ונמכרת כרגע כמוצר עצמאי, לא כחלק מחבילת Postman.
@@ -5973,6 +5818,7 @@ document.addEventListener('keydown', (e)=&gt;{
 &lt;span class=&quot;chat-header-icon&quot;&gt;🤖&lt;/span&gt;
 &lt;span class=&quot;chat-header-title&quot;&gt;שאל על החומר&lt;/span&gt;
 &lt;/div&gt;
+&lt;div id=&quot;qa-lib-chat&quot;&gt;&lt;/div&gt;
 &lt;div class=&quot;chat-quick&quot;&gt;
 &lt;div class=&quot;chat-quick-item&quot;&gt;&lt;button class=&quot;chat-quick-btn&quot; data-prompt=&quot;מה ההבדל בין Fabric ל-Passport?&quot;&gt;מה ההבדל בין Fabric ל-Passport?&lt;/button&gt;&lt;button class=&quot;chat-quick-remove&quot; title=&quot;הסר שאלה זו&quot;&gt;✕&lt;/button&gt;&lt;/div&gt;
 &lt;div class=&quot;chat-quick-item&quot;&gt;&lt;button class=&quot;chat-quick-btn&quot; data-prompt=&quot;הלקוח מתנגד למחיר, איך אני עונה?&quot;&gt;הלקוח מתנגד למחיר, איך אני עונה?&lt;/button&gt;&lt;button class=&quot;chat-quick-remove&quot; title=&quot;הסר שאלה זו&quot;&gt;✕&lt;/button&gt;&lt;/div&gt;
@@ -6003,6 +5849,90 @@ document.addEventListener('keydown', (e)=&gt;{
 &lt;/aside&gt;
 &lt;/div&gt;
 &lt;/div&gt;
+&lt;script&gt;
+/* one-time cleanup (schema v2): old positional edit keys and the Fern panel block snapshot
+   were corrupted by id shifts; drop them once so the file's own content shows correctly. */
+(function(){
+  try{
+    if(localStorage.getItem('dash-schema')==='2') return;
+    Object.keys(localStorage).forEach(function(k){
+      if(/^content-edit(-dirty)?:(en|he)(:ce\d+)?$/.test(k) || /^blocks:(en|he):#panel-fern \.panel-body$/.test(k)){ localStorage.removeItem(k); }
+    });
+    localStorage.setItem('dash-schema','2');
+  }catch(e){}
+})();
+&lt;/script&gt;
+&lt;script&gt;
+/* ===== Built-in Q&amp;A library (static, no API cost) ===== */
+window.QA_LIB = [{&quot;topic&quot;: &quot;10 שאלות ל-First Call&quot;, &quot;items&quot;: [{&quot;q&quot;: &quot;אני כבר משתמש ב-Free — למה Enterprise?&quot;, &quot;a&quot;: &quot;\&quot;Free הוא חוויה מלאה למפתח יחיד — מצוין לאדם אחד שבונה ובודק. מה שהוא לא יכול לתת לחברה זה ראות, בעלות ושליטה בין צוותים. Enterprise לוקח את מה שאנשים כבר עושים ב-Postman ומוסיף את מה שחסר לארגון: RBAC ברמת הארגון וקבוצות משתמשים, Governance, ו-API Catalog על כל ה-APIs — לא רק על אלה שמישהו במקרה בודק.\&quot; &lt;br/&gt;&lt;b&gt;שאלת Revers:&lt;/b&gt; \&quot;כמה אנשים אצלכם משתמשים ב-Postman בנפרד היום — ויש למישהו תמונה אחת של אילו APIs הם עובדים עליהם ומי הבעלים שלהם?\&quot;&lt;br/&gt;&lt;b&gt;לזכור:&lt;/b&gt; להתחיל ממה שהם כבר עושים ב-Free ואז להראות מה חסר סביבו. לא לפתוח ברשימת פיצ'רים.&quot;}, {&quot;q&quot;: &quot;האם אתם מחליפים את ה-API Gateway?&quot;, &quot;a&quot;: &quot;\&quot;לא. Postman לא נועד להחליף API Gateway. הוא מתחבר ל-Gateways קיימים ומקבל מהם מידע, ובנוסף יש agent שמאזין לפעילות בסביבה.\&quot; &lt;br/&gt;&lt;b&gt;לזכור:&lt;/b&gt; להפריד — Gateway מטפל בתעבורה; Postman מנהל את ה-API lifecycle סביבו.&quot;}, {&quot;q&quot;: &quot;האם אתם מתחברים ל-API Management / Cloud / GitHub?&quot;, &quot;a&quot;: &quot;\&quot;כן. יש אינטגרציות עם Gateways שונים (כולל Azure API Management ו-IBM API Connect) ועם AWS, Azure ו-Google Cloud — Postman שואב מידע מהסביבות האלה עבור Discovery וה-API Catalog. יש גם חיבור ל-GitHub שמקשר קוד מקור ל-APIs, ואפשר להפוך קוד קיים ל-Collections של Postman.\&quot; &lt;br/&gt;&lt;b&gt;שאלת Revers:&lt;/b&gt; \&quot;מה מהדברים האלה אתם מפעילים היום — Gateway, ספק ענן, GitHub — ואיפה נמצא רוב ה-APIs שלכם?\&quot;&lt;br/&gt;&lt;b&gt;לזכור:&lt;/b&gt; קודם להבין למה הלקוח מתכוון ב&amp;quot;אינטגרציה&amp;quot; — Discovery, ניטור, בדיקות או החלפת Gateway.&quot;}, {&quot;q&quot;: &quot;איך אתם מגלים APIs שאני בכלל לא יודע שקיימים?&quot;, &quot;a&quot;: &quot;\&quot;כמה מנגנוני discovery: אינטגרציה עם gateways ו-cloud providers, agent שמזהה APIs לפי תעבורת רשת (Postman Insights), ו-service discovery ב-Kubernetes (Cluster Watcher). המטרה — תמונה רחבה של כל ה-API landscape.\&quot; &lt;br/&gt;&lt;b&gt;לזכור:&lt;/b&gt; זה מתחבר ישירות לבעיה של APIs לא מוכרים ול-API Catalog.&quot;}, {&quot;q&quot;: &quot;האם אתם יושבים באמצע התעבורה?&quot;, &quot;a&quot;: &quot;\&quot;לא בהכרח. באינטגרציה עם Gateway, Postman מקבל מידע ישירות מה-Gateway. אפשר גם agent שמאזין לסביבה ומזהה אילו APIs נקראים.\&quot; &lt;br/&gt;&lt;b&gt;לזכור:&lt;/b&gt; לא להיכנס עמוק מדי לטכנולוגיה — יש כמה שיטות בהתאם לארכיטקטורה של הלקוח.&quot;}, {&quot;q&quot;: &quot;מה ההבדל בין API Catalog ל-API Management?&quot;, &quot;a&quot;: &quot;\&quot;API Catalog הוא registry מרכזי שנותן single pane of glass על כל ה-APIs בארגון — מה קיים, מי הבעלים, ומה המצב שלו (מקושר ל-source control, CI/CD ו-production). API Management מטפל בתעבורה בזמן אמת; Catalog נותן את תמונת ה-visibility וה-ownership שמעליו.\&quot; &lt;br/&gt;&lt;b&gt;לזכור:&lt;/b&gt; לא להציג Catalog כעוד רשימה, אלא כ-visibility ו-ownership על API landscape מבוזר.&quot;}, {&quot;q&quot;: &quot;איך אתם אוכפים OpenAPI / Governance?&quot;, &quot;a&quot;: &quot;\&quot;כן. Postman (API Governance) מאפשר להגדיר ולאכוף כללים על פני צוותים — כללים מובנים וגם custom rules — ולשלב Governance ב-CI/CD.\&quot; &lt;br/&gt;&lt;b&gt;לזכור:&lt;/b&gt; להבדיל בין \&quot;אנחנו עובדים לפי OpenAPI\&quot; לבין \&quot;אנחנו אוכפים OpenAPI בפועל\&quot;.&quot;}, {&quot;q&quot;: &quot;מה אתם מוסיפים מעבר ל-WAF / DDoS / Security tools?&quot;, &quot;a&quot;: &quot;\&quot;Postman לא מתחרה ב-WAF/DDoS/authentication — הוא מוסיף שכבת אבטחה שממוקדת ב-API lifecycle: Secret Scanner שמאתר סודות ומפתחות שדלפו בקוד ובקולקציות, security scorecards ב-API Catalog, וגישת shift-left testing.\&quot; &lt;br/&gt;&lt;b&gt;לזכור:&lt;/b&gt; לא להתווכח עם ה-stack הקיים. לברר איפה יש gaps ב-lifecycle, Governance, secrets ו-testing.&quot;}, {&quot;q&quot;: &quot;איך מוכיחים ROI?&quot;, &quot;a&quot;: &quot;\&quot;אני מעדיף לא לתת לכם מספר גנרי. ה-ROI כאן בדרך כלל מופיע בשלושה מקומות: זמן (פחות זמן בחיפוש אילו APIs קיימים, מי הבעלים שלהם, והטמעת מפתחים חדשים), סיכון (APIs לא מוכרים וסודות שדלפו מתגלים לפני שהם הופכים לאירוע, ו-Standards נאכפים ולא רק מקווים להם), ומהירות (צוותים משתמשים מחדש במה שקיים במקום לבנות מחדש). הדרך האמינה להוכיח את זה היא למדוד על הבסיס שלכם — ואז להשוות אחרי פיילוט.\&quot; &lt;br/&gt;&lt;b&gt;שאלת Revers:&lt;/b&gt; \&quot;היום, כמה זמן לוקח למפתח חדש למצוא את ה-API הנכון ולבצע קריאה ראשונה מוצלחת — וכמה עולה לכם אירוע אחד שנגרם מ-API לא מוכר או לא מנוהל?\&quot;&lt;br/&gt;&lt;b&gt;לזכור:&lt;/b&gt; לא לצטט אחוזי ROI או נתוני Case Study בלי נתון מאומת ללקוח דומה. קודם לבקש את ה-Baseline שלהם.&quot;}, {&quot;q&quot;: &quot;אפשר להתחיל קטן / Trial / POC?&quot;, &quot;a&quot;: &quot;\&quot;כן — להתחיל בקטן זו בדרך כלל הדרך הנכונה. בוחרים צוות אחד או דומיין עסקי אחד, מחברים את המקורות שכבר קיימים (Gateway, חשבון ענן או GitHub), ורואים מה ה-API Catalog מראה. המטרה של פיילוט היא ממצא קונקרטי בסביבה שלכם — למשל APIs שאף אחד לא רשם — ולא סיור בפיצ'רים.\&quot; &lt;br/&gt;&lt;b&gt;שאלת Revers:&lt;/b&gt; \&quot;אם נריץ פיילוט קטן, מה הייתם צריכים לראות בסביבה שלכם כדי להגיד שכדאי להרחיב?\&quot;&lt;br/&gt;&lt;b&gt;לזכור:&lt;/b&gt; אין לי בחומר הזה תנאי Trial/POC או משך מאומתים — לאשר תנאים עדכניים מול ה-SE לפני שמבטיחים משהו, ולהסכים על קריטריוני הצלחה מראש.&quot;}]}, {&quot;topic&quot;: &quot;שיחה ראשונה&quot;, &quot;items&quot;: [{&quot;q&quot;: &quot;אתם מתחברים למערכות אחרות (API Connect, Azure APIM)?&quot;, &quot;a&quot;: &quot;\&quot;כן. יש אינטגרציות עם gateways שונים (כולל Azure API Management ו-IBM API Connect) ועם AWS, Azure ו-Google Cloud. Postman שואב מידע מהסביבות הקיימות לצורך discovery ו-API Catalog.\&quot; &lt;br/&gt;&lt;b&gt;לזכור:&lt;/b&gt; לברר קודם למה הלקוח מתכוון ב-\&quot;integration\&quot; — discovery, monitoring, testing או החלפת gateway.&quot;}, {&quot;q&quot;: &quot;Postman הוא Gateway, או ששם Gateway באמצע?&quot;, &quot;a&quot;: &quot;\&quot;לא. Postman לא נועד להחליף API Gateway. הוא מתחבר ל-Gateways קיימים ומקבל מהם מידע, ובנוסף יש agent שמאזין לפעילות בסביבה.\&quot; &lt;br/&gt;&lt;b&gt;לזכור:&lt;/b&gt; להפריד — Gateway מטפל בתעבורה; Postman מנהל את ה-API lifecycle סביבו.&quot;}, {&quot;q&quot;: &quot;איך אתם מוצאים APIs שאנחנו בעצמנו לא מכירים?&quot;, &quot;a&quot;: &quot;\&quot;כמה מנגנוני discovery: אינטגרציה עם gateways ו-cloud providers, agent שמזהה APIs לפי תעבורת רשת (Postman Insights), ו-service discovery ב-Kubernetes (Cluster Watcher). המטרה — תמונה רחבה של כל ה-API landscape.\&quot; &lt;br/&gt;&lt;b&gt;לזכור:&lt;/b&gt; זה מתחבר ישירות לבעיה של APIs לא מוכרים ול-API Catalog.&quot;}, {&quot;q&quot;: &quot;כדי לנטר APIs אתם חייבים ליירט תעבורה?&quot;, &quot;a&quot;: &quot;\&quot;לא בהכרח. באינטגרציה עם Gateway, Postman מקבל מידע ישירות מה-Gateway. אפשר גם agent שמאזין לסביבה ומזהה אילו APIs נקראים.\&quot; &lt;br/&gt;&lt;b&gt;לזכור:&lt;/b&gt; לא להיכנס עמוק מדי לטכנולוגיה — יש כמה שיטות בהתאם לארכיטקטורה של הלקוח.&quot;}, {&quot;q&quot;: &quot;מה זה API Catalog, ולמה צריך אותו אם יש API Management?&quot;, &quot;a&quot;: &quot;\&quot;API Catalog הוא registry מרכזי שנותן single pane of glass על כל ה-APIs בארגון — מה קיים, מי הבעלים, ומה המצב שלו (מקושר ל-source control, CI/CD ו-production). API Management מטפל בתעבורה בזמן אמת; Catalog נותן את תמונת ה-visibility וה-ownership שמעליו.\&quot; &lt;br/&gt;&lt;b&gt;לזכור:&lt;/b&gt; לא להציג Catalog כעוד רשימה, אלא כ-visibility ו-ownership על API landscape מבוזר.&quot;}, {&quot;q&quot;: &quot;אתם עובדים עם source code ו-repositories?&quot;, &quot;a&quot;: &quot;\&quot;כן. יש חיבור ל-GitHub שמקשר בין source code ל-APIs, וניתן גם להפוך קוד קיים ל-Postman collections.\&quot; &lt;br/&gt;&lt;b&gt;לזכור:&lt;/b&gt; רלוונטי במיוחד לארגונים שעובדים Git-based.&quot;}, {&quot;q&quot;: &quot;אנחנו עובדים הרבה עם AI ו-Agents — איך Postman משתלב?&quot;, &quot;a&quot;: &quot;\&quot;Postman כולל יכולות AI מובנות (Postman AI ו-Agent Mode) לאוטומציה של תהליכי פיתוח API — יצירת בדיקות, תיעוד ו-workflows. מעבר לכך, ככל שיותר תהליכי AI/Agents צורכים APIs, גובר הצורך ב-APIs שניתנים לגילוי, אמינים ומתועדים היטב, וב-Governance כש-AI משתתף בתהליך.\&quot; &lt;br/&gt;&lt;b&gt;לזכור:&lt;/b&gt; קודם להבין את ה-AI workflow של הלקוח, ורק אחר כך לחבר למוצר הרלוונטי.&quot;}, {&quot;q&quot;: &quot;אתם אוכפים standards כמו OpenAPI על צוותי הפיתוח?&quot;, &quot;a&quot;: &quot;\&quot;כן. Postman (API Governance) מאפשר להגדיר ולאכוף כללים על פני צוותים — כללים מובנים וגם custom rules — ולשלב Governance ב-CI/CD.\&quot; &lt;br/&gt;&lt;b&gt;לזכור:&lt;/b&gt; להבדיל בין \&quot;אנחנו עובדים לפי OpenAPI\&quot; לבין \&quot;אנחנו אוכפים OpenAPI בפועל\&quot;.&quot;}]}, {&quot;topic&quot;: &quot;תמחור וחבילות&quot;, &quot;items&quot;: [{&quot;q&quot;: &quot;למה Free זה רק משתמש אחד עכשיו?&quot;, &quot;a&quot;: &quot;\&quot;Free הפכה לחוויה מלאה למפתח בודד - ריצות ללא הגבלה, Git, mocks, 50 קרדיטי AI - במקום חבילת צוות קלה ל-3 אנשים. שיתוף פעולה מתחיל ב-Team, שבאמת נבנתה לעבודה מרובת-משתמשים עם תפקידים ובקרות אמיתיים.\&quot;&quot;}, {&quot;q&quot;: &quot;מה ההבדל האמיתי בין RBAC ב-Team ל-RBAC ב-Enterprise?&quot;, &quot;a&quot;: &quot;\&quot;RBAC ב-Team הוא ברמת ה-workspace - כמו ב-Professional הישן. RBAC ב-Enterprise הוא ארגוני ומתקדם - קבוצות משתמשים, תפקידים בגובה API, Governance ותפקידי מנהל רשת.\&quot;&quot;}, {&quot;q&quot;: &quot;למה רוב ה-Add-ons נעלמו?&quot;, &quot;a&quot;: &quot;\&quot;הם גרמו לבלבול מתמיד לגבי מה שהלקוח בעצם צריך. עכשיו כמעט הכל מגיע מובנה בתוך החבילה שאליה הוא שייך, ללא הגבלה, כך שהחלטת הרכישה היא רק 'איזו חבילה', לא 'איזו חבילה ואיזה Add-on'.\&quot;&quot;}, {&quot;q&quot;: &quot;קרדיטי ה-AI באמת ללא הגבלה?&quot;, &quot;a&quot;: &quot;\&quot;אין חבילה עם הגבלה אינסופית, אבל בכל חבילה יש בסיס שרוב המשתמשים לא מגיעים אליו, ותמחור לפי צריכה נכנס לתמונה רק מעל לזה - זה שסתום ביטחון, לא חוויית ברירת המחדל, והמנהל בוחר אם חיוב חריגה מופעל בכלל.\&quot; &lt;br/&gt;&lt;b&gt;מספרים:&lt;/b&gt; Free 50 / Solo ו-Team 400 / Enterprise 800 (pooled), הכל לחודש למשתמש; חריגה: Solo $0.05, Team $0.04, Enterprise $0.035 לקרדיט (ב-Free חייבים לשדרג).&quot;}, {&quot;q&quot;: &quot;מה Postman מוסיף מעבר ל-WAF, DDoS ו-Authentication שיש לנו?&quot;, &quot;a&quot;: &quot;\&quot;Postman לא מתחרה ב-WAF/DDoS/authentication — הוא מוסיף שכבת אבטחה שממוקדת ב-API lifecycle: Secret Scanner שמאתר סודות ומפתחות שדלפו בקוד ובקולקציות, security scorecards ב-API Catalog, וגישת shift-left testing.\&quot; &lt;br/&gt;&lt;b&gt;לזכור:&lt;/b&gt; לא להתווכח עם ה-stack הקיים. לברר איפה יש gaps ב-lifecycle, Governance, secrets ו-testing.&quot;}, {&quot;q&quot;: &quot;אנחנו עובדים עם MuleSoft — איפה Postman נכנס?&quot;, &quot;a&quot;: &quot;\&quot;Postman לא מחליף את MuleSoft כפלטפורמת אינטגרציה — MuleSoft/Anypoint הוא integration platform בפני עצמו עם ה-Catalog שלו. הכיוון הרלוונטי הוא self-service API publishing מ-Postman, עם Governance ו-approval flow, שממלא את הפער של המתנה ארוכה ליצירת APIs חדשים. אינטגרציה טכנית ישירה וספציפית מול MuleSoft טרם אושרה במלואה.\&quot; &lt;br/&gt;&lt;b&gt;לזכור:&lt;/b&gt; לא להבטיח capability שלא הוצגה בפועל — לקבוע follow-up טכני עם SE.&quot;}, {&quot;q&quot;: &quot;אנחנו כבר משתמשים ב-Postman ל-testing — מה עוד נקבל?&quot;, &quot;a&quot;: &quot;\&quot;Enterprise מרחיב שימוש נקודתי ב-testing לכל ה-API lifecycle: design, Governance, ו-visibility ארגוני על כל ה-APIs בחברה — לא רק על אלה שכבר נבדקים.\&quot; &lt;br/&gt;&lt;b&gt;לזכור:&lt;/b&gt; להתחיל ממה שהם כבר עושים עם Postman, ואז לזהות מה חסר סביבו.&quot;}, {&quot;q&quot;: &quot;קרדיטים שיתופיים נשמעים כמו שאתם רוצים שנשלם יותר — מה רע בחוזה נפרד?&quot;, &quot;a&quot;: &quot;\&quot;בדרך כלל זה הפוך — קרדיטים שיתופיים נותנים לכם גמישות למשוך בין כמה Add-ons בלי משא-ומתן חדש בכל פעם שהשימוש משתנה. חוזה נפרד משתלם רק כשיש נפח גבוה וצפוי לאורך זמן, או צורך אמיתי ב-SLA ייעודי.\&quot; &lt;br/&gt;&lt;b&gt;שאלת Revers:&lt;/b&gt; \&quot;יש לכם היום תחזית ברורה של כמה אתם תצרכו ב-12 החודשים הקרובים, או שזה עדיין משתנה?\&quot;&lt;br/&gt;&lt;b&gt;לזכור:&lt;/b&gt; אם הלקוח לא בטוח בנפח — קרדיטים שיתופיים הם ברירת המחדל הנכונה להתחיל בה.&quot;}]}, {&quot;topic&quot;: &quot;Passport&quot;, &quot;items&quot;: [{&quot;q&quot;: &quot;יש לנו כבר Secret Manager/Vault (HashiCorp, AWS Secrets Manager) — למה צריך Passport?&quot;, &quot;a&quot;: &quot;\&quot;Passport לא מחליף את הכספת הקיימת — ה-Secret האמיתי ממשיך לגור בדיוק שם. הוא מוסיף שכבה שמעליה: גילוי (מי יודע שה-API הזה קיים בכלל), בקשת גישה מסודרת, ו-Audit על כל קריאה — דברים שהכספת עצמה לא עושה.\&quot; &lt;br/&gt;&lt;b&gt;שאלת Revers:&lt;/b&gt; \&quot;אם מפתח צריך גישה חדשה היום — כמה זמן לוקח מהבקשה עד שהוא מקבל את ה-Secret בפועל, ומי מאשר?\&quot;&lt;br/&gt;&lt;b&gt;לזכור:&lt;/b&gt; אל תמכור את זה כ\&quot;כספת טובה יותר\&quot; — זה Governance-layer, לא תחרות ישירה.&quot;}, {&quot;q&quot;: &quot;$49 לחודש לזהות זה הרבה — למה לא פשוט לתת למפתחים את ה-Key?&quot;, &quot;a&quot;: &quot;\&quot;זה בדיוק מה שקורה היום ברוב הארגונים — וזו הבעיה: Key אחד שדלף יכול לשמש אלפי פעמים לפני שמישהו שם לב. $49 הוא לא עלות 'נוספת' — זה המחיר של לדעת מי עשה מה, ולבטל גישה ל-30 שניות במקום לסובב Secret לכולם.\&quot; &lt;br/&gt;&lt;b&gt;שאלת Revers:&lt;/b&gt; \&quot;אם מפתח עוזב את החברה מחר — כמה זמן לוקח לכם היום לדעת לאיזה APIs בדיוק הייתה לו גישה, ולחסום את זה?\&quot;&lt;br/&gt;&lt;b&gt;לזכור:&lt;/b&gt; ה-ARR האמיתי הוא ב-API consumption ($50/מיליון קריאות) לא רק בזהויות — אל תעגן את כל השיחה רק במחיר למשתמש.&quot;}, {&quot;q&quot;: &quot;Ephemeral identities בחינם — זה לא 'חינם' שבאמת עולה לנו במקום אחר?&quot;, &quot;a&quot;: &quot;\&quot;לא — אלה זהויות קצרות-חיים (למשל Sub-Agent שנוצר למשימה אחת וננעל מיד לפי ההרשאות של ה-Agent ההורה). התשלום האמיתי הוא על Human identities (זהויות קבועות, $49/חודש) ועל נפח ה-API consumption ($50/מיליון קריאות) — שני דברים שנמדדים בנפרד וברורים.\&quot; &lt;br/&gt;&lt;b&gt;שאלת Revers:&lt;/b&gt; \&quot;כמה Sub-Agents בערך נוצרים אצלכם ביום, ולכמה זמן הם בדרך כלל 'חיים'?\&quot;&lt;br/&gt;&lt;b&gt;לזכור:&lt;/b&gt; התשובה הזו עוזרת להעריך את נפח ה-API consumption בפועל, לא רק את מספר הזהויות הקבועות.&quot;}]}, {&quot;topic&quot;: &quot;Fabric&quot;, &quot;items&quot;: [{&quot;q&quot;: &quot;אנחנו כבר משתמשים ב-LiteLLM / Kong AI Gateway — למה Fabric?&quot;, &quot;a&quot;: &quot;\&quot;כלים כאלה מצוינים לניתוב בין מודלי LLM — אבל זה בדיוק התחום שלהם: LLMs. ברגע שיש לכם גם APIs פנימיים ו-Agents שצריכים לגשת אליהם, לא רק מודלים, Fabric נותן שכבה רחבה יותר — LLMs, MCP, Agents ו-APIs באותו מקום, עם Credential Broker כך ש-Agent לא מחזיק Secret בעצמו.\&quot; &lt;br/&gt;&lt;b&gt;שאלת Revers:&lt;/b&gt; \&quot;מה קורה היום כש-Agent צריך לגשת גם למודל וגם ל-API פנימי — זה עובר דרך שני כלים שונים, או שיש לכם פתרון אחד לשניהם?\&quot;&lt;br/&gt;&lt;b&gt;לזכור:&lt;/b&gt; לא למכור \&quot;תחליף\&quot; — למכור \&quot;שכבה נוספת\&quot; כשה-Gateway הקיים לא מכסה APIs פנימיים.&quot;}]}, {&quot;topic&quot;: &quot;Hosting&quot;, &quot;items&quot;: [{&quot;q&quot;: &quot;ה-Control Plane נשאר אצלכם בענן — זה לא פותר לנו באמת Data Residency?&quot;, &quot;a&quot;: &quot;\&quot;שאלה מצוינת, ונכונה — 'Data Residency' לא אומר שהכל נשאר אצלכם. ה-Control Plane (ניהול והגדרות) כן נשאר בענן Postman; רק ה-Data Plane (העיבוד בפועל) עובר לענן שלכם. אם הדרישה שלכם היא בידוד רשת או מיקום עיבוד — זה מספיק. אם הדרישה היא שאף מידע לא יגיע לענן חיצוני בכלל — צריך לבדוק יחד מה בדיוק עובר בין הרכיבים.\&quot; &lt;br/&gt;&lt;b&gt;שאלת Revers:&lt;/b&gt; \&quot;מה בדיוק הדרישה הרגולטורית שלכם — בידוד רשת, מיקום עיבוד, או שאין בכלל מידע שיכול לעבור בענן חיצוני?\&quot;&lt;br/&gt;&lt;b&gt;לזכור:&lt;/b&gt; זו בדיוק הנקודה שיניב ציין כ\&quot;לא לנצל לבד כסיבה לשדרג\&quot; — לבדוק מול הצורך האמיתי, לא להניח.&quot;}]}, {&quot;topic&quot;: &quot;Fern&quot;, &quot;items&quot;: [{&quot;q&quot;: &quot;יש לנו כבר Swagger/OpenAPI — בשביל מה Fern?&quot;, &quot;a&quot;: &quot;\&quot;ה-Spec הוא ההתחלה, לא הסוף. Fern לוקח את ה-Spec ומייצר ממנו אוטומטית Documentation, SDKs בשפות מרכזיות ו-CLI — כך שהם לא יוצאים מסונכרנים מה-API בפועל. אם ה-Spec שלכם מתעדכן והDocs/SDKs לא מתעדכנים איתו אוטומטית — זה בדיוק ה-Drift שגורם לכאב.\&quot; &lt;br/&gt;&lt;b&gt;שאלת Revers:&lt;/b&gt; \&quot;כשה-API שלכם משתנה — כמה זמן לוקח ל-Docs ול-SDKs החיצוניים שלכם להתעדכן בהתאם, ומי עושה את זה בפועל?\&quot;&lt;br/&gt;&lt;b&gt;לזכור:&lt;/b&gt; Fern הוא כרגע מוצר/רכישה עצמאית, לא חלק מחבילת Postman — למצב בהתאם.&quot;}, {&quot;q&quot;: &quot;אנחנו כבר משתמשים ב-Speakeasy ל-SDKs — למה Fern?&quot;, &quot;a&quot;: &quot;\&quot;Speakeasy עושה SDK-generation בלבד, עם תמחור לפי-שפה, בלי Docs ובלי on-prem. Fern נותן Docs+SDK ממקור אחד, לא משני ספקים/קצבי-עדכון שונים — ותומך ב-9 שפות כולל Swift ב-production (היחיד שעושה את זה).\&quot; &lt;br/&gt;&lt;b&gt;שאלת Revers:&lt;/b&gt; \&quot;כשה-API משתנה, כמה זמן לוקח ל-Docs שלכם 'להתעדכן' אחרי ה-SDK, ומי אחראי לסנכרן בין שני הכלים?\&quot;&lt;br/&gt;&lt;b&gt;לזכור:&lt;/b&gt; הכאב האמיתי הוא תיאום בין שני ספקים, לא איכות ה-SDK עצמו.&quot;}, {&quot;q&quot;: &quot;אנחנו על Stainless — זה עובד לנו טוב.&quot;, &quot;a&quot;: &quot;\&quot;חשוב לדעת: Stainless בתהליך Winding Down — נרכשה ע״י Anthropic ב-18 במאי 2026 וסגורה לפרויקטים חדשים. ה-SDKs הקיימים שלכם יתחילו 'להתיישן' ברגע שה-API משתנה ואין מי שמריץ regeneration. זו הזדמנות Displacement אמיתית עם Timeline — לא רק מכירה רגילה.\&quot; &lt;br/&gt;&lt;b&gt;שאלת Revers:&lt;/b&gt; \&quot;אתם מודעים לסגירה של Stainless? יש לכם תוכנית מגירה, או שאתם עדיין סומכים על ה-SDKs שכבר נוצרו?\&quot;&lt;br/&gt;&lt;b&gt;לזכור:&lt;/b&gt; להוביל עם Migration + Drift, לא עם פיצ'רים - זה Time-bound, יש כאן דד-ליין אמיתי.&quot;}, {&quot;q&quot;: &quot;יש OpenAPI Generator (קוד פתוח, חינם) — בשביל מה לשלם?&quot;, &quot;a&quot;: &quot;\&quot;זה חינם ב'מחיר רכישה' — אבל אתם הופכים לבעלים של כל התחזוקה: Idiomatic output, סנכרון Docs, Drift detection, ותמיכה. ה-TCO האמיתי הוא שעות הנדסה, לא מחיר רישיון.\&quot; &lt;br/&gt;&lt;b&gt;שאלת Revers:&lt;/b&gt; \&quot;כמה זמן הנדסי בפועל הולך היום על תחזוקת ה-SDKs שנוצרו מ-OpenAPI Generator / Kiota, ומי עושה את זה?\&quot;&lt;br/&gt;&lt;b&gt;לזכור:&lt;/b&gt; \&quot;Free but you own the maintenance\&quot; — זה המשפט המדויק להשתמש בו.&quot;}, {&quot;q&quot;: &quot;יש לנו Mintlify / ReadMe ל-Docs — זה לא מספיק?&quot;, &quot;a&quot;: &quot;\&quot;כלים כאלה מעולים לתיעוד עצמו, אבל הם Docs-only — אין להם SDK. כש-Docs ו-SDK באים משני ספקים נפרדים, הם יוצאים מסונכרנים ברגע שה-API משתנה. Fern הוא ספק אחד ל-Docs+SDK, עם Drift detection מובנה.\&quot; &lt;br/&gt;&lt;b&gt;שאלת Revers:&lt;/b&gt; \&quot;מי מריץ regeneration ל-SDKs שלכם כשה-API משתנה, והאם ה-Docs מתעדכנים באותו קצב?\&quot;&lt;br/&gt;&lt;b&gt;לזכור:&lt;/b&gt; אל תתווכח על איכות ה-Docs — ReadMe/Mintlify טובים בזה; הפער הוא ב-SDK sync.&quot;}, {&quot;q&quot;: &quot;כתבנו סקריפטים משלנו שמייצרים SDK/Docs — זה עובד לנו.&quot;, &quot;a&quot;: &quot;\&quot;זה לרוב עובד — עד שהמפתח שבנה את הסקריפטים עוזב, או שה-API מתרחב. העלות החבויה היא תחזוקה + Drift, בדרך כלל יחד עם נפח גדל של פניות Support מלקוחות/שותפים שנתקעים.\&quot; &lt;br/&gt;&lt;b&gt;שאלת Revers:&lt;/b&gt; \&quot;מי בצוות מתחזק את הסקריפטים האלה היום, ומה קורה אם האדם הזה עוזב?\&quot;&lt;br/&gt;&lt;b&gt;לזכור:&lt;/b&gt; להראות את ה-Fern diff בפועל + דאטה על נפח כרטיסי Support שקשורים ל-SDK/Docs, אם יש.&quot;}, {&quot;q&quot;: &quot;יש לנו Gateway (Apigee/Kong/Gravitee/Axway) עם Developer Portal מובנה — למה עוד כלי?&quot;, &quot;a&quot;: &quot;\&quot;Fern לא מתחרה ב-Gateway — הוא יושב מעליו. ה-Portal שמגיע עם Gateway בדרך כלל מספק גישה, לא DX אמיתי: אין SDKs איכותיים, אין Agent-readiness. Fern משדרג את החוויה שסביב ה-Gateway, בלי לדרוס אותו.\&quot; &lt;br/&gt;&lt;b&gt;שאלת Revers:&lt;/b&gt; \&quot;כשמפתח חיצוני רוצה להתחיל לעבוד מול ה-API שלכם, הוא מקבל SDK מוכן, או רק גישה ל-Portal וצריך לבנות client בעצמו?\&quot;&lt;br/&gt;&lt;b&gt;לזכור:&lt;/b&gt; \&quot;Complement, not rip-out\&quot; — המשפט המדויק מול לקוחות עם Gateway קיים.&quot;}]}];
+(function(){
+  const LBL = [&quot;📚 ספריית שאלות ותשובות&quot;, &quot;חפש בכל השאלות…&quot;, &quot;אין התאמה&quot;];
+  function norm(q){ return (q||'').trim().toLowerCase().replace(/^[&quot;“”']+|[&quot;“”']+$/g,'').replace(/[?؟!.]+$/,'').replace(/\s+/g,' '); }
+  const flat = [];
+  window.QA_LIB.forEach(g=&gt;g.items.forEach(it=&gt;flat.push({topic:g.topic,q:it.q,a:it.a,n:norm(it.q)})));
+  const tokens = s =&gt; norm(s).split(/[^\p{L}\p{N}]+/u).filter(w=&gt;w.length&gt;1);
+  function lookup(question){
+    const n = norm(question);
+    let hit = flat.find(x=&gt;x.n===n);
+    if(hit) return hit.a;
+    const t = new Set(tokens(question)); if(t.size&lt;3) return null;
+    let best=null, score=0;
+    flat.forEach(x=&gt;{
+      const u = new Set(tokens(x.q)); let inter=0; t.forEach(w=&gt;{ if(u.has(w)) inter++; });
+      const s = inter / (new Set([...t,...u]).size);
+      if(s&gt;score){ score=s; best=x; }
+    });
+    return (best &amp;&amp; score&gt;=0.7) ? best.a : null;
+  }
+  window.getBuiltinAnswer = lookup;
+
+  function build(host){
+    host.classList.add('qa-lib');
+    host.innerHTML = '&lt;div class=&quot;qa-head&quot;&gt;&lt;span class=&quot;qa-title&quot;&gt;'+LBL[0]+'&lt;/span&gt;&lt;input class=&quot;qa-search&quot; type=&quot;search&quot; placeholder=&quot;'+LBL[1]+'&quot;&gt;&lt;/div&gt;'
+      + '&lt;div class=&quot;qa-chips&quot;&gt;&lt;/div&gt;&lt;div class=&quot;qa-list&quot;&gt;&lt;/div&gt;';
+    const chips = host.querySelector('.qa-chips'), list = host.querySelector('.qa-list'), input = host.querySelector('.qa-search');
+    let active = null;
+    function show(items, showTopic){
+      list.innerHTML='';
+      if(!items.length){ list.innerHTML='&lt;div class=&quot;qa-item&quot;&gt;'+LBL[2]+'&lt;/div&gt;'; return; }
+      items.forEach(x=&gt;{
+        const d=document.createElement('div'); d.className='qa-item';
+        d.textContent=x.q;
+        if(showTopic){ const s=document.createElement('small'); s.textContent=x.topic; d.appendChild(s); }
+        d.addEventListener('click',()=&gt;{ if(window.askLibrary) window.askLibrary(x.q); });
+        list.appendChild(d);
+      });
+    }
+    window.QA_LIB.forEach((g,i)=&gt;{
+      const b=document.createElement('button'); b.type='button'; b.className='qa-chip';
+      b.innerHTML=g.topic.replace(/&amp;/g,'&amp;amp;').replace(/&lt;/g,'&amp;lt;')+'&lt;span class=&quot;n&quot;&gt;'+g.items.length+'&lt;/span&gt;';
+      b.addEventListener('click',()=&gt;{
+        input.value='';
+        if(active===i){ active=null; b.classList.remove('active'); list.innerHTML=''; return; }
+        active=i; chips.querySelectorAll('.qa-chip').forEach(c=&gt;c.classList.remove('active')); b.classList.add('active');
+        show(flat.filter(x=&gt;x.topic===g.topic), false);
+      });
+      chips.appendChild(b);
+    });
+    input.addEventListener('input',()=&gt;{
+      chips.querySelectorAll('.qa-chip').forEach(c=&gt;c.classList.remove('active')); active=null;
+      const v=norm(input.value); if(!v){ list.innerHTML=''; return; }
+      const ws = tokens(input.value);
+      show(flat.filter(x=&gt;ws.every(w=&gt;(x.n+' '+norm(x.topic)).includes(w))), true);
+    });
+  }
+  const objHost = document.getElementById('qa-lib-obj'); if(objHost) build(objHost);
+  const chatHost = document.getElementById('qa-lib-chat'); if(chatHost) build(chatHost);
+
+  // the &quot;10 questions&quot; list in the Objections panel: click a line to open its answer
+  document.querySelectorAll('#panel-objections ul.panel-list').forEach(ul=&gt;{
+    ul.classList.add('qa-clickable');
+    ul.querySelectorAll('li').forEach(li=&gt;{
+      li.addEventListener('click',()=&gt;{ if(window.askLibrary) window.askLibrary(li.textContent.trim()); });
+    });
+  });
+})();
+&lt;/script&gt;
 &lt;script&gt;
 (function(){
   const root = document.getElementById('editable-root');
@@ -6659,7 +6589,7 @@ document.addEventListener('keydown', (e)=&gt;{
 
     // A saved correction for this exact question skips the model call
     // entirely — instant, and guaranteed to match what you approved.
-    const saved = getSavedAnswer(question);
+    const saved = (getSavedAnswer(question) !== null) ? getSavedAnswer(question) : (window.getBuiltinAnswer ? window.getBuiltinAnswer(question) : null);
     if(saved !== null){
       answerContentEl.classList.remove('loading');
       answerContentEl.innerHTML = saved;
@@ -6764,6 +6694,8 @@ document.addEventListener('keydown', (e)=&gt;{
       sendBtn.disabled = false;
     }
   }
+
+  window.askLibrary = ask;
 
   function sendCurrentInput(){
     const question = questionEl.value.trim();
@@ -6895,6 +6827,11 @@ document.addEventListener('keydown', (e)=&gt;{
             // Defensive cleanup for snapshots saved before this cleanup
             // existed: strip any stale grip/delete buttons and wired-flag
             // baked into an older save, so this card is wired fresh below.
+            if(containerSelector.indexOf('objections')&gt;-1 &amp;&amp; window.QA_LIB){
+              const qn = (cardEl.querySelector('.q')||{textContent:''}).textContent.trim().replace(/^[&quot;“”']+|[&quot;“”']+$/g,'').toLowerCase();
+              const moved = window.QA_LIB.some(g=&gt;g.items.some(it=&gt;it.q.toLowerCase()===qn));
+              if(moved) return;   // this Q&amp;A now lives in the Q&amp;A library
+            }
             cardEl.querySelectorAll('.drag-grip, .card-delete-btn').forEach(n =&gt; n.remove());
             cardEl.removeAttribute('data-wired');
             container.appendChild(cardEl);
@@ -7262,17 +7199,24 @@ document.addEventListener('keydown', (e)=&gt;{
       el.closest('#sec-opening') || el.closest('#sec-process') ||
       el.closest('#sec-ai') || el.closest('#sec-stages') ||
       el.closest('#panel-fabric .panel-body') || el.closest('#panel-passport .panel-body') ||
-      el.closest('#panel-asa .panel-body') || el.closest('#panel-database .panel-body')
+      el.closest('#panel-asa .panel-body') || el.closest('#panel-fern .panel-body') || el.closest('#panel-database .panel-body')
     );
   }
 
   // Stable ids, assigned once in document order — skips anything inside a
   // reorderable card group, since those persist as part of the card's own
   // full-snapshot mechanism instead.
-  let counter = 0;
+  // Stable ids: scoped to the nearest container with an id, numbered inside that
+  // scope only. A unit added/removed elsewhere on the page can no longer shift
+  // every later id (which used to make one block's saved edit land on another).
+  const scopeCount = {};
   const units = Array.from(root.querySelectorAll('.edit-unit')).filter(el =&gt; !isInCardGroup(el));
   units.forEach(el=&gt;{
-    if(!el.dataset.ceid) el.dataset.ceid = 'ce' + (counter++);
+    if(el.dataset.ceid) return;
+    const holder = el.parentElement &amp;&amp; el.parentElement.closest('[id]');
+    const scope = holder ? holder.id : 'root';
+    scopeCount[scope] = (scopeCount[scope] || 0) + 1;
+    el.dataset.ceid = 'u:' + scope + ':' + scopeCount[scope];
   });
 
   // Restore any previously saved edits for this language.
