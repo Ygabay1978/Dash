@@ -2948,7 +2948,48 @@ window.QA_LIB = [{&quot;topic&quot;: &quot;Top 10 first-call questions&quot;, &q
     document.querySelectorAll('.side-panel.open').forEach(p =&gt; p.classList.remove('open'));
     panel.classList.add('open');
     backdrop.classList.add('open');
+    fitPanelToVisible(panel);
   }
+
+  // The page is embedded in an iframe under a sticky header + tab bar. When the outer
+  // page is scrolled, the top of this frame slides underneath them, so a panel pinned
+  // to the frame's top edge got swallowed. Measure what is really visible and fit to it.
+  function visibleBox(){
+    try{
+      const fe = window.frameElement;
+      if(!fe) return null;
+      const r = fe.getBoundingClientRect();
+      const pd = window.parent.document;
+      let stickyBottom = 0;
+      pd.querySelectorAll('header, nav.tabs, .topbar').forEach(el=&gt;{
+        const cs = window.parent.getComputedStyle(el);
+        if(cs.position === 'sticky' || cs.position === 'fixed'){
+          const b = el.getBoundingClientRect().bottom;
+          if(b &gt; stickyBottom &amp;&amp; b &lt; window.parent.innerHeight/2) stickyBottom = b;
+        }
+      });
+      const top = Math.max(0, stickyBottom - r.top);
+      const bottom = Math.min(r.height, window.parent.innerHeight - r.top);
+      return { top: top, height: Math.max(300, bottom - top) };
+    }catch(e){ return null; }
+  }
+  function fitPanelToVisible(panel){
+    const v = visibleBox();
+    const full = /-full$|addons-pricing$/.test(panel.id);
+    const gap = full ? 0 : 10;
+    if(!v){ return; }
+    panel.style.setProperty('top', (v.top + gap) + 'px', 'important');
+    panel.style.setProperty('height', (v.height - gap*2) + 'px', 'important');
+    if(full) panel.style.setProperty('bottom', 'auto', 'important');
+  }
+  function refitOpenPanel(){
+    const p = document.querySelector('.side-panel.open');
+    if(p) fitPanelToVisible(p);
+  }
+  try{
+    window.parent.addEventListener('scroll', refitOpenPanel, { passive: true });
+    window.parent.addEventListener('resize', refitOpenPanel);
+  }catch(e){}
   function closeAllPanels(){
     document.querySelectorAll('.side-panel.open').forEach(p =&gt; p.classList.remove('open'));
     backdrop.classList.remove('open');
@@ -6206,7 +6247,48 @@ window.QA_LIB = [{&quot;topic&quot;: &quot;10 שאלות ל-First Call&quot;, &q
     document.querySelectorAll('.side-panel.open').forEach(p =&gt; p.classList.remove('open'));
     panel.classList.add('open');
     backdrop.classList.add('open');
+    fitPanelToVisible(panel);
   }
+
+  // The page is embedded in an iframe under a sticky header + tab bar. When the outer
+  // page is scrolled, the top of this frame slides underneath them, so a panel pinned
+  // to the frame's top edge got swallowed. Measure what is really visible and fit to it.
+  function visibleBox(){
+    try{
+      const fe = window.frameElement;
+      if(!fe) return null;
+      const r = fe.getBoundingClientRect();
+      const pd = window.parent.document;
+      let stickyBottom = 0;
+      pd.querySelectorAll('header, nav.tabs, .topbar').forEach(el=&gt;{
+        const cs = window.parent.getComputedStyle(el);
+        if(cs.position === 'sticky' || cs.position === 'fixed'){
+          const b = el.getBoundingClientRect().bottom;
+          if(b &gt; stickyBottom &amp;&amp; b &lt; window.parent.innerHeight/2) stickyBottom = b;
+        }
+      });
+      const top = Math.max(0, stickyBottom - r.top);
+      const bottom = Math.min(r.height, window.parent.innerHeight - r.top);
+      return { top: top, height: Math.max(300, bottom - top) };
+    }catch(e){ return null; }
+  }
+  function fitPanelToVisible(panel){
+    const v = visibleBox();
+    const full = /-full$|addons-pricing$/.test(panel.id);
+    const gap = full ? 0 : 10;
+    if(!v){ return; }
+    panel.style.setProperty('top', (v.top + gap) + 'px', 'important');
+    panel.style.setProperty('height', (v.height - gap*2) + 'px', 'important');
+    if(full) panel.style.setProperty('bottom', 'auto', 'important');
+  }
+  function refitOpenPanel(){
+    const p = document.querySelector('.side-panel.open');
+    if(p) fitPanelToVisible(p);
+  }
+  try{
+    window.parent.addEventListener('scroll', refitOpenPanel, { passive: true });
+    window.parent.addEventListener('resize', refitOpenPanel);
+  }catch(e){}
   function closeAllPanels(){
     document.querySelectorAll('.side-panel.open').forEach(p =&gt; p.classList.remove('open'));
     backdrop.classList.remove('open');
