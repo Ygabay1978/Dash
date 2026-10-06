@@ -1702,6 +1702,53 @@
   .panel-header .panel-back{background:#FF6C37;color:#fff;border:none;border-radius:999px;padding:6px 16px;font:inherit;font-size:14px;font-weight:700;cursor:pointer;margin-inline-end:12px;flex-shrink:0;}
   .panel-header .panel-back:hover{background:#E85A28;}
   #answer-panel .panel-header &gt; span, #chat-answer-window .panel-header &gt; span{flex:1;}
+
+  .tier-wrap{overflow-x:auto;margin-top:10px;border:1px solid var(--line);border-radius:8px;background:#fff;box-shadow:0 1px 2px rgba(20,20,20,0.04);}
+  .tier-table{width:100%;min-width:560px;border-collapse:collapse;font-size:13px;margin:0;}
+  .tier-table th,.tier-table td{border:none;border-bottom:1px solid var(--line);padding:11px 13px;text-align:start;vertical-align:top;}
+  .tier-table th + th,.tier-table td + td{border-inline-start:1px solid var(--line);}
+  .tier-table tr:last-child td{border-bottom:none;}
+  .tier-table th{background:var(--bg-card);font-weight:700;font-size:12.5px;color:var(--grey);}
+  .tier-table th.ent{background:#FFF6F1;color:var(--orange);}
+  .tier-table td.ent{background:#FFFBF8;}
+  .tier-table td.what{width:22%;}
+  .tier-table td.team,.tier-table td.ent{width:39%;}
+  .tier-table tr.main td{border-bottom:none;}
+  .tier-table tr.say-row td{padding-top:0;padding-bottom:14px;border-inline-start:none;}
+  .tier-table tr.say-row td.ent{background:#FFFBF8;}
+  .tier-say b{color:var(--orange);margin-inline-end:6px;}
+  .tier-table .orig{font-weight:700;color:var(--ink);}
+  .tier-table td.what .orig{font-size:13.5px;}
+  .tier-table .plain{margin-top:6px;padding-top:6px;border-top:1px dashed #D9D5CF;font-size:12.5px;color:#3A3A3C;line-height:1.55;}
+  .tier-table .na{color:#8A8A90;}
+  .tier-pill{display:inline-block;margin-top:8px;padding:2px 10px;border-radius:999px;background:#FFF1E6;color:var(--orange);font-weight:600;font-size:12px;white-space:nowrap;}
+  .tier-say{background:#FFF6F1;border-inline-start:3px solid var(--orange);border-radius:6px;padding:9px 12px;font-size:13px;line-height:1.6;}
+  .tier-note{font-size:12px;color:var(--grey);margin:8px 2px 0;}
+
+  /* ---- menu targets tool ---- */
+  .nav-pin,.nav-del{flex-shrink:0;width:20px;height:24px;padding:0;border:none;background:none;cursor:pointer;font-size:12px;opacity:.28;border-radius:5px;line-height:1;}
+  .nav-reorder-item:hover .nav-pin,.nav-reorder-item:hover .nav-del{opacity:.75;}
+  .nav-pin:hover,.nav-del:hover{opacity:1;background:#FFF1E6;}
+  .nav-pin.has-target{opacity:.95;}
+  .nav-pin.has-target::after{content:&quot;&quot;;display:block;width:5px;height:5px;border-radius:50%;background:var(--orange);margin:-3px auto 0;}
+  .nav-settings{margin-top:14px;padding-top:10px;border-top:1px solid var(--line);font-size:12.5px;}
+  .nav-settings summary{cursor:pointer;color:var(--grey);font-weight:700;padding:4px 6px;list-style:none;}
+  .nav-settings summary::-webkit-details-marker{display:none;}
+  .nav-settings button{display:block;width:100%;text-align:start;background:none;border:none;font:inherit;font-size:12.5px;color:var(--ink);padding:6px 8px;border-radius:6px;cursor:pointer;}
+  .nav-settings button:hover{background:#FFF6F1;color:var(--orange);}
+  body.nav-pick-mode, body.nav-pick-mode *{cursor:crosshair !important;}
+  .nav-pick-hover{outline:3px solid #FF6C37 !important;outline-offset:2px;background-color:rgba(255,108,55,.09) !important;}
+  #nav-pick-banner{position:fixed;left:50%;transform:translateX(-50%);z-index:100000;background:#1C1C1E;color:#fff;padding:10px 18px;border-radius:999px;font-size:14px;font-weight:600;box-shadow:0 8px 24px rgba(0,0,0,.3);max-width:92%;text-align:center;}
+  #nav-toast{position:fixed;left:50%;transform:translateX(-50%);z-index:100001;background:#1C1C1E;color:#fff;padding:9px 16px;border-radius:8px;font-size:13px;box-shadow:0 8px 24px rgba(0,0,0,.3);max-width:90%;text-align:center;}
+  #nav-modal{position:fixed;inset:0;z-index:100002;background:rgba(0,0,0,.35);display:flex;align-items:flex-start;justify-content:center;}
+  #nav-modal .box{margin-top:60px;background:#fff;border-radius:12px;padding:18px 20px;width:min(520px,92%);box-shadow:0 20px 50px rgba(0,0,0,.3);}
+  #nav-modal h3{margin:0 0 10px;font-size:16px;}
+  #nav-modal input,#nav-modal textarea{width:100%;box-sizing:border-box;border:1px solid var(--line);border-radius:8px;padding:9px 11px;font:inherit;font-size:13.5px;}
+  #nav-modal textarea{height:190px;font-family:ui-monospace,Menlo,Consolas,monospace;font-size:12px;}
+  #nav-modal .row{display:flex;gap:8px;margin-top:12px;justify-content:flex-end;}
+  #nav-modal .row button{border:1px solid var(--line);background:#fff;border-radius:8px;padding:7px 14px;font:inherit;font-size:13px;cursor:pointer;}
+  #nav-modal .row button.primary{background:var(--orange);border-color:var(--orange);color:#fff;font-weight:700;}
+  #nav-modal p{margin:0 0 8px;font-size:12.5px;color:var(--grey);}
 &lt;/style&gt;
 &lt;/head&gt;
 &lt;body&gt;
@@ -1903,6 +1950,31 @@ A few additional capabilities that can be relevant, depending on the customer's 
 &lt;b&gt;Fern&lt;/b&gt; — a separate platform (acquired by Postman in January 2026) that turns an existing API into a complete Developer Experience: it automatically generates documentation, SDKs in major languages, a CLI, and MCP servers from the same single API definition, so they never drift out of sync with each other. It sits on the Consumption side (how the API is consumed), not the Governance side — and is currently sold as its own standalone product, not part of a Postman plan.
 &lt;/div&gt;
 
+&lt;/section&gt;
+&lt;section id=&quot;sec-tier-compare&quot;&gt;
+&lt;div class=&quot;group-title edit-unit&quot; contenteditable=&quot;false&quot;&gt;Team vs Enterprise — What's Included in Each Plan&lt;/div&gt;
+&lt;p class=&quot;lead edit-unit&quot; contenteditable=&quot;false&quot; style=&quot;margin-bottom:6px;&quot;&gt;The bold line in each box is Postman’s official term. Under it, a plain explanation. Below each row is a sentence you can say to the customer.&lt;/p&gt;
+&lt;div class=&quot;tier-wrap&quot;&gt;&lt;table class=&quot;tier-table&quot;&gt;
+&lt;thead&gt;&lt;tr&gt;&lt;th&gt;What it covers&lt;/th&gt;&lt;th&gt;Team plan&lt;/th&gt;&lt;th class=&quot;ent&quot;&gt;Enterprise plan&lt;/th&gt;&lt;/tr&gt;&lt;/thead&gt;
+&lt;tbody&gt;
+&lt;tr class=&quot;main&quot;&gt;&lt;td class=&quot;what&quot;&gt;&lt;div class=&quot;orig&quot;&gt;&lt;bdi&gt;API Design &amp;amp; Spec&lt;/bdi&gt;&lt;/div&gt;&lt;div class=&quot;plain&quot;&gt;Designing your APIs&lt;/div&gt;&lt;span class=&quot;tier-pill&quot;&gt;Design&lt;/span&gt;&lt;/td&gt;&lt;td class=&quot;team&quot;&gt;&lt;div class=&quot;orig&quot;&gt;&lt;bdi&gt;Spec Hub: OpenAPI, AsyncAPI authoring&lt;/bdi&gt;&lt;/div&gt;&lt;div class=&quot;plain&quot;&gt;You write and edit your API contracts (in the OpenAPI and AsyncAPI formats) in one shared place&lt;/div&gt;&lt;/td&gt;&lt;td class=&quot;ent&quot;&gt;&lt;div class=&quot;orig&quot;&gt;&lt;bdi&gt;Spec Hub: Org-wide, API Catalog&lt;/bdi&gt;&lt;/div&gt;&lt;div class=&quot;plain&quot;&gt;The same, across the whole company — plus an API Catalog: one searchable list of every API&lt;/div&gt;&lt;/td&gt;&lt;/tr&gt;
+&lt;tr class=&quot;say-row&quot;&gt;&lt;td colspan=&quot;3&quot;&gt;&lt;div class=&quot;tier-say&quot;&gt;&lt;b&gt;What to say:&lt;/b&gt;With Team, your team writes and edits its API contracts in one shared place, and with Enterprise that works across the whole company — plus you get a single searchable list of every API you have, so no one has to hunt for them one by one.&lt;/div&gt;&lt;/td&gt;&lt;/tr&gt;
+&lt;tr class=&quot;main&quot;&gt;&lt;td class=&quot;what&quot;&gt;&lt;div class=&quot;orig&quot;&gt;&lt;bdi&gt;Governance &amp;amp; Standards&lt;/bdi&gt;&lt;/div&gt;&lt;div class=&quot;plain&quot;&gt;Rules &amp;amp; consistency&lt;/div&gt;&lt;span class=&quot;tier-pill&quot;&gt;Design&lt;/span&gt;&lt;/td&gt;&lt;td class=&quot;team&quot;&gt;&lt;div class=&quot;orig&quot;&gt;&lt;bdi&gt;Shared workspaces, basic linting&lt;/bdi&gt;&lt;/div&gt;&lt;div class=&quot;plain&quot;&gt;Shared team workspaces, and basic automatic checks that your APIs follow the rules&lt;/div&gt;&lt;/td&gt;&lt;td class=&quot;ent&quot;&gt;&lt;div class=&quot;orig&quot;&gt;&lt;bdi&gt;Org-wide governance policies&lt;/bdi&gt;&lt;/div&gt;&lt;div class=&quot;plain&quot;&gt;Company-wide rules that every team has to follow&lt;/div&gt;&lt;/td&gt;&lt;/tr&gt;
+&lt;tr class=&quot;say-row&quot;&gt;&lt;td colspan=&quot;3&quot;&gt;&lt;div class=&quot;tier-say&quot;&gt;&lt;b&gt;What to say:&lt;/b&gt;With Team you get shared workspaces and basic automatic checks, and with Enterprise you set company-wide rules so every team works to the same standard.&lt;/div&gt;&lt;/td&gt;&lt;/tr&gt;
+&lt;tr class=&quot;main&quot;&gt;&lt;td class=&quot;what&quot;&gt;&lt;div class=&quot;orig&quot;&gt;&lt;bdi&gt;Testing &amp;amp; Automation&lt;/bdi&gt;&lt;/div&gt;&lt;div class=&quot;plain&quot;&gt;Testing&lt;/div&gt;&lt;span class=&quot;tier-pill&quot;&gt;Testing&lt;/span&gt;&lt;/td&gt;&lt;td class=&quot;team&quot;&gt;&lt;div class=&quot;orig&quot;&gt;&lt;bdi&gt;Collection Runner, CLI, and Newman&lt;/bdi&gt;&lt;/div&gt;&lt;div class=&quot;plain&quot;&gt;Run a whole set of tests automatically — with a button or from the command line (Collection Runner, CLI and Newman are the tools that do it)&lt;/div&gt;&lt;/td&gt;&lt;td class=&quot;ent&quot;&gt;&lt;div class=&quot;orig&quot;&gt;&lt;bdi&gt;Advanced data-driven testing&lt;/bdi&gt;&lt;/div&gt;&lt;div class=&quot;plain&quot;&gt;Advanced testing: run the same tests against lots of different data&lt;/div&gt;&lt;/td&gt;&lt;/tr&gt;
+&lt;tr class=&quot;say-row&quot;&gt;&lt;td colspan=&quot;3&quot;&gt;&lt;div class=&quot;tier-say&quot;&gt;&lt;b&gt;What to say:&lt;/b&gt;In both plans you can run a whole set of tests automatically, and the advantage of Enterprise is running those same tests against lots of different data.&lt;/div&gt;&lt;/td&gt;&lt;/tr&gt;
+&lt;tr class=&quot;main&quot;&gt;&lt;td class=&quot;what&quot;&gt;&lt;div class=&quot;orig&quot;&gt;&lt;bdi&gt;Mock Servers&lt;/bdi&gt;&lt;/div&gt;&lt;div class=&quot;plain&quot;&gt;Practice (simulated) APIs&lt;/div&gt;&lt;span class=&quot;tier-pill&quot;&gt;Testing &amp;amp; Development&lt;/span&gt;&lt;/td&gt;&lt;td class=&quot;team&quot;&gt;&lt;div class=&quot;orig&quot;&gt;&lt;bdi&gt;Unlimited mock servers&lt;/bdi&gt;&lt;/div&gt;&lt;div class=&quot;plain&quot;&gt;Unlimited simulated APIs, so teams can start working before the real API exists&lt;/div&gt;&lt;/td&gt;&lt;td class=&quot;ent&quot;&gt;&lt;div class=&quot;orig&quot;&gt;&lt;bdi&gt;Unlimited &amp;amp; Local/CI mocks&lt;/bdi&gt;&lt;/div&gt;&lt;div class=&quot;plain&quot;&gt;Also unlimited — and they can run on a developer’s own computer and inside your company’s automated build process&lt;/div&gt;&lt;/td&gt;&lt;/tr&gt;
+&lt;tr class=&quot;say-row&quot;&gt;&lt;td colspan=&quot;3&quot;&gt;&lt;div class=&quot;tier-say&quot;&gt;&lt;b&gt;What to say:&lt;/b&gt;Both Team and Enterprise give you unlimited simulated APIs, and Enterprise also lets you run them on a developer’s own computer and inside your automated build process.&lt;/div&gt;&lt;/td&gt;&lt;/tr&gt;
+&lt;tr class=&quot;main&quot;&gt;&lt;td class=&quot;what&quot;&gt;&lt;div class=&quot;orig&quot;&gt;&lt;bdi&gt;AI-Native Capabilities&lt;/bdi&gt;&lt;/div&gt;&lt;div class=&quot;plain&quot;&gt;AI help&lt;/div&gt;&lt;span class=&quot;tier-pill&quot;&gt;All stages&lt;/span&gt;&lt;/td&gt;&lt;td class=&quot;team&quot;&gt;&lt;div class=&quot;orig&quot;&gt;&lt;bdi&gt;Agent Mode: Postman AI (400 credits/mo)&lt;/bdi&gt;&lt;/div&gt;&lt;div class=&quot;plain&quot;&gt;An AI assistant that carries out tasks for you (Agent Mode). 400 credits a month — credits = how much AI usage is included&lt;/div&gt;&lt;/td&gt;&lt;td class=&quot;ent&quot;&gt;&lt;div class=&quot;orig&quot;&gt;&lt;bdi&gt;Agent Mode: AI Engineer [800 Credits]&lt;/bdi&gt;&lt;/div&gt;&lt;div class=&quot;plain&quot;&gt;An AI assistant that carries out tasks for you (Agent Mode), called AI Engineer. 800 credits&lt;/div&gt;&lt;/td&gt;&lt;/tr&gt;
+&lt;tr class=&quot;say-row&quot;&gt;&lt;td colspan=&quot;3&quot;&gt;&lt;div class=&quot;tier-say&quot;&gt;&lt;b&gt;What to say:&lt;/b&gt;Both plans include an AI assistant that carries out tasks for you — on Team it’s Postman AI with 400 credits a month, and on Enterprise it’s AI Engineer with 800 credits.&lt;/div&gt;&lt;/td&gt;&lt;/tr&gt;
+&lt;tr class=&quot;main&quot;&gt;&lt;td class=&quot;what&quot;&gt;&lt;div class=&quot;orig&quot;&gt;&lt;bdi&gt;Security &amp;amp; Access&lt;/bdi&gt;&lt;/div&gt;&lt;div class=&quot;plain&quot;&gt;Security &amp;amp; sign-in&lt;/div&gt;&lt;span class=&quot;tier-pill&quot;&gt;Deployment&lt;/span&gt;&lt;/td&gt;&lt;td class=&quot;team&quot;&gt;&lt;div class=&quot;orig&quot;&gt;&lt;bdi&gt;SSO add-on, secret scanning&lt;/bdi&gt;&lt;/div&gt;&lt;div class=&quot;plain&quot;&gt;Sign-in with the company login (SSO) is available as a paid extra; plus scanning that finds passwords and keys exposed by mistake&lt;/div&gt;&lt;/td&gt;&lt;td class=&quot;ent&quot;&gt;&lt;div class=&quot;orig&quot;&gt;&lt;bdi&gt;SSO &amp;amp; SCIM included&lt;/bdi&gt;&lt;/div&gt;&lt;div class=&quot;plain&quot;&gt;Company-login sign-in (SSO) and automatic adding and removing of users (SCIM) are included&lt;/div&gt;&lt;/td&gt;&lt;/tr&gt;
+&lt;tr class=&quot;say-row&quot;&gt;&lt;td colspan=&quot;3&quot;&gt;&lt;div class=&quot;tier-say&quot;&gt;&lt;b&gt;What to say:&lt;/b&gt;If you want everyone to sign in with their company login, on Team that’s a paid extra and on Enterprise it’s already included — together with automatic adding and removing of users as people join and leave.&lt;/div&gt;&lt;/td&gt;&lt;/tr&gt;
+&lt;tr class=&quot;main&quot;&gt;&lt;td class=&quot;what&quot;&gt;&lt;div class=&quot;orig&quot;&gt;&lt;bdi&gt;Monitoring &amp;amp; Obs&lt;/bdi&gt;&lt;/div&gt;&lt;div class=&quot;plain&quot;&gt;Watching live APIs&lt;/div&gt;&lt;span class=&quot;tier-pill&quot;&gt;Monitoring&lt;/span&gt;&lt;/td&gt;&lt;td class=&quot;team&quot;&gt;&lt;div class=&quot;orig&quot;&gt;&lt;bdi&gt;API Monitors, Postman Insights&lt;/bdi&gt;&lt;/div&gt;&lt;div class=&quot;plain&quot;&gt;Regular checks that your APIs are up and responding (API Monitors), plus Postman Insights, which spots problems from real traffic&lt;/div&gt;&lt;/td&gt;&lt;td class=&quot;ent&quot;&gt;&lt;div class=&quot;orig&quot;&gt;&lt;bdi&gt;Expanded monitors, Insights&lt;/bdi&gt;&lt;/div&gt;&lt;div class=&quot;plain&quot;&gt;The same, on a wider scale: expanded checks and insights&lt;/div&gt;&lt;/td&gt;&lt;/tr&gt;
+&lt;tr class=&quot;say-row&quot;&gt;&lt;td colspan=&quot;3&quot;&gt;&lt;div class=&quot;tier-say&quot;&gt;&lt;b&gt;What to say:&lt;/b&gt;In both plans we check that your APIs keep working once they’re live, and on Enterprise that’s done on a wider scale.&lt;/div&gt;&lt;/td&gt;&lt;/tr&gt;
+&lt;tr class=&quot;main&quot;&gt;&lt;td class=&quot;what&quot;&gt;&lt;div class=&quot;orig&quot;&gt;&lt;bdi&gt;Advanced Security Admin&lt;/bdi&gt;&lt;/div&gt;&lt;div class=&quot;plain&quot;&gt;Advanced security administration (ASA)&lt;/div&gt;&lt;span class=&quot;tier-pill&quot;&gt;All stages&lt;/span&gt;&lt;/td&gt;&lt;td class=&quot;team&quot;&gt;&lt;div class=&quot;orig na&quot;&gt;&lt;bdi&gt;N/A&lt;/bdi&gt;&lt;/div&gt;&lt;div class=&quot;plain&quot;&gt;Not available&lt;/div&gt;&lt;/td&gt;&lt;td class=&quot;ent&quot;&gt;&lt;div class=&quot;orig na&quot;&gt;&lt;bdi&gt;TBD&lt;/bdi&gt;&lt;/div&gt;&lt;div class=&quot;plain&quot;&gt;Not final yet — to be confirmed&lt;/div&gt;&lt;/td&gt;&lt;/tr&gt;
+&lt;tr class=&quot;say-row&quot;&gt;&lt;td colspan=&quot;3&quot;&gt;&lt;div class=&quot;tier-say&quot;&gt;&lt;b&gt;What to say:&lt;/b&gt;This is a separate advanced security topic: it’s not available on Team and on Enterprise it isn’t final yet, so I don’t want to promise anything before I confirm the details and get back to you.&lt;/div&gt;&lt;/td&gt;&lt;/tr&gt;
+&lt;/tbody&gt;&lt;/table&gt;&lt;/div&gt;
+&lt;div class=&quot;tier-note&quot;&gt;Credits = how much AI usage is included. “To be confirmed” = the Enterprise details for this item aren’t final yet.&lt;/div&gt;
 &lt;/section&gt;
 &lt;!-- SECTION 2: AI SHIFT — EXPANDED --&gt;
 &lt;section id=&quot;sec-ai&quot;&gt;
@@ -4149,6 +4221,217 @@ document.addEventListener('keydown', (e)=&gt;{
   sel.removeAllRanges();
   sel.addRange(range);
 });
+// --- Menu targets: choose (and change) where each menu button jumps to, add buttons of your own ---
+(function(){
+  const LANG = document.documentElement.lang === 'he' ? 'he' : 'en';
+  const L = LANG === 'he' ? {
+    pin:'קבע לאן הכפתור הזה מפנה', del:'מחק את הכפתור', pick:'לחץ על המקום בעמוד שאליו הכפתור &quot;{n}&quot; יפנה  ·  Esc לביטול',
+    saved:'נשמר — הכפתור יפנה עכשיו לשם', lost:'המקום שנבחר לא נמצא (אולי הטקסט שונה). לחץ על 📍 ובחר מחדש',
+    settings:'⚙ הגדרות תפריט', newBtn:'➕ כפתור חדש', exp:'⬇ ייצוא הגדרות', imp:'⬆ ייבוא הגדרות', reset:'↺ איפוס מיקומים',
+    newTitle:'שם הכפתור החדש', newPh:'למשל: Team מול Enterprise', ok:'אישור', cancel:'ביטול', close:'סגור', copy:'העתק', copied:'הועתק',
+    expTitle:'ייצוא הגדרות התפריט', expHelp:'העתק את הטקסט ושלח לי — אטמיע אותו כברירת מחדל בקובץ.',
+    impTitle:'ייבוא הגדרות התפריט', impHelp:'הדבק כאן את הטקסט שיוצא, ולחץ &quot;החל&quot;.', apply:'החל', bad:'הטקסט לא תקין',
+    confirmDel:'למחוק את הכפתור הזה?', confirmReset:'לאפס את כל המיקומים שבחרת?'
+  } : {
+    pin:'Choose where this button jumps to', del:'Delete this button', pick:'Click the place in the page that &quot;{n}&quot; should jump to  ·  Esc to cancel',
+    saved:'Saved — the button now jumps there', lost:'The chosen place was not found (its text may have changed). Click 📍 and pick again',
+    settings:'⚙ Menu settings', newBtn:'➕ New button', exp:'⬇ Export settings', imp:'⬆ Import settings', reset:'↺ Reset targets',
+    newTitle:'Name of the new button', newPh:'e.g. Team vs Enterprise', ok:'OK', cancel:'Cancel', close:'Close', copy:'Copy', copied:'Copied',
+    expTitle:'Export menu settings', expHelp:'Copy this text and send it to me — I will bake it in as the default.',
+    impTitle:'Import menu settings', impHelp:'Paste the exported text here and click Apply.', apply:'Apply', bad:'Invalid text',
+    confirmDel:'Delete this button?', confirmReset:'Reset all the targets you chose?'
+  };
+  const KEY_T='nav-targets:'+LANG, KEY_C='nav-custom:'+LANG, KEY_O='nav-order:'+LANG;
+  const nav = document.getElementById('left-nav'); if(!nav) return;
+  const root = document.getElementById('editable-root') || document.body;
+  const PICK_SEL = '.tier-table tr, .tier-say, .offer, .stage, .prod, .obj, .say, .cross-box, .pitch-open, .ai-box, .final, .draggable-block, h2, .group-title, section';
+  const rd = (k,d)=&gt;{ try{ const v=JSON.parse(localStorage.getItem(k)); return v==null?d:v; }catch(e){ return d; } };
+  const wr = (k,v)=&gt;{ try{ localStorage.setItem(k, JSON.stringify(v)); }catch(e){} };
+  let targets = rd(KEY_T, {}), custom = rd(KEY_C, []);
+  if(!Array.isArray(custom)) custom = [];
+  if(typeof targets !== 'object' || Array.isArray(targets)) targets = {};
+
+  // what part of this iframe is really visible (the page sits under sticky bars of the outer page)
+  function insets(){
+    try{
+      const fe = window.frameElement; if(!fe) return {top:0,bottom:0};
+      const r = fe.getBoundingClientRect(), pd = window.parent.document; let sb = 0;
+      pd.querySelectorAll('header, nav.tabs, .topbar').forEach(el=&gt;{
+        const cs = window.parent.getComputedStyle(el);
+        if((cs.position==='sticky'||cs.position==='fixed')){ const b=el.getBoundingClientRect().bottom; if(b&gt;sb &amp;&amp; b&lt;window.parent.innerHeight/2) sb=b; }
+      });
+      const top = Math.max(0, sb - r.top);
+      const bottom = Math.max(0, r.height - Math.min(r.height, window.parent.innerHeight - r.top));
+      return {top:top, bottom:bottom};
+    }catch(e){ return {top:0,bottom:0}; }
+  }
+  const sigOf = el =&gt; (el.innerText||el.textContent||'').replace(/\s+/g,' ').trim().toLowerCase().slice(0,80);
+  function candidates(sig){ return Array.from(root.querySelectorAll(PICK_SEL)).filter(e=&gt;sigOf(e)===sig); }
+  function resolve(rec){
+    if(!rec) return null;
+    let el = rec.id ? document.getElementById(rec.id) : null;
+    if(el) return el;
+    const c = candidates(rec.sig || '');
+    el = c[rec.idx||0] || c[0] || null;
+    if(el &amp;&amp; rec.id &amp;&amp; !el.id) el.id = rec.id;
+    return el;
+  }
+  function flash(el){
+    el.style.transition='background-color .9s ease, box-shadow .9s ease';
+    el.style.backgroundColor='#FFF1E6'; el.style.boxShadow='0 0 0 2px rgba(255,108,55,0.35)';
+    setTimeout(()=&gt;{ el.style.backgroundColor=''; el.style.boxShadow=''; },1100);
+  }
+  function toast(msg){
+    const old=document.getElementById('nav-toast'); if(old) old.remove();
+    const t=document.createElement('div'); t.id='nav-toast'; t.textContent=msg; t.style.bottom=(insets().bottom+18)+'px';
+    document.body.appendChild(t); setTimeout(()=&gt;t.remove(), 3200);
+  }
+
+  // ---- custom buttons (created now, before the reorder code runs, so the saved order stays valid) ----
+  const arrowsHTML = '&lt;span class=&quot;reorder-arrows&quot;&gt;&lt;button class=&quot;reorder-up&quot; title=&quot;Move up&quot;&gt;▲&lt;/button&gt;&lt;button class=&quot;reorder-down&quot; title=&quot;Move down&quot;&gt;▼&lt;/button&gt;&lt;/span&gt;';
+  const settings = document.createElement('details'); settings.className='nav-settings';
+  function buildCustom(c){
+    const d=document.createElement('div'); d.className='nav-reorder-item'; d.dataset.reorderId=c.id; d.dataset.custom='1';
+    const b=document.createElement('button'); b.className='nav-item'; b.textContent=c.label;
+    d.appendChild(b); d.insertAdjacentHTML('beforeend', arrowsHTML);
+    return d;
+  }
+  function addTools(item){
+    if(item.querySelector('.nav-pin')) return;
+    const btn = item.querySelector('.nav-item');
+    if(!btn || btn.dataset.openPanel) return;           // panel buttons open a panel; nothing to choose
+    const pin=document.createElement('button'); pin.type='button'; pin.className='nav-pin'; pin.title=L.pin; pin.textContent='📍';
+    item.querySelector('.reorder-arrows').before(pin);
+    if(item.dataset.custom){
+      const del=document.createElement('button'); del.type='button'; del.className='nav-del'; del.title=L.del; del.textContent='🗑';
+      pin.after(del);
+    }
+    pin.classList.toggle('has-target', !!targets[item.dataset.reorderId]);
+  }
+  custom.forEach(c=&gt;nav.appendChild(buildCustom(c)));
+  nav.appendChild(settings);
+  nav.querySelectorAll(':scope &gt; .nav-reorder-item').forEach(addTools);
+
+  // ---- clicking a button that has a chosen target ----
+  nav.addEventListener('click', e=&gt;{
+    if(e.target.closest('.nav-pin,.nav-del,.reorder-arrows,.nav-settings')) return;
+    const item = e.target.closest('.nav-reorder-item'); if(!item || !e.target.closest('.nav-item')) return;
+    const rec = targets[item.dataset.reorderId];
+    if(!rec){ if(item.dataset.custom){ e.preventDefault(); toast(L.lost); } return; }
+    const el = resolve(rec);
+    if(el){ e.preventDefault(); e.stopImmediatePropagation(); el.scrollIntoView({behavior:'smooth',block:'start'}); flash(el); }
+    else toast(L.lost);
+  }, true);
+
+  // ---- picking a place ----
+  let picking=null, hoverEl=null, banner=null;
+  function stopPick(){
+    picking=null; document.body.classList.remove('nav-pick-mode');
+    if(hoverEl){ hoverEl.classList.remove('nav-pick-hover'); hoverEl=null; }
+    if(banner){ banner.remove(); banner=null; }
+    document.removeEventListener('mousemove', onMove, true);
+    document.removeEventListener('click', onPick, true);
+    document.removeEventListener('keydown', onKey, true);
+  }
+  function onMove(e){
+    const el = e.target.closest ? e.target.closest(PICK_SEL) : null;
+    const ok = el &amp;&amp; root.contains(el) &amp;&amp; !nav.contains(el);
+    if(hoverEl &amp;&amp; hoverEl!==el){ hoverEl.classList.remove('nav-pick-hover'); hoverEl=null; }
+    if(ok &amp;&amp; el!==hoverEl){ el.classList.add('nav-pick-hover'); hoverEl=el; }
+  }
+  function onPick(e){
+    e.preventDefault(); e.stopPropagation(); e.stopImmediatePropagation();
+    if(nav.contains(e.target)){ stopPick(); return; }
+    const el = e.target.closest ? e.target.closest(PICK_SEL) : null;
+    if(!el || !root.contains(el)) return;
+    el.classList.remove('nav-pick-hover');
+    const sig = sigOf(el), id = el.id || ('nav-t-'+Math.random().toString(36).slice(2,8));
+    el.id = id;
+    const idx = Math.max(0, candidates(sig).indexOf(el));
+    targets[picking] = {id:id, sig:sig, idx:idx}; wr(KEY_T, targets);
+    const pin = nav.querySelector('.nav-reorder-item[data-reorder-id=&quot;'+picking+'&quot;] .nav-pin'); if(pin) pin.classList.add('has-target');
+    stopPick(); toast(L.saved); el.scrollIntoView({behavior:'smooth',block:'start'}); flash(el);
+  }
+  function onKey(e){ if(e.key==='Escape'){ e.preventDefault(); stopPick(); } }
+  function startPick(itemId){
+    stopPick(); picking=itemId;
+    const item = nav.querySelector('.nav-reorder-item[data-reorder-id=&quot;'+itemId+'&quot;]');
+    const name = item ? item.querySelector('.nav-item').innerText.replace(/↗/g,'').trim() : '';
+    banner=document.createElement('div'); banner.id='nav-pick-banner'; banner.textContent=L.pick.replace('{n}',name);
+    banner.style.bottom=(insets().bottom+18)+'px'; document.body.appendChild(banner);
+    document.body.classList.add('nav-pick-mode');
+    document.addEventListener('mousemove', onMove, true);
+    document.addEventListener('click', onPick, true);
+    document.addEventListener('keydown', onKey, true);
+  }
+  nav.addEventListener('click', e=&gt;{
+    const pin = e.target.closest('.nav-pin');
+    if(pin){ e.preventDefault(); e.stopPropagation(); const id=pin.closest('.nav-reorder-item').dataset.reorderId; if(picking===id) stopPick(); else startPick(id); return; }
+    const del = e.target.closest('.nav-del');
+    if(del){
+      e.preventDefault(); e.stopPropagation();
+      if(!confirm(L.confirmDel)) return;
+      const item=del.closest('.nav-reorder-item'), id=item.dataset.reorderId;
+      custom = custom.filter(c=&gt;c.id!==id); wr(KEY_C, custom);
+      delete targets[id]; wr(KEY_T, targets);
+      const ord = rd(KEY_O, null); if(Array.isArray(ord)) wr(KEY_O, ord.filter(x=&gt;x!==id));
+      item.remove();
+    }
+  });
+
+  // ---- dialog ----
+  function dialog(opt){
+    const old=document.getElementById('nav-modal'); if(old) old.remove();
+    const m=document.createElement('div'); m.id='nav-modal';
+    m.innerHTML='&lt;div class=&quot;box&quot;&gt;&lt;h3&gt;&lt;/h3&gt;&lt;p&gt;&lt;/p&gt;&lt;/div&gt;';
+    const box=m.firstChild; box.style.marginTop=(insets().top+40)+'px';
+    box.querySelector('h3').textContent=opt.title; box.querySelector('p').textContent=opt.help||'';
+    if(!opt.help) box.querySelector('p').remove();
+    let field = document.createElement(opt.type==='input'?'input':'textarea');
+    if(opt.placeholder) field.placeholder=opt.placeholder; if(opt.value!=null) field.value=opt.value; if(opt.readonly) field.readOnly=true;
+    box.appendChild(field);
+    const row=document.createElement('div'); row.className='row'; box.appendChild(row);
+    (opt.buttons||[]).forEach(b=&gt;{ const x=document.createElement('button'); x.type='button'; x.textContent=b.label; if(b.primary) x.className='primary';
+      x.addEventListener('click',()=&gt;{ if(b.run(field)!==false) m.remove(); }); row.appendChild(x); });
+    m.addEventListener('mousedown',e=&gt;{ if(e.target===m) m.remove(); });
+    document.body.appendChild(m); field.focus(); if(opt.readonly) field.select();
+    field.addEventListener('keydown',e=&gt;{ if(e.key==='Enter' &amp;&amp; opt.type==='input'){ e.preventDefault(); const p=row.querySelector('.primary'); if(p) p.click(); } if(e.key==='Escape') m.remove(); });
+  }
+
+  // ---- menu settings ----
+  const sum=document.createElement('summary'); sum.textContent=L.settings; settings.appendChild(sum);
+  function mk(label, fn){ const b=document.createElement('button'); b.type='button'; b.textContent=label; b.addEventListener('click',fn); settings.appendChild(b); }
+  mk(L.newBtn, ()=&gt;dialog({title:L.newTitle, type:'input', placeholder:L.newPh, buttons:[
+    {label:L.cancel, run:()=&gt;true},
+    {label:L.ok, primary:true, run:f=&gt;{
+      const label=f.value.trim(); if(!label) return false;
+      const c={id:'custom-'+Date.now().toString(36), label:label};
+      custom.push(c); wr(KEY_C, custom);
+      const ord=rd(KEY_O,null); if(Array.isArray(ord)){ ord.push(c.id); wr(KEY_O, ord); }
+      const item=buildCustom(c); nav.insertBefore(item, settings); addTools(item);
+      nav.querySelectorAll(':scope &gt; .nav-reorder-item').forEach(i=&gt;{ const ar=i.querySelector('.reorder-up'); if(ar) ar.disabled=false; });
+      setTimeout(()=&gt;startPick(c.id), 50);
+    }}]}));
+  mk(L.exp, ()=&gt;{
+    const data={version:1, lang:LANG, targets:targets, custom:custom, order:rd(KEY_O,null)};
+    dialog({title:L.expTitle, help:L.expHelp, readonly:true, value:JSON.stringify(data,null,1), buttons:[
+      {label:L.copy, primary:true, run:f=&gt;{ f.select(); let ok=false; try{ ok=document.execCommand('copy'); }catch(e){} if(!ok &amp;&amp; navigator.clipboard) navigator.clipboard.writeText(f.value).catch(()=&gt;{}); toast(L.copied); return false; }},
+      {label:L.close, run:()=&gt;true}]});
+  });
+  mk(L.imp, ()=&gt;dialog({title:L.impTitle, help:L.impHelp, buttons:[
+    {label:L.cancel, run:()=&gt;true},
+    {label:L.apply, primary:true, run:f=&gt;{
+      let d; try{ d=JSON.parse(f.value); }catch(e){ toast(L.bad); return false; }
+      if(!d || typeof d!=='object'){ toast(L.bad); return false; }
+      wr(KEY_T, d.targets||{}); wr(KEY_C, Array.isArray(d.custom)?d.custom:[]);
+      if(Array.isArray(d.order)) wr(KEY_O, d.order); else try{ localStorage.removeItem(KEY_O); }catch(e){}
+      location.reload();
+    }}]}));
+  mk(L.reset, ()=&gt;{ if(!confirm(L.confirmReset)) return; targets={}; wr(KEY_T, targets); nav.querySelectorAll('.nav-pin').forEach(p=&gt;p.classList.remove('has-target')); });
+  // expose a tiny API (used by the export, handy for future defaults)
+  window.NavTargets = { get: ()=&gt;({targets:targets, custom:custom}) };
+})();
+
 // --- reorder the topics nav (up/down arrows), persisted per browser ---
 (function(){
   const NAV_ORDER_KEY = 'nav-order:en';
@@ -5000,6 +5283,53 @@ document.addEventListener('keydown', (e)=&gt;{
   .panel-header .panel-back{background:#FF6C37;color:#fff;border:none;border-radius:999px;padding:6px 16px;font:inherit;font-size:14px;font-weight:700;cursor:pointer;margin-inline-end:12px;flex-shrink:0;}
   .panel-header .panel-back:hover{background:#E85A28;}
   #answer-panel .panel-header &gt; span, #chat-answer-window .panel-header &gt; span{flex:1;}
+
+  .tier-wrap{overflow-x:auto;margin-top:10px;border:1px solid var(--line);border-radius:8px;background:#fff;box-shadow:0 1px 2px rgba(20,20,20,0.04);}
+  .tier-table{width:100%;min-width:560px;border-collapse:collapse;font-size:13px;margin:0;}
+  .tier-table th,.tier-table td{border:none;border-bottom:1px solid var(--line);padding:11px 13px;text-align:start;vertical-align:top;}
+  .tier-table th + th,.tier-table td + td{border-inline-start:1px solid var(--line);}
+  .tier-table tr:last-child td{border-bottom:none;}
+  .tier-table th{background:var(--bg-card);font-weight:700;font-size:12.5px;color:var(--grey);}
+  .tier-table th.ent{background:#FFF6F1;color:var(--orange);}
+  .tier-table td.ent{background:#FFFBF8;}
+  .tier-table td.what{width:22%;}
+  .tier-table td.team,.tier-table td.ent{width:39%;}
+  .tier-table tr.main td{border-bottom:none;}
+  .tier-table tr.say-row td{padding-top:0;padding-bottom:14px;border-inline-start:none;}
+  .tier-table tr.say-row td.ent{background:#FFFBF8;}
+  .tier-say b{color:var(--orange);margin-inline-end:6px;}
+  .tier-table .orig{font-weight:700;color:var(--ink);}
+  .tier-table td.what .orig{font-size:13.5px;}
+  .tier-table .plain{margin-top:6px;padding-top:6px;border-top:1px dashed #D9D5CF;font-size:12.5px;color:#3A3A3C;line-height:1.55;}
+  .tier-table .na{color:#8A8A90;}
+  .tier-pill{display:inline-block;margin-top:8px;padding:2px 10px;border-radius:999px;background:#FFF1E6;color:var(--orange);font-weight:600;font-size:12px;white-space:nowrap;}
+  .tier-say{background:#FFF6F1;border-inline-start:3px solid var(--orange);border-radius:6px;padding:9px 12px;font-size:13px;line-height:1.6;}
+  .tier-note{font-size:12px;color:var(--grey);margin:8px 2px 0;}
+
+  /* ---- menu targets tool ---- */
+  .nav-pin,.nav-del{flex-shrink:0;width:20px;height:24px;padding:0;border:none;background:none;cursor:pointer;font-size:12px;opacity:.28;border-radius:5px;line-height:1;}
+  .nav-reorder-item:hover .nav-pin,.nav-reorder-item:hover .nav-del{opacity:.75;}
+  .nav-pin:hover,.nav-del:hover{opacity:1;background:#FFF1E6;}
+  .nav-pin.has-target{opacity:.95;}
+  .nav-pin.has-target::after{content:&quot;&quot;;display:block;width:5px;height:5px;border-radius:50%;background:var(--orange);margin:-3px auto 0;}
+  .nav-settings{margin-top:14px;padding-top:10px;border-top:1px solid var(--line);font-size:12.5px;}
+  .nav-settings summary{cursor:pointer;color:var(--grey);font-weight:700;padding:4px 6px;list-style:none;}
+  .nav-settings summary::-webkit-details-marker{display:none;}
+  .nav-settings button{display:block;width:100%;text-align:start;background:none;border:none;font:inherit;font-size:12.5px;color:var(--ink);padding:6px 8px;border-radius:6px;cursor:pointer;}
+  .nav-settings button:hover{background:#FFF6F1;color:var(--orange);}
+  body.nav-pick-mode, body.nav-pick-mode *{cursor:crosshair !important;}
+  .nav-pick-hover{outline:3px solid #FF6C37 !important;outline-offset:2px;background-color:rgba(255,108,55,.09) !important;}
+  #nav-pick-banner{position:fixed;left:50%;transform:translateX(-50%);z-index:100000;background:#1C1C1E;color:#fff;padding:10px 18px;border-radius:999px;font-size:14px;font-weight:600;box-shadow:0 8px 24px rgba(0,0,0,.3);max-width:92%;text-align:center;}
+  #nav-toast{position:fixed;left:50%;transform:translateX(-50%);z-index:100001;background:#1C1C1E;color:#fff;padding:9px 16px;border-radius:8px;font-size:13px;box-shadow:0 8px 24px rgba(0,0,0,.3);max-width:90%;text-align:center;}
+  #nav-modal{position:fixed;inset:0;z-index:100002;background:rgba(0,0,0,.35);display:flex;align-items:flex-start;justify-content:center;}
+  #nav-modal .box{margin-top:60px;background:#fff;border-radius:12px;padding:18px 20px;width:min(520px,92%);box-shadow:0 20px 50px rgba(0,0,0,.3);}
+  #nav-modal h3{margin:0 0 10px;font-size:16px;}
+  #nav-modal input,#nav-modal textarea{width:100%;box-sizing:border-box;border:1px solid var(--line);border-radius:8px;padding:9px 11px;font:inherit;font-size:13.5px;}
+  #nav-modal textarea{height:190px;font-family:ui-monospace,Menlo,Consolas,monospace;font-size:12px;}
+  #nav-modal .row{display:flex;gap:8px;margin-top:12px;justify-content:flex-end;}
+  #nav-modal .row button{border:1px solid var(--line);background:#fff;border-radius:8px;padding:7px 14px;font:inherit;font-size:13px;cursor:pointer;}
+  #nav-modal .row button.primary{background:var(--orange);border-color:var(--orange);color:#fff;font-weight:700;}
+  #nav-modal p{margin:0 0 8px;font-size:12.5px;color:var(--grey);}
 &lt;/style&gt;
 &lt;/head&gt;
 &lt;body&gt;
@@ -5199,6 +5529,31 @@ document.addEventListener('keydown', (e)=&gt;{
 &lt;b&gt;Fern&lt;/b&gt; — פלטפורמה נפרדת (נרכשה על ידי Postman בינואר 2026) שהופכת API קיים ל-Developer Experience מלא: מייצרת אוטומטית תיעוד, SDKs בשפות מרכזיות, CLI ו-MCP servers מתוך אותה הגדרת API אחת, כך שהם לא יוצאים מסונכרון אלה מאלה. פונה לצד ה-Consumption (איך צורכים את ה-API), לא לצד ה-Governance - ונמכרת כרגע כמוצר עצמאי, לא כחלק מחבילת Postman.
 &lt;/div&gt;
 
+&lt;/section&gt;
+&lt;section id=&quot;sec-tier-compare&quot;&gt;
+&lt;div class=&quot;group-title edit-unit&quot; contenteditable=&quot;false&quot;&gt;Team מול Enterprise — מה כלול בכל חבילה&lt;/div&gt;
+&lt;p class=&quot;lead edit-unit&quot; contenteditable=&quot;false&quot; style=&quot;margin-bottom:6px;&quot;&gt;השורה המודגשת בכל תא היא המונח הרשמי של Postman, ומתחתיה הסבר פשוט בעברית. מתחת לכל שורה יש משפט שאפשר להגיד ללקוח.&lt;/p&gt;
+&lt;div class=&quot;tier-wrap&quot;&gt;&lt;table class=&quot;tier-table&quot;&gt;
+&lt;thead&gt;&lt;tr&gt;&lt;th&gt;מה זה כולל&lt;/th&gt;&lt;th&gt;חבילת Team&lt;/th&gt;&lt;th class=&quot;ent&quot;&gt;חבילת Enterprise&lt;/th&gt;&lt;/tr&gt;&lt;/thead&gt;
+&lt;tbody&gt;
+&lt;tr class=&quot;main&quot;&gt;&lt;td class=&quot;what&quot;&gt;&lt;div class=&quot;orig&quot;&gt;&lt;bdi&gt;API Design &amp;amp; Spec&lt;/bdi&gt;&lt;/div&gt;&lt;div class=&quot;plain&quot;&gt;עיצוב ה-API-ים&lt;/div&gt;&lt;span class=&quot;tier-pill&quot;&gt;עיצוב&lt;/span&gt;&lt;/td&gt;&lt;td class=&quot;team&quot;&gt;&lt;div class=&quot;orig&quot;&gt;&lt;bdi&gt;Spec Hub: OpenAPI, AsyncAPI authoring&lt;/bdi&gt;&lt;/div&gt;&lt;div class=&quot;plain&quot;&gt;כותבים וערכים את החוזים של ה-API-ים (בפורמטים OpenAPI ו-AsyncAPI) במקום משותף לצוות&lt;/div&gt;&lt;/td&gt;&lt;td class=&quot;ent&quot;&gt;&lt;div class=&quot;orig&quot;&gt;&lt;bdi&gt;Spec Hub: Org-wide, API Catalog&lt;/bdi&gt;&lt;/div&gt;&lt;div class=&quot;plain&quot;&gt;אותו דבר, ברמת כל החברה — ובנוסף API Catalog: רשימה אחת, שאפשר לחפש בה, של כל ה-API-ים&lt;/div&gt;&lt;/td&gt;&lt;/tr&gt;
+&lt;tr class=&quot;say-row&quot;&gt;&lt;td colspan=&quot;3&quot;&gt;&lt;div class=&quot;tier-say&quot;&gt;&lt;b&gt;מה להגיד:&lt;/b&gt;&quot;ב-Team הצוות כותב ועורך את החוזים של ה-API-ים במקום אחד משותף, וב-Enterprise זה עובד ברמת כל החברה — ובנוסף מקבלים רשימה אחת של כל ה-API-ים שיש לכם, כדי שלא תצטרכו לחפש אותם אחד אחד.&quot;&lt;/div&gt;&lt;/td&gt;&lt;/tr&gt;
+&lt;tr class=&quot;main&quot;&gt;&lt;td class=&quot;what&quot;&gt;&lt;div class=&quot;orig&quot;&gt;&lt;bdi&gt;Governance &amp;amp; Standards&lt;/bdi&gt;&lt;/div&gt;&lt;div class=&quot;plain&quot;&gt;כללים ועקביות&lt;/div&gt;&lt;span class=&quot;tier-pill&quot;&gt;עיצוב&lt;/span&gt;&lt;/td&gt;&lt;td class=&quot;team&quot;&gt;&lt;div class=&quot;orig&quot;&gt;&lt;bdi&gt;Shared workspaces, basic linting&lt;/bdi&gt;&lt;/div&gt;&lt;div class=&quot;plain&quot;&gt;סביבות עבודה משותפות לצוות, ובדיקות אוטומטיות בסיסיות שה-API-ים עומדים בכללים&lt;/div&gt;&lt;/td&gt;&lt;td class=&quot;ent&quot;&gt;&lt;div class=&quot;orig&quot;&gt;&lt;bdi&gt;Org-wide governance policies&lt;/bdi&gt;&lt;/div&gt;&lt;div class=&quot;plain&quot;&gt;כללים לכל החברה, שכל הצוותים חייבים לעמוד בהם&lt;/div&gt;&lt;/td&gt;&lt;/tr&gt;
+&lt;tr class=&quot;say-row&quot;&gt;&lt;td colspan=&quot;3&quot;&gt;&lt;div class=&quot;tier-say&quot;&gt;&lt;b&gt;מה להגיד:&lt;/b&gt;&quot;ב-Team יש לכם סביבות עבודה משותפות ובדיקות בסיסיות, וב-Enterprise אתם קובעים כללים אחידים לכל החברה, כך שכל צוות עובד לפי אותם כללים.&quot;&lt;/div&gt;&lt;/td&gt;&lt;/tr&gt;
+&lt;tr class=&quot;main&quot;&gt;&lt;td class=&quot;what&quot;&gt;&lt;div class=&quot;orig&quot;&gt;&lt;bdi&gt;Testing &amp;amp; Automation&lt;/bdi&gt;&lt;/div&gt;&lt;div class=&quot;plain&quot;&gt;בדיקות&lt;/div&gt;&lt;span class=&quot;tier-pill&quot;&gt;בדיקות&lt;/span&gt;&lt;/td&gt;&lt;td class=&quot;team&quot;&gt;&lt;div class=&quot;orig&quot;&gt;&lt;bdi&gt;Collection Runner, CLI, and Newman&lt;/bdi&gt;&lt;/div&gt;&lt;div class=&quot;plain&quot;&gt;הרצה אוטומטית של סט שלם של בדיקות — בלחיצת כפתור או משורת הפקודה (Collection Runner, CLI ו-Newman הם הכלים שעושים את זה)&lt;/div&gt;&lt;/td&gt;&lt;td class=&quot;ent&quot;&gt;&lt;div class=&quot;orig&quot;&gt;&lt;bdi&gt;Advanced data-driven testing&lt;/bdi&gt;&lt;/div&gt;&lt;div class=&quot;plain&quot;&gt;בדיקות מתקדמות: אותן בדיקות רצות מול הרבה נתונים שונים&lt;/div&gt;&lt;/td&gt;&lt;/tr&gt;
+&lt;tr class=&quot;say-row&quot;&gt;&lt;td colspan=&quot;3&quot;&gt;&lt;div class=&quot;tier-say&quot;&gt;&lt;b&gt;מה להגיד:&lt;/b&gt;&quot;בשתי החבילות אפשר להריץ סט שלם של בדיקות אוטומטית, והיתרון של Enterprise הוא שאפשר להריץ את אותן בדיקות מול הרבה נתונים שונים.&quot;&lt;/div&gt;&lt;/td&gt;&lt;/tr&gt;
+&lt;tr class=&quot;main&quot;&gt;&lt;td class=&quot;what&quot;&gt;&lt;div class=&quot;orig&quot;&gt;&lt;bdi&gt;Mock Servers&lt;/bdi&gt;&lt;/div&gt;&lt;div class=&quot;plain&quot;&gt;API-ים מדומים (לתרגול)&lt;/div&gt;&lt;span class=&quot;tier-pill&quot;&gt;בדיקות ופיתוח&lt;/span&gt;&lt;/td&gt;&lt;td class=&quot;team&quot;&gt;&lt;div class=&quot;orig&quot;&gt;&lt;bdi&gt;Unlimited mock servers&lt;/bdi&gt;&lt;/div&gt;&lt;div class=&quot;plain&quot;&gt;API-ים מדומים ללא הגבלה, כדי להתחיל לעבוד לפני שה-API האמיתי קיים&lt;/div&gt;&lt;/td&gt;&lt;td class=&quot;ent&quot;&gt;&lt;div class=&quot;orig&quot;&gt;&lt;bdi&gt;Unlimited &amp;amp; Local/CI mocks&lt;/bdi&gt;&lt;/div&gt;&lt;div class=&quot;plain&quot;&gt;גם ללא הגבלה — ובנוסף אפשר להריץ אותם על המחשב של המפתח ובתוך תהליך הבנייה האוטומטי של החברה&lt;/div&gt;&lt;/td&gt;&lt;/tr&gt;
+&lt;tr class=&quot;say-row&quot;&gt;&lt;td colspan=&quot;3&quot;&gt;&lt;div class=&quot;tier-say&quot;&gt;&lt;b&gt;מה להגיד:&lt;/b&gt;&quot;גם ב-Team וגם ב-Enterprise אפשר להשתמש ב-API-ים מדומים בלי הגבלה, וב-Enterprise אפשר גם להריץ אותם על המחשב של המפתח ובתוך תהליך הבנייה האוטומטי שלכם.&quot;&lt;/div&gt;&lt;/td&gt;&lt;/tr&gt;
+&lt;tr class=&quot;main&quot;&gt;&lt;td class=&quot;what&quot;&gt;&lt;div class=&quot;orig&quot;&gt;&lt;bdi&gt;AI-Native Capabilities&lt;/bdi&gt;&lt;/div&gt;&lt;div class=&quot;plain&quot;&gt;עזרה מ-AI&lt;/div&gt;&lt;span class=&quot;tier-pill&quot;&gt;כל השלבים&lt;/span&gt;&lt;/td&gt;&lt;td class=&quot;team&quot;&gt;&lt;div class=&quot;orig&quot;&gt;&lt;bdi&gt;Agent Mode: Postman AI (400 credits/mo)&lt;/bdi&gt;&lt;/div&gt;&lt;div class=&quot;plain&quot;&gt;עוזר AI שמבצע משימות בשבילכם (Agent Mode). 400 קרדיטים בחודש — קרדיטים = כמות השימוש ב-AI שכלולה&lt;/div&gt;&lt;/td&gt;&lt;td class=&quot;ent&quot;&gt;&lt;div class=&quot;orig&quot;&gt;&lt;bdi&gt;Agent Mode: AI Engineer [800 Credits]&lt;/bdi&gt;&lt;/div&gt;&lt;div class=&quot;plain&quot;&gt;עוזר AI שמבצע משימות בשבילכם (Agent Mode), בשם AI Engineer. 800 קרדיטים&lt;/div&gt;&lt;/td&gt;&lt;/tr&gt;
+&lt;tr class=&quot;say-row&quot;&gt;&lt;td colspan=&quot;3&quot;&gt;&lt;div class=&quot;tier-say&quot;&gt;&lt;b&gt;מה להגיד:&lt;/b&gt;&quot;בשתי החבילות יש עוזר AI שמבצע משימות בשבילכם — ב-Team זה Postman AI עם 400 קרדיטים בחודש, וב-Enterprise זה AI Engineer עם 800 קרדיטים.&quot;&lt;/div&gt;&lt;/td&gt;&lt;/tr&gt;
+&lt;tr class=&quot;main&quot;&gt;&lt;td class=&quot;what&quot;&gt;&lt;div class=&quot;orig&quot;&gt;&lt;bdi&gt;Security &amp;amp; Access&lt;/bdi&gt;&lt;/div&gt;&lt;div class=&quot;plain&quot;&gt;אבטחה והתחברות&lt;/div&gt;&lt;span class=&quot;tier-pill&quot;&gt;פריסה&lt;/span&gt;&lt;/td&gt;&lt;td class=&quot;team&quot;&gt;&lt;div class=&quot;orig&quot;&gt;&lt;bdi&gt;SSO add-on, secret scanning&lt;/bdi&gt;&lt;/div&gt;&lt;div class=&quot;plain&quot;&gt;התחברות עם משתמש החברה (SSO) זמינה כתוספת בתשלום; ובנוסף סריקה שמוצאת סיסמאות ומפתחות שנחשפו בטעות&lt;/div&gt;&lt;/td&gt;&lt;td class=&quot;ent&quot;&gt;&lt;div class=&quot;orig&quot;&gt;&lt;bdi&gt;SSO &amp;amp; SCIM included&lt;/bdi&gt;&lt;/div&gt;&lt;div class=&quot;plain&quot;&gt;התחברות עם משתמש החברה (SSO) והוספה והסרה אוטומטית של משתמשים (SCIM) כלולות בחבילה&lt;/div&gt;&lt;/td&gt;&lt;/tr&gt;
+&lt;tr class=&quot;say-row&quot;&gt;&lt;td colspan=&quot;3&quot;&gt;&lt;div class=&quot;tier-say&quot;&gt;&lt;b&gt;מה להגיד:&lt;/b&gt;&quot;אם אתם רוצים שכולם יתחברו עם משתמש החברה, ב-Team זו תוספת בתשלום וב-Enterprise זה כבר כלול — יחד עם הוספה והסרה אוטומטית של משתמשים כשעובדים נכנסים ועוזבים.&quot;&lt;/div&gt;&lt;/td&gt;&lt;/tr&gt;
+&lt;tr class=&quot;main&quot;&gt;&lt;td class=&quot;what&quot;&gt;&lt;div class=&quot;orig&quot;&gt;&lt;bdi&gt;Monitoring &amp;amp; Obs&lt;/bdi&gt;&lt;/div&gt;&lt;div class=&quot;plain&quot;&gt;מעקב אחרי API-ים חיים&lt;/div&gt;&lt;span class=&quot;tier-pill&quot;&gt;מעקב&lt;/span&gt;&lt;/td&gt;&lt;td class=&quot;team&quot;&gt;&lt;div class=&quot;orig&quot;&gt;&lt;bdi&gt;API Monitors, Postman Insights&lt;/bdi&gt;&lt;/div&gt;&lt;div class=&quot;plain&quot;&gt;בדיקות קבועות שה-API-ים עובדים ועונים (API Monitors), ובנוסף Postman Insights שמזהה בעיות לפי תעבורה אמיתית&lt;/div&gt;&lt;/td&gt;&lt;td class=&quot;ent&quot;&gt;&lt;div class=&quot;orig&quot;&gt;&lt;bdi&gt;Expanded monitors, Insights&lt;/bdi&gt;&lt;/div&gt;&lt;div class=&quot;plain&quot;&gt;אותן יכולות בהיקף מורחב: בדיקות ותובנות מורחבות&lt;/div&gt;&lt;/td&gt;&lt;/tr&gt;
+&lt;tr class=&quot;say-row&quot;&gt;&lt;td colspan=&quot;3&quot;&gt;&lt;div class=&quot;tier-say&quot;&gt;&lt;b&gt;מה להגיד:&lt;/b&gt;&quot;בשתי החבילות אנחנו בודקים שה-API-ים שלכם ממשיכים לעבוד אחרי שהם עלו לאוויר, וב-Enterprise זה נעשה בהיקף רחב יותר.&quot;&lt;/div&gt;&lt;/td&gt;&lt;/tr&gt;
+&lt;tr class=&quot;main&quot;&gt;&lt;td class=&quot;what&quot;&gt;&lt;div class=&quot;orig&quot;&gt;&lt;bdi&gt;Advanced Security Admin&lt;/bdi&gt;&lt;/div&gt;&lt;div class=&quot;plain&quot;&gt;ניהול אבטחה מתקדם (ASA)&lt;/div&gt;&lt;span class=&quot;tier-pill&quot;&gt;כל השלבים&lt;/span&gt;&lt;/td&gt;&lt;td class=&quot;team&quot;&gt;&lt;div class=&quot;orig na&quot;&gt;&lt;bdi&gt;N/A&lt;/bdi&gt;&lt;/div&gt;&lt;div class=&quot;plain&quot;&gt;לא זמין&lt;/div&gt;&lt;/td&gt;&lt;td class=&quot;ent&quot;&gt;&lt;div class=&quot;orig na&quot;&gt;&lt;bdi&gt;TBD&lt;/bdi&gt;&lt;/div&gt;&lt;div class=&quot;plain&quot;&gt;עדיין לא סופי — יאושר בהמשך&lt;/div&gt;&lt;/td&gt;&lt;/tr&gt;
+&lt;tr class=&quot;say-row&quot;&gt;&lt;td colspan=&quot;3&quot;&gt;&lt;div class=&quot;tier-say&quot;&gt;&lt;b&gt;מה להגיד:&lt;/b&gt;&quot;זה נושא נפרד של ניהול אבטחה מתקדם: ב-Team הוא לא זמין, וב-Enterprise הוא עדיין לא סופי, אז אני לא רוצה להבטיח משהו לפני שאאשר את הפרטים, ואחזור אליך עם תשובה.&quot;&lt;/div&gt;&lt;/td&gt;&lt;/tr&gt;
+&lt;/tbody&gt;&lt;/table&gt;&lt;/div&gt;
+&lt;div class=&quot;tier-note&quot;&gt;קרדיטים = כמות השימוש ב-AI שכלולה. ״יאושר בהמשך״ = הפרטים עבור Enterprise בסעיף הזה עדיין לא סופיים.&lt;/div&gt;
 &lt;/section&gt;
 &lt;!-- SECTION 2: AI SHIFT — EXPANDED --&gt;
 &lt;section id=&quot;sec-ai&quot;&gt;
@@ -7471,6 +7826,217 @@ document.addEventListener('keydown', (e)=&gt;{
   sel.removeAllRanges();
   sel.addRange(range);
 });
+// --- Menu targets: choose (and change) where each menu button jumps to, add buttons of your own ---
+(function(){
+  const LANG = document.documentElement.lang === 'he' ? 'he' : 'en';
+  const L = LANG === 'he' ? {
+    pin:'קבע לאן הכפתור הזה מפנה', del:'מחק את הכפתור', pick:'לחץ על המקום בעמוד שאליו הכפתור &quot;{n}&quot; יפנה  ·  Esc לביטול',
+    saved:'נשמר — הכפתור יפנה עכשיו לשם', lost:'המקום שנבחר לא נמצא (אולי הטקסט שונה). לחץ על 📍 ובחר מחדש',
+    settings:'⚙ הגדרות תפריט', newBtn:'➕ כפתור חדש', exp:'⬇ ייצוא הגדרות', imp:'⬆ ייבוא הגדרות', reset:'↺ איפוס מיקומים',
+    newTitle:'שם הכפתור החדש', newPh:'למשל: Team מול Enterprise', ok:'אישור', cancel:'ביטול', close:'סגור', copy:'העתק', copied:'הועתק',
+    expTitle:'ייצוא הגדרות התפריט', expHelp:'העתק את הטקסט ושלח לי — אטמיע אותו כברירת מחדל בקובץ.',
+    impTitle:'ייבוא הגדרות התפריט', impHelp:'הדבק כאן את הטקסט שיוצא, ולחץ &quot;החל&quot;.', apply:'החל', bad:'הטקסט לא תקין',
+    confirmDel:'למחוק את הכפתור הזה?', confirmReset:'לאפס את כל המיקומים שבחרת?'
+  } : {
+    pin:'Choose where this button jumps to', del:'Delete this button', pick:'Click the place in the page that &quot;{n}&quot; should jump to  ·  Esc to cancel',
+    saved:'Saved — the button now jumps there', lost:'The chosen place was not found (its text may have changed). Click 📍 and pick again',
+    settings:'⚙ Menu settings', newBtn:'➕ New button', exp:'⬇ Export settings', imp:'⬆ Import settings', reset:'↺ Reset targets',
+    newTitle:'Name of the new button', newPh:'e.g. Team vs Enterprise', ok:'OK', cancel:'Cancel', close:'Close', copy:'Copy', copied:'Copied',
+    expTitle:'Export menu settings', expHelp:'Copy this text and send it to me — I will bake it in as the default.',
+    impTitle:'Import menu settings', impHelp:'Paste the exported text here and click Apply.', apply:'Apply', bad:'Invalid text',
+    confirmDel:'Delete this button?', confirmReset:'Reset all the targets you chose?'
+  };
+  const KEY_T='nav-targets:'+LANG, KEY_C='nav-custom:'+LANG, KEY_O='nav-order:'+LANG;
+  const nav = document.getElementById('left-nav'); if(!nav) return;
+  const root = document.getElementById('editable-root') || document.body;
+  const PICK_SEL = '.tier-table tr, .tier-say, .offer, .stage, .prod, .obj, .say, .cross-box, .pitch-open, .ai-box, .final, .draggable-block, h2, .group-title, section';
+  const rd = (k,d)=&gt;{ try{ const v=JSON.parse(localStorage.getItem(k)); return v==null?d:v; }catch(e){ return d; } };
+  const wr = (k,v)=&gt;{ try{ localStorage.setItem(k, JSON.stringify(v)); }catch(e){} };
+  let targets = rd(KEY_T, {}), custom = rd(KEY_C, []);
+  if(!Array.isArray(custom)) custom = [];
+  if(typeof targets !== 'object' || Array.isArray(targets)) targets = {};
+
+  // what part of this iframe is really visible (the page sits under sticky bars of the outer page)
+  function insets(){
+    try{
+      const fe = window.frameElement; if(!fe) return {top:0,bottom:0};
+      const r = fe.getBoundingClientRect(), pd = window.parent.document; let sb = 0;
+      pd.querySelectorAll('header, nav.tabs, .topbar').forEach(el=&gt;{
+        const cs = window.parent.getComputedStyle(el);
+        if((cs.position==='sticky'||cs.position==='fixed')){ const b=el.getBoundingClientRect().bottom; if(b&gt;sb &amp;&amp; b&lt;window.parent.innerHeight/2) sb=b; }
+      });
+      const top = Math.max(0, sb - r.top);
+      const bottom = Math.max(0, r.height - Math.min(r.height, window.parent.innerHeight - r.top));
+      return {top:top, bottom:bottom};
+    }catch(e){ return {top:0,bottom:0}; }
+  }
+  const sigOf = el =&gt; (el.innerText||el.textContent||'').replace(/\s+/g,' ').trim().toLowerCase().slice(0,80);
+  function candidates(sig){ return Array.from(root.querySelectorAll(PICK_SEL)).filter(e=&gt;sigOf(e)===sig); }
+  function resolve(rec){
+    if(!rec) return null;
+    let el = rec.id ? document.getElementById(rec.id) : null;
+    if(el) return el;
+    const c = candidates(rec.sig || '');
+    el = c[rec.idx||0] || c[0] || null;
+    if(el &amp;&amp; rec.id &amp;&amp; !el.id) el.id = rec.id;
+    return el;
+  }
+  function flash(el){
+    el.style.transition='background-color .9s ease, box-shadow .9s ease';
+    el.style.backgroundColor='#FFF1E6'; el.style.boxShadow='0 0 0 2px rgba(255,108,55,0.35)';
+    setTimeout(()=&gt;{ el.style.backgroundColor=''; el.style.boxShadow=''; },1100);
+  }
+  function toast(msg){
+    const old=document.getElementById('nav-toast'); if(old) old.remove();
+    const t=document.createElement('div'); t.id='nav-toast'; t.textContent=msg; t.style.bottom=(insets().bottom+18)+'px';
+    document.body.appendChild(t); setTimeout(()=&gt;t.remove(), 3200);
+  }
+
+  // ---- custom buttons (created now, before the reorder code runs, so the saved order stays valid) ----
+  const arrowsHTML = '&lt;span class=&quot;reorder-arrows&quot;&gt;&lt;button class=&quot;reorder-up&quot; title=&quot;Move up&quot;&gt;▲&lt;/button&gt;&lt;button class=&quot;reorder-down&quot; title=&quot;Move down&quot;&gt;▼&lt;/button&gt;&lt;/span&gt;';
+  const settings = document.createElement('details'); settings.className='nav-settings';
+  function buildCustom(c){
+    const d=document.createElement('div'); d.className='nav-reorder-item'; d.dataset.reorderId=c.id; d.dataset.custom='1';
+    const b=document.createElement('button'); b.className='nav-item'; b.textContent=c.label;
+    d.appendChild(b); d.insertAdjacentHTML('beforeend', arrowsHTML);
+    return d;
+  }
+  function addTools(item){
+    if(item.querySelector('.nav-pin')) return;
+    const btn = item.querySelector('.nav-item');
+    if(!btn || btn.dataset.openPanel) return;           // panel buttons open a panel; nothing to choose
+    const pin=document.createElement('button'); pin.type='button'; pin.className='nav-pin'; pin.title=L.pin; pin.textContent='📍';
+    item.querySelector('.reorder-arrows').before(pin);
+    if(item.dataset.custom){
+      const del=document.createElement('button'); del.type='button'; del.className='nav-del'; del.title=L.del; del.textContent='🗑';
+      pin.after(del);
+    }
+    pin.classList.toggle('has-target', !!targets[item.dataset.reorderId]);
+  }
+  custom.forEach(c=&gt;nav.appendChild(buildCustom(c)));
+  nav.appendChild(settings);
+  nav.querySelectorAll(':scope &gt; .nav-reorder-item').forEach(addTools);
+
+  // ---- clicking a button that has a chosen target ----
+  nav.addEventListener('click', e=&gt;{
+    if(e.target.closest('.nav-pin,.nav-del,.reorder-arrows,.nav-settings')) return;
+    const item = e.target.closest('.nav-reorder-item'); if(!item || !e.target.closest('.nav-item')) return;
+    const rec = targets[item.dataset.reorderId];
+    if(!rec){ if(item.dataset.custom){ e.preventDefault(); toast(L.lost); } return; }
+    const el = resolve(rec);
+    if(el){ e.preventDefault(); e.stopImmediatePropagation(); el.scrollIntoView({behavior:'smooth',block:'start'}); flash(el); }
+    else toast(L.lost);
+  }, true);
+
+  // ---- picking a place ----
+  let picking=null, hoverEl=null, banner=null;
+  function stopPick(){
+    picking=null; document.body.classList.remove('nav-pick-mode');
+    if(hoverEl){ hoverEl.classList.remove('nav-pick-hover'); hoverEl=null; }
+    if(banner){ banner.remove(); banner=null; }
+    document.removeEventListener('mousemove', onMove, true);
+    document.removeEventListener('click', onPick, true);
+    document.removeEventListener('keydown', onKey, true);
+  }
+  function onMove(e){
+    const el = e.target.closest ? e.target.closest(PICK_SEL) : null;
+    const ok = el &amp;&amp; root.contains(el) &amp;&amp; !nav.contains(el);
+    if(hoverEl &amp;&amp; hoverEl!==el){ hoverEl.classList.remove('nav-pick-hover'); hoverEl=null; }
+    if(ok &amp;&amp; el!==hoverEl){ el.classList.add('nav-pick-hover'); hoverEl=el; }
+  }
+  function onPick(e){
+    e.preventDefault(); e.stopPropagation(); e.stopImmediatePropagation();
+    if(nav.contains(e.target)){ stopPick(); return; }
+    const el = e.target.closest ? e.target.closest(PICK_SEL) : null;
+    if(!el || !root.contains(el)) return;
+    el.classList.remove('nav-pick-hover');
+    const sig = sigOf(el), id = el.id || ('nav-t-'+Math.random().toString(36).slice(2,8));
+    el.id = id;
+    const idx = Math.max(0, candidates(sig).indexOf(el));
+    targets[picking] = {id:id, sig:sig, idx:idx}; wr(KEY_T, targets);
+    const pin = nav.querySelector('.nav-reorder-item[data-reorder-id=&quot;'+picking+'&quot;] .nav-pin'); if(pin) pin.classList.add('has-target');
+    stopPick(); toast(L.saved); el.scrollIntoView({behavior:'smooth',block:'start'}); flash(el);
+  }
+  function onKey(e){ if(e.key==='Escape'){ e.preventDefault(); stopPick(); } }
+  function startPick(itemId){
+    stopPick(); picking=itemId;
+    const item = nav.querySelector('.nav-reorder-item[data-reorder-id=&quot;'+itemId+'&quot;]');
+    const name = item ? item.querySelector('.nav-item').innerText.replace(/↗/g,'').trim() : '';
+    banner=document.createElement('div'); banner.id='nav-pick-banner'; banner.textContent=L.pick.replace('{n}',name);
+    banner.style.bottom=(insets().bottom+18)+'px'; document.body.appendChild(banner);
+    document.body.classList.add('nav-pick-mode');
+    document.addEventListener('mousemove', onMove, true);
+    document.addEventListener('click', onPick, true);
+    document.addEventListener('keydown', onKey, true);
+  }
+  nav.addEventListener('click', e=&gt;{
+    const pin = e.target.closest('.nav-pin');
+    if(pin){ e.preventDefault(); e.stopPropagation(); const id=pin.closest('.nav-reorder-item').dataset.reorderId; if(picking===id) stopPick(); else startPick(id); return; }
+    const del = e.target.closest('.nav-del');
+    if(del){
+      e.preventDefault(); e.stopPropagation();
+      if(!confirm(L.confirmDel)) return;
+      const item=del.closest('.nav-reorder-item'), id=item.dataset.reorderId;
+      custom = custom.filter(c=&gt;c.id!==id); wr(KEY_C, custom);
+      delete targets[id]; wr(KEY_T, targets);
+      const ord = rd(KEY_O, null); if(Array.isArray(ord)) wr(KEY_O, ord.filter(x=&gt;x!==id));
+      item.remove();
+    }
+  });
+
+  // ---- dialog ----
+  function dialog(opt){
+    const old=document.getElementById('nav-modal'); if(old) old.remove();
+    const m=document.createElement('div'); m.id='nav-modal';
+    m.innerHTML='&lt;div class=&quot;box&quot;&gt;&lt;h3&gt;&lt;/h3&gt;&lt;p&gt;&lt;/p&gt;&lt;/div&gt;';
+    const box=m.firstChild; box.style.marginTop=(insets().top+40)+'px';
+    box.querySelector('h3').textContent=opt.title; box.querySelector('p').textContent=opt.help||'';
+    if(!opt.help) box.querySelector('p').remove();
+    let field = document.createElement(opt.type==='input'?'input':'textarea');
+    if(opt.placeholder) field.placeholder=opt.placeholder; if(opt.value!=null) field.value=opt.value; if(opt.readonly) field.readOnly=true;
+    box.appendChild(field);
+    const row=document.createElement('div'); row.className='row'; box.appendChild(row);
+    (opt.buttons||[]).forEach(b=&gt;{ const x=document.createElement('button'); x.type='button'; x.textContent=b.label; if(b.primary) x.className='primary';
+      x.addEventListener('click',()=&gt;{ if(b.run(field)!==false) m.remove(); }); row.appendChild(x); });
+    m.addEventListener('mousedown',e=&gt;{ if(e.target===m) m.remove(); });
+    document.body.appendChild(m); field.focus(); if(opt.readonly) field.select();
+    field.addEventListener('keydown',e=&gt;{ if(e.key==='Enter' &amp;&amp; opt.type==='input'){ e.preventDefault(); const p=row.querySelector('.primary'); if(p) p.click(); } if(e.key==='Escape') m.remove(); });
+  }
+
+  // ---- menu settings ----
+  const sum=document.createElement('summary'); sum.textContent=L.settings; settings.appendChild(sum);
+  function mk(label, fn){ const b=document.createElement('button'); b.type='button'; b.textContent=label; b.addEventListener('click',fn); settings.appendChild(b); }
+  mk(L.newBtn, ()=&gt;dialog({title:L.newTitle, type:'input', placeholder:L.newPh, buttons:[
+    {label:L.cancel, run:()=&gt;true},
+    {label:L.ok, primary:true, run:f=&gt;{
+      const label=f.value.trim(); if(!label) return false;
+      const c={id:'custom-'+Date.now().toString(36), label:label};
+      custom.push(c); wr(KEY_C, custom);
+      const ord=rd(KEY_O,null); if(Array.isArray(ord)){ ord.push(c.id); wr(KEY_O, ord); }
+      const item=buildCustom(c); nav.insertBefore(item, settings); addTools(item);
+      nav.querySelectorAll(':scope &gt; .nav-reorder-item').forEach(i=&gt;{ const ar=i.querySelector('.reorder-up'); if(ar) ar.disabled=false; });
+      setTimeout(()=&gt;startPick(c.id), 50);
+    }}]}));
+  mk(L.exp, ()=&gt;{
+    const data={version:1, lang:LANG, targets:targets, custom:custom, order:rd(KEY_O,null)};
+    dialog({title:L.expTitle, help:L.expHelp, readonly:true, value:JSON.stringify(data,null,1), buttons:[
+      {label:L.copy, primary:true, run:f=&gt;{ f.select(); let ok=false; try{ ok=document.execCommand('copy'); }catch(e){} if(!ok &amp;&amp; navigator.clipboard) navigator.clipboard.writeText(f.value).catch(()=&gt;{}); toast(L.copied); return false; }},
+      {label:L.close, run:()=&gt;true}]});
+  });
+  mk(L.imp, ()=&gt;dialog({title:L.impTitle, help:L.impHelp, buttons:[
+    {label:L.cancel, run:()=&gt;true},
+    {label:L.apply, primary:true, run:f=&gt;{
+      let d; try{ d=JSON.parse(f.value); }catch(e){ toast(L.bad); return false; }
+      if(!d || typeof d!=='object'){ toast(L.bad); return false; }
+      wr(KEY_T, d.targets||{}); wr(KEY_C, Array.isArray(d.custom)?d.custom:[]);
+      if(Array.isArray(d.order)) wr(KEY_O, d.order); else try{ localStorage.removeItem(KEY_O); }catch(e){}
+      location.reload();
+    }}]}));
+  mk(L.reset, ()=&gt;{ if(!confirm(L.confirmReset)) return; targets={}; wr(KEY_T, targets); nav.querySelectorAll('.nav-pin').forEach(p=&gt;p.classList.remove('has-target')); });
+  // expose a tiny API (used by the export, handy for future defaults)
+  window.NavTargets = { get: ()=&gt;({targets:targets, custom:custom}) };
+})();
+
 // --- reorder the topics nav (up/down arrows), persisted per browser ---
 (function(){
   const NAV_ORDER_KEY = 'nav-order:he';
@@ -8348,8 +8914,10 @@ document.addEventListener('keydown', (e)=&gt;{
     });
     // sales point pills
     const pillsGrid = document.getElementById('salesPillsGrid');
-    pillsGrid.querySelectorAll('.sp-pill').forEach(el=>{ addDragHandle(el); observeBoxResize(el); });
-    makeSortable(pillsGrid, '.sp-pill');
+    if(pillsGrid){
+      pillsGrid.querySelectorAll('.sp-pill').forEach(el=>{ addDragHandle(el); observeBoxResize(el); });
+      makeSortable(pillsGrid, '.sp-pill');
+    }
     // risk pills
     const riskGrid = document.getElementById('riskPillsGrid');
     if(riskGrid){
