@@ -455,6 +455,143 @@ window.addEventListener('DOMContentLoaded', function(){
 });
 </script>
 <script>
+/* XT: extra editing tools shared by every editing toolbar: center, RTL, LTR, text background, remove background */
+(function(){
+  if(window.XT) return;
+  var PAL = ['#1C1C1E','#FF6C37','#D64545','#2E7D5B','#2F6FED','#5B5F66'];
+  var NAME = {he:['שחור','כתום','אדום','ירוק','כחול','אפור'], en:['Black','Orange','Red','Green','Blue','Grey']};
+  var LBL = {he:{center:'מרכז', rtl:'RTL', ltr:'LTR', clear:'ללא רקע', bg:'רקע לטקסט', ctip:'מרכוז הטקסט (לחיצה נוספת מבטלת)', rtip:'כיוון מימין לשמאל', ltip:'כיוון משמאל לימין', cltip:'מבטל רקע וסימון צבעוני מהטקסט המסומן'},
+             en:{center:'Center', rtl:'RTL', ltr:'LTR', clear:'No bg', bg:'Text background', ctip:'Center the text (click again to undo)', rtip:'Right-to-left direction', ltip:'Left-to-right direction', cltip:'Remove background and highlight from the selected text'}};
+  var BLOCK = 'p,div,li,h1,h2,h3,h4,h5,h6,td,th,blockquote';
+  function lang(d){ return (d.documentElement.lang || '').toLowerCase().indexOf('he') === 0 ? 'he' : 'en'; }
+  function win(d){ return d.defaultView; }
+  function elOf(n){ return n && (n.nodeType === 1 ? n : n.parentElement); }
+  function editableRoot(d, node){
+    var el = elOf(node); if(!el) return null;
+    if(!el.isContentEditable) return null;
+    while(el.parentElement && el.parentElement !== d.body && el.parentElement.isContentEditable) el = el.parentElement;
+    return el;
+  }
+  function fire(root){ try{ root.dispatchEvent(new Event('input', {bubbles:true})); }catch(e){} }
+  function innerBlock(b, root){
+    // when the block is the editable unit itself, use (or create) one inner wrapper, so the style travels with the saved HTML
+    if(b === root && root.hasAttribute('contenteditable')){
+      var d = root.ownerDocument, kids = Array.prototype.filter.call(root.childNodes, function(n){ return !(n.nodeType === 3 && !n.textContent.trim()); });
+      if(kids.length === 1 && kids[0].nodeType === 1 && kids[0].hasAttribute('data-xt-wrap')) return kids[0];
+      var sel = d.defaultView.getSelection(), r = sel.rangeCount ? sel.getRangeAt(0) : null;
+      var sc = r && r.startContainer, so = r && r.startOffset, ec = r && r.endContainer, eo = r && r.endOffset;
+      var w = d.createElement('div'); w.setAttribute('data-xt-wrap', '1');
+      while(root.firstChild) w.appendChild(root.firstChild);
+      root.appendChild(w);
+      if(r){                                   // keep the user's selection / caret where it was
+        try{
+          var nr = d.createRange();
+          nr.setStart(sc === root ? w : sc, so); nr.setEnd(ec === root ? w : ec, eo);
+          sel.removeAllRanges(); sel.addRange(nr);
+        }catch(e){}
+      }
+      return w;
+    }
+    return b;
+  }
+  function blocks(d){
+    var sel = win(d).getSelection(); if(!sel || !sel.rangeCount) return null;
+    var r = sel.getRangeAt(0), root = editableRoot(d, r.commonAncestorContainer); if(!root) return null;
+    function blockOf(node){ var e = elOf(node), b = e ? e.closest(BLOCK) : null; return (b && root.contains(b)) ? b : root; }
+    var s = blockOf(r.startContainer), e2 = blockOf(r.endContainer), cand = [];
+    if(r.collapsed || s === e2){ cand = [s]; }
+    else {
+      Array.prototype.forEach.call(root.querySelectorAll(BLOCK), function(b){ if(r.intersectsNode(b)) cand.push(b); });
+      if(cand.indexOf(s) < 0) cand.push(s); if(cand.indexOf(e2) < 0) cand.push(e2);
+      cand = cand.filter(function(b){ return !cand.some(function(o){ return o !== b && b.contains(o); }); });
+    }
+    return {root:root, list:cand.map(function(b){ return innerBlock(b, root); })};
+  }
+  function align(d, mode){
+    var o = blocks(d); if(!o) return;
+    o.list.forEach(function(b){
+      if(mode === 'center'){ b.style.textAlign = (b.style.textAlign === 'center') ? '' : 'center'; }
+    });
+    fire(o.root);
+  }
+  function dir(d, val){
+    var o = blocks(d); if(!o) return;
+    o.list.forEach(function(b){ b.setAttribute('dir', val); if(b.style.textAlign && b.style.textAlign !== 'center') b.style.textAlign = ''; });
+    fire(o.root);
+  }
+  function bg(d, color){
+    var sel = win(d).getSelection(); if(!sel || !sel.rangeCount || sel.isCollapsed) return;
+    if(!editableRoot(d, sel.getRangeAt(0).commonAncestorContainer)) return;
+    d.execCommand('styleWithCSS', false, true);
+    if(!d.execCommand('hiliteColor', false, color)) d.execCommand('backColor', false, color);
+    d.execCommand('foreColor', false, '#FFFFFF');          // readable text on the colored background
+    d.execCommand('styleWithCSS', false, false);
+  }
+  function isWhite(v){ return /^(#fff(fff)?|rgb\(\s*255\s*,\s*255\s*,\s*255\s*\)|white)$/i.test((v || '').trim()); }
+  function clearBg(d){
+    var w = win(d), sel = w.getSelection(); if(!sel || !sel.rangeCount) return;
+    var r = sel.getRangeAt(0), root = editableRoot(d, r.commonAncestorContainer); if(!root) return;
+    var scope = (root.contains(r.commonAncestorContainer) || root === r.commonAncestorContainer) ? root : (d.querySelector('.wrap') || d.body);
+    var hits = [], walker = d.createTreeWalker(scope, w.NodeFilter.SHOW_ELEMENT), n;
+    while((n = walker.nextNode())){ if(r.collapsed ? n.contains(r.startContainer) : r.intersectsNode(n)) hits.push(n); }
+    var anc = elOf(r.commonAncestorContainer);
+    while(anc && anc !== scope && anc.parentElement){ if(hits.indexOf(anc) < 0) hits.push(anc); anc = anc.parentElement; }
+    hits.forEach(function(el){
+      if(el.tagName === 'MARK'){ var p = el.parentNode; while(el.firstChild) p.insertBefore(el.firstChild, el); p.removeChild(el); return; }
+      var had = el.style && (el.style.background || el.style.backgroundColor || el.style.backgroundImage);
+      if(had){
+        el.style.background = ''; el.style.backgroundColor = ''; el.style.backgroundImage = '';
+        if(isWhite(el.style.color)) el.style.color = '';
+        Array.prototype.forEach.call(el.querySelectorAll('font[color]'), function(f){ if(isWhite(f.getAttribute('color'))) f.removeAttribute('color'); });
+        if(!el.getAttribute('style')) el.removeAttribute('style');
+      }
+      if(el.hasAttribute('bgcolor')) el.removeAttribute('bgcolor');
+    });
+    fire(root);
+  }
+  function mk(d, tag, cls, css){ var e = d.createElement(tag); if(cls) e.className = cls; if(css) e.style.cssText = css; return e; }
+  function addTo(d, tb, kind){
+    if(tb.classList.contains('xt-group') || tb.querySelector('.xt-group') || (tb.nextElementSibling && tb.nextElementSibling.classList.contains('xt-group'))) return;
+    var L = LBL[lang(d)], N = NAME[lang(d)];
+    var inHeader = kind === 'group' && tb.parentElement && tb.parentElement.id === 'edit-toolbar';
+    var grp = mk(d, 'span', 'xt-group', 'display:inline-flex;align-items:center;gap:4px;flex-wrap:wrap;margin-inline-start:6px;');
+    if(inHeader){ grp.className = 'xt-group fmt-group'; grp.style.cssText = 'display:flex;align-items:center;gap:4px;flex-wrap:wrap;'; }
+    grp.addEventListener('mousedown', function(e){ e.preventDefault(); });
+    function btn(label, tip, fn){
+      var b = mk(d, 'button', kind === 'ftxt' ? 'ftxt' : '', 'white-space:nowrap;' + (kind === 'ftxt' ? '' : 'padding:5px 8px!important;min-width:0!important;font-size:12px;'));
+      b.type = 'button'; b.textContent = label; b.title = tip || '';
+      b.addEventListener('click', function(e){ e.preventDefault(); fn(); }); return b;
+    }
+    if(kind === 'ftxt') grp.appendChild(mk(d, 'span', 'fsep'));
+    if(kind === 'outer') grp.appendChild(mk(d, 'div', 'sep'));
+    grp.appendChild(btn(L.center, L.ctip, function(){ align(d, 'center'); }));
+    grp.appendChild(btn(L.rtl, L.rtip, function(){ dir(d, 'rtl'); }));
+    grp.appendChild(btn(L.ltr, L.ltip, function(){ dir(d, 'ltr'); }));
+    PAL.forEach(function(c, i){
+      var s = mk(d, 'button', '', 'width:22px!important;height:22px!important;min-width:22px!important;padding:0!important;border-radius:5px;border:2px solid #fff;box-shadow:0 0 0 1px #C9C6C0;background:' + c + ';color:#fff;font:700 11px/1 Arial,sans-serif;cursor:pointer;');
+      s.type = 'button'; s.textContent = 'A'; s.title = L.bg + ': ' + N[i];
+      s.addEventListener('click', function(e){ e.preventDefault(); bg(d, c); }); grp.appendChild(s);
+    });
+    grp.appendChild(btn(L.clear, L.cltip, function(){ clearBg(d); }));
+    if(inHeader) tb.insertAdjacentElement('afterend', grp); else tb.appendChild(grp);
+  }
+  function install(d){
+    if(!d.getElementById('xt-style')){
+      var st = d.createElement('style'); st.id = 'xt-style';
+      st.textContent = '#edit-toolbar{flex-wrap:wrap;height:auto!important;min-height:52px;row-gap:6px;padding-top:6px;padding-bottom:6px}.fmt-group{flex-wrap:wrap}#fmtbar{flex-wrap:wrap;max-width:min(96vw,900px)}';
+      (d.head || d.documentElement).appendChild(st);
+    }
+    var f = d.getElementById('fmtbar');
+    if(f) addTo(d, f, f.querySelector('.ftxt') ? 'ftxt' : 'outer');
+    Array.prototype.slice.call(d.querySelectorAll('.fmt-group')).forEach(function(g){ if(!g.classList.contains('xt-group')) addTo(d, g, 'group'); });
+  }
+  window.XT = {install:install, align:align, dir:dir, bg:bg, clearBg:clearBg, palette:PAL, names:NAME, labels:LBL};
+  if(document.readyState === 'loading') document.addEventListener('DOMContentLoaded', function(){ install(document); });
+  else install(document);
+})();
+
+</script>
+<script>
 /* Customer version: builds a clean, branded explainer page for the customer, previews it (editable, with a formatting toolbar), and downloads it. */
 (function(){
   var CUSTOMER_HTML = "<!DOCTYPE html>\n<html dir=\"rtl\" lang=\"he\">\n<head>\n<meta charset=\"utf-8\">\n<meta name=\"viewport\" content=\"width=device-width, initial-scale=1\">\n<title>Passport | Postman<\/title>\n<link rel=\"icon\" href=\"data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAEAAAABACAMAAACdt4HsAAAAflBMVEX/azb//v3/qoz/xrL/l3H/dkX/hFf/u6P/6uP/2Mr/cDz/5dz/s5f/jGP/oH7/Vxv/XSL/0L8AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAABmTfiOAAAAIHRSTlP///////////////////////8AAAAAAAAAAAAAAAAAALN0qXIAAAIxSURBVHjavVdZsuIwDBSSvDvw3v0vO16SjAEvyqRq9EEVFN2WtbkFj4EFQtbKA3ilGSmM/gfdXx3qBG3Na3RiAqOha9qICKKCoSlcEtAEXijMlCBssLQtjAkIREYjAgShYZ+AQWzcI7iAbxngn/ANA1y7v1KfcYAr8WeXq/w9F5UgXAi+O2rFNgSbBK+rr3xcl/8SGJEDZsc/XHuJQqBEBLmdXcJj2P+vDgJRBnwmsPkaHI5ZEXcCmQOvHEOTPoI7k1oJoiT/SFHlsMfEoNuwQPt9aM+EpU3nRqbIb4mBM6aT6+dwY3wE9SSKH4GFdQjLwZiTiK/v2oLlDUq9FLxVneIC6wX1W/Du+d2x3gJJ8akGO84SzEMQT7zhbssi8LL8a/ywX3AMWoY3g5mlQS3Gd8EzjVpWgZ/3f8bbMolGPTY+P7AteMepkoKHi0b5ZKQ6Qno1tPDBPJLA8KkBzXOK96MgluT82g3j/Hw1SePPZpLKmeMTfFxISHmIsZ3hExwXj7jl6cTDYTMdIsDN80dg5/jFwEzt3B8op//L16o/0kimuOpIcyO8FUgG1x3rFR8F1V/G+lefFjxpScOY3tNGrQZYvFf729im6ifVfpDqpdh53k0S5eYFYgcqATX+p/Fj5SPjU+LUKe5k7/3WaCR7qjitWRoBe13m9aoVrgrtgdC8L3Xvi+37cv/+wiHNhaebS5edrn1mtfbRcvHE2eIZ/8fquy/fX+gLy/f7+g/z9f8PJhkNspQeOr8AAAAASUVORK5CYII=\">\n<style>\n:root{--orange:#FF6C37;--ink:#1C1C1E;--grey:#5B5F66;--line:#E6E4E0;--cream:#FFF6F1}\n*{box-sizing:border-box}\nhtml{background:#fff}\nbody{margin:0;font-family:\"Segoe UI\",\"Arial Hebrew\",\"Noto Sans Hebrew\",Arial,sans-serif;color:var(--ink);line-height:1.75;font-size:17px}\n.wrap{max-width:880px;margin:0 auto;padding:44px 30px 60px}\nheader{text-align:center;padding-bottom:28px;border-bottom:3px solid var(--orange);margin-bottom:36px}\nheader .logo{height:52px;width:auto;display:block;margin:0 auto 26px}\nh1{font-size:50px;line-height:1.15;margin:0 0 12px;letter-spacing:-.01em;text-align:center}\n.tagline{font-size:19px;color:var(--grey);max-width:700px;margin:0 auto;text-align:center}\np{margin:0 0 14px}\nh2{font-size:24px;margin:46px 0 16px;display:flex;align-items:center;gap:12px}\nh2::before{content:\"\";width:6px;height:26px;border-radius:3px;background:var(--orange);flex:none}\n.grid{display:grid;grid-template-columns:1fr 1fr;gap:16px}\n.card{background:var(--cream);border:1px solid #FFD9C8;border-top:4px solid var(--orange);border-radius:12px;padding:16px 18px}\n.grid .card:last-child:nth-child(odd){grid-column:1/-1}\n.card .t{font-weight:700;font-size:17px;margin-bottom:6px;color:#C2410C}\n.card .d{font-size:15.5px;color:#2B2B2E;line-height:1.65}\n.callout{margin:26px 0 0;padding:20px 24px;border-radius:12px;background:#1C1C1E;color:#fff;font-size:19px;line-height:1.65}\n.example{border:1px solid var(--line);border-radius:12px;padding:18px 22px;margin-bottom:16px;break-inside:avoid}\n.example .name{font-weight:700;font-size:19px;margin-bottom:10px}\n.example .lbl{font-weight:700;color:var(--orange);font-size:14px;letter-spacing:.02em;margin-bottom:2px}\n.example .row{margin-bottom:10px;font-size:16.5px}\n.example .row:last-child{margin-bottom:0}\n.summary{border:2px solid var(--orange);border-radius:14px;padding:22px 26px;background:#fff}\n.summary .final{margin:16px 0 0;padding-top:16px;border-top:1px solid var(--line);font-weight:700;font-size:18px}\nfooter{margin-top:50px;text-align:center;color:#8A8A90;font-size:13px}\nfooter img{height:22px;width:22px;vertical-align:middle;margin-inline-end:8px}\n@media(max-width:700px){.grid{grid-template-columns:1fr}h1{font-size:38px}.wrap{padding:28px 18px 40px}}\n@media print{.wrap{padding:0}.card,.example,.summary{break-inside:avoid}.callout{-webkit-print-color-adjust:exact;print-color-adjust:exact}.card{-webkit-print-color-adjust:exact;print-color-adjust:exact}}\n<\/style>\n<\/head>\n<body>\n<div class=\"wrap\">\n<header>\n<img class=\"logo\" alt=\"Postman\" src=\"data:image/png;base64,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\">\n<h1>Passport<\/h1>\n<div class=\"tagline\">שכבת Governance מרכזית לגילוי, בקשת גישה וצריכה מאובטחת של APIs בארגון, בלי לחשוף Secrets<\/div>\n<\/header>\n<section><p>ככל שיש יותר APIs, ויותר אנשים, אפליקציות ו-AI Agents שצריכים להשתמש בהם, נהיה קשה לדעת מי משתמש במה, למי יש גישה, ואיפה בפועל שוכבים ה-API Keys וה-Secrets. מפתח מחפש API ב-Slack או בתיעוד, מבקש גישה ממישהו, וה-Key האמיתי מסתיים בקבצי .env, בסקריפטים, ב-CI/CD ובעוד מקומות.<\/p><p>Passport נותן שכבת Governance מרכזית לגילוי, בקשת גישה וצריכה מאובטחת של APIs, בלי לחשוף את ה-Secrets בפועל.<\/p><\/section>\n<section><h2>מה זה כולל<\/h2><div class=\"grid\"><div class=\"card\"><div class=\"t\">Central Discovery<\/div><div class=\"d\">מפתחים ו-AI Agents מוצאים APIs מאושרים במקום אחד<\/div><\/div><div class=\"card\"><div class=\"t\">Controlled Access Request<\/div><div class=\"d\">במקום לקבל את המפתח האמיתי, הם מקבלים Passport Reference<\/div><\/div><div class=\"card\"><div class=\"t\">Secretless Consumption<\/div><div class=\"d\">ה-Credential האמיתי נשאר ב-Vault הקיים של הארגון, ומתפענח רק ברגע קריאת ה-API<\/div><\/div><div class=\"card\"><div class=\"t\">Full Visibility<\/div><div class=\"d\">מי ביקש גישה, מי אישר, ואיך ה-API נצרך בפועל<\/div><\/div><\/div><div class=\"callout\">Passport נותן לארגון דרך מרכזית לגלות APIs, לנהל גישה אליהם ולצרוך אותם בבטחה, בלי לחשוף אף פעם את ה-Credentials האמיתיים.<\/div><\/section>\n\n<section><h2>האתגר<\/h2><p>צוות חדש בונה אפליקציה שצריכה API פנימי של לקוחות. המפתח צריך לגלות מי הבעלים של ה-API, למי לפנות, לקבל מפתח ולהוסיף אותו לאפליקציה. הכפילו את זה בעשרות APIs ומאות מפתחים, ובשלב מסוים הארגון פשוט לא יודע למי יש איזה מפתח או גישה לאיזה API. וככל שיותר AI Agents נכנסים לתמונה ומבקשים גישה ל-APIs, האתגר רק גדל.<\/p><\/section>\n<section><h2>דוגמאות מהשטח<\/h2><div class=\"example\"><div class=\"name\">חברת ביטוח עם סוכנים חיצוניים ו-AI Agents<\/div><div class=\"row\"><div class=\"lbl\">המצב<\/div>חברת ביטוח עובדת עם סוכנים חיצוניים ושותפים, ויש לה גם AI Agents פנימיים. כולם צריכים גישה ל-APIs של פוליסות ותביעות. היום הגישה מנוהלת ידנית: פותחים טיקט, מקבלים אישור, ומפתח נשלח באימייל או ב-Slack.<\/div><div class=\"row\"><div class=\"lbl\">מה משתנה עם Passport<\/div>כשסוכן או שותף מפסיק לעבוד עם החברה, לא בטוח שמישהו זוכר לבטל את הגישה שלו, והמפתח ממשיך להסתובב. עם Passport יש בקשת גישה מסודרת, אישור ותוקף מוגבל, ואפשר לבטל גישה במקום אחד ברגע שצריך, במקום לרדוף אחרי מפתחות שנשלחו בכמה ערוצים.<\/div><\/div><div class=\"example\"><div class=\"name\">חברת אשראי עם גישה ל-Payment APIs<\/div><div class=\"row\"><div class=\"lbl\">המצב<\/div>צוותי Fraud ו-Risk ושותפים חיצוניים צריכים גישה ל-Payment APIs רגישים. יש חשש אמיתי, ולרוב גם דרישת PCI, שמפתחות API יזלגו ל-Repos, ל-Logs או לקבצים מקומיים.<\/div><div class=\"row\"><div class=\"lbl\">מה משתנה עם Passport<\/div>Passport מקטין את הצורך להפיץ את ה-Key האמיתי בכלל: במקום המפתח עצמו עובר Reference, וה-Credential נשאר ב-Vault של הארגון ומתפענח רק ברגע הקריאה בפועל. הסוד עצמו לא עובר ולא נשמר בקבצים, בסקריפטים או ב-Logs. זה בדיוק העוגן שצוותי ה-Compliance מחפשים.<\/div><\/div><div class=\"example\"><div class=\"name\">בנק עם עשרות צוותי פיתוח<\/div><div class=\"row\"><div class=\"lbl\">המצב<\/div>בבנק עם 40 צוותי פיתוח, למשל, צריך למנוע מצוות תשלומים לגעת ב-Workspace של HR, בלי שמישהו יצטרך לנהל את זה ידנית כל יום. וככל שיותר AI Agents פנימיים נכנסים לתמונה, השאלה 'מי בכלל יכול לגשת למה' נהיית קריטית יותר.<\/div><div class=\"row\"><div class=\"lbl\">מה משתנה עם Passport<\/div>Passport נותן לבנק שכבת Governance אחת: Discovery מרכזי של ה-APIs, בקשת גישה מסודרת וצריכה בלי לחשוף Secrets. כל בקשה ואישור מתועדים, ויש Audit Trail מלא שרגולטור יכול לבדוק, כך שאפשר לענות במדויק על השאלה מי ביקש גישה, מי אישר ואיך נעשה בה שימוש.<\/div><\/div><div class=\"example\"><div class=\"name\">חברה ביטחונית עם צוותים וקבלני משנה<\/div><div class=\"row\"><div class=\"lbl\">המצב<\/div>בחברה ביטחונית יש הרבה צוותים ופרויקטים, ולעיתים גם קבלני משנה שצריכים גישה ל-APIs מסוימים בלבד. ההקפדה היא שכל צוות יראה רק את מה שנדרש לו, ושאפשר לדעת בכל רגע מי ניגש למה.<\/div><div class=\"row\"><div class=\"lbl\">מה משתנה עם Passport<\/div>Passport נותן בקשת גישה מסודרת עם אישור, וה-Credential האמיתי נשאר בכספת של הארגון ולא מופץ בין צוותים או לקבלנים. כך אפשר לתת גישה מוגבלת, לבטל אותה במקום אחד בסיום העבודה, ולהציג Audit Trail מלא של מי ביקש, מי אישר ואיך נעשה שימוש.<\/div><\/div><\/section>\n<section><h2>לסיכום<\/h2><div class=\"summary\"><p>Passport שולט על מי יש גישה ל-APIs. הוא משלים את שאר השכבות של Postman ולא מחליף אותן: Fabric שולט על תעבורת AI, Fern עוזר לצרוך API בפועל, ו-API Catalog נותן גילוי בלבד, בלי בקרת גישה.<\/p><p class=\"final\">Passport נותן לארגון דרך מרכזית לגלות APIs, לנהל גישה אליהם ולצרוך אותם בבטחה, בלי לחשוף את ה-Credentials.<\/p><\/div><\/section>\n<footer><img alt=\"\" src=\"data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAEAAAABACAMAAACdt4HsAAAAflBMVEX/azb//v3/qoz/xrL/l3H/dkX/hFf/u6P/6uP/2Mr/cDz/5dz/s5f/jGP/oH7/Vxv/XSL/0L8AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAABmTfiOAAAAIHRSTlP///////////////////////8AAAAAAAAAAAAAAAAAALN0qXIAAAIxSURBVHjavVdZsuIwDBSSvDvw3v0vO16SjAEvyqRq9EEVFN2WtbkFj4EFQtbKA3ilGSmM/gfdXx3qBG3Na3RiAqOha9qICKKCoSlcEtAEXijMlCBssLQtjAkIREYjAgShYZ+AQWzcI7iAbxngn/ANA1y7v1KfcYAr8WeXq/w9F5UgXAi+O2rFNgSbBK+rr3xcl/8SGJEDZsc/XHuJQqBEBLmdXcJj2P+vDgJRBnwmsPkaHI5ZEXcCmQOvHEOTPoI7k1oJoiT/SFHlsMfEoNuwQPt9aM+EpU3nRqbIb4mBM6aT6+dwY3wE9SSKH4GFdQjLwZiTiK/v2oLlDUq9FLxVneIC6wX1W/Du+d2x3gJJ8akGO84SzEMQT7zhbssi8LL8a/ywX3AMWoY3g5mlQS3Gd8EzjVpWgZ/3f8bbMolGPTY+P7AteMepkoKHi0b5ZKQ6Qno1tPDBPJLA8KkBzXOK96MgluT82g3j/Hw1SePPZpLKmeMTfFxISHmIsZ3hExwXj7jl6cTDYTMdIsDN80dg5/jFwEzt3B8op//L16o/0kimuOpIcyO8FUgG1x3rFR8F1V/G+lefFjxpScOY3tNGrQZYvFf729im6ifVfpDqpdh53k0S5eYFYgcqATX+p/Fj5SPjU+LUKe5k7/3WaCR7qjitWRoBe13m9aoVrgrtgdC8L3Xvi+37cv/+wiHNhaebS5edrn1mtfbRcvHE2eIZ/8fquy/fX+gLy/f7+g/z9f8PJhkNspQeOr8AAAAASUVORK5CYII=\">Postman<\/footer>\n<\/div>\n<\/body>\n<\/html>\n";
@@ -487,24 +624,7 @@ window.addEventListener('DOMContentLoaded', function(){
     });
   }
   function unwrap(el){ var p = el.parentNode; while(el.firstChild) p.insertBefore(el.firstChild, el); p.removeChild(el); }
-  function clearBackground(){
-    ensureEdit();
-    var d = fdoc(), w = frame.contentWindow, sel = w.getSelection();
-    if(!sel || !sel.rangeCount) return;
-    var r = sel.getRangeAt(0), root = d.querySelector('.wrap') || d.body, hits = [];
-    var walker = d.createTreeWalker(root, w.NodeFilter.SHOW_ELEMENT), n;
-    while((n = walker.nextNode())){
-      if(r.collapsed ? n.contains(r.startContainer) : r.intersectsNode(n)) hits.push(n);
-    }
-    hits.forEach(function(el){
-      if(el.tagName === 'MARK'){ unwrap(el); return; }
-      if(el.style && (el.style.background || el.style.backgroundColor || el.style.backgroundImage)){
-        el.style.background = ''; el.style.backgroundColor = ''; el.style.backgroundImage = '';
-        if(!el.getAttribute('style')) el.removeAttribute('style');
-      }
-      if(el.hasAttribute('bgcolor')) el.removeAttribute('bgcolor');
-    });
-  }
+  function clearBackground(){ ensureEdit(); window.XT.clearBg(fdoc()); }
   function download(){
     if(editing) setEdit(false);
     var html = '<!DOCTYPE html>\n' + fdoc().documentElement.outerHTML;
@@ -552,6 +672,15 @@ window.addEventListener('DOMContentLoaded', function(){
       sw.style.cssText = 'width:24px;height:24px;border-radius:6px;border:2px solid #fff;background:' + c + ';cursor:pointer;padding:0;';
       sw.addEventListener('click', function(){ cmd('foreColor', c); }); tb.appendChild(sw);
     });
+    var XL = window.XT.labels[LANG], XN = window.XT.names[LANG];
+    tb.appendChild(tool(XL.center, XL.ctip, function(){ ensureEdit(); window.XT.align(fdoc(), 'center'); }));
+    tb.appendChild(tool(XL.rtl, XL.rtip, function(){ ensureEdit(); window.XT.dir(fdoc(), 'rtl'); }));
+    tb.appendChild(tool(XL.ltr, XL.ltip, function(){ ensureEdit(); window.XT.dir(fdoc(), 'ltr'); }));
+    window.XT.palette.forEach(function(c, i){
+      var bsw = document.createElement('button'); bsw.type = 'button'; bsw.textContent = 'A'; bsw.title = XL.bg + ': ' + XN[i];
+      bsw.style.cssText = 'width:26px;height:26px;border-radius:6px;border:2px solid #fff;background:' + c + ';color:#fff;font:700 12px/1 Arial,sans-serif;cursor:pointer;padding:0;';
+      bsw.addEventListener('click', function(){ ensureEdit(); window.XT.bg(fdoc(), c); }); tb.appendChild(bsw);
+    });
     var nb = tool(T.nobg, T.nobgTip, clearBackground, 'padding:6px 12px;'); tb.appendChild(nb);
     var hint = document.createElement('span'); hint.textContent = T.hint; hint.style.cssText = 'flex-basis:100%;font-size:12px;color:#B9B9BC;';
     tb.appendChild(hint);
@@ -560,6 +689,13 @@ window.addEventListener('DOMContentLoaded', function(){
     frame.addEventListener('load', function(){
       var d = fdoc(); if(!d) return;
       // paste as clean plain text: never brings a background, font or colors from the source
+      // Enter inserts a plain line break inside the same block: no new block, no divider line, no font change
+      d.addEventListener('keydown', function(e){
+        if(e.key !== 'Enter' || e.shiftKey || e.ctrlKey || e.altKey || e.metaKey || d.designMode !== 'on') return;
+        var sel = d.defaultView.getSelection(), n = sel && sel.anchorNode, el = n && (n.nodeType === 1 ? n : n.parentElement);
+        if(el && el.closest('li')) return;
+        e.preventDefault(); d.execCommand('insertLineBreak');
+      }, true);
       d.addEventListener('paste', function(e){
         e.preventDefault();
         var cd = e.clipboardData || window.clipboardData;
