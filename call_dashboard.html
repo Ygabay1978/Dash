@@ -1749,6 +1749,18 @@
   #nav-modal .row button{border:1px solid var(--line);background:#fff;border-radius:8px;padding:7px 14px;font:inherit;font-size:13px;cursor:pointer;}
   #nav-modal .row button.primary{background:var(--orange);border-color:var(--orange);color:#fff;font-weight:700;}
   #nav-modal p{margin:0 0 8px;font-size:12.5px;color:var(--grey);}
+
+  /* ---- chat panel always fits the window: the input row stays visible, the quick list scrolls ---- */
+  #chat-panel{overflow:hidden;min-height:0;}
+  #chat-panel .chat-header{flex:none;}
+  #qa-lib-chat{flex:none;padding:6px 10px;}
+  #qa-lib-chat .qa-chips{max-height:64px;overflow-y:auto;}
+  #qa-lib-chat .qa-list{max-height:140px;}
+  #chat-panel .chat-quick{flex:0 1 auto;min-height:52px;overflow-y:auto;}
+  #saved-questions-wrap{flex:none;}
+  #saved-questions-menu{top:auto;bottom:100%;margin:0 0 4px;max-height:min(260px,60vh);}
+  #chat-log{flex:1 1 90px;min-height:90px;overflow-y:auto;}
+  #chat-input-row{flex:none;}
 &lt;/style&gt;
 &lt;/head&gt;
 &lt;body&gt;
@@ -5330,6 +5342,18 @@ document.addEventListener('keydown', (e)=&gt;{
   #nav-modal .row button{border:1px solid var(--line);background:#fff;border-radius:8px;padding:7px 14px;font:inherit;font-size:13px;cursor:pointer;}
   #nav-modal .row button.primary{background:var(--orange);border-color:var(--orange);color:#fff;font-weight:700;}
   #nav-modal p{margin:0 0 8px;font-size:12.5px;color:var(--grey);}
+
+  /* ---- chat panel always fits the window: the input row stays visible, the quick list scrolls ---- */
+  #chat-panel{overflow:hidden;min-height:0;}
+  #chat-panel .chat-header{flex:none;}
+  #qa-lib-chat{flex:none;padding:6px 10px;}
+  #qa-lib-chat .qa-chips{max-height:64px;overflow-y:auto;}
+  #qa-lib-chat .qa-list{max-height:140px;}
+  #chat-panel .chat-quick{flex:0 1 auto;min-height:52px;overflow-y:auto;}
+  #saved-questions-wrap{flex:none;}
+  #saved-questions-menu{top:auto;bottom:100%;margin:0 0 4px;max-height:min(260px,60vh);}
+  #chat-log{flex:1 1 90px;min-height:90px;overflow-y:auto;}
+  #chat-input-row{flex:none;}
 &lt;/style&gt;
 &lt;/head&gt;
 &lt;body&gt;
@@ -9698,4 +9722,22 @@ ${overview.outerHTML}
 
 
 
-<div id="chrome-extension-pull-out-tab-host"></div><div id="chrome-extension-search-anywhere-popup-host" data-hidden="" style="position: absolute !important; z-index: 2147483645 !important; display: none !important;"></div></body></html>
+<div id="chrome-extension-pull-out-tab-host"></div><div id="chrome-extension-search-anywhere-popup-host" data-hidden="" style="position: absolute !important; z-index: 2147483645 !important; display: none !important;"></div><script>
+/* keep the embedded explainer pages exactly as tall as the visible window (below the sticky bars),
+   so the chat input row at the bottom is never pushed off-screen */
+(function(){
+  function fit(){
+    var bars = 0;
+    document.querySelectorAll('header, nav.tabs').forEach(function(el){
+      var cs = getComputedStyle(el);
+      if(cs.position === 'sticky' || cs.position === 'fixed'){ var b = el.getBoundingClientRect().bottom; if(b > bars && b < innerHeight/2) bars = b; }
+    });
+    var h = Math.max(560, Math.round(innerHeight - (bars || 120) - 6));
+    document.querySelectorAll('iframe[srcdoc]').forEach(function(f){ f.style.height = h + 'px'; });
+  }
+  window.addEventListener('load', fit);
+  window.addEventListener('resize', fit);
+  fit();
+})();
+</script>
+</body></html>
