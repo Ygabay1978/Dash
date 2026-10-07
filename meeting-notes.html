@@ -343,6 +343,17 @@ header .sub{font-size:12px;color:#B9B9BC;margin-right:auto;}
 .stat-box{position:relative;}
 .stat-box.edited{box-shadow:inset 0 0 0 2px #FFC9AE;}
 .stat-box.edited::after{content:"ידני";position:absolute;top:3px;left:8px;font-size:10px;font-weight:700;color:#C2410C;}
+
+.users-card .chart-pct, .users-card .chart-legend{font-weight:700;}
+.users-card .chart-pct{font-size:11px;color:var(--ink);}
+
+.attn-asof{font-size:10.5px;color:var(--grey);margin:-4px 0 10px;}
+.attn-item{border:1px solid #F3D9C8;border-radius:9px;padding:10px 12px;margin-bottom:10px;background:#FFFBF8;}
+.attn-prio{display:inline-block;background:var(--orange);color:#fff;font-weight:800;font-size:11px;border-radius:999px;padding:2px 10px;margin-bottom:7px;}
+.attn-row{font-size:12.5px;line-height:1.6;margin-bottom:6px;color:var(--ink);}
+.attn-row b{font-weight:800;}
+.attn-do{background:#FFF1E6;border-radius:6px;padding:6px 8px;margin-bottom:0;}
+.attn-sub{font-size:11px;font-weight:800;color:var(--grey);margin:12px 0 6px;letter-spacing:.02em;}
 </style>
 </head>
 <body>
@@ -716,12 +727,17 @@ header .sub{font-size:12px;color:#B9B9BC;margin-right:auto;}
     { key:'teams',    label:'Postman Teams' }
   ];
 
+  function cleanStatus(a){
+    var s = String((a && a.status) || '');
+    if(a && a.name === 'Global-E Online') s = s.replace(/\s*\(Javier[^)]*\)/i, '').trim();
+    return s;
+  }
   function defaultStatValues(account, usage, model){
     if(model){
       return {
         country:  account ? (account.country || '') : '',
         sector:   account ? (account.sector || '') : '',
-        status:   account ? (account.status || '') : '',
+        status:   account ? cleanStatus(account) : '',
         priority: account ? (account.priority || '') : '',
         arr:      fmtMoney(model.totalARR),
         dau:      fmtNum(model.totalDAU),
@@ -735,7 +751,7 @@ header .sub{font-size:12px;color:#B9B9BC;margin-right:auto;}
     return {
       country:  account ? (account.country || '') : '',
       sector:   account ? (account.sector || '') : '',
-      status:   account ? (account.status || '') : '',
+      status:   account ? cleanStatus(account) : '',
       priority: account ? (account.priority || '') : '',
       arr:      fmtMoney(arr),
       dau:      usage ? fmtNum(usage.dau_90) : '—',
@@ -809,7 +825,7 @@ header .sub{font-size:12px;color:#B9B9BC;margin-right:auto;}
               '<div class="value" contenteditable="true" data-field="' + f.key + '">' + (val || '') + '</div></div>';
     });
     html += '</div>';
-    html += '<div class="stat-hint">' + (model ? 'המספרים מסונכרנים עם ה-Customer Snapshot.' : 'שים לב: החיבור ל-Customer Snapshot לא זמין, המספרים מ-dashboard-data.json.') + ' שדות אלה ניתנים לעריכה — השינויים נשמרים בדפדפן הזה. <button id="reset-overrides-btn" title="מוחק את כל השדות שנערכו ידנית וחוזר לנתוני המקור מה-Territory Command Center">↺ אפס לנתוני המקור</button></div>';
+    html += '<div class="stat-hint">' + (model ? 'המספרים מסונכרנים עם ה-Customer Snapshot.' : 'שים לב: החיבור ל-Customer Snapshot לא זמין, המספרים מ-dashboard-data.json.') + ' <button id="reset-overrides-btn" title="מוחק את כל השדות שנערכו ידנית וחוזר לנתוני המקור מה-Territory Command Center">↺ אפס לנתוני המקור</button></div>';
 
     const accountNotesDefault = (account && account.notes) ? account.notes.replace(/\n/g, '<br>') : '';
     const accountNotesValue = (overrides.accountNotes !== undefined) ? overrides.accountNotes : accountNotesDefault;
@@ -840,7 +856,7 @@ header .sub{font-size:12px;color:#B9B9BC;margin-right:auto;}
 
     if(allTeams.length){
       html += '<div class="snap-teams"><h5>Postman teams (' + allTeams.length + ')</h5><div class="table-scroll" dir="ltr">';
-      html += '<table class="crm-table" dir="ltr"><thead><tr><th>TEAM</th><th>CHILD CO.</th><th>PLAN</th><th>PURCHASED</th><th>USED</th><th>ARR</th><th>RENEWAL</th><th>SELF-SERVE</th><th>STATUS</th></tr></thead><tbody>';
+      html += '<table class="crm-table" dir="ltr"><thead><tr><th>TEAM</th><th>TEAM ID</th><th>CHILD CO.</th><th>PLAN</th><th>PURCHASED</th><th>USED</th><th>ARR</th><th>RENEWAL</th><th>SELF-SERVE</th><th>STATUS</th></tr></thead><tbody>';
       allTeams.forEach(t=>{
         const childCo = pick(t, ['child_company','child_co','childCompany','child'], '-');
         const renewal = pick(t, ['renewal_date','renewal','renewalDate'], '—');
@@ -852,6 +868,7 @@ header .sub{font-size:12px;color:#B9B9BC;margin-right:auto;}
         if(t._selfServe !== undefined) selfServe = t._selfServe ? 'Yes' : 'No';   // same rule as the Snapshot
         html += '<tr>' +
                 '<td class="cell-link">' + (t.team_name || '—') + '</td>' +
+                '<td class="muted" style="font-family:monospace;font-size:10.5px;">' + (t.team_id || (t.team_url ? String(t.team_url).split('/').pop() : '-')) + '</td>' +
                 '<td>' + (childCo === '-' ? '-' : '<a href="#">' + childCo + '</a>') + '</td>' +
                 '<td>' + (t.active_plan || '—') + '</td>' +
                 '<td>' + fmtNum(t.purchased_licenses) + '</td>' +
@@ -1027,7 +1044,7 @@ header .sub{font-size:12px;color:#B9B9BC;margin-right:auto;}
       const ofTotal = total ? Math.round((val / total) * 100) : null;
       return '<div class="chart-block">' +
              '<div class="chart-row-label-line"><span class="name">' + labelFn(item) + '</span>' +
-             '<span class="val ' + colorClass + '">' + val.toLocaleString() + '</span></div>' +
+             '<span class="val ' + colorClass + '">' + (colorClass === 'orange' ? '$' : '') + val.toLocaleString() + '</span></div>' +
              '<div class="chart-pill-track"><div class="chart-pill-fill ' + colorClass + '" style="width:' + pct + '%"></div></div>' +
              (ofTotal !== null ? '<div class="chart-pct">' + ofTotal + '% מסך ה-ARR של הלקוח</div>' : '') +
              '</div>';
@@ -1050,7 +1067,7 @@ header .sub{font-size:12px;color:#B9B9BC;margin-right:auto;}
                '<div class="chart-pill-fill green" style="width:' + usedPct + '%"></div>' +
              '</div>' +
              '<div class="chart-pct">' +
-               (purchased > 0 ? purchased.toLocaleString() + ' נרכשו · תפוסה: ' + occupancy + '%' : 'ללא הגבלת רישיונות (Free)') +
+               (purchased > 0 ? purchased.toLocaleString() + ' נרכשו · תפוסה: ' + occupancy + '%' : 'FREE') +
              '</div>' +
              '</div>';
     }).join('');
@@ -1069,7 +1086,7 @@ header .sub{font-size:12px;color:#B9B9BC;margin-right:auto;}
     }
     html += '</div>';
 
-    html += '<div class="side-card"><h4>👥 משתמשים פעילים לפי Team</h4>';
+    html += '<div class="side-card users-card"><h4>👥 משתמשים פעילים לפי Team</h4>';
     const usedTeams = teams.filter(t => (t.used_licenses || 0) > 0).sort((a,b)=>(b.used_licenses||0)-(a.used_licenses||0)).slice(0,6);
     if(usedTeams.length){
       html += '<div class="chart-legend"><span><span class="dot" style="background:linear-gradient(90deg,var(--green),var(--green-light));background-color:#2E9E5B;"></span>Used</span>' +
@@ -1098,13 +1115,39 @@ header .sub{font-size:12px;color:#B9B9BC;margin-right:auto;}
     return flags;
   }
 
+
+  // ---- "נקודות לתשומת לב": prioritized points per customer (updated 07.10.2026) ----
+  // To refresh the list, replace the contents of ATTN_SEED. Matching is by customer name (any alias, ignoring case and punctuation).
+  const ATTN_ASOF = '07.10.2026';
+  const ATTN_SEED = [{"prio": 1, "aliases": ["Check Point Software", "Check Point"], "teams": "צוות 10734076: zakyv\nצוות 2832855: kfir bar", "changed": "חצו את מכסת ה-AI (30.9). צוות חינמי חדש (1.10). אדמין חדש אחד. 3 פניות פתוחות. חידוש היום (5.10) של תוכנית Team (6 רישיונות, חידוש אוטומטי, צריכה 100%). תוכנית Team נוספת (4 רישיונות) מתחדשת ב-1.1.2027 בלי חידוש אוטומטי ובצריכה של 25%.", "todo": "לקדם הרחבה בחידוש של היום. לטפל בפניות הפתוחות. להתחיל עכשיו שיחה על התוכנית שבסיכון נטישה. להציע איחוד של הצוותים החינמיים והמשלמים."}, {"prio": 2, "aliases": ["NICE Systems", "Nice"], "teams": "צוות 15711946: rajubv2199", "changed": "חצה את מכסת ה-AI (1.10). 1,300 משתמשים פעילים ב-90 ימים מול ARR נמוך. 23 לא מחויבים.", "todo": "הפער בין השימוש ל-ARR הוא ההזדמנות. לפנות להנהלה החדשה (Ariel, Christian Loth)."}, {"prio": 3, "aliases": ["Phoenix Financial"], "teams": "אין Team ID", "changed": "צוות חינמי חדש (1.10). אדמין חדש. 37 לא מחויבים. 130 משתמשים פעילים.", "todo": "להציע איחוד של הצוותים החינמיים והמשלמים."}, {"prio": 4, "aliases": ["Global-E Online", "Global-E"], "teams": "צוותים 266809 ו-3902754", "changed": "13 לא מחויבים בסה\"כ.", "todo": "להציע איחוד של הצוותים החינמיים והמשלמים."}, {"prio": 5, "aliases": ["Monday.com"], "teams": "אין Team ID", "changed": "חידוש ב-30.11, 170 רישיונות, צריכה 39% בלבד. שני צוותים חינמיים חדשים (1.10, 2.10). שני אדמינים חדשים.", "todo": "סיכון קיצוץ בחידוש. לבדוק אימוץ ולהכין תוכנית שימוש לפני 30.11. הצוותים החינמיים החדשים הם טיעון לאיחוד."}, {"prio": 6, "aliases": ["Wix"], "teams": "אין Team ID", "changed": "חידוש ב-25.10 (Team חודשי, 10 רישיונות, צריכה 100%, חידוש אוטומטי). שני צוותים חינמיים חדשים (29.9, 30.9).", "todo": "להציע הרחבה או Enterprise לפני 25.10."}, {"prio": 7, "aliases": ["Malam Payroll", "malam-payroll.com"], "teams": "אין Team ID", "changed": "חידוש ב-7.10 (Professional, 5 רישיונות, צריכה 80%) בלי חידוש אוטומטי.", "todo": "ליצור קשר השבוע כדי שלא ייפלו. חשבון קטן (ARR 1,980)."}, {"prio": 8, "aliases": ["Eurobank Limited", "Eurobank Group", "Eurobank"], "teams": "צוות 34815100: v-mvlachoulis", "changed": "חצה את מכסת ה-AI (29.9).", "todo": "לחבר לחוזה של קפריסין."}, {"prio": 9, "aliases": ["eToro"], "teams": "אין Team ID", "changed": "שלושה צוותים חינמיים חדשים (29.9, 30.9, 1.10).", "todo": "להציע איחוד תחת חוזה אחד."}, {"prio": 10, "aliases": ["Piraeus Bank"], "teams": "אין Team ID", "changed": "שני אדמינים חדשים.", "todo": "לזהות אותם ולפנות."}, {"prio": 11, "aliases": ["Playtika"], "teams": "אין Team ID", "changed": "שני צוותים חינמיים חדשים (30.9, 2.10).", "todo": "להשתמש בזה בשיחה עם המנהלת החדשה (michelle_kor)."}, {"prio": 12, "aliases": ["National Bank of Greece"], "teams": "אין Team ID", "changed": "צוות חינמי חדש (2.10).", "todo": "ליצור קשר בהזדמנות."}, {"prio": 13, "aliases": ["Nice Actimize", "NICE Actimize"], "teams": "אין Team ID", "changed": "צוות חינמי חדש (29.9). אין ARR ואין Tier.", "todo": "לבדוק אם זה חלק מ-Nice."}, {"prio": 14, "aliases": ["Walla", "Walla! Communications"], "teams": "אין Team ID", "changed": "צוות חינמי חדש (2.10). אין ARR ואין Tier.", "todo": "לבדוק."}, {"prio": 15, "aliases": ["Malam Systems (מלם)", "Malam", "malam.com"], "teams": "צוות 15037212: doritsh", "changed": "חצה את מכסת ה-AI (4.10).", "todo": "לתקן את שם החשבון המשובש ב-SFDC."}, {"prio": 16, "aliases": ["CAL - platform.com", "CAL", "platform.com"], "teams": "צוות 5387381", "changed": "שדרוג, +21 רישיונות (1.10).", "todo": "רק אם יש סימני גדילה."}, {"prio": 17, "aliases": ["State of Israel (Gov Digital)", "gov.il", "State of Israel"], "teams": "אין Team ID", "changed": "חידוש ב-30.12, 4 רישיונות, צריכה 100%.", "todo": "הרחבה בחידוש."}];
+  function attnKey(s){ return String(s == null ? '' : s).toLowerCase().replace(/[^a-z0-9\u0590-\u05ff]+/g, ''); }
+  function attnFor(name){
+    const k = attnKey(name); if(!k) return [];
+    return ATTN_SEED.filter(function(it){ return it.aliases.some(function(a){ return attnKey(a) === k; }); });
+  }
+  function attnEsc(s){ return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/\n/g,'<br>'); }
+  function renderAttnItems(name){
+    const items = attnFor(name); if(!items.length) return '';
+    return '<div class="attn-asof">עדכון אחרון: ' + ATTN_ASOF + '</div>' + items.map(function(it){
+      return '<div class="attn-item">' +
+        '<span class="attn-prio">עדיפות ' + it.prio + '</span>' +
+        '<div class="attn-row"><b>צוות / משתמשים:</b> ' + attnEsc(it.teams) + '</div>' +
+        '<div class="attn-row"><b>מה השתנה:</b> ' + attnEsc(it.changed) + '</div>' +
+        '<div class="attn-row attn-do"><b>מה לעשות:</b> ' + attnEsc(it.todo) + '</div>' +
+      '</div>';
+    }).join('');
+  }
+
   function renderInsightsPanel(name){
     const teams = findTeams(name);
     const flags = computeActionFlags(teams);
     let html = '<div class="side-card"><h4>🔎 נקודות לתשומת לב</h4>';
+    const manual = renderAttnItems(name);
+    html += manual;
     if(flags.length){
+      if(manual) html += '<div class="attn-sub">דגלים אוטומטיים</div>';
       html += '<ul class="flag-list">' + flags.map(f => '<li>' + f + '</li>').join('') + '</ul>';
-    } else {
+    } else if(!manual){
       html += '<div class="side-empty">לא נמצאו דגלים אוטומטיים כרגע.</div>';
     }
     html += '</div>';
