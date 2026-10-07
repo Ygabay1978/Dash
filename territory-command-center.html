@@ -2595,25 +2595,44 @@ const SNAP_TABLE_COLS = [
   {id:'arr', label:'ARR'}, {id:'renewal', label:'Renewal'}, {id:'selfserve', label:'Self Serve'}, {id:'status', label:'Status'}
 ];
 
-function buildSnapshot(name){
-  window._snapCurrentName = name;
-  const account = (DATA.accounts||[]).find(a=>a.name===name) || null;
-  const usage = (DATA.usage_export||[]).find(u=>u.name===name) || null;
-  const {teams, source, alreadyTrackedElsewhere, selfServeTotalArr} = getSnapshotTeams(name);
-  const hasAsa = (DATA.asa_accounts||[]).includes(name) || !!(usage && usage.has_asa);
-  const editMode = window._snapEditMode;
-  const colVisible = (id)=>!window._snapHiddenCols.has(id);
 
-  // When we have granular org_usage_snapshot data (Core/SDLC "Signals" pulls), it's the freshest,
-  // most complete source - these tiles pull from it first so they can never disagree with the
-  // Platform Usage Detail section below. Falls back to the older usage_export/account fields for
-  // accounts that don't have this data yet.
-  const orgCombined = getCombinedOrgUsage(name);
+/* ---------- SNAPSHOT MODEL: the single source of truth for every Customer Snapshot number ----------
+   buildSnapshot() renders from it, and the customer meeting log (meeting-notes.html) reads the very same values,
+   so the two can never disagree. */
+function getSnapshotModel(name){
+  const rn = (typeof resolveSnapshotName === 'function' && resolveSnapshotName(name)) || name;
+  const account = (DATA.accounts||[]).find(a=>a.name===rn) || null;
+  const usage = (DATA.usage_export||[]).find(u=>u.name===rn) || null;
+  const {teams, source, alreadyTrackedElsewhere, selfServeTotalArr} = getSnapshotTeams(rn);
+  const orgCombined = getCombinedOrgUsage(rn);
   const orgCore = orgCombined && orgCombined.core;
   const totalARR = account?.arr ?? usage?.combined_arr ?? (alreadyTrackedElsewhere ? selfServeTotalArr : null) ?? teams.reduce((s,t)=>s+(t.arr||0),0);
   const totalUsers = orgCore?.signups_all_time ?? usage?.postman_team_users ?? teams.reduce((s,t)=>s+(t.used_licenses||t.purchased_licenses||0),0);
   const totalTeams = orgCore?.teams_all ?? usage?.postman_teams ?? teams.length;
   const totalDAU = orgCore?.monthly_active_90d ?? usage?.dau_90 ?? account?.dau ?? null;
+  return {
+    name: rn, found: !!(account || usage || teams.length), account, usage, teams, source, alreadyTrackedElsewhere, selfServeTotalArr, orgCore,
+    totalARR, totalUsers, totalTeams, totalDAU,
+    paidSeats: orgCore?.purchased_seats ?? (account && account.paid_licenses!=null ? account.paid_licenses : usage?.paid_licenses),
+    paidUsers: orgCore?.seats_assigned ?? usage?.paid_users,
+    paidTeams: orgCore?.paid_teams ?? usage?.paid_teams,
+    mau: usage?.mau,
+    freeUsers: orgCore?.on_no_paid_team ?? usage?.free_team_users,
+    entUsers: orgCore?.enterprise_seats_purchased ?? (account && account.ent_licenses!=null ? account.ent_licenses : usage?.enterprise_licenses),
+    teamRows: teams.map(x=>Object.assign({}, x, {_selfServe: (source === 'Self-serve team export') ? true : (x.self_serve === 'yes')}))
+  };
+}
+function getSnapshotData(){ return DATA; }
+
+function buildSnapshot(name){
+  window._snapCurrentName = name;
+  const M = getSnapshotModel(name);
+  const {account, usage, teams, source, alreadyTrackedElsewhere, selfServeTotalArr, orgCore, totalARR, totalUsers, totalTeams, totalDAU} = M;
+  const hasAsa = (DATA.asa_accounts||[]).includes(name) || !!(usage && usage.has_asa);
+  const editMode = window._snapEditMode;
+  const colVisible = (id)=>!window._snapHiddenCols.has(id);
+
+  // All numbers below come from getSnapshotModel() (org_usage_snapshot first, then usage_export / account fields).
   const domain = account?.domain || usage?.domain || (teams[0] && teams[0].domain) || '';
   const metaLine = [domain, account?.country || usage?.region, account?.sector].filter(Boolean).join(' &middot; ');
 
@@ -2646,12 +2665,12 @@ function buildSnapshot(name){
     html += `<div class="card">
       <h3>Usage &amp; Licenses</h3>
       <div class="kpi-grid" style="grid-template-columns:repeat(6,minmax(0,1fr)); gap:6px;">
-        ${snapWrap('u-paidseats','Paid Seats', `<div class="kpi-sm"><div class="val">${fmtNum(orgCore?.purchased_seats ?? (account&&account.paid_licenses!=null?account.paid_licenses:usage.paid_licenses))}</div><div class="lbl">Paid Seats</div></div>`)}
-        ${snapWrap('u-paidusers','Paid Users', `<div class="kpi-sm"><div class="val">${fmtNum(orgCore?.seats_assigned ?? usage.paid_users)}</div><div class="lbl">Paid Users</div></div>`)}
-        ${snapWrap('u-paidteams','Paid Teams', `<div class="kpi-sm"><div class="val">${fmtNum(orgCore?.paid_teams ?? usage.paid_teams)}</div><div class="lbl">Paid Teams</div></div>`)}
-        ${snapWrap('u-mau','MAU', `<div class="kpi-sm"><div class="val">${fmtNum(usage.mau)}</div><div class="lbl">MAU</div></div>`)}
-        ${snapWrap('u-freeusers','Free Users', `<div class="kpi-sm"><div class="val">${fmtNum(orgCore?.on_no_paid_team ?? usage.free_team_users)}</div><div class="lbl">Free Users</div></div>`)}
-        ${snapWrap('u-entusers','Ent. Users', `<div class="kpi-sm"><div class="val">${fmtNum(orgCore?.enterprise_seats_purchased ?? (account&&account.ent_licenses!=null?account.ent_licenses:usage.enterprise_licenses))}</div><div class="lbl">Ent. Users</div></div>`)}
+        ${snapWrap('u-paidseats','Paid Seats', `<div class="kpi-sm"><div class="val">${fmtNum(M.paidSeats)}</div><div class="lbl">Paid Seats</div></div>`)}
+        ${snapWrap('u-paidusers','Paid Users', `<div class="kpi-sm"><div class="val">${fmtNum(M.paidUsers)}</div><div class="lbl">Paid Users</div></div>`)}
+        ${snapWrap('u-paidteams','Paid Teams', `<div class="kpi-sm"><div class="val">${fmtNum(M.paidTeams)}</div><div class="lbl">Paid Teams</div></div>`)}
+        ${snapWrap('u-mau','MAU', `<div class="kpi-sm"><div class="val">${fmtNum(M.mau)}</div><div class="lbl">MAU</div></div>`)}
+        ${snapWrap('u-freeusers','Free Users', `<div class="kpi-sm"><div class="val">${fmtNum(M.freeUsers)}</div><div class="lbl">Free Users</div></div>`)}
+        ${snapWrap('u-entusers','Ent. Users', `<div class="kpi-sm"><div class="val">${fmtNum(M.entUsers)}</div><div class="lbl">Ent. Users</div></div>`)}
       </div>
     </div>`;
   } else if(teams.length){
@@ -3131,10 +3150,11 @@ function openEmbeddedSnapshot(q){
   }catch(e){}
   renderOverview(); renderAccounts(); renderUsage(); renderLive(); renderExpansion(); renderContacts(); renderQualityLeads(); renderSelfServe(); renderDelinquent(); renderSnapshot();
   await renderFollowups();
+  window.__snapReady = true;
   const _qp = new URLSearchParams(location.search);
   if(_qp.get('embed') === 'snapshot' && _qp.get('company')) openEmbeddedSnapshot(_qp.get('company'));
 })();
 </script>
-<div id="build-stamp" title="build">build 07.10.2026 r15</div>
+<div id="build-stamp" title="build">build 07.10.2026 r16</div>
 </body>
 </html>

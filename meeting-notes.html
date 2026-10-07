@@ -339,6 +339,10 @@ header .sub{font-size:12px;color:#B9B9BC;margin-right:auto;}
 #snapshot-modal .snap-win-body{position:relative;flex:1;min-height:0;background:var(--bg-page);}
 #snapshot-modal iframe{position:absolute;inset:0;width:100%;height:100%;border:none;background:var(--bg-page);}
 #snapshot-modal .snap-win-loading{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;color:var(--grey);font-size:14px;background:var(--bg-page);}
+
+.stat-box{position:relative;}
+.stat-box.edited{box-shadow:inset 0 0 0 2px #FFC9AE;}
+.stat-box.edited::after{content:"ידני";position:absolute;top:3px;left:8px;font-size:10px;font-weight:700;color:#C2410C;}
 </style>
 </head>
 <body>
@@ -712,7 +716,21 @@ header .sub{font-size:12px;color:#B9B9BC;margin-right:auto;}
     { key:'teams',    label:'Postman Teams' }
   ];
 
-  function defaultStatValues(account, usage){
+  function defaultStatValues(account, usage, model){
+    if(model){
+      return {
+        country:  account ? (account.country || '') : '',
+        sector:   account ? (account.sector || '') : '',
+        status:   account ? (account.status || '') : '',
+        priority: account ? (account.priority || '') : '',
+        arr:      fmtMoney(model.totalARR),
+        dau:      fmtNum(model.totalDAU),
+        paidTotal: fmtNum(model.paidSeats),
+        paidUsed:  fmtNum(model.paidUsers) + ' / ' + fmtNum(model.paidSeats),
+        freeUsers: fmtNum(model.freeUsers),
+        teams:    fmtNum(model.totalTeams)
+      };
+    }
     const arr = (account && (account.arr_live ?? account.arr)) ?? (usage && usage.combined_arr);
     return {
       country:  account ? (account.country || '') : '',
@@ -760,9 +778,10 @@ header .sub{font-size:12px;color:#B9B9BC;margin-right:auto;}
   }
 
   function renderSnapshotCard(name){
-    const account = findAccount(name);
-    const usage = findUsage(name);
-    const allTeams = findTeams(name).slice().sort((a,b)=>(b.arr||0)-(a.arr||0));
+    const model = snapModel(name);
+    const account = (model && model.account) || findAccount(name);
+    const usage = (model && model.usage) || findUsage(name);
+    const allTeams = ((model && model.teamRows && model.teamRows.length) ? model.teamRows : findTeams(name)).slice().sort((a,b)=>(b.arr||0)-(a.arr||0));
     const contacts = findContacts(name).filter(c => looksLikePerson(c.name) && isRelevantOrChampion(c));
     contacts.sort((a, b) => {
       const champA = isChampionFlag(a) ? 0 : 1;
@@ -774,7 +793,7 @@ header .sub{font-size:12px;color:#B9B9BC;margin-right:auto;}
       return (a.name || '').localeCompare(b.name || '');
     });
     const overrides = loadOverrides(name);
-    const defaults = defaultStatValues(account, usage);
+    const defaults = defaultStatValues(account, usage, model);
 
     let html = '<div class="snap-card">';
 
@@ -785,11 +804,12 @@ header .sub{font-size:12px;color:#B9B9BC;margin-right:auto;}
     html += '<div class="stat-grid">';
     STAT_FIELDS.forEach(f=>{
       const val = (overrides[f.key] !== undefined) ? overrides[f.key] : defaults[f.key];
-      html += '<div class="stat-box"><div class="label">' + f.label + '</div>' +
+      const edited = overrides[f.key] !== undefined && plainTxt(overrides[f.key]) !== plainTxt(defaults[f.key]);
+      html += '<div class="stat-box' + (edited ? ' edited' : '') + '"' + (edited ? ' title="נערך ידנית. ערך ה-Snapshot: ' + plainTxt(defaults[f.key]).replace(/"/g, '') + '"' : '') + '><div class="label">' + f.label + '</div>' +
               '<div class="value" contenteditable="true" data-field="' + f.key + '">' + (val || '') + '</div></div>';
     });
     html += '</div>';
-    html += '<div class="stat-hint">שדות אלה ניתנים לעריכה — השינויים נשמרים בדפדפן הזה. <button id="reset-overrides-btn" title="מוחק את כל השדות שנערכו ידנית וחוזר לנתוני המקור מה-Territory Command Center">↺ אפס לנתוני המקור</button></div>';
+    html += '<div class="stat-hint">' + (model ? 'המספרים מסונכרנים עם ה-Customer Snapshot.' : 'שים לב: החיבור ל-Customer Snapshot לא זמין, המספרים מ-dashboard-data.json.') + ' שדות אלה ניתנים לעריכה — השינויים נשמרים בדפדפן הזה. <button id="reset-overrides-btn" title="מוחק את כל השדות שנערכו ידנית וחוזר לנתוני המקור מה-Territory Command Center">↺ אפס לנתוני המקור</button></div>';
 
     const accountNotesDefault = (account && account.notes) ? account.notes.replace(/\n/g, '<br>') : '';
     const accountNotesValue = (overrides.accountNotes !== undefined) ? overrides.accountNotes : accountNotesDefault;
@@ -820,7 +840,7 @@ header .sub{font-size:12px;color:#B9B9BC;margin-right:auto;}
 
     if(allTeams.length){
       html += '<div class="snap-teams"><h5>Postman teams (' + allTeams.length + ')</h5><div class="table-scroll" dir="ltr">';
-      html += '<table class="crm-table" dir="ltr"><thead><tr><th>TEAM</th><th>CHILD CO.</th><th>PLAN</th><th>ARR</th><th>RENEWAL</th><th>SELF-SERVE</th><th>STATUS</th></tr></thead><tbody>';
+      html += '<table class="crm-table" dir="ltr"><thead><tr><th>TEAM</th><th>CHILD CO.</th><th>PLAN</th><th>PURCHASED</th><th>USED</th><th>ARR</th><th>RENEWAL</th><th>SELF-SERVE</th><th>STATUS</th></tr></thead><tbody>';
       allTeams.forEach(t=>{
         const childCo = pick(t, ['child_company','child_co','childCompany','child'], '-');
         const renewal = pick(t, ['renewal_date','renewal','renewalDate'], '—');
@@ -829,10 +849,13 @@ header .sub{font-size:12px;color:#B9B9BC;margin-right:auto;}
         if(selfServeRaw !== null){
           selfServe = (selfServeRaw === true || /^y/i.test(String(selfServeRaw))) ? 'Yes' : 'No';
         }
+        if(t._selfServe !== undefined) selfServe = t._selfServe ? 'Yes' : 'No';   // same rule as the Snapshot
         html += '<tr>' +
                 '<td class="cell-link">' + (t.team_name || '—') + '</td>' +
                 '<td>' + (childCo === '-' ? '-' : '<a href="#">' + childCo + '</a>') + '</td>' +
                 '<td>' + (t.active_plan || '—') + '</td>' +
+                '<td>' + fmtNum(t.purchased_licenses) + '</td>' +
+                '<td>' + fmtNum(t.used_licenses) + '</td>' +
                 '<td class="cell-arr">' + fmtMoney(t.arr) + '</td>' +
                 '<td>' + renewal + '</td>' +
                 '<td>' + selfServe + '</td>' +
@@ -872,8 +895,12 @@ header .sub{font-size:12px;color:#B9B9BC;margin-right:auto;}
     card.querySelectorAll('.stat-box .value[data-field]').forEach(el=>{
       el.addEventListener('blur', ()=>{
         const overrides = loadOverrides(name);
-        overrides[el.dataset.field] = el.innerHTML;
+        const mdl = snapModel(name), acc = (mdl && mdl.account) || findAccount(name), us = (mdl && mdl.usage) || findUsage(name);
+        const def = defaultStatValues(acc, us, mdl)[el.dataset.field];
+        if(plainTxt(el.innerHTML) === plainTxt(def)) delete overrides[el.dataset.field];   // not an edit: follow the Snapshot
+        else overrides[el.dataset.field] = el.innerHTML;
         saveOverrides(name, overrides);
+        el.closest('.stat-box').classList.toggle('edited', overrides[el.dataset.field] !== undefined);
         fitStatBoxFonts();
       });
       el.addEventListener('input', ()=>{ el.style.fontSize = '16px'; fitStatBoxFonts(); });
@@ -1262,10 +1289,59 @@ header .sub{font-size:12px;color:#B9B9BC;margin-right:auto;}
     setTimeout(()=> editor.focus(), 0);
   };
 
+  // ---- Customer Snapshot as the single source of truth ----
+  // territory-command-center.html (same folder) is loaded in a hidden frame; every number on this page is read from
+  // its getSnapshotModel(), the exact function the Customer Snapshot renders from. dashboard-data.json is only a fallback.
+  let SNAPWIN = null;
+  function loadSnapshotSource(){
+    return new Promise(function(resolve){
+      var f = document.createElement('iframe');
+      f.setAttribute('aria-hidden', 'true'); f.tabIndex = -1;
+      f.style.cssText = 'position:absolute;width:0;height:0;border:0;visibility:hidden;left:-9999px;';
+      f.src = 'territory-command-center.html?embed=data';
+      var tries = 0, iv = null;
+      function finish(ok){ if(iv) clearInterval(iv); resolve(ok); }
+      f.onload = function(){
+        iv = setInterval(function(){
+          try{
+            var w = f.contentWindow;
+            if(w && w.__snapReady && typeof w.getSnapshotModel === 'function'){ SNAPWIN = w; finish(true); return; }
+          }catch(e){}
+          if(++tries > 150) finish(false);
+        }, 100);
+      };
+      f.onerror = function(){ finish(false); };
+      document.body.appendChild(f);
+    });
+  }
+  function snapModel(name){
+    try{ if(SNAPWIN){ var m = SNAPWIN.getSnapshotModel(name); if(m && m.found) return m; } }catch(e){}
+    return null;
+  }
+  const STAT_KEYS = ['country','sector','status','priority','arr','dau','paidTotal','paidUsed','freeUsers','teams'];
+  function plainTxt(x){ return String(x == null ? '' : x).replace(/<[^>]*>/g, '').replace(/&nbsp;/g, ' ').replace(/\s+/g, ' ').trim(); }
+  // one-time sync: top-card values saved earlier (the card used to save whatever was on screen when you left a field,
+  // even without an edit) would hide the Snapshot numbers. They are moved to a backup key, nothing is lost.
+  try{
+    if(!localStorage.getItem('meeting-notes-stat-sync-r1')){
+      var bk = {};
+      Object.keys(localStorage).forEach(function(k){
+        if(k.indexOf('meeting-notes-overrides:') !== 0) return;
+        try{
+          var o = JSON.parse(localStorage.getItem(k)) || {}, keep = {}, removed = false;
+          Object.keys(o).forEach(function(fk){ if(STAT_KEYS.indexOf(fk) >= 0) removed = true; else keep[fk] = o[fk]; });
+          if(removed){ bk[k] = o; localStorage.setItem(k, JSON.stringify(keep)); }
+        }catch(e){}
+      });
+      localStorage.setItem('meeting-notes-stat-backup-r1', JSON.stringify(bk));
+      localStorage.setItem('meeting-notes-stat-sync-r1', '1');
+    }
+  }catch(e){}
+
   async function init(){
     try{
-      const response = await fetch('dashboard-data.json');
-      DATA = await response.json();
+      if(await loadSnapshotSource()){ DATA = JSON.parse(JSON.stringify(SNAPWIN.getSnapshotData())); }
+      else { const response = await fetch('dashboard-data.json'); DATA = await response.json(); }
     }catch(e){
       DATA = { accounts: [], usage_export: [], teams_by_account: {}, contacts_by_account: {}, self_serve_renewals: {} };
       console.error('Could not load dashboard-data.json — snapshots will show "not found" until this file is available in the same folder.', e);
