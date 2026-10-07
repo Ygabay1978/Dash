@@ -729,7 +729,7 @@ header .sub{font-size:12px;color:#B9B9BC;margin-right:auto;}
 
   function cleanStatus(a){
     var s = String((a && a.status) || '');
-    if(a && a.name === 'Global-E Online') s = s.replace(/\s*\(Javier[^)]*\)/i, '').trim();
+    s = s.replace(/\s*\((?:Javier|Nicolas|Cl[eé]ment|Tiago)[^)]*\)/i, '').trim();      // no AE name in the status banner
     return s;
   }
   function defaultStatValues(account, usage, model){
