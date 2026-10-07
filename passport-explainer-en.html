@@ -434,6 +434,88 @@ window.addEventListener('DOMContentLoaded', function(){
 });
 </script>
 <script>
+/* Smart paste: keeps bold / italic / underline and line breaks (from Word, Gmail, Google Docs, web pages),
+   turns markdown markers (**bold**, # headings, - bullets) into real formatting, and drops everything else
+   (background colors, text colors, fonts, sizes), so pasted text never brings a background with it. */
+(function(){
+  if(window.__smartPaste) return;
+  function esc(s){ return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;'); }
+  var BR = '\u0001';
+  function mdToHtml(text){
+    var inCode = false, out = [];
+    String(text).replace(/\r\n?/g, '\n').split('\n').forEach(function(l){
+      if(/^\s*```/.test(l)){ inCode = !inCode; return; }
+      var h = esc(l);
+      if(!inCode){
+        h = h.replace(/^\s{0,3}#{1,6}\s+(.*)$/, '<b>$1</b>')
+             .replace(/^\s*[-*\u2022]\s+/, '\u2022 ')
+             .replace(/^\s*(?:---+|___+|\*\*\*+)\s*$/, '')
+             .replace(/\*\*([^*\n]+?)\*\*/g, '<b>$1</b>')
+             .replace(/__([^_\n]+?)__/g, '<b>$1</b>')
+             .replace(/(^|[^*\w])\*([^*\n]+?)\*(?!\w)/g, '$1<i>$2</i>')
+             .replace(/`([^`\n]+)`/g, '$1');
+      }
+      out.push(h);
+    });
+    return out.join('<br>').replace(/(<br>){3,}/g, '<br><br>').replace(/^(<br>)+|(<br>)+$/g, '');
+  }
+  function walk(node){
+    if(node.nodeType === 3) return esc(node.nodeValue.replace(/[\u00a0\s]+/g, ' '));
+    if(node.nodeType !== 1) return '';
+    var tag = node.tagName.toLowerCase();
+    if(/^(style|script|meta|link|title|head|svg|img|object|iframe)$/.test(tag)) return '';
+    var inner = ''; for(var c = node.firstChild; c; c = c.nextSibling) inner += walk(c);
+    if(tag === 'br') return BR;
+    var st = node.style || {}, fw = String(st.fontWeight || ''), fs = String(st.fontStyle || ''), td = String(st.textDecoration || st.textDecorationLine || '');
+    var bold = (/^(b|strong)$/.test(tag) && !/^(normal|400|300|lighter)$/.test(fw)) || /^(bold|bolder|[6-9]00)$/.test(fw) || /^h[1-6]$/.test(tag);
+    var ital = (/^(i|em)$/.test(tag) && fs !== 'normal') || fs === 'italic';
+    var und = (tag === 'u') || (tag !== 'a' && /underline/.test(td));
+    if(inner.replace(/\s|\u0001/g, '')){
+      if(bold) inner = '<b>' + inner + '</b>';
+      if(ital) inner = '<i>' + inner + '</i>';
+      if(und) inner = '<u>' + inner + '</u>';
+    }
+    if(tag === 'li') return '\u2022 ' + inner + BR;
+    if(/^(p|div|h[1-6]|tr|blockquote|section|article|pre|ul|ol|table)$/.test(tag)) return inner + BR;
+    if(tag === 'td' || tag === 'th') return inner + ' ';
+    return inner;
+  }
+  function htmlToClean(html){
+    var doc = new DOMParser().parseFromString(html, 'text/html'), out = walk(doc.body);
+    out = out.replace(/\s*\u0001\s*/g, '\u0001').replace(/\u0001{3,}/g, '\u0001\u0001').replace(/^\u0001+|\u0001+$/g, '').replace(/\u0001/g, '<br>');
+    return out.replace(/<b>\s*<\/b>|<i>\s*<\/i>|<u>\s*<\/u>/g, '').trim();
+  }
+  // insert the cleaned markup directly (no browser-added inline styles, so it takes the look of the box it lands in)
+  function insertClean(doc, html){
+    var win = doc.defaultView, sel = win.getSelection(); if(!sel || !sel.rangeCount) return false;
+    var r = sel.getRangeAt(0); r.deleteContents();
+    var tpl = doc.createElement('template'); tpl.innerHTML = html;
+    var frag = tpl.content, last = frag.lastChild; if(!last) return false;
+    r.insertNode(frag);
+    var nr = doc.createRange(); nr.setStartAfter(last); nr.collapse(true); sel.removeAllRanges(); sel.addRange(nr);
+    var host = nr.commonAncestorContainer; host = host.nodeType === 1 ? host : host.parentElement;
+    var ed = (host && host.closest && host.closest('[contenteditable]')) || doc.body;
+    ed.dispatchEvent(new Event('input', {bubbles: true}));
+    return true;
+  }
+  window.__smartPaste = function(e, doc){
+    var cd = e.clipboardData || window.clipboardData; if(!cd) return false;
+    var html = cd.getData('text/html'), text = cd.getData('text/plain'), out = '';
+    if(html && /<(b|strong|i|em|u|span|p|div|li|br|h[1-6]|td)[\s>\/]/i.test(html)) out = htmlToClean(html);
+    var hasFmt = /<(b|i|u)>/.test(out);
+    if((!out || !hasFmt) && text && /(\*\*[^*\n]+\*\*|^\s{0,3}#{1,6}\s|^\s*[-*\u2022]\s|__[^_\n]+__)/m.test(text)) out = mdToHtml(text);
+    if(!out && text) out = mdToHtml(text);
+    if(!out) return false;
+    e.preventDefault();
+    doc = doc || document;
+    if(!insertClean(doc, out)) doc.execCommand('insertHTML', false, out);
+    return true;
+  };
+})();
+
+document.addEventListener('paste', function(e){ var t = e.target.closest && e.target.closest('[contenteditable="true"]'); if(t && window.__smartPaste) window.__smartPaste(e, document); }, true);
+</script>
+<script>
 /* XT: extra editing tools shared by every editing toolbar: center, RTL, LTR, text background, remove background */
 (function(){
   if(window.XT) return;
@@ -728,6 +810,8 @@ window.addEventListener('DOMContentLoaded', function(){
         e.preventDefault(); d.execCommand('insertLineBreak');
       }, true);
       d.addEventListener('paste', function(e){
+        // keeps bold / italic / underline, turns **markdown** into real bold, never brings a background or font
+        if(window.__smartPaste && window.__smartPaste(e, d)) return;
         e.preventDefault();
         var cd = e.clipboardData || window.clipboardData;
         var txt = cd ? cd.getData('text/plain') : '';

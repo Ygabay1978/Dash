@@ -1914,29 +1914,10 @@ window.QA_LIB = [{"topic": "10 שאלות ל-First Call", "items": [{"q": "אנ�
   // whatever background/formatting it came in with.
   document.addEventListener('paste', (e)=>{
     if(!e.target.closest('[contenteditable="true"]')) return;
+    // keeps bold / italic / underline and turns **markdown** into real bold; drops backgrounds, colors and fonts
+    if(window.__smartPaste && window.__smartPaste(e, document)) return;
     e.preventDefault();
-    const text = (e.clipboardData || window.clipboardData).getData('text/plain');
-    const sel = window.getSelection();
-    if(!sel || sel.rangeCount === 0) return;
-    const range = sel.getRangeAt(0);
-    range.deleteContents();
-    const lines = text.split(/\r\n|\r|\n/);
-    const frag = document.createDocumentFragment();
-    lines.forEach((line, i)=>{
-      if(i > 0) frag.appendChild(document.createElement('br'));
-      frag.appendChild(document.createTextNode(line));
-    });
-    const lastNode = frag.lastChild;
-    range.insertNode(frag);
-    if(lastNode){
-      const newRange = document.createRange();
-      newRange.setStartAfter(lastNode);
-      newRange.collapse(true);
-      sel.removeAllRanges();
-      sel.addRange(newRange);
-    }
-    const block = (sel.anchorNode && sel.anchorNode.nodeType === 3 ? sel.anchorNode.parentElement : sel.anchorNode);
-    if(block) block.dispatchEvent(new Event('input', { bubbles: true }));
+    document.execCommand('insertText', false, (e.clipboardData || window.clipboardData).getData('text/plain'));
   });
 
   let editingLocked = false;
@@ -2569,6 +2550,57 @@ window.QA_LIB = [{"topic": "10 שאלות ל-First Call", "items": [{"q": "אנ�
     conversationHistory = [conversationHistory[0], ...conversationHistory.slice(-keepTail)];
   }
 
+  
+  /* ---- chat answers: spoken, ready-to-read dialogue (customer in red, me in bold black) ---- */
+  const BOT_RULES = "אתה העוזר של יניב, מוכר ב-Postman שנמצא באמצע שיחת מכירה חיה עם לקוח, והוא זה שמסביר ללקוח. יניב צריך תשובה \"לעוסה\": משהו שהוא יכול להקריא ללקוח כמו שהוא.\n\nכללי הסגנון (חשוב מאוד):\n1. עברית טבעית של שיחה בין שני אנשים, בגוף ראשון (\"אנחנו\", \"אצלנו\"), כמו מוכר שמסביר בנחת. לא הרצאה, לא מסמך ולא רשימת נקודות.\n2. הפורמט: שורה שמתחילה ב\"לקוח:\" עם השאלה כפי שהלקוח היה אומר אותה, ואחריה שורה שמתחילה ב\"אני:\" עם התשובה: 3 עד 5 משפטים זורמים, ישר לעניין, בלי פתיח ובלי הקדמה. אחר כך, רק אם יש בזה טעם, עוד אחת או שתיים של שאלת המשך שהלקוח סביר שישאל (\"לקוח:\" ו\"אני:\" קצרים).\n3. מונחים טכניים נשארים באנגלית כמו שהם (Governance, API Gateway, Mock Servers, SSO וכו') ולא מתורגמים, ואין להסביר אותם בתוך הטקסט.\n4. טקסט רגיל בלבד: בלי סימני markdown (בלי #, **, ---, בלוקי קוד, טבלאות, תבליטים) ובלי אימוג'י.\n5. אל תעתיק קטעים מהמסמך מילה במילה. נסח מחדש בקול של מוכר. אם יש במסמך חומר רקע רחב, הוצא ממנו את העיקר.\n6. אם יש במסמך אנלוגיה פשוטה שעוזרת להסביר, אפשר להשתמש בה במשפט אחד.\n7. ענה רק על סמך המסמך. אם התשובה לא מופיעה בו, אמור זאת בקצרה בשורת \"אני:\" ואל תמציא.\n8. בסוף, אם זה מתאים, שורה אחרונה שמתחילה בדיוק ב\"שאלה לשאול את הלקוח:\" ואחריה שאלה קונקרטית אחת. אם לא מתאים, אל תוסיף אותה.\n\nדוגמה לצורה בלבד (התוכן להמחשה):\nלקוח: אתם מחליפים את ה-API Gateway שלנו?\nאני: לא. ה-API Gateway ממשיך לנהל את התעבורה כמו היום, ו-Postman מתחבר אליו ומנהל את מחזור החיים של ה-API סביבו.\nלקוח: ואיך אתם יודעים מה קורה בסביבה?\nאני: אפשר גם להפעיל agent שמאזין לפעילות בסביבה, בנוסף לחיבור ל-Gateway.\nשאלה לשאול את הלקוח: איזה Gateways אתם מפעילים היום?";
+  const BOT_REMIND = "[תזכורת סגנון: ענה בפורמט \"לקוח:\" ו\"אני:\" בעברית של שיחה, לעוס ומוכן להקראה, 3 עד 5 משפטים, מונחים טכניים באנגלית, בלי markdown ובלי אימוג׳י, בלי להעתיק מהמסמך מילה במילה.]";
+  const BOT_LABELS = {"cust": "לקוח:", "me": "אני:", "q": "שאלה לשאול את הלקוח:"};
+  const BOT_GLOSS = {"Mock Server": "APIs מדומים", "Governance": "ניהול ואכיפה של כללים וסטנדרטים", "SSO": "התחברות עם משתמש החברה", "SCIM": "הוספה והסרה אוטומטית של משתמשים", "provisioning": "יצירת משתמשים והרשאות", "Identity Provider": "המערכת שמנהלת את זהויות המשתמשים בחברה", "BYOK": "הצפנה במפתח של הלקוח", "Domain Capture": "ניתוב אוטומטי של כניסות לפי דומיין", "drift": "חוסר סנכרון בין ה-API לתיעוד ול-SDKs", "regeneration": "ייצור מחדש של ה-SDKs", "Control Plane": "שכבת הניהול וההגדרות", "Data Plane": "שכבת העיבוד בפועל", "MCP": "פרוטוקול שמחבר agents לכלים ול-APIs", "agent": "עוזר AI שמבצע משימות", "shift-left": "בדיקה מוקדמת, כבר בזמן הפיתוח", "credential broker": "מתווך שמחזיק את הסוד במקום ה-agent", "pooled across the team": "משותפים לכל הצוות", "WAF": "חומת אש ליישומי ווב", "DDoS": "הגנה מפני הצפת תעבורה זדונית", "linting": "בדיקה אוטומטית של איכות וסגנון הכתיבה"};
+  function botClean(raw){
+    return String(raw || '')
+      .replace(/```[\s\S]*?```/g, '')
+      .replace(/^\s{0,3}#{1,6}\s*/gm, '')
+      .replace(/^\s*[-*_]{3,}\s*$/gm, '')
+      .replace(/^\s*(?:[-*\u2022]|\d+[.)])\s+/gm, '')
+      .replace(/`/g, '')
+      .replace(/[\u{1F300}-\u{1FAFF}\u{2600}-\u{27BF}\u{FE0F}]/gu, '')
+      .replace(/\n{3,}/g, '\n\n').trim();
+  }
+  function botEsc(s){ return s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;'); }
+  function botStars(text){
+    const used = [], marks = [];
+    Object.keys(BOT_GLOSS).sort((a,b)=>b.length-a.length).forEach(function(term){
+      const re = new RegExp('(?<![A-Za-z])(?<![A-Za-z]-)' + term.replace(/[.*+?^${}()|[\]\\]/g,'\\$&') + '(?:s|es)?(?![A-Za-z])', 'g');
+      let m; while((m = re.exec(text))){
+        const s = m.index, e = m.index + m[0].length;
+        if(used.some(function(u){ return !(e <= u[0] || s >= u[1]); })) continue;
+        used.push([s,e]); marks.push({pos:e, term:m[0], expl:BOT_GLOSS[term]}); break;
+      }
+    });
+    marks.sort(function(a,b){ return a.pos - b.pos; });
+    let out = text;
+    marks.slice().sort(function(a,b){ return b.pos - a.pos; }).forEach(function(k){ out = out.slice(0,k.pos) + '\ue000' + out.slice(k.pos); });
+    return {text: out, notes: marks};
+  }
+  function formatBotAnswer(raw, question){
+    let txt = botClean(raw);
+    if(!txt) return '';
+    const L = BOT_LABELS, hasMe = txt.indexOf(L.me) >= 0;
+    if(!hasMe) txt = L.cust + ' ' + question + '\n' + L.me + ' ' + txt;      // the model ignored the format: still show it as a dialogue
+    const st = botStars(txt);
+    const SUP = '<sup style="font-size:.6em;font-weight:400;color:#8A8A90;">*</sup>';
+    const rows = st.text.split(/\n+/).map(function(l){ return l.trim(); }).filter(Boolean).map(function(line){
+      const h = botEsc(line).replace(/\*\*(.+?)\*\*/g, '<b>$1</b>').replace(/\ue000/g, SUP);
+      if(line.indexOf(L.cust) === 0) return '<span style="color:#D64545;"><b>' + L.cust + '</b>' + h.slice(botEsc(L.cust).length) + '</span>';
+      if(line.indexOf(L.me) === 0) return '<b style="color:#1C1C1E;">' + L.me + '</b>' + h.slice(botEsc(L.me).length);
+      if(line.indexOf(L.q) === 0) return '<span style="color:#C2410C;"><b>' + L.q + '</b>' + h.slice(botEsc(L.q).length) + '</span>';
+      return h;
+    });
+    let html = rows.join('<br/><br/>');
+    if(st.notes.length) html += '<br/><br/><small>' + st.notes.map(function(n){ return '* ' + botEsc(n.term) + ' = ' + botEsc(n.expl); }).join('<br/>') + '</small>';
+    return html;
+  }
+
   async function ask(question){
     if(!question) return;
     sendBtn.disabled = true;
@@ -2604,9 +2636,9 @@ window.QA_LIB = [{"topic": "10 שאלות ל-First Call", "items": [{"q": "אנ�
     let userTurnContent;
     if(conversationHistory.length === 0){
       const documentText = root.innerText;
-      userTurnContent = 'להלן מסמך הדרכה למכירות של מוצרי Postman, בעברית. ענה על השאלות הבאות בהתבסס רק על המידע שכתוב במסמך הזה (כולל תוכן הפאנלים הצדדיים — מיצוב והתנגדויות, Fabric, Passport, ASA, DATABASE). אם התשובה לא מופיעה במסמך, אמור זאת בבירור ואל תמציא מידע. אתה עונה למוכר שנמצא באמצע שיחת מכירה חייה ועם הלקוח על הקו — תן תשובה קצרה וישירה, 2-3 משפטים לכל היותר, בעברית, בלי הקדמות.\n\nבנוסף: אם השאלה מתאימה למקרה שבו כדאי להחזיר ללקוח שאלת בירור או שאלת נגד (Reverse Question) — הוסף שורה נפרדת בסוף שמתחילה במדויק ב-"🔄 שאלת המשך מומלצת:" ולאחריה שאלה קונקרטית אחת. אם המצב לא מתאים לזה, אל תוסיף את השורה הזו בכלל.\n\nזו תהיה שיחה מתמשכת עם כמה שאלות ברצף. אם שאלה עוקבת היא כללית או מנוסחת בקצרה (למשל "תן לי עוד אחת", "ומה עוד?", "תסביר יותר"), התייחס אליה כהמשך של הנושא שדיברנו עליו לאחרונה — אלא אם היא מנוסחת בבירור כמעבר לנושא אחר.\n\n<מסמך>\n' + documentText + '\n</מסמך>\n\nשאלה ראשונה: ' + question;
+      userTurnContent = BOT_RULES + '\n\n<מסמך>\n' + documentText + '\n</מסמך>\n\nשאלה ראשונה: ' + question;
     } else {
-      userTurnContent = question;
+      userTurnContent = question + '\n\n' + BOT_REMIND;
     }
     conversationHistory.push({ role: 'user', content: userTurnContent });
     trimHistory();
@@ -2620,7 +2652,8 @@ window.QA_LIB = [{"topic": "10 שאלות ל-First Call", "items": [{"q": "אנ�
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
           model: 'claude-sonnet-4-6',
-          max_tokens: 300,
+          max_tokens: 700,
+          system: BOT_RULES,
           stream: true,
           messages: conversationHistory
         })
@@ -2672,8 +2705,10 @@ window.QA_LIB = [{"topic": "10 שאלות ל-First Call", "items": [{"q": "אנ�
         conversationHistory.pop();
       } else {
         conversationHistory.push({ role: 'assistant', content: accumulated });
+        answerContentEl.innerHTML = formatBotAnswer(accumulated, question) || answerContentEl.innerHTML;
+        botMsg.textContent = botClean(accumulated);
         answerContentEl.setAttribute('contenteditable', 'true');
-        questionEl.value = accumulated;
+        questionEl.value = botClean(accumulated);
         addStarToBubble(botMsg, question);
       }
     }catch(err){
@@ -3814,6 +3849,87 @@ document.addEventListener('keydown', (e)=>{
 })();
 
 </script>
+<script>
+/* Smart paste: keeps bold / italic / underline and line breaks (from Word, Gmail, Google Docs, web pages),
+   turns markdown markers (**bold**, # headings, - bullets) into real formatting, and drops everything else
+   (background colors, text colors, fonts, sizes), so pasted text never brings a background with it. */
+(function(){
+  if(window.__smartPaste) return;
+  function esc(s){ return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;'); }
+  var BR = '\u0001';
+  function mdToHtml(text){
+    var inCode = false, out = [];
+    String(text).replace(/\r\n?/g, '\n').split('\n').forEach(function(l){
+      if(/^\s*```/.test(l)){ inCode = !inCode; return; }
+      var h = esc(l);
+      if(!inCode){
+        h = h.replace(/^\s{0,3}#{1,6}\s+(.*)$/, '<b>$1</b>')
+             .replace(/^\s*[-*\u2022]\s+/, '\u2022 ')
+             .replace(/^\s*(?:---+|___+|\*\*\*+)\s*$/, '')
+             .replace(/\*\*([^*\n]+?)\*\*/g, '<b>$1</b>')
+             .replace(/__([^_\n]+?)__/g, '<b>$1</b>')
+             .replace(/(^|[^*\w])\*([^*\n]+?)\*(?!\w)/g, '$1<i>$2</i>')
+             .replace(/`([^`\n]+)`/g, '$1');
+      }
+      out.push(h);
+    });
+    return out.join('<br>').replace(/(<br>){3,}/g, '<br><br>').replace(/^(<br>)+|(<br>)+$/g, '');
+  }
+  function walk(node){
+    if(node.nodeType === 3) return esc(node.nodeValue.replace(/[\u00a0\s]+/g, ' '));
+    if(node.nodeType !== 1) return '';
+    var tag = node.tagName.toLowerCase();
+    if(/^(style|script|meta|link|title|head|svg|img|object|iframe)$/.test(tag)) return '';
+    var inner = ''; for(var c = node.firstChild; c; c = c.nextSibling) inner += walk(c);
+    if(tag === 'br') return BR;
+    var st = node.style || {}, fw = String(st.fontWeight || ''), fs = String(st.fontStyle || ''), td = String(st.textDecoration || st.textDecorationLine || '');
+    var bold = (/^(b|strong)$/.test(tag) && !/^(normal|400|300|lighter)$/.test(fw)) || /^(bold|bolder|[6-9]00)$/.test(fw) || /^h[1-6]$/.test(tag);
+    var ital = (/^(i|em)$/.test(tag) && fs !== 'normal') || fs === 'italic';
+    var und = (tag === 'u') || (tag !== 'a' && /underline/.test(td));
+    if(inner.replace(/\s|\u0001/g, '')){
+      if(bold) inner = '<b>' + inner + '</b>';
+      if(ital) inner = '<i>' + inner + '</i>';
+      if(und) inner = '<u>' + inner + '</u>';
+    }
+    if(tag === 'li') return '\u2022 ' + inner + BR;
+    if(/^(p|div|h[1-6]|tr|blockquote|section|article|pre|ul|ol|table)$/.test(tag)) return inner + BR;
+    if(tag === 'td' || tag === 'th') return inner + ' ';
+    return inner;
+  }
+  function htmlToClean(html){
+    var doc = new DOMParser().parseFromString(html, 'text/html'), out = walk(doc.body);
+    out = out.replace(/\s*\u0001\s*/g, '\u0001').replace(/\u0001{3,}/g, '\u0001\u0001').replace(/^\u0001+|\u0001+$/g, '').replace(/\u0001/g, '<br>');
+    return out.replace(/<b>\s*<\/b>|<i>\s*<\/i>|<u>\s*<\/u>/g, '').trim();
+  }
+  // insert the cleaned markup directly (no browser-added inline styles, so it takes the look of the box it lands in)
+  function insertClean(doc, html){
+    var win = doc.defaultView, sel = win.getSelection(); if(!sel || !sel.rangeCount) return false;
+    var r = sel.getRangeAt(0); r.deleteContents();
+    var tpl = doc.createElement('template'); tpl.innerHTML = html;
+    var frag = tpl.content, last = frag.lastChild; if(!last) return false;
+    r.insertNode(frag);
+    var nr = doc.createRange(); nr.setStartAfter(last); nr.collapse(true); sel.removeAllRanges(); sel.addRange(nr);
+    var host = nr.commonAncestorContainer; host = host.nodeType === 1 ? host : host.parentElement;
+    var ed = (host && host.closest && host.closest('[contenteditable]')) || doc.body;
+    ed.dispatchEvent(new Event('input', {bubbles: true}));
+    return true;
+  }
+  window.__smartPaste = function(e, doc){
+    var cd = e.clipboardData || window.clipboardData; if(!cd) return false;
+    var html = cd.getData('text/html'), text = cd.getData('text/plain'), out = '';
+    if(html && /<(b|strong|i|em|u|span|p|div|li|br|h[1-6]|td)[\s>\/]/i.test(html)) out = htmlToClean(html);
+    var hasFmt = /<(b|i|u)>/.test(out);
+    if((!out || !hasFmt) && text && /(\*\*[^*\n]+\*\*|^\s{0,3}#{1,6}\s|^\s*[-*\u2022]\s|__[^_\n]+__)/m.test(text)) out = mdToHtml(text);
+    if(!out && text) out = mdToHtml(text);
+    if(!out) return false;
+    e.preventDefault();
+    doc = doc || document;
+    if(!insertClean(doc, out)) doc.execCommand('insertHTML', false, out);
+    return true;
+  };
+})();
+
+</script>
 <!-- ===== Dashboard switcher (present on every page) ===== -->
 <div id="dash-switcher">
   <button id="dash-switcher-btn" title="נווט בין הכלים">🗂️</button>
@@ -3829,7 +3945,7 @@ document.addEventListener('keydown', (e)=>{
   </div>
 </div>
 <style>
-  #dash-switcher{position:fixed;bottom:20px;left:20px;z-index:2147483000;font-family:"Segoe UI","Arial Hebrew",Arial,sans-serif;direction:rtl;}
+  #dash-switcher{position:fixed;bottom:20px;right:20px;z-index:2147483000;font-family:"Segoe UI","Arial Hebrew",Arial,sans-serif;direction:rtl;}
   #dash-switcher-btn{
     width:48px;height:48px;border-radius:50%;
     background:#1C1C1E;color:#fff;border:none;
@@ -3838,7 +3954,7 @@ document.addEventListener('keydown', (e)=>{
   }
   #dash-switcher-btn:hover{background:#FF6C37;}
   #dash-switcher-menu{
-    display:none;position:absolute;bottom:58px;left:0;
+    display:none;position:absolute;bottom:58px;right:0;
     background:#fff;border:1px solid #E6E4E0;border-radius:10px;
     box-shadow:0 10px 30px rgba(0,0,0,.25);
     padding:8px;min-width:230px;
@@ -3901,6 +4017,6 @@ document.addEventListener('keydown', (e)=>{
   }catch(e){}
 })();
 </script>
-<div id="build-stamp" title="גרסת הקובץ שנטען" style="position:fixed;left:80px;bottom:6px;z-index:5;font:10px/1 monospace;color:#9A9AA0;direction:ltr;pointer-events:none;">build 06.10.2026 r14</div>
+<div id="build-stamp" title="גרסת הקובץ שנטען" style="position:fixed;left:80px;bottom:6px;z-index:5;font:10px/1 monospace;color:#9A9AA0;direction:ltr;pointer-events:none;">build 07.10.2026 r20</div>
 </body>
 </html>
