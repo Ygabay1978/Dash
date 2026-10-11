@@ -591,6 +591,8 @@ document.addEventListener('paste', function(e){ var t = e.target.closest && e.ta
   var LBL = {he:{center:'מרכז', rtl:'RTL', ltr:'LTR', clear:'ללא רקע', narrow:'צר', wide:'רחב', ntip:'מצר את רוחב השורות של הפסקה (60 פיקסלים בכל לחיצה)', wtip:'מרחיב את רוחב השורות של הפסקה (60 פיקסלים בכל לחיצה)', bg:'רקע לטקסט', ctip:'מרכוז הטקסט (לחיצה נוספת מבטלת)', rtip:'כיוון מימין לשמאל', ltip:'כיוון משמאל לימין', cltip:'מבטל רקע וסימון צבעוני מהטקסט המסומן'},
              en:{center:'Center', rtl:'RTL', ltr:'LTR', clear:'No bg', narrow:'Narrow', wide:'Wide', ntip:'Narrow the line width of this paragraph (60px per click)', wtip:'Widen the line width of this paragraph (60px per click)', bg:'Text background', ctip:'Center the text (click again to undo)', rtip:'Right-to-left direction', ltip:'Left-to-right direction', cltip:'Remove background and highlight from the selected text'}};
   var BLOCK = 'p,div,li,h1,h2,h3,h4,h5,h6,td,th,blockquote';
+  // In the outer dashboard the bar must act on the nested page that has the focus; elsewhere it acts on its own document.
+  function D(d){ return (typeof window.__deepDoc === 'function') ? window.__deepDoc(d) : d; }
   function lang(d){ return (d.documentElement.lang || '').toLowerCase().indexOf('he') === 0 ? 'he' : 'en'; }
   function win(d){ return d.defaultView; }
   function elOf(n){ return n && (n.nodeType === 1 ? n : n.parentElement); }
@@ -740,17 +742,17 @@ document.addEventListener('paste', function(e){ var t = e.target.closest && e.ta
     }
     if(kind === 'ftxt') grp.appendChild(mk(d, 'span', 'fsep'));
     if(kind === 'outer') grp.appendChild(mk(d, 'div', 'sep'));
-    grp.appendChild(btn(L.center, L.ctip, function(){ align(d, 'center'); }));
-    grp.appendChild(btn(L.rtl, L.rtip, function(){ dir(d, 'rtl'); }));
-    grp.appendChild(btn(L.ltr, L.ltip, function(){ dir(d, 'ltr'); }));
-    grp.appendChild(btn(L.narrow, L.ntip, function(){ width(d, -60); }));
-    grp.appendChild(btn(L.wide, L.wtip, function(){ width(d, 60); }));
+    grp.appendChild(btn(L.center, L.ctip, function(){ align(D(d), 'center'); }));
+    grp.appendChild(btn(L.rtl, L.rtip, function(){ dir(D(d), 'rtl'); }));
+    grp.appendChild(btn(L.ltr, L.ltip, function(){ dir(D(d), 'ltr'); }));
+    grp.appendChild(btn(L.narrow, L.ntip, function(){ width(D(d), -60); }));
+    grp.appendChild(btn(L.wide, L.wtip, function(){ width(D(d), 60); }));
     PAL.forEach(function(c, i){
       var s = mk(d, 'button', '', 'width:22px!important;height:22px!important;min-width:22px!important;padding:0!important;border-radius:5px;border:2px solid #fff;box-shadow:0 0 0 1px #C9C6C0;background:' + c + ';color:#fff;font:700 11px/1 Arial,sans-serif;cursor:pointer;');
       s.type = 'button'; s.textContent = 'A'; s.title = L.bg + ': ' + N[i];
-      s.addEventListener('click', function(e){ e.preventDefault(); bg(d, c); }); grp.appendChild(s);
+      s.addEventListener('click', function(e){ e.preventDefault(); bg(D(d), c); }); grp.appendChild(s);
     });
-    grp.appendChild(btn(L.clear, L.cltip, function(){ clearBg(d); }));
+    grp.appendChild(btn(L.clear, L.cltip, function(){ clearBg(D(d)); }));
     if(inHeader) tb.insertAdjacentElement('afterend', grp); else tb.appendChild(grp);
   }
   function install(d){
@@ -776,8 +778,10 @@ document.addEventListener('paste', function(e){ var t = e.target.closest && e.ta
   var PRODUCT = "Fern";
   var LANG = document.documentElement.lang === 'he' ? 'he' : 'en';
   var T = LANG === 'he'
-    ? {title:'תצוגה מקדימה: גרסה ללקוח', dl:'⬇ הורד קובץ', edit:'✏️ עריכת טקסט', done:'✔ סיום עריכה', close:'✕ סגור', nobg:'ביטול רקע', nobgTip:'מבטל רקע וסימון צבעוני מהטקסט המסומן (או מהמקום שבו הסמן נמצא)', hint:'במצב עריכה אפשר ללחוץ על כל טקסט ולשנות אותו לפני ההורדה. הדבקה נעשית כטקסט נקי, בלי רקע ועיצוב.'}
-    : {title:'Preview: customer version', dl:'⬇ Download file', edit:'✏️ Edit text', done:'✔ Done editing', close:'✕ Close', nobg:'Remove background', nobgTip:'Removes background and highlight colors from the selected text (or from where the cursor is)', hint:'In edit mode you can click any text and change it before downloading. Pasting is always plain text, with no background or styling.'};
+    ? {title:'תצוגה מקדימה: גרסה ללקוח', dl:'⬇ הורד קובץ', edit:'✏️ עריכת טקסט', done:'✔ סיום עריכה', close:'✕ סגור', nobg:'ביטול רקע', nobgTip:'מבטל רקע וסימון צבעוני מהטקסט המסומן (או מהמקום שבו הסמן נמצא)', hint:'במצב עריכה אפשר ללחוץ על כל טקסט ולשנות אותו. כדי שהשינויים יישמרו לחץ על "שמור" (הם נשמרים בעמוד שלך וגם בגרסת הלקוח). הדבקה נעשית כטקסט נקי, בלי רקע ועיצוב.',
+      save:'💾 שמור', saved:'נשמר בעמוד ובגרסת הלקוח ✓', mismatch:'לא ניתן לשמור: מבנה העמוד השתנה (נמחק או נוסף קטע שלם). בטל את השינוי, או הורד כקובץ.', unsaved:'יש שינויים שלא נשמרו', saveClose:'שמור וסגור', discard:'סגור בלי לשמור', keep:'המשך לערוך'}
+    : {title:'Preview: customer version', dl:'⬇ Download file', edit:'✏️ Edit text', done:'✔ Done editing', close:'✕ Close', nobg:'Remove background', nobgTip:'Removes background and highlight colors from the selected text (or from where the cursor is)', hint:'In edit mode you can click any text and change it. Press Save to keep the changes (they are saved in your page and in the customer version). Pasting is always plain text, with no background or styling.',
+      save:'💾 Save', saved:'Saved in the page and the customer version ✓', mismatch:'Cannot save: the page structure changed (a whole section was deleted or added). Undo that change, or download as a file.', unsaved:'You have unsaved changes', saveClose:'Save and close', discard:'Close without saving', keep:'Keep editing'};
   var CUST_CSS = "\n:root{--orange:#FF6C37;--ink:#1C1C1E;--grey:#5B5F66;--line:#E6E4E0;--cream:#FFF6F1}\n*{box-sizing:border-box}\nhtml{background:#fff}\nbody{margin:0;font-family:\"Segoe UI\",\"Arial Hebrew\",\"Noto Sans Hebrew\",Arial,sans-serif;color:var(--ink);line-height:1.75;font-size:17px}\n.wrap{max-width:880px;margin:0 auto;padding:44px 30px 60px}\nheader{text-align:center;padding-bottom:28px;border-bottom:3px solid var(--orange);margin-bottom:36px}\nheader .logo{height:52px;width:auto;display:block;margin:0 auto 26px}\nh1{font-size:50px;line-height:1.15;margin:0 0 12px;letter-spacing:-.01em;text-align:center}\n.tagline{font-size:19px;color:var(--grey);max-width:700px;margin:0 auto;text-align:center;text-wrap:balance}\nh1,h2,.card .t,.example .name{text-wrap:balance}\n.tagline .tl{display:block;text-wrap:balance}\np,.card .d,.example .row,.callout{text-wrap:pretty}\np{margin:0 0 14px}\nh2{font-size:24px;margin:46px 0 16px;display:flex;align-items:center;gap:12px}\nh2::before{content:\"\";width:6px;height:26px;border-radius:3px;background:var(--orange);flex:none}\n.grid{display:grid;grid-template-columns:1fr 1fr;gap:16px}\n.card{background:var(--cream);border:1px solid #FFD9C8;border-top:4px solid var(--orange);border-radius:12px;padding:16px 18px}\n.grid .card:last-child:nth-child(odd){grid-column:1/-1}\n.card .t{font-weight:700;font-size:17px;margin-bottom:6px;color:#C2410C}\n.card .d{font-size:15.5px;color:#2B2B2E;line-height:1.65}\n.callout{margin:26px 0 0;padding:20px 24px;border-radius:12px;background:#1C1C1E;color:#fff;font-size:19px;line-height:1.65}\n.example{border:1px solid var(--line);border-radius:12px;padding:18px 22px;margin-bottom:16px;break-inside:avoid}\n.example .name{font-weight:700;font-size:19px;margin-bottom:10px}\n.example .lbl{font-weight:700;color:var(--orange);font-size:14px;letter-spacing:.02em;margin-bottom:2px}\n.example .row{margin-bottom:10px;font-size:16.5px}\n.example .row:last-child{margin-bottom:0}\n.summary{border:2px solid var(--orange);border-radius:14px;padding:22px 26px;background:#fff}\n.summary .final{margin:16px 0 0;padding-top:16px;border-top:1px solid var(--line);font-weight:700;font-size:18px}\nfooter{margin-top:50px;text-align:center;color:#8A8A90;font-size:13px}\nfooter img{height:22px;width:22px;vertical-align:middle;margin-inline-end:8px}\nfooter{margin-top:34px}\n.certs{margin-top:46px;padding-top:26px;border-top:1px solid var(--line);text-align:center}\n.certs .cap{font-size:14px;color:var(--grey);margin-bottom:18px;font-weight:600;letter-spacing:.02em}\n.certs .row{display:flex;flex-wrap:wrap;justify-content:center;gap:14px 18px;max-width:760px;margin:0 auto}\n.certs img{height:76px;width:76px;display:block;object-fit:contain}\n@media(max-width:700px){.grid{grid-template-columns:1fr}h1{font-size:38px}.wrap{padding:28px 18px 40px}}\n@media print{.certs{break-inside:avoid}.wrap{padding:0}.card,.example,.summary{break-inside:avoid}.callout{-webkit-print-color-adjust:exact;print-color-adjust:exact}.card{-webkit-print-color-adjust:exact;print-color-adjust:exact}}\n";
   var CUST_ICON = "iVBORw0KGgoAAAANSUhEUgAAAEAAAABACAMAAACdt4HsAAAAflBMVEX/azb//v3/qoz/xrL/l3H/dkX/hFf/u6P/6uP/2Mr/cDz/5dz/s5f/jGP/oH7/Vxv/XSL/0L8AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAABmTfiOAAAAIHRSTlP///////////////////////8AAAAAAAAAAAAAAAAAALN0qXIAAAIxSURBVHjavVdZsuIwDBSSvDvw3v0vO16SjAEvyqRq9EEVFN2WtbkFj4EFQtbKA3ilGSmM/gfdXx3qBG3Na3RiAqOha9qICKKCoSlcEtAEXijMlCBssLQtjAkIREYjAgShYZ+AQWzcI7iAbxngn/ANA1y7v1KfcYAr8WeXq/w9F5UgXAi+O2rFNgSbBK+rr3xcl/8SGJEDZsc/XHuJQqBEBLmdXcJj2P+vDgJRBnwmsPkaHI5ZEXcCmQOvHEOTPoI7k1oJoiT/SFHlsMfEoNuwQPt9aM+EpU3nRqbIb4mBM6aT6+dwY3wE9SSKH4GFdQjLwZiTiK/v2oLlDUq9FLxVneIC6wX1W/Du+d2x3gJJ8akGO84SzEMQT7zhbssi8LL8a/ywX3AMWoY3g5mlQS3Gd8EzjVpWgZ/3f8bbMolGPTY+P7AteMepkoKHi0b5ZKQ6Qno1tPDBPJLA8KkBzXOK96MgluT82g3j/Hw1SePPZpLKmeMTfFxISHmIsZ3hExwXj7jl6cTDYTMdIsDN80dg5/jFwEzt3B8op//L16o/0kimuOpIcyO8FUgG1x3rFR8F1V/G+lefFjxpScOY3tNGrQZYvFf729im6ifVfpDqpdh53k0S5eYFYgcqATX+p/Fj5SPjU+LUKe5k7/3WaCR7qjitWRoBe13m9aoVrgrtgdC8L3Xvi+37cv/+wiHNhaebS5edrn1mtfbRcvHE2eIZ/8fquy/fX+gLy/f7+g/z9f8PJhkNspQeOr8AAAAASUVORK5CYII=";
   function buildCustomerHtml(){
@@ -790,8 +794,49 @@ document.addEventListener('paste', function(e){ var t = e.target.closest && e.ta
     });
     return '<!DOCTYPE html>\n<html dir="' + (document.documentElement.dir || (LANG === 'he' ? 'rtl' : 'ltr')) + '" lang="' + LANG + '">\n<head>\n<meta charset="utf-8">\n<meta name="viewport" content="width=device-width, initial-scale=1">\n<title>' + PRODUCT + ' | Postman</title>\n<link rel="icon" href="data:image/png;base64,' + CUST_ICON + '">\n<style>' + CUST_CSS + '</style>\n</head>\n<body>\n<div class="wrap">\n' + parts.join('\n') + '\n</div>\n</body>\n</html>\n';
   }
-  var overlay = null, frame = null, editBtn = null, editing = false;
+  var overlay = null, frame = null, editBtn = null, editing = false, saveBtn = null, noteEl = null, dirty = false, noteTimer = null;
   function fdoc(){ return frame && frame.contentDocument; }
+  function refreshSave(){ if(saveBtn) saveBtn.textContent = T.save + (dirty ? ' •' : ''); }
+  function markDirty(){ if(!dirty){ dirty = true; refreshSave(); } }
+  function showNote(msg, isError){
+    if(!noteEl) return;
+    noteEl.textContent = msg; noteEl.style.color = isError ? '#FF9B9B' : '#8FE0B0';
+    clearTimeout(noteTimer); if(!isError) noteTimer = setTimeout(function(){ if(noteEl) noteEl.textContent = ''; }, 4000);
+  }
+  // Save = write the edited customer version back into this page (the page is the single source of the customer version)
+  function saveToPage(){
+    var d = fdoc(); if(!d) return false;
+    var wrap = d.querySelector('.wrap'); if(!wrap) return false;
+    var src = Array.prototype.filter.call(wrap.children, function(el){ return /^(HEADER|SECTION|FOOTER)$/.test(el.tagName); });
+    var slots = [];
+    Array.prototype.forEach.call(document.querySelectorAll('#mainBlocks .block .block-content'), function(c){
+      Array.prototype.forEach.call(c.children, function(k){ if(!k.classList.contains('int')) slots.push({c: c, k: k}); });
+    });
+    var same = src.length === slots.length && src.every(function(s, i){ return s.tagName === slots[i].k.tagName; });
+    if(!same){ showNote(T.mismatch, true); return false; }
+    slots.forEach(function(sl, i){
+      var n = document.importNode(src[i], true); n.removeAttribute('contenteditable');
+      sl.c.replaceChild(n, sl.k);
+    });
+    var al = window.alert; window.alert = function(){};
+    try{ saveAll(); } finally { window.alert = al; }
+    dirty = false; refreshSave(); showNote(T.saved, false); return true;
+  }
+  function requestClose(){
+    if(!overlay) return;
+    if(!dirty){ closeOverlay(); return; }
+    if(overlay.querySelector('#cust-confirm')) return;
+    var box = document.createElement('div'); box.id = 'cust-confirm';
+    box.style.cssText = 'position:absolute;inset:0;background:rgba(0,0,0,.55);display:flex;align-items:center;justify-content:center;z-index:5;';
+    var card = document.createElement('div');
+    card.style.cssText = 'background:#fff;color:#1C1C1E;border-radius:12px;padding:20px 24px;max-width:440px;text-align:center;box-shadow:0 20px 50px rgba(0,0,0,.4);font-family:"Segoe UI","Arial Hebrew",Arial,sans-serif;';
+    var q = document.createElement('div'); q.textContent = T.unsaved; q.style.cssText = 'font-weight:800;font-size:16px;margin-bottom:14px;'; card.appendChild(q);
+    var row = document.createElement('div'); row.style.cssText = 'display:flex;gap:8px;justify-content:center;flex-wrap:wrap;';
+    row.appendChild(mkBtn(T.saveClose, function(){ if(saveToPage()) closeOverlay(); else box.remove(); }, 'background:#2E7D5B;'));
+    row.appendChild(mkBtn(T.discard, closeOverlay, 'background:#8A8A90;'));
+    row.appendChild(mkBtn(T.keep, function(){ box.remove(); }, 'background:#3A3A3C;'));
+    card.appendChild(row); box.appendChild(card); overlay.appendChild(box);
+  }
   function setEdit(on){
     editing = on;
     try{ fdoc().designMode = on ? 'on' : 'off'; }catch(e){}
@@ -813,7 +858,7 @@ document.addEventListener('paste', function(e){ var t = e.target.closest && e.ta
     document.body.appendChild(a); a.click();
     setTimeout(function(){ URL.revokeObjectURL(a.href); a.remove(); }, 600);
   }
-  function closeOverlay(){ if(overlay){ overlay.remove(); overlay = null; frame = null; editing = false; } }
+  function closeOverlay(){ if(overlay){ overlay.remove(); overlay = null; frame = null; editing = false; dirty = false; saveBtn = null; noteEl = null; } }
   function mkBtn(label, fn, extra){
     var b = document.createElement('button'); b.type = 'button'; b.textContent = label;
     b.style.cssText = 'background:#3A3A3C;color:#fff;border:none;border-radius:8px;padding:8px 14px;font:inherit;font-size:13.5px;font-weight:600;cursor:pointer;' + (extra || '');
@@ -832,8 +877,11 @@ document.addEventListener('paste', function(e){ var t = e.target.closest && e.ta
     var ttl = document.createElement('span'); ttl.textContent = T.title; ttl.style.cssText = 'font-weight:700;margin-inline-end:auto;';
     var dl = mkBtn(T.dl, download, 'background:#FF6C37;');
     editBtn = mkBtn(T.edit, function(){ setEdit(!editing); });
-    var cl = mkBtn(T.close, closeOverlay);
-    bar.appendChild(ttl); bar.appendChild(editBtn); bar.appendChild(dl); bar.appendChild(cl);
+    saveBtn = mkBtn(T.save, saveToPage, 'background:#2E7D5B;');
+    noteEl = document.createElement('span'); noteEl.style.cssText = 'font-size:13px;font-weight:600;';
+    var cl = mkBtn(T.close, requestClose);
+    dirty = false;
+    bar.appendChild(ttl); bar.appendChild(noteEl); bar.appendChild(editBtn); bar.appendChild(saveBtn); bar.appendChild(dl); bar.appendChild(cl);
     // formatting toolbar
     var tb = document.createElement('div');
     tb.style.cssText = 'flex:none;display:flex;align-items:center;gap:6px;flex-wrap:wrap;background:#2A2A2C;padding:7px 16px;font-family:"Segoe UI","Arial Hebrew",Arial,sans-serif;';
@@ -876,6 +924,7 @@ document.addEventListener('paste', function(e){ var t = e.target.closest && e.ta
         if(el && el.closest('li')) return;
         e.preventDefault(); d.execCommand('insertLineBreak');
       }, true);
+      d.addEventListener('input', markDirty, true);
       d.addEventListener('paste', function(e){
         // keeps bold / italic / underline, turns **markdown** into real bold, never brings a background or font
         if(window.__smartPaste && window.__smartPaste(e, d)) return;
@@ -889,7 +938,7 @@ document.addEventListener('paste', function(e){ var t = e.target.closest && e.ta
     overlay.appendChild(bar); overlay.appendChild(tb); overlay.appendChild(frame);
     document.body.appendChild(overlay);
   };
-  document.addEventListener('keydown', function(e){ if(e.key === 'Escape' && overlay && !editing) closeOverlay(); });
+  document.addEventListener('keydown', function(e){ if(e.key === 'Escape' && overlay && !editing) requestClose(); });
 })();
 </script>
 </body>
