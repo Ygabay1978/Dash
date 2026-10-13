@@ -3581,7 +3581,7 @@ function snapModel(name){
   const views={}; let components=[];
   views.__all__=hasOrg?snapBuildView(comb):{groups:[]};
   if(hasOrg){ components=comb.components||[];
-    const nk=s=>String(s||'').toLowerCase().replace(/[^a-z0-9]+/g,'');
+    const nk=s=>String(s||'').toLowerCase().replace(/\b(ltd|inc|corp|co|llc|group|company)\b\.?/g,'').replace(/[^a-z0-9]+/g,'');
     const parentC=components.find(c=>nk(c)===nk(name))||components[0];
     components.forEach(cn=>{ const comp=entry.components[cn]||{}, dataObj=Object.assign({as_of:entry.as_of,components:[cn]},comp);
       const list=teams.filter(t=>{ const k=nk(t.child_company); return k?k===nk(cn):cn===parentC; });
@@ -3589,7 +3589,14 @@ function snapModel(name){
       v.tiles=mkTiles({arr:fmtMoney(list.reduce((a,t)=>a+(t.arr||0),0)),a90:c?fx(c.monthly_active_90d):'-',a30:'-',a30team:false,users:c?fx(c.total_people!=null?c.total_people:c.signups_all_time):'-',teams:c?fx(c.teams_all):'-',seats:c?fx(c.purchased_seats):'-',paidUsers:c?fx(c.seats_assigned):'-',pteams:c?fx(c.paid_teams):'-',free:c?fx(c.on_no_paid_team):'-',ent:c?fx(c.on_enterprise_team):'-'});
       v.teams=trowsOf(list); v.hasV12=v.teams.some(r=>r.v12); v.charts=chartsOf(list,c);
       const ins=comp.no_data?[]:snapInsights(M0,dataObj,hasAsa,list); v.insights={he:ins.map(x=>Object.assign({id:x.id},x.he)),en:ins.map(x=>Object.assign({id:x.id},x.en))};
-      views[cn]=v; }); }
+      views[cn]=v; });
+    // child companies that appear in the team list but have no usage data yet (for example Base44 under Wix) still get their own view
+    (()=>{ const kids=[...new Set(teams.map(t=>t.child_company).filter(Boolean))]; return kids.length>1?kids:[]; })().filter(c=>!components.some(k=>nk(k)===nk(c))).forEach(cn=>{
+      const list=teams.filter(t=>nk(t.child_company)===nk(cn)), sum=k=>list.reduce((a,t)=>a+(t[k]||0),0);
+      const v={noData:true,groups:[]};
+      v.tiles=mkTiles({arr:fmtMoney(sum('arr')),a90:'-',a30:'-',users:fx(sum('used_licenses')),teams:fx(list.length),seats:fx(sum('purchased_licenses')),paidUsers:'-',pteams:fx(list.filter(t=>(t.purchased_licenses||0)>0).length),free:'-',ent:'-'});
+      v.teams=trowsOf(list); v.hasV12=v.teams.some(r=>r.v12); v.charts=chartsOf(list,null); v.insights={he:[],en:[]};
+      views[cn]=v; components=components.concat([cn]); }); }
   const d=new Date(), generated=String(d.getDate()).padStart(2,'0')+'.'+String(d.getMonth()+1).padStart(2,'0')+'.'+d.getFullYear();
   return {company:name,meta,priority:account?.priority||'',tracked:!!M0.alreadyTrackedElsewhere,hasUsage,hasV12:trows.some(r=>r.v12),tiles:T,teams:trows,charts,views,components,groupDefs:[{id:'adopt',open:true},{id:'sec',open:true},{id:'test',open:true},{id:'ai',open:false},{id:'design',open:false},{id:'base',open:false}],
     insights:(()=>{ const list=snapInsights(M0,comb,hasAsa,teams); return {he:list.map(x=>Object.assign({id:x.id},x.he)),en:list.map(x=>Object.assign({id:x.id},x.en))}; })(),
@@ -3656,7 +3663,7 @@ function downloadSnapshotPDF(){ window.print(); }
   if(_qp.get('embed') === 'snapshot' && _qp.get('company')) openEmbeddedSnapshot(_qp.get('company'));
 })();
 </script>
-<div id="build-stamp" title="build">build 13.10.2026 r52</div>
+<div id="build-stamp" title="build">build 13.10.2026 r53</div>
 
 <div id="fmtbar" aria-label="Formatting">
   <span class="ftl">Select text in an Insight to format it</span>
