@@ -3318,12 +3318,12 @@ function snapApp(root, M, st, o){
   function donut(items){ const tot=items.reduce((a,x)=>a+x.v,0)||1, r=15.9, c=2*Math.PI*r; let off=0; const segs=items.map((x,i)=>{ const len=x.v/tot*c; const q=`<circle r="${r}" cx="21" cy="21" fill="none" stroke="${x.c||PAL[i%PAL.length]}" stroke-width="7" stroke-dasharray="${len} ${c-len}" stroke-dashoffset="${-off}" transform="rotate(-90 21 21)"/>`; off+=len; return q; }).join('');
    return `<div class="s2-dn"><svg viewBox="0 0 42 42">${segs}</svg><div class="s2-lg">${items.map((x,i)=>`<div><i style="background:${x.c||PAL[i%PAL.length]}"></i>${esc(x.l)}</div>`).join('')}</div></div>`; }
   function chartCard(id,title,inner,extra){ if(S.hidden.has(id)) return ghost(id,title); const hay=norm(title+' '+extra), m=matches(hay); if(S.query&&!m) return ''; if(S.query) mc++; return `<div class="s2-chart">${xbtn(id)}<h5>${hl(title)}</h5>${inner}</div>`; }
-  function teamCharts(){ const u=U(), C=M.charts||{}, out=[];
+  function teamCharts(){ const u=U(), C=(view().charts||M.charts)||{}, out=[];
    if((C.users||[]).length) out.push(chartCard('ch:users',u.cUsers,donut(C.users.map(x=>({l:x.l==='__other__'?u.other+' ('+x.n+')':x.l,v:x.v}))),'users teams משתמשים צוותים'));
    if((C.arr||[]).length) out.push(chartCard('ch:arr',u.cArr,donut(C.arr.map(x=>({l:x.l==='__other__'?u.other+' ('+x.n+')':x.l,v:x.v}))),'arr revenue הכנסה'));
    if((C.plan||[]).length) out.push(chartCard('ch:plan',u.cPlan,donut(C.plan.map(x=>({l:(x.k==='ent'?u.ent:x.k==='entasa'?u.entAsa:x.k==='free'?u.free:x.k)+' ('+x.v+')',v:x.v}))),'plan license teams רישיון תוכנית'));
    return out.join(''); }
-  function groupCharts(){ const u=U(), C=M.charts||{}; if(!C.people&&!C.seats) return ''; let h='';
+  function groupCharts(){ const u=U(), C=(view().charts||M.charts)||{}; if(!C.people&&!C.seats) return ''; let h='';
    if(C.people){ const p=[{l:u.entU+' ('+C.people.ent+')',v:C.people.ent,c:'#FF6C37'},{l:u.paidU+' ('+C.people.paid+')',v:C.people.paid,c:'#2E9E6C'},{l:u.freeU+' ('+C.people.free+')',v:C.people.free,c:'#2E6E8E'}].filter(x=>x.v>0); if(p.length) h+=chartCard('ch:people',u.cPeople,donut(p),'people users משתמשים free enterprise'); }
    if(C.seats){ const s=C.seats, mx=Math.max(s.P,s.A,s.EP,s.EA)||1; const bar=(lab,p,a)=>`<div class="s2-br"><b>${esc(lab)}</b><div>${u.purchased} <b dir="ltr">${p}</b><div class="s2-tr"><div class="s2-fl" style="width:${p/mx*100}%;background:#FF6C37"></div></div></div><div>${u.assigned} <b dir="ltr">${a}</b><div class="s2-tr"><div class="s2-fl" style="width:${a/mx*100}%;background:#2E6E8E"></div></div></div></div>`; h+=chartCard('ch:seats',u.cSeats,`<div class="s2-bars">${bar(u.allSeats,s.P,s.A)}${(s.EP||s.EA)?bar(u.entSeats,s.EP,s.EA):''}</div>`,'seats licenses purchased assigned מושבים רישיונות'); }
    return h?`<div class="s2-gcharts">${h}</div>`:''; }
@@ -3349,9 +3349,9 @@ function snapApp(root, M, st, o){
    updateBar();
    let h='';
    if(S.internal&&M.tracked) h+=`<div class="s2-note">&#9888; ${u.tracked}</div>`;
-   if(M.tiles&&M.tiles.length){ const t4=M.tiles.slice(0,4), t6=M.tiles.slice(4); h+=`<div class="s2-tiles">${t4.map(tileHtml).join('')}</div>`+(t6.length?`<div class="s2-tiles2">${t6.map(tileHtml).join('')}</div>`:''); }
+   const TL=view().tiles||M.tiles; if(TL&&TL.length){ const t4=TL.slice(0,4), t6=TL.slice(4); h+=`<div class="s2-tiles">${t4.map(tileHtml).join('')}</div>`+(t6.length?`<div class="s2-tiles2">${t6.map(tileHtml).join('')}</div>`:''); }
    if(!M.hasUsage) h+=`<div class="s2-note">${u.noteNoUsage}</div>`;
-   const arr=((M.insights||{})[S.lang]||[]).map(x=>({id:'i:'+x.id,idx:x.id,x})); S.custom.forEach((c,i)=>arr.push({id:'ic:'+i,idx:'c'+i,custom:c[S.lang]}));
+   const arr=(((view().insights||M.insights)||{})[S.lang]||[]).map(x=>({id:'i:'+x.id,idx:x.id,x})); S.custom.forEach((c,i)=>arr.push({id:'ic:'+i,idx:'c'+i,custom:c[S.lang]}));
    if(arr.length||S.edit){
     const lis=arr.map(p=>{ if(S.hidden.has(p.id)) return S.edit?`<li style="list-style:none">${ghost(p.id,(p.x?p.x.t:u.newPt))}</li>`:''; const key=S.lang+':'+p.idx;
      const html=S.edits[key]!=null?S.edits[key]:(p.custom!=null?esc(p.custom):`<div class="s2-ln"><b>${isHe()?bidi(esc(p.x.t)):esc(p.x.t)}</b> ${isHe()?bidi(esc(p.x.f)):esc(p.x.f)}</div><div class="s2-n"><b>${u.next}</b> ${isHe()?bidi(esc(p.x.n)):esc(p.x.n)}</div>`);
@@ -3360,10 +3360,10 @@ function snapApp(root, M, st, o){
     if(lis.trim()||S.edit) h+=`<div class="s2-card s2-imp"><div style="display:flex;align-items:center;gap:10px"><h3 class="s2-sech" style="margin:0 0 8px">${u.insights}</h3>${S.edit?`<button class="s2-btn" data-add="1" style="padding:3px 9px;font-size:11px">${u.addPt}</button>`:''}</div><ol>${lis}</ol></div>`;
    }
    // teams
-   const T=M.teams||[];
+   const T=view().teams||M.teams||[];
    if(T.length){
     const plans=[...new Set(T.map(r=>r.plan))], rowsT=T.filter(r=>!S.lic||r.plan===S.lic);
-    const cols=[['name',u.name],['id',u.tid],['plan',u.tplan],['purchased',u.tpur],['used',u.tused],['arr',u.tarr],['renewal',u.tren]]; if(M.hasV12) cols.push(['v12',u.tv12]); if(S.internal){ cols.push(['self',u.tself]); cols.push(['status',u.tstat]); }
+    const cols=[['name',u.name],['id',u.tid],['plan',u.tplan],['purchased',u.tpur],['used',u.tused],['arr',u.tarr],['renewal',u.tren]]; if(view().teams?view().hasV12:M.hasV12) cols.push(['v12',u.tv12]); if(S.internal){ cols.push(['self',u.tself]); cols.push(['status',u.tstat]); }
     const vis=cols.filter(c=>!S.hidden.has('col:'+c[0]));
     const cell=(r,k)=>{ if(k==='v12'){ const v=r.v12; if(!v) return '-'; return (v.users!=null?v.users.toLocaleString()+(isHe()?' משתמשים':' users'):'')+(v.users!=null&&v.pct!=null?' · ':'')+(v.pct!=null?v.pct+'%':''); } if(k==='self') return r.self?u.yes:u.no; if(k==='status') return r.status||'-'; const x=r[k]; return x==null||x===''?'-':x; };
     const trows=rowsT.map(r=>{ const hay=norm(vis.map(c=>cell(r,c[0])).join(' ')+' teams צוותים רישיון license'), m=matches(hay); if(S.query&&m) mc++; return `<tr class="${S.query&&!m?'s2-dim':''}">${vis.map(c=>`<td>${hl(c[0]==='plan'||c[0]==='name'||c[0]==='id'?cell(r,c[0]):vv(cell(r,c[0])))}</td>`).join('')}</tr>`; }).join('');
@@ -3436,7 +3436,7 @@ function snapApp(root, M, st, o){
    const rb=t.closest('[data-r]'); if(rb){ push(); S.hidden.delete(rb.dataset.r); render(); return; }
    if(t.closest('[data-add]')){ push(); S.custom.push({he:UI.he.newPt,en:UI.en.newPt}); render(); } });
   root.addEventListener('change',e=>{ const t=e.target;
-   if(t.dataset.lic){ push(); S.lic=t.value; render(); } if(t.dataset.view){ push(); S.view=t.value; render(); } });
+   if(t.dataset.lic){ push(); S.lic=t.value; render(); } if(t.dataset.view){ push(); S.view=t.value; S.lic=''; render(); } });
   root.addEventListener('input',e=>{ const t=e.target;
    if(t.dataset&&t.dataset.q){ S.query=norm(t.value); raw=t.value.trim().split(/\s+/); render(); return; }
    const ek=t.closest&&t.closest('[data-ek]'); if(ek&&S.edit) S.edits[ek.dataset.ek]=ek.innerHTML; });
@@ -3525,6 +3525,21 @@ function snapInsights(M0, comb, hasAsa, teams){
   if(au>0&&act90>0&&Math.round(au/act90*100)<50) add('ai',{t:'שימוש ב-AI בתהליכי הפיתוח',f:`מתוך ${f(act90)} משתמשים פעילים ב-90 הימים האחרונים, ${f(au)} משתמשים ב-Agent Mode. זהו סימן ראשוני לאימוץ של יכולות AI, אך עדיין לא שימוש נרחב בקרב המשתמשים הפעילים.`,n:'לזהות צוותים שבהם Agent Mode יכול לחסוך עבודה חוזרת בבדיקות, ביצירת בקשות ובתהליכי עבודה עם APIs, ולהתחיל בפיילוט ממוקד בצוות אחד. ככל שהשימוש ב-AI מתרחב, אפשר לבחון גם את Fabric לניהול ובקרה של מודלים, Agents ושרתי MCP במקום אחד.'},{t:'AI in the development process',f:`Of the ${f(act90)} users active in the last 90 days, ${f(au)} use Agent Mode. This is an early sign of AI adoption, but not yet widespread use among the active users.`,n:'Which teams could save repetitive work in testing, request creation and API workflows with Agent Mode, and starting with a focused pilot in one team. As AI usage grows, Fabric can also be considered for managing and controlling models, Agents and MCP servers in one place.'});
   const specsN=s.specs, pubDocs=(comb.distribution||{}).public_docs_published_90d;
   if(specsN>=5&&(pubDocs==null||pubDocs<3)) add('fern',{t:'תיעוד ו-SDKs ל-APIs',f:`קיימים ${f(specsN)} Specs, אך ב-Postman ${pubDocs?'נרשם פרסום של '+f(pubDocs)+' מסמכי תיעוד בלבד':'לא נרשם פרסום של תיעוד'} ב-90 הימים האחרונים.`,n:'איך צוותים פנימיים ושותפים מקבלים תיעוד, SDKs ודוגמאות לשימוש ב-APIs, והאם הם נשארים מעודכנים כשה-API משתנה. למשל, Fern יכול לייצר מה-Specs תיעוד, SDKs, CLI ו-MCP Servers מאותה הגדרה.'},{t:'API documentation and SDKs',f:`There are ${f(specsN)} Specs, but Postman recorded ${pubDocs?'only '+f(pubDocs)+' published documentation pages':'no published documentation'} in the last 90 days.`,n:'How internal teams and partners get documentation, SDKs and examples for using the APIs, and whether they stay up to date when the API changes. For example, Fern can generate documentation, SDKs, a CLI and MCP Servers from the same Specs.'});
+  out.forEach(o=>{ const id=o.id; let h='',e='';
+    if(id.indexOf('v12-')===0&&id!=='v12-pct'){ const x=v12sig.find(y=>'v12-'+y.team_id===id); h=`V12: ${f(x.on_v12_users)} משתמשים (${x.on_v12_pct}%) עודכנו. לבחון תוכנית עדכון לשאר.`; e=`v12: ${f(x.on_v12_users)} users (${x.on_v12_pct}%) upgraded. Consider an upgrade plan for the rest.`; }
+    else if(id==='v12-pct'){ h='V12: '+v12pct.map((x,i)=>i===0?`${x.on_v12_pct}% מהמשתמשים בצוות ${x.team_id}`:`${x.on_v12_pct}% בצוות ${x.team_id}`).join(' ו-')+' עודכנו. לבחון תוכנית עדכון.'; e='v12: '+v12pct.map((x,i)=>i===0?`${x.on_v12_pct}% of the users in team ${x.team_id}`:`${x.on_v12_pct}% in team ${x.team_id}`).join(' and ')+' upgraded. Consider an upgrade plan.'; }
+    else if(id==='plan'){ h=`רישיון: ${oldPlan.slice(0,2).map(x=>x.team_name+' ('+x.active_plan+')').join(' ו-')}${oldPlan.length>2?' ועוד':''} עדיין לא על Enterprise 2026 ב-V12. לבחון מעבר.`; e=`License: ${oldPlan.slice(0,2).map(x=>x.team_name+' ('+x.active_plan+')').join(' and ')}${oldPlan.length>2?' and more':''} not yet on Enterprise 2026 (v12). Consider moving.`; }
+    else if(id==='manual'){ const manual=Math.max(0,cr-cliR), share=Math.round(manual/cr*100);
+      if(cr<5&&cliR===0){ h=`בדיקות: ${f(cr)} הרצות Collection בלבד, 0 דרך CLI/CI-CD. לבחון Postman CLI ב-CI/CD.`; e=`Testing: only ${f(cr)} Collection runs, 0 through CLI/CI-CD. Consider the Postman CLI in CI/CD.`; }
+      else { h=`בדיקות: ${f(cr)} הרצות Collection, ${share===100?'כולן ידניות':f(manual)+' ידניות ('+share+'%)'}, ${f(cliR)} דרך CLI/CI-CD. לבחון Postman CLI ב-CI/CD.`; e=`Testing: ${f(cr)} Collection runs, ${share===100?'all manual':f(manual)+' manual ('+share+'%)'}, ${f(cliR)} through CLI/CI-CD. Consider the Postman CLI in CI/CD.`; } }
+    else if(id==='asa'){ const freeActive=Math.max(0,(act90||0)-paidSeats), share90=act90>0?Math.round(freeActive/act90*100):0, sh=Math.round(freeU/totU*100), long=act90>=20&&freeActive>=10&&share90>=30;
+      const nextHe=hasAsa?'לבחון הפעלת Domain Capture (חלק מ-ASA).':'לבחון ASA.', nextEn=hasAsa?'Consider enabling Domain Capture (part of ASA).':'Consider ASA.';
+      h=long?`Security Governance: לפחות ${f(freeActive)} מתוך ${f(act90)} פעילים (כ-${share90}%) מחוץ לניהול הארגוני, Domain Capture כבוי. ${nextHe}`:`Security Governance: ${f(freeU)} מתוך ${f(totU)} משתמשים (כ-${sh}%) בצוותים חינמיים, Domain Capture כבוי. ${nextHe}`;
+      e=long?`Security Governance: at least ${f(freeActive)} of ${f(act90)} active users (about ${share90}%) are outside the organization's control, Domain Capture is off. ${nextEn}`:`Security Governance: ${f(freeU)} of ${f(totU)} users (about ${sh}%) are on free teams, Domain Capture is off. ${nextEn}`; }
+    else if(id==='passport'){ h=`Secrets ו-Keys: ${f(envUpd)} עדכוני Environments ב-90 ימים. לבחון Passport עם Vault.`; e=`Secrets and Keys: ${f(envUpd)} Environment updates in 90 days. Consider Passport with a Vault.`; }
+    else if(id==='ai'){ h=`AI: ${f(au)} מתוך ${f(act90)} פעילים ב-Agent Mode. לבחון פיילוט, ובהמשך Fabric.`; e=`AI: ${f(au)} of ${f(act90)} active users use Agent Mode. Consider a pilot, and Fabric later.`; }
+    else if(id==='fern'){ h=`תיעוד ו-SDKs: ${f(specsN)} Specs ${pubDocs?'עם '+f(pubDocs)+' מסמכי תיעוד בלבד':'בלי פרסום תיעוד'}. לבחון Fern.`; e=`Docs and SDKs: ${f(specsN)} Specs, ${pubDocs?'only '+f(pubDocs)+' published docs':'no published docs'}. Consider Fern.`; }
+    if(h){ o.he.s=h; o.en.s=e; } });
   return out;
 }
 function snapModel(name){
@@ -3535,35 +3550,46 @@ function snapModel(name){
   const domain=account?.domain||usage?.domain||(teams[0]&&teams[0].domain)||'';
   const meta=[domain,account?.country||usage?.region,account?.sector].filter(Boolean).join(' · ');
   const core=(comb&&comb.core)||{};
-  const T=[]; const tile=(k,en,he,val,hEn,hHe,alias,valHe)=>T.push({k,en,he,val,valHe,hintEn:hEn,hintHe:hHe,alias:alias||''});
-  tile('arr','Total ARR','ARR כולל',M0.totalARR!=null?fmtMoney(M0.totalARR):'-',"ARR = the annual recurring revenue from the organization's licenses.",'ARR = הכנסה שנתית חוזרת מהרישיונות של הארגון.');
-  tile('a90','Active users (last 90 days)','משתמשים פעילים (90 ימים אחרונים)',M0.totalDAU!=null?fmtNum(M0.totalDAU):'-','How many different people were active in Postman in the last 90 days.','כמה אנשים שונים פעלו ב-Postman ב-90 הימים האחרונים.','DAU 90-day');
-  const tl=M0.mauBasis==='teams';
-  tile('a30','Active users (last 30 days)'+(tl?' (team-level)':''),'משתמשים פעילים (30 ימים אחרונים'+(tl?', ברמת צוותים':'')+')',M0.mau!=null?fmtNum(M0.mau):'-','How many people were active in Postman in the last 30 days.','כמה אנשים פעלו ב-Postman ב-30 הימים האחרונים.','MAU monthly active פעילים בחודש');
-  tile('users','Total users (all time)','סה״כ משתמשים (מצטבר)',M0.totalUsers!=null?fmtNum(M0.totalUsers):'-','How many people have ever registered in Postman in the organization (not only active ones), including the free plan.','כמה אנשים נרשמו ל-Postman בארגון מתחילת הפעילות (לא רק פעילים), כולל התוכנית החינמית.');
   const hasUsage=!!(usage||orgCore);
-  tile('teams','Total teams','סה״כ צוותים',M0.totalTeams!=null?fmtNum(M0.totalTeams):'-','How many teams exist in Postman across the organization, including free-plan teams.','כמה צוותים קיימים ב-Postman בארגון, כולל צוותים בתוכנית החינמית.');
-  if(hasUsage){
-    tile('seats','Paid seats','מושבים בתשלום',fmtNum(M0.paidSeats),'How many paid licenses were purchased.','כמה רישיונות בתשלום נרכשו.');
-    tile('util','Paid seat utilization','ניצול מושבים בתשלום',`${fmtNum(M0.paidUsers)} of ${fmtNum(M0.paidSeats)}`,'How many of the paid seats that were purchased are in use.','כמה מהמושבים בתשלום שנרכשו נמצאים בשימוש.','Paid users משתמשים בתשלום משתמשים במושב בתשלום',`${fmtNum(M0.paidUsers)} מתוך ${fmtNum(M0.paidSeats)}`);
-    tile('pteams','Paid teams','צוותים בתשלום',fmtNum(M0.paidTeams),'How many teams are on a paid plan.','כמה צוותים בתוכנית בתשלום.');
-    tile('free','Unmanaged free users','משתמשי Free לא מנוהלים',fmtNum(M0.freeUsers),"People on free-plan teams, outside the organization's control.",'אנשים בצוותים בתוכנית החינמית, מחוץ לניהול הארגוני.','Free users משתמשי FREE');
-    if(core.on_enterprise_team!=null) tile('ent','Users on Enterprise Plan','משתמשים ב-Enterprise Plan',fmtNum(core.on_enterprise_team),'People who hold a seat on the Enterprise plan.','אנשים שמחזיקים מושב בתוכנית Enterprise.','Enterprise users משתמשי Enterprise');
-    else tile('ent','Enterprise licenses','רישיונות Enterprise',fmtNum(M0.entUsers),'Enterprise licenses purchased.','רישיונות Enterprise שנרכשו.','Enterprise users משתמשי Enterprise');
-  }
-  // teams
   const isSelf=t=>M0.source==='Self-serve team export'?true:(t.self_serve==='yes');
-  const trows=[...teams].sort((a,b)=>(b.arr||0)-(a.arr||0)).map(t=>({name:t.team_name||'-',id:String(t.team_id||(t.team_url?t.team_url.split('/').pop():'-')),plan:t.active_plan||'-',purchased:fmtNum(t.purchased_licenses),used:fmtNum(t.used_licenses),arr:fmtMoney(t.arr||0),renewal:snapFmtDate(t.renewal_date),v12:getTeamV12(name,t.team_id),self:isSelf(t),status:t.plan_state||'',purchasedN:t.purchased_licenses||0,usedN:t.used_licenses||0,arrN:t.arr||0}));
+  const fx=v=>v==null?'-':fmtNum(v);
+  // the tiles are built from a set of values: the whole account, or one component picked in the dropdown
+  const mkTiles=(v)=>{ const T=[]; const tile=(k,en,he,val,hEn,hHe,alias,valHe)=>T.push({k,en,he,val,valHe,hintEn:hEn,hintHe:hHe,alias:alias||''});
+    tile('arr','Total ARR','ARR כולל',v.arr,"ARR = the annual recurring revenue from the organization's licenses.",'ARR = הכנסה שנתית חוזרת מהרישיונות של הארגון.');
+    tile('a90','Active users (last 90 days)','משתמשים פעילים (90 ימים אחרונים)',v.a90,'How many different people were active in Postman in the last 90 days.','כמה אנשים שונים פעלו ב-Postman ב-90 הימים האחרונים.','DAU 90-day');
+    tile('a30','Active users (last 30 days)'+(v.a30team?' (team-level)':''),'משתמשים פעילים (30 ימים אחרונים'+(v.a30team?', ברמת צוותים':'')+')',v.a30,'How many people were active in Postman in the last 30 days.','כמה אנשים פעלו ב-Postman ב-30 הימים האחרונים.','MAU monthly active פעילים בחודש');
+    tile('users','Total users (all time)','סה״כ משתמשים (מצטבר)',v.users,'How many people have ever registered in Postman in the organization (not only active ones), including the free plan.','כמה אנשים נרשמו ל-Postman בארגון מתחילת הפעילות (לא רק פעילים), כולל התוכנית החינמית.');
+    tile('teams','Total teams','סה״כ צוותים',v.teams,'How many teams exist in Postman across the organization, including free-plan teams.','כמה צוותים קיימים ב-Postman בארגון, כולל צוותים בתוכנית החינמית.');
+    if(hasUsage){
+      tile('seats','Paid seats','מושבים בתשלום',v.seats,'How many paid licenses were purchased.','כמה רישיונות בתשלום נרכשו.');
+      tile('util','Paid seat utilization','ניצול מושבים בתשלום',(v.paidUsers==='-'||v.seats==='-')?'-':`${v.paidUsers} of ${v.seats}`,'How many of the paid seats that were purchased are in use.','כמה מהמושבים בתשלום שנרכשו נמצאים בשימוש.','Paid users משתמשים בתשלום משתמשים במושב בתשלום',(v.paidUsers==='-'||v.seats==='-')?'-':`${v.paidUsers} מתוך ${v.seats}`);
+      tile('pteams','Paid teams','צוותים בתשלום',v.pteams,'How many teams are on a paid plan.','כמה צוותים בתוכנית בתשלום.');
+      tile('free','Unmanaged free users','משתמשי Free לא מנוהלים',v.free,"People on free-plan teams, outside the organization's control.",'אנשים בצוותים בתוכנית החינמית, מחוץ לניהול הארגוני.','Free users משתמשי FREE');
+      if(v.ent!=null) tile('ent','Users on Enterprise Plan','משתמשים ב-Enterprise Plan',v.ent,'People who hold a seat on the Enterprise plan.','אנשים שמחזיקים מושב בתוכנית Enterprise.','Enterprise users משתמשי Enterprise');
+      else tile('ent','Enterprise licenses','רישיונות Enterprise',v.entLic,'Enterprise licenses purchased.','רישיונות Enterprise שנרכשו.','Enterprise users משתמשי Enterprise');
+    }
+    return T; };
+  const allVals={arr:M0.totalARR!=null?fmtMoney(M0.totalARR):'-',a90:fx(M0.totalDAU),a30:fx(M0.mau),a30team:M0.mauBasis==='teams',users:fx(M0.totalUsers),teams:fx(M0.totalTeams),seats:fmtNum(M0.paidSeats),paidUsers:fmtNum(M0.paidUsers),pteams:fmtNum(M0.paidTeams),free:fmtNum(M0.freeUsers),ent:core.on_enterprise_team!=null?fmtNum(core.on_enterprise_team):null,entLic:fmtNum(M0.entUsers)};
+  const trowsOf=list=>[...list].sort((a,b)=>(b.arr||0)-(a.arr||0)).map(t=>({name:t.team_name||'-',id:String(t.team_id||(t.team_url?t.team_url.split('/').pop():'-')),plan:t.active_plan||'-',purchased:fmtNum(t.purchased_licenses),used:fmtNum(t.used_licenses),arr:fmtMoney(t.arr||0),renewal:snapFmtDate(t.renewal_date),v12:getTeamV12(name,t.team_id),self:isSelf(t),status:t.plan_state||'',child:t.child_company||'',purchasedN:t.purchased_licenses||0,usedN:t.used_licenses||0,arrN:t.arr||0}));
   const topN=(items,vk,n)=>{ const s=items.filter(i=>(i[vk]||0)>0).sort((a,b)=>b[vk]-a[vk]); const top=s.slice(0,n).map(i=>({l:i.team_name||'-',v:i[vk]})); const rest=s.slice(n); const rs=rest.reduce((a,i)=>a+i[vk],0); if(rs>0) top.push({l:'__other__',n:rest.length,v:rs}); return top; };
-  const planCounts={}; teams.forEach(t=>{ let c=planCategory(t.active_plan); let k=c==='Enterprise'?(hasAsa?'entasa':'ent'):(c==='Free'?'free':c); planCounts[k]=(planCounts[k]||0)+1; });
-  const charts={users:topN(teams.map(t=>({team_name:t.team_name,u:(t.used_licenses||t.purchased_licenses||0)})),'u',5),arr:topN(teams,'arr',5),plan:Object.keys(planCounts).sort((a,b)=>planCounts[b]-planCounts[a]).map(k=>({k,v:planCounts[k]}))};
-  if(hasOrg&&comb.core){ const c=comb.core; charts.people={ent:c.on_enterprise_team||0,paid:c.on_paid_non_enterprise_team||0,free:c.on_no_paid_team||0};
-    if(c.purchased_seats) charts.seats={P:c.purchased_seats,A:c.seats_assigned||0,EP:c.enterprise_seats_purchased||0,EA:c.enterprise_seats_assigned||0}; }
-  // views (combined and one per component)
+  const chartsOf=(list,c)=>{ const planCounts={}; list.forEach(t=>{ const cat=planCategory(t.active_plan); const k=cat==='Enterprise'?(hasAsa?'entasa':'ent'):(cat==='Free'?'free':cat); planCounts[k]=(planCounts[k]||0)+1; });
+    const ch={users:topN(list.map(t=>({team_name:t.team_name,u:(t.used_licenses||t.purchased_licenses||0)})),'u',5),arr:topN(list,'arr',5),plan:Object.keys(planCounts).sort((a,b)=>planCounts[b]-planCounts[a]).map(k=>({k,v:planCounts[k]}))};
+    if(c){ ch.people={ent:c.on_enterprise_team||0,paid:c.on_paid_non_enterprise_team||0,free:c.on_no_paid_team||0}; if(c.purchased_seats) ch.seats={P:c.purchased_seats,A:c.seats_assigned||0,EP:c.enterprise_seats_purchased||0,EA:c.enterprise_seats_assigned||0}; }
+    return ch; };
+  const trows=trowsOf(teams), T=mkTiles(allVals), charts=chartsOf(teams,hasOrg&&comb.core?comb.core:null);
+  // views: the combined account and one per component (each with its own tiles, teams, charts and insights)
   const views={}; let components=[];
-  if(hasOrg){ views.__all__=snapBuildView(comb); components=comb.components||[];
-    components.forEach(cn=>{ const comp=entry.components[cn]||{}; views[cn]=comp.no_data?{noData:true,groups:[]}:snapBuildView(Object.assign({as_of:entry.as_of,components:[cn]},comp)); }); }
-  else views.__all__={groups:[]};
+  views.__all__=hasOrg?snapBuildView(comb):{groups:[]};
+  if(hasOrg){ components=comb.components||[];
+    const nk=s=>String(s||'').toLowerCase().replace(/[^a-z0-9]+/g,'');
+    const parentC=components.find(c=>nk(c)===nk(name))||components[0];
+    components.forEach(cn=>{ const comp=entry.components[cn]||{}, dataObj=Object.assign({as_of:entry.as_of,components:[cn]},comp);
+      const list=teams.filter(t=>{ const k=nk(t.child_company); return k?k===nk(cn):cn===parentC; });
+      const v=comp.no_data?{noData:true,groups:[]}:snapBuildView(dataObj), c=comp.no_data?null:(dataObj.core||{});
+      v.tiles=mkTiles({arr:fmtMoney(list.reduce((a,t)=>a+(t.arr||0),0)),a90:c?fx(c.monthly_active_90d):'-',a30:'-',a30team:false,users:c?fx(c.total_people!=null?c.total_people:c.signups_all_time):'-',teams:c?fx(c.teams_all):'-',seats:c?fx(c.purchased_seats):'-',paidUsers:c?fx(c.seats_assigned):'-',pteams:c?fx(c.paid_teams):'-',free:c?fx(c.on_no_paid_team):'-',ent:c?fx(c.on_enterprise_team):'-'});
+      v.teams=trowsOf(list); v.hasV12=v.teams.some(r=>r.v12); v.charts=chartsOf(list,c);
+      const ins=comp.no_data?[]:snapInsights(M0,dataObj,hasAsa,list); v.insights={he:ins.map(x=>Object.assign({id:x.id},x.he)),en:ins.map(x=>Object.assign({id:x.id},x.en))};
+      views[cn]=v; }); }
   const d=new Date(), generated=String(d.getDate()).padStart(2,'0')+'.'+String(d.getMonth()+1).padStart(2,'0')+'.'+d.getFullYear();
   return {company:name,meta,priority:account?.priority||'',tracked:!!M0.alreadyTrackedElsewhere,hasUsage,hasV12:trows.some(r=>r.v12),tiles:T,teams:trows,charts,views,components,groupDefs:[{id:'adopt',open:true},{id:'sec',open:true},{id:'test',open:true},{id:'ai',open:false},{id:'design',open:false},{id:'base',open:false}],
     insights:(()=>{ const list=snapInsights(M0,comb,hasAsa,teams); return {he:list.map(x=>Object.assign({id:x.id},x.he)),en:list.map(x=>Object.assign({id:x.id},x.en))}; })(),
@@ -3630,7 +3656,7 @@ function downloadSnapshotPDF(){ window.print(); }
   if(_qp.get('embed') === 'snapshot' && _qp.get('company')) openEmbeddedSnapshot(_qp.get('company'));
 })();
 </script>
-<div id="build-stamp" title="build">build 13.10.2026 r51</div>
+<div id="build-stamp" title="build">build 13.10.2026 r52</div>
 
 <div id="fmtbar" aria-label="Formatting">
   <span class="ftl">Select text in an Insight to format it</span>
