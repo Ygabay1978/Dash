@@ -3383,7 +3383,7 @@ function snapApp(root, M, st, o){
      h+=`<section class="s2-grp ${isOpen?'s2-open':''}">${xbtn(gid)}<button class="s2-gh" data-t="${g.id}"><span class="s2-gt">${esc(title)}</span><span class="s2-gs">${sm}</span><span class="s2-chev">&#9660;</span></button><div class="s2-gb">${gcharts}<div class="s2-cats ${hits.filter(x=>!x.compact).length===1?'s2-one':''}">${hits.filter(x=>!x.compact).map(x=>x.html).join('')}</div>${hits.filter(x=>x.compact).map(x=>x.html).join('')}</div></section>`; });
    } else if((M.charts||{}).people||0){ /* nothing */ }
    // plan features and add-ons (not in the embedded window)
-   if(!o.embed){
+   {
     const pid='sec:plan'; if(S.hidden.has(pid)) h+=ghost(pid,u.plan); else {
      const planRows=(M.plan||[]).map(p=>({p,rows:p.rows.filter(r=>matches(norm(r[0]+' '+r[1]+' '+p.title)))})).filter(x=>x.rows.length);
      if(!S.query||planRows.length){ if(S.query) mc+=planRows.reduce((a,x)=>a+x.rows.length,0); const op=S.query?true:S.open.plan;
@@ -3406,7 +3406,7 @@ function snapApp(root, M, st, o){
     <select class="s2-sel" data-view="1" style="display:none"></select>
     ${o.dash?'<button class="s2-btn" data-b="internal"></button><button class="s2-btn" data-b="edit"></button>':''}
     <button class="s2-btn" data-b="exp"></button><button class="s2-btn" data-b="col"></button>
-    ${o.dash&&!o.embed?'<button class="s2-btn" data-b="dlhtml"></button><button class="s2-btn s2-prim" data-b="dlpdf"></button>':''}</div>
+    ${o.dash?'<button class="s2-btn" data-b="dlhtml"></button><button class="s2-btn s2-prim" data-b="dlpdf"></button>':''}</div>
     <div class="s2-resinfo"></div><div class="s2-main"></div>`;
   }
   function updateBar(){
@@ -3440,7 +3440,7 @@ function snapApp(root, M, st, o){
   root.addEventListener('input',e=>{ const t=e.target;
    if(t.dataset&&t.dataset.q){ S.query=norm(t.value); raw=t.value.trim().split(/\s+/); render(); return; }
    const ek=t.closest&&t.closest('[data-ek]'); if(ek&&S.edit) S.edits[ek.dataset.ek]=ek.innerHTML; });
-  const api={getState:()=>({lang:S.lang,lic:S.lic,open:S.open,hidden:[...S.hidden],edits:S.edits,custom:S.custom,view:S.view,internal:S.internal}),setLang:l=>{S.lang=l;render();},render};
+  const api={getState:()=>({lang:S.lang,lic:S.lic,open:S.open,hidden:[...S.hidden],edits:S.edits,custom:S.custom,view:S.view,internal:S.internal}),setLang:l=>{S.lang=l;render();},setInternal:v=>{S.internal=!!v;render();},render};
   render();
   return api;
 }
@@ -3641,14 +3641,20 @@ function downloadSnapshotHTML(){
   if(!window._snapApi) return;
   const name = window._snapCurrentName, st = window._snapApi.getState();
   const model = snapModel(name);
-  model.signals = []; model.tracked = false; model.priority = ''; model.teams.forEach(t=>{ delete t.self; delete t.status; });   // internal details stay out of the customer file
+  model.signals = []; model.tracked = false; model.priority = ''; model.teams.forEach(t=>{ delete t.self; delete t.status; });
+  Object.values(model.views).forEach(v=>{ (v.teams||[]).forEach(t=>{ delete t.self; delete t.status; }); });   // internal details stay out of the customer file
   st.internal = false;
   const blob = new Blob([snapStandaloneDoc(model, st)], {type:'text/html'});
   const a = document.createElement('a'); a.href = URL.createObjectURL(blob);
   a.download = name.replace(/[^a-z0-9]+/gi,'_') + '_Postman_Snapshot.html';
   document.body.appendChild(a); a.click(); a.remove(); URL.revokeObjectURL(a.href);
 }
-function downloadSnapshotPDF(){ window.print(); }
+function downloadSnapshotPDF(){
+  const api = window._snapApi; if(!api){ window.print(); return; }
+  const was = api.getState().internal;
+  if(was) api.setInternal(false);          // the internal columns and cards stay out of the PDF
+  setTimeout(function(){ window.print(); if(was) api.setInternal(true); }, 60);
+}
 
 /* ---------- INIT ---------- */
 (async function init(){
@@ -3663,7 +3669,7 @@ function downloadSnapshotPDF(){ window.print(); }
   if(_qp.get('embed') === 'snapshot' && _qp.get('company')) openEmbeddedSnapshot(_qp.get('company'));
 })();
 </script>
-<div id="build-stamp" title="build">build 13.10.2026 r53</div>
+<div id="build-stamp" title="build">build 13.10.2026 r55</div>
 
 <div id="fmtbar" aria-label="Formatting">
   <span class="ftl">Select text in an Insight to format it</span>
